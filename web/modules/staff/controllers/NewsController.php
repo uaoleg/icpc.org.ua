@@ -107,9 +107,6 @@ class NewsController extends \web\modules\staff\ext\Controller
         $news = News::model()->findByPk(new \MongoId($id));
         $news->isPublished = $status;
         $news->save();
-
-        // Redirect to edit page
-        $this->redirect(array('edit', 'id' => $news->_id));
     }
 
 }
