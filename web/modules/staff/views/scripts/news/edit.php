@@ -8,16 +8,29 @@
 
 <div class="page-header clearfix">
     <h1>
-        <?=\yii::t('app', 'News')?>
+        <?=\yii::t('app', 'Edit News')?>
     </h1>
-    <?php if (!$news->getIsNewRecord()): ?>
-        <small><a href="<?=$this->createUrl('/news/view', array('id' => $news->_id))?>" target="_blank">
-            <?=$this->createAbsoluteUrl('/news/view', array('id' => $news->_id))?>
-        </a></small>
-    <?php endif; ?>
+    <small><a href="<?=$this->createUrl('/news/view', array(
+        'id'    => $news->commonId,
+        'lang'  => $news->lang,
+    ))?>" target="_blank">
+        <?=$this->createAbsoluteUrl('/news/view', array('id' => $news->commonId))?>
+    </a></small>
 </div>
 <div class="form-horizontal clearfix">
-    <input type="hidden" class="id" value="<?=$news->_id?>" />
+    <ul class="nav nav-tabs">
+        <?php foreach (\yii::app()->params['languages'] as $langKey => $langVal): ?>
+            <li class="<?=$news->lang === $langKey ? 'active' : ''?>">
+                <a href="<?=$this->createUrl('edit', array(
+                    'id'    => $news->commonId,
+                    'lang'  => $langKey,
+                ))?>"><?=$langVal?></a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+    <br />
+    <input type="hidden" class="id" value="<?=$news->commonId?>" />
+    <input type="hidden" class="lang" value="<?=$news->lang?>" />
     <div class="form-group">
         <input type="text" class="form-control title" value="<?=\CHtml::encode($news->title)?>" placeholder="<?=\yii::t('app', 'Title')?>">
     </div>

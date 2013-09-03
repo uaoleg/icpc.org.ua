@@ -1,4 +1,4 @@
-function appStaffNewsEdit() {
+function appStaffNewsCreate() {
 
     var self = this;
     self.init();
@@ -8,9 +8,8 @@ function appStaffNewsEdit() {
         var $selfElement = $(this);
         $selfElement.prop('disabled', true);
         $.ajax({
-            url: app.baseUrl + '/staff/news/edit',
+            url: app.baseUrl + '/staff/news/create',
             data: {
-                id:      $('.id', self.$form).val(),
                 lang:    $('.lang', self.$form).val(),
                 title:   $('.title', self.$form).val(),
                 content: self.editor.getData()
@@ -19,6 +18,10 @@ function appStaffNewsEdit() {
                 appShowErrors(response.errors, self.$form);
                 if (response.errors) {
                     return;
+                } else {
+                    location.href = app.baseUrl + '/staff/news/edit' +
+                        '/id/' + response.id +
+                        '/lang/' + $('.lang', self.$form).val();
                 }
             }
         });
@@ -26,4 +29,4 @@ function appStaffNewsEdit() {
 
 }
 
-appStaffNewsEdit.prototype = appStaffNewsManage.prototype;
+appStaffNewsCreate.prototype = appStaffNewsManage.prototype;

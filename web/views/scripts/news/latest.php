@@ -9,7 +9,10 @@
             <a href="<?=$this->createUrl('/news/view', array('id' => $news->_id))?>"><?=CHtml::encode($news->title)?></a>
             <?php if (\yii::app()->user->checkAccess('newsUpdate', array('news' => $news))): ?>
                 <?php $this->widget('\web\widgets\news\StatusSwitcher', array('news' => $news)); ?>
-                <a href="<?=$this->createUrl('/staff/news/edit', array('id' => $news->_id))?>" class="btn btn-link">
+                <a href="<?=$this->createUrl('/staff/news/edit', array(
+                    'id'    => $news->_id,
+                    'lang'  => $news->lang,
+                ))?>" class="btn btn-link">
                     <?=\yii::t('app', 'Edit')?>
                 </a>
             <?php endif; ?>

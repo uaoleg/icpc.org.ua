@@ -36,6 +36,7 @@ class NewsController extends \web\ext\Controller
         // Get list of news
         $criteria = new \EMongoCriteria();
         $criteria
+            ->addCond('lang', '==', \yii::app()->language)
             ->sort('dateCreated', \EMongoCriteria::SORT_DESC)
             ->offset(($page - 1) * $perPage)
             ->limit($perPage);
@@ -66,10 +67,14 @@ class NewsController extends \web\ext\Controller
     public function actionView()
     {
         // Get params
-        $id = $this->request->getParam('id');
+        $id     = $this->request->getParam('id');
+        $lang   = $this->request->getParam('lang');
 
         // Get news
-        $news = News::model()->findByPk(new \MongoId($id));
+        $news = News::model()->findByAttributes(array(
+            'commonId'  => $id,
+            'lang'      => empty($lang) ? \yii::app()->language : $lang,
+        ));
         if ($news === null) {
             return $this->httpException(404);
         }

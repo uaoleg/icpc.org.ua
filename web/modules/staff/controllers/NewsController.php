@@ -12,7 +12,35 @@ class NewsController extends \web\modules\staff\ext\Controller
      */
     public function actionCreate()
     {
-        $this->forward('edit');
+        // Get params
+        $lang       = $this->request->getParam('lang');
+        $title      = $this->request->getPost('title');
+        $content    = $this->request->getPost('content');
+
+        // Create news
+        $news = new News();
+
+        // Save news
+        if ($this->request->isPostRequest) {
+            $news->setAttributes(array(
+                'lang'      => $lang,
+                'title'     => $title,
+                'content'   => $content,
+            ), false);
+            $news->save();
+            $errors = $news->getErrors();
+            $this->renderJson(array(
+                'id'        => (string)$news->_id,
+                'errors'    => count($errors) > 0 ? $errors : false,
+            ));
+        }
+
+        // Render view
+        else {
+            $this->render('create', array(
+                'news' => $news,
+            ));
+        }
     }
 
     /**
@@ -22,23 +50,31 @@ class NewsController extends \web\modules\staff\ext\Controller
     {
         // Get params
         $id         = $this->request->getParam('id');
+        $lang       = $this->request->getParam('lang');
         $title      = $this->request->getPost('title');
         $content    = $this->request->getPost('content');
 
-        // Create news
-        $news = News::model()->findByPk(new \MongoId($id));
+        // Get news
+        $news = News::model()->findByAttributes(array(
+            'commonId'  => $id,
+            'lang'      => $lang,
+        ));
         if ($news === null) {
-            if (empty($id)) {
-                $news = new News();
-            } else {
+            if (News::model()->countByAttributes(array('commonId' => $id)) === 0) {
                 return $this->httpException(404);
+            } else {
+                $news = new News();
+                $news->setAttributes(array(
+                    'commonId'  => $id,
+                    'lang'      => $lang,
+                ), false);
             }
         }
 
         // Save news
         if ($this->request->isPostRequest) {
-            $isNew = $news->getIsNewRecord();
             $news->setAttributes(array(
+                'lang'      => $lang,
                 'title'     => $title,
                 'content'   => $content,
             ), false);
@@ -46,7 +82,6 @@ class NewsController extends \web\modules\staff\ext\Controller
             $errors = $news->getErrors();
             $this->renderJson(array(
                 'id'        => (string)$news->_id,
-                'isNew'     => $isNew,
                 'errors'    => count($errors) > 0 ? $errors : false,
             ));
         }

@@ -6,6 +6,18 @@ class News extends \common\ext\MongoDb\Document
 {
 
     /**
+     * Common ID for all translations
+     * @var string
+     */
+    public $commonId;
+
+    /**
+     * Language code (e.g. "uk", "en_us", etc.)
+     * @var string
+     */
+    public $lang;
+
+    /**
      * Title
      * @var string
      */
@@ -40,6 +52,8 @@ class News extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
+            'commonId'      => \yii::t('app', 'Common ID'),
+            'lang'          => \yii::t('app', 'Language'),
             'title'         => \yii::t('app', 'Title'),
             'content'       => \yii::t('app', 'Content'),
             'isPublished'   => \yii::t('app', 'Is published'),
@@ -55,7 +69,7 @@ class News extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('title, content, dateCreated', 'required'),
+            array('lang, title, content, dateCreated', 'required'),
             array('title', 'length', 'max' => 300),
             array('content', 'length', 'max' => 5000),
         ));
@@ -79,10 +93,16 @@ class News extends \common\ext\MongoDb\Document
     public function indexes()
     {
         return array_merge(parent::indexes(), array(
-            'isPublished_dateCreated' => array(
+            'commonId' => array(
                 'key' => array(
-                    'isPublished' => \EMongoCriteria::SORT_ASC,
-                    'dateCreated' => \EMongoCriteria::SORT_DESC,
+                    'commonId' => \EMongoCriteria::SORT_ASC,
+                ),
+            ),
+            'isPublished_lang_dateCreated' => array(
+                'key' => array(
+                    'isPublished'   => \EMongoCriteria::SORT_ASC,
+                    'lang'          => \EMongoCriteria::SORT_ASC,
+                    'dateCreated'   => \EMongoCriteria::SORT_DESC,
                 ),
             ),
         ));
@@ -97,6 +117,9 @@ class News extends \common\ext\MongoDb\Document
     {
         if (!parent::beforeValidate()) return false;
 
+        // Convert to string
+        $this->commonId = (string)$this->commonId;
+
         // Convert to bool
         $this->isPublished = (bool)$this->isPublished;
 
@@ -106,6 +129,20 @@ class News extends \common\ext\MongoDb\Document
         }
 
         return true;
+    }
+
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
+        // Set common ID
+        if (empty($this->commonId)) {
+            $this->commonId = (string)$this->_id;
+            $this->save();
+        }
+
+        parent::afterSave();
     }
 
 }
