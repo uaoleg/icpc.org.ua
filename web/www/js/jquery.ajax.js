@@ -1,0 +1,3 @@
+$.ajaxSetup({
+    type: 'post'
+});

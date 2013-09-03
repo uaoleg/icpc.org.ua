@@ -1,0 +1,27 @@
+.navbar-static-bottom {
+    background: #2e2e2e;
+    color: #ffffff;
+    line-height: 50px;
+    margin-bottom: 0;
+    padding: 0 50px;
+}
+
+.navbar-static-bottom .navbar-nav > li > a,
+.navbar-static-bottom .navbar-nav > li > a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.navbar-static-bottom .navbar-nav > li > a.inline {
+    display: inline;
+    padding-left: 0;
+}
+
+.navbar-static-top {
+    border-radius: 7px;
+    box-shadow: 2px 1px 2px #000000;
+}
+
+.panel {
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}

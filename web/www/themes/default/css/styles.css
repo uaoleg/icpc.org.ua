@@ -1,0 +1,90 @@
+/* Table of Contents:
+
+    Basic styles
+    Document
+    News
+
+*/
+
+/* Basic styles
+----------------------------------------------------------------------------- */
+
+html,
+body {
+    font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+    font-size: 14px;
+    height: 100%;
+}
+
+body {
+    padding-bottom: 50px;
+}
+
+body > div#main {
+    background: #ffffff;
+    height: auto;
+    min-height: 100%;
+}
+
+body > div#main .container {
+    padding-bottom: 70px;
+}
+
+.header-title {
+    background-image: url('../images/layout/flag.png');
+    background-size: 100% 100px;
+    background-repeat: no-repeat;
+    border-radius: 7px;
+    box-shadow: 2px 2px 3px #000000;
+    font-size: 32px;
+    height: 100px;
+    margin: 10px 0 20px;
+    text-align: center;
+    text-shadow: 1px 1px 2px #777;
+    vertical-align: middle;
+}
+
+.header-title table {
+    width: 100%;
+}
+
+.header-title table td {
+    padding: 0 20px;
+}
+
+/* Document
+----------------------------------------------------------------------------- */
+
+.document {
+
+}
+
+.document .document-title {
+    font-size: 20px;
+}
+
+.document .document-size {
+    font-style: italic;
+}
+
+/* News
+----------------------------------------------------------------------------- */
+
+.news {
+
+}
+
+.news .news-date {
+    color: #888888;
+    font-style: italic;
+    margin: 0 0 10px;
+}
+
+.news .news-status-switcher {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.news .news-title {
+    margin-bottom: 0;
+}
