@@ -135,8 +135,8 @@ class RbacCommand extends \console\ext\ConsoleCommand
     public function actionInitAdmin()
     {
         // Define admin params
-        $email      = 'admin@icpc.org.ua';
-        $password   = 'e3r4t5';
+        $email      = \yii::app()->params['rbac']['admin']['email'];
+        $password   = \yii::app()->params['rbac']['admin']['password'];
 
         // Save admin to DB
         $admin = new \common\models\User();
