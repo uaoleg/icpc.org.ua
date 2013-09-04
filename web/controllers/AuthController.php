@@ -16,6 +16,9 @@ class AuthController extends \web\ext\Controller
 
         // Set default action
         $this->defaultAction = 'login';
+
+        // Set active main menu item
+        $this->setNavActiveItem('main', '');
     }
 
     /**
