@@ -6,7 +6,7 @@
 <?php foreach ($newsList as $news): ?>
     <div class="news">
         <h2 class="news-title">
-            <a href="<?=$this->createUrl('/news/view', array('id' => $news->_id))?>"><?=CHtml::encode($news->title)?></a>
+            <a href="<?=$this->createUrl('/news/view', array('id' => $news->commonId))?>"><?=CHtml::encode($news->title)?></a>
             <?php if (\yii::app()->user->checkAccess('newsUpdate', array('news' => $news))): ?>
                 <?php $this->widget('\web\widgets\news\StatusSwitcher', array('news' => $news)); ?>
                 <a href="<?=$this->createUrl('/staff/news/edit', array(

@@ -68,16 +68,33 @@ class NewsController extends \web\ext\Controller
     {
         // Get params
         $id     = $this->request->getParam('id');
-        $lang   = $this->request->getParam('lang');
+        $lang   = $this->request->getParam('lang', \yii::app()->language);
 
         // Get news
         $news = News::model()->findByAttributes(array(
             'commonId'  => $id,
-            'lang'      => empty($lang) ? \yii::app()->language : $lang,
+            'lang'      => $lang,
         ));
+
+        // If news was not found
         if ($news === null) {
-            return $this->httpException(404);
+
+            // Check it on other languages
+            $newsList = News::model()->findAllByAttributes(array(
+                'commonId' => $id,
+            ));
+            if (count($newsList) > 0) {
+                $this->render('viewOtherLang', array(
+                    'lang'      => $lang,
+                    'newsList'  => $newsList,
+                ));
+                return;
+            } else {
+                return $this->httpException(404);
+            }
         }
+
+        // Check access
         if (!\yii::app()->user->checkAccess('newsRead', array('news' => $news))) {
             return $this->httpException(403);
         }
