@@ -36,6 +36,11 @@ class DocsController extends \web\modules\staff\ext\Controller
             }
         }
 
+        // Set document type
+        if (!empty($type)) {
+            $document->type = $type;
+        }
+
         // Save document
         if ($this->request->isPostRequest) {
             $isNew = $document->getIsNewRecord();

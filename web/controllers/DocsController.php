@@ -91,7 +91,6 @@ class DocsController extends \web\ext\Controller
         header('Content-type: application/' . $document->fileExt);
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         echo $document->file->getBytes();
-//        readfile('original.pdf');
     }
 
 }

@@ -44,12 +44,11 @@
     </div>
     <div class="form-group">
         <select class="form-control type">
-            <option value="<?=Document::TYPE_REGULATIONS?>">
-                <?=Document::model()->getAttributeLabel(Document::TYPE_REGULATIONS, 'type')?>
+            <?php foreach (Document::model()->getConstantList('TYPE_') as $type): ?>
+            <option value="<?=$type?>" <?=($type === $document->type) ? 'selected' : ''?>>
+                <?=Document::model()->getAttributeLabel($type, 'type')?>
             </option>
-            <option value="<?=Document::TYPE_GUIDANCE?>">
-                <?=Document::model()->getAttributeLabel(Document::TYPE_GUIDANCE, 'type')?>
-            </option>
+            <?php endforeach; ?>
         </select>
     </div>
     <div class="form-group">

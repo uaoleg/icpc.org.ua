@@ -61,7 +61,7 @@
                                 'caption'   => \yii::t('app', 'News'),
                             ),
                             'docs' => array(
-                                'href'      => '/',
+                                'href'      => '#',
                                 'caption'   => \yii::t('app', 'Docs'),
                                 'itemList'  => array(
                                     'docs-regulations' => array(
@@ -73,6 +73,10 @@
                                         'caption'   => \yii::t('app', 'Guidance'),
                                     ),
                                 ),
+                            ),
+                            'results' => array(
+                                'href'      => '/results',
+                                'caption'   => \yii::t('app', 'Results'),
                             ),
                             'lang' => array(
                                 'href'      => $this->createUrl('/staff/lang'),
