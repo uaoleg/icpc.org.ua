@@ -102,13 +102,21 @@
 
     <nav class="navbar navbar-default navbar-static-bottom" role="navigation">
         <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav">
                 <li>
-                    <?=\yii::t('app', 'Developed by')?>
-                    <a href="http://www.dataart.ru" target="_blank" class="inline">DataArt</a>
+                    &copy; 2013 <a href="http://www.dataart.ru" target="_blank" class="inline">DataArt</a>
                 </li>
+                <li>
+                    <?=\yii::t('app', 'Find us on {a}GitHub{/a}', array(
+                        '{a}'  => '<a href="https://github.com/uaoleg/icpc.org.ua" target="_blank" class="inline">',
+                        '{/a}' => '</a>',
+                    ))?>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown dropup language-select">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="text-decoration: none;">
+                        <img src="<?=\yii::app()->theme->baseUrl?>/images/language/<?=\yii::app()->language?>-16.png" />
                         <?=isset(\yii::app()->params['languages'][\yii::app()->language])
                             ? \yii::app()->params['languages'][\yii::app()->language]
                             : \yii::t('app', 'Language')
@@ -119,7 +127,10 @@
                         <li>
                             <a href="<?=$this->createUrl('/setting/lang', array(
                                 'code' => $langKey,
-                            ))?>" data-lang="<?=$langKey?>"><?=$langVal?></a>
+                            ))?>" data-lang="<?=$langKey?>">
+                                <img src="<?=\yii::app()->theme->baseUrl?>/images/language/<?=$langKey?>-16.png" />
+                                <?=$langVal?>
+                            </a>
                         </li>
                         <?php endforeach; ?>
                     </ul>
