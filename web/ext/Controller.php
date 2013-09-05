@@ -41,15 +41,7 @@ class Controller extends \CController
 
         // Set application language and save it with the help of cookies
         if (!isset($this->request->cookies['language'])) {
-
-            // Get user accept-language from HTTP_ACCEPT_LANGUAGE
-            $prefferedLang = $this->request->getPreferredLanguage();
-
-            // Check language code to be valid
-            $languageCodes = array_keys(\yii::app()->params['languages']);
-            if (($prefferedLang !== false) && in_array($prefferedLang, $languageCodes)) {
-                $this->request->cookies['language'] = new \CHttpCookie('language', $prefferedLang);
-            }
+            $this->request->cookies['language'] = new \CHttpCookie('language', 'uk');
         }
         if (isset($this->request->cookies['language'])) {
             \yii::app()->language = $this->request->cookies['language']->value;
