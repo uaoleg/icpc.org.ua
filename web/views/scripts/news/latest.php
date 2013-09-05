@@ -34,4 +34,11 @@
     </ul>
 <?php endif; ?>
 
+<?php if (count($newsList) === 0): ?>
+    <div class="alert alert-info">
+        <?=\yii::t('app', 'No news yet.')?>
+    </div>
+<?php endif; ?>
+
+
 
