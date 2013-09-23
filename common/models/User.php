@@ -87,8 +87,8 @@ class User extends \common\ext\MongoDb\Document
         ));
     }
 
-	/**
-	 * This returns the name of the collection for this class
+    /**
+     * This returns the name of the collection for this class
      *
      * @return string
 	 */

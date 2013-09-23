@@ -1,4 +1,4 @@
-<div class="col-lg-offset-4 col-lg-4">
+<div class="col-lg-offset-4 col-lg-5">
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title"><?=\yii::t('app', 'Signup')?></h3>
@@ -30,6 +30,25 @@
                         <input type="password" class="form-control" name="passwordRepeat" value="<?=\CHtml::encode($passwordRepeat)?>" placeholder="<?=\yii::t('app', 'Repeat password')?>">
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-1 col-lg-10">
+                    <?php $this->widget('common.lib.recaptcha.EReCaptcha', array(
+                        'language'  => 'en_EN',
+                        'theme'     => 'white',
+                    )); ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-1 col-lg-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="rulesAgree" class="checkbox" <?=$rulesAgree ? 'checked' : ''?> />
+                                <?=\yii::t('app', 'I agree with rules of the service')?>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-lg-offset-1 col-lg-10">
                         <button type="submit" class="btn btn-primary"><?=\yii::t('app', 'Sign up')?></button>

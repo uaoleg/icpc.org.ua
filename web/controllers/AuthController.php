@@ -8,6 +8,35 @@ class AuthController extends \web\ext\Controller
 {
 
     /**
+     * Check recaptcha code
+     *
+     * @return bool|string
+     */
+	protected function _checkRecaptcha()
+	{
+        $challengeField = $this->request->getParam('recaptcha_challenge_field');
+        $responseField  = $this->request->getParam('recaptcha_response_field');
+        $errorMessage   = \yii::t('app', 'The recaptcha code is incorrect.');
+
+        if (($responseField === null) || ($challengeField === null)) {
+            return $errorMessage;
+        }
+
+        \yii::import('common.lib.recaptcha.reCAPTCHA.recaptchalib', true);
+	    $response = recaptcha_check_answer(
+            \yii::app()->params['recaptcha']['privateKey'],
+            \yii::app()->request->userHostAddress,
+            $challengeField,
+            $responseField
+        );
+		if ($response->is_valid) {
+            return true;
+        } else {
+			return $errorMessage;
+		}
+	}
+
+    /**
      * Init
      */
     public function init()
@@ -88,18 +117,26 @@ class AuthController extends \web\ext\Controller
         $email          = $this->request->getPost('email');
         $password       = $this->request->getPost('password');
         $passwordRepeat = $this->request->getPost('passwordRepeat');
+        $rulesAgree     = (bool)$this->request->getPost('rulesAgree');
 
         // Register a new teacher
         $errors = array();
+        $user = new User();
         if ($this->request->isPostRequest) {
-            $user = new User();
             $user->setAttributes(array(
-                'firstName' => $firstName,
-                'lastName'  => $lastName,
-                'email'     => $email,
+                'firstName'  => $firstName,
+                'lastName'   => $lastName,
+                'email'      => $email,
             ), false);
             $user->validate();
             $user->setPassword($password, $passwordRepeat);
+            $recaptchaStatus = $this->_checkRecaptcha();
+            if ($recaptchaStatus !== true) {
+                $user->addError('recaptcha', $recaptchaStatus);
+            }
+            if (!$rulesAgree) {
+                $user->addError('rulesAgree', \yii::t('app', 'Please, read and accept service rules'));
+            }
             if (!$user->hasErrors()) {
                 $user->save();
                 $identity = new \web\ext\UserIdentity($email, $password);
@@ -119,6 +156,7 @@ class AuthController extends \web\ext\Controller
             'email'             => $email,
             'password'          => $password,
             'passwordRepeat'    => $passwordRepeat,
+            'rulesAgree'        => $rulesAgree,
             'errors'            => $errors,
         ));
     }
