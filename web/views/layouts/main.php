@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?=\yii::app()->language?>">
 
 <head>
 
@@ -92,7 +92,7 @@
                             <li>
                                 <p class="navbar-text">
                                     <?=\yii::t('app', 'Hello')?>,
-                                    <a href="#"><?=\yii::app()->user->getInstance()->firstName?></a>
+                                    <a href="<?=$this->createUrl('/user/me')?>"><?=\yii::app()->user->getInstance()->firstName?></a>
                                 </p>
                             </li>
                             <li><a href="<?=$this->createUrl('/auth/logout')?>"><?=\yii::t('app', 'Logout')?></a></li>
@@ -108,7 +108,7 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                 <li>
-                    &copy; 2013 <a href="http://www.dataart.ru" target="_blank" class="inline">DataArt</a>
+                    &copy; 2013 <a href="http://www.dataart.ua" target="_blank" class="inline">DataArt</a>
                 </li>
                 <li>
                     <?=\yii::t('app', 'Find us on {a}GitHub{/a}', array(
