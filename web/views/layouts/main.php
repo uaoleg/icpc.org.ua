@@ -87,7 +87,7 @@
                     )); ?>
                     <ul class="nav navbar-nav navbar-right">
                         <?php if (\yii::app()->user->isGuest): ?>
-                            <li class="hide"><a href="<?=$this->createUrl('/auth/login')?>"><?=\yii::t('app', 'Login')?></a></li>
+                            <li><a href="<?=$this->createUrl('/auth/login')?>"><?=\yii::t('app', 'Login')?></a></li>
                         <?php else: ?>
                             <li>
                                 <p class="navbar-text">

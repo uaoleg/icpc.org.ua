@@ -117,48 +117,62 @@ class AuthController extends \web\ext\Controller
         $email          = $this->request->getPost('email');
         $password       = $this->request->getPost('password');
         $passwordRepeat = $this->request->getPost('passwordRepeat');
+        $role           = $this->request->getPost('role');
         $rulesAgree     = (bool)$this->request->getPost('rulesAgree');
 
-        // Register a new teacher
-        $errors = array();
-        $user = new User();
+        // Register a new user
         if ($this->request->isPostRequest) {
+
+            // Validate user date
+            $user = new User();
             $user->setAttributes(array(
                 'firstName'  => $firstName,
                 'lastName'   => $lastName,
                 'email'      => $email,
+                'role'       => $role,
             ), false);
             $user->validate();
             $user->setPassword($password, $passwordRepeat);
-            $recaptchaStatus = $this->_checkRecaptcha();
-            if ($recaptchaStatus !== true) {
-                $user->addError('recaptcha', $recaptchaStatus);
-            }
+
+            // Check rules to be accepted
             if (!$rulesAgree) {
                 $user->addError('rulesAgree', \yii::t('app', 'Please, read and accept service rules'));
             }
+
+            // Check recaptcha in the very end
+            if (!$user->hasErrors()) {
+                $recaptchaStatus = $this->_checkRecaptcha();
+                if ($recaptchaStatus !== true) {
+                    $user->addError('recaptcha', $recaptchaStatus);
+                }
+            }
+
+            // If no errors, than create and auth user
             if (!$user->hasErrors()) {
                 $user->save();
                 $identity = new \web\ext\UserIdentity($email, $password);
                 $identity->authenticate();
                 \yii::app()->user->allowAutoLogin = true;
                 \yii::app()->user->login($identity);
-                return $this->redirect('/');
-            } else {
-                $errors = $user->getErrors();
             }
+
+            // Render json
+            $this->renderJson(array(
+                'errors' => $user->hasErrors() ? $user->getErrors() : false,
+            ));
         }
 
         // Render view
-        $this->render('signup', array(
-            'firstName'         => $firstName,
-            'lastName'          => $lastName,
-            'email'             => $email,
-            'password'          => $password,
-            'passwordRepeat'    => $passwordRepeat,
-            'rulesAgree'        => $rulesAgree,
-            'errors'            => $errors,
-        ));
+        else {
+            $this->render('signup', array(
+                'firstName'         => $firstName,
+                'lastName'          => $lastName,
+                'email'             => $email,
+                'password'          => $password,
+                'passwordRepeat'    => $passwordRepeat,
+                'rulesAgree'        => $rulesAgree,
+            ));
+        }
     }
 
 }
