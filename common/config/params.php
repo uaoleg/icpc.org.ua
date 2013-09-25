@@ -9,8 +9,8 @@ $params = array(
 
     'languages' => array(
         'uk'    => 'Українська',
-        'ru_ru' => 'Русский',
-        'en_us' => 'English',
+        'ru'    => 'Русский',
+        'en'    => 'English',
     ),
 
     'regexp' => array(
