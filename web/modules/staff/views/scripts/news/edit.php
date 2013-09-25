@@ -10,7 +10,7 @@
     <h1>
         <?=\yii::t('app', 'Edit News')?>
     </h1>
-    <small><a href="<?=$this->createUrl('/news/view', array(
+    <small><b><?=\yii::t('app', 'Preview')?>:</b> <a href="<?=$this->createUrl('/news/view', array(
         'id'    => $news->commonId,
         'lang'  => $news->lang,
     ))?>" target="_blank">
@@ -31,6 +31,11 @@
     <br />
     <input type="hidden" class="id" value="<?=$news->commonId?>" />
     <input type="hidden" class="lang" value="<?=$news->lang?>" />
+    <div class="form-group">
+        <small><a href="http://postimage.org/index.php?um=computer&content=family" target="_blank">
+            <b><?=\yii::t('app', 'Upload images here')?></b>
+        </a></small>
+    </div>
     <div class="form-group">
         <input type="text" class="form-control title" value="<?=\CHtml::encode($news->title)?>" placeholder="<?=\yii::t('app', 'Title')?>">
     </div>
