@@ -28,7 +28,12 @@
                         id:     $(self.element).data('news-id'),
                         status: $selfElement.data('status')
                     },
-                    success: function() {
+                    success: function(response) {
+                        appShowErrors(response.errors, self.$form);
+                        if (response.errors) {
+                            $selfElement.attr('disabled', false);
+                            return;
+                        }
                         $('.btn', self.element).attr('disabled', false).removeClass('hide');
                         $selfElement.addClass('hide');
                     }

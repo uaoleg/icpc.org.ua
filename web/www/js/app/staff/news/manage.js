@@ -33,5 +33,6 @@ appStaffNewsManage.prototype.init = function() {
  * On change event
  */
 appStaffNewsManage.prototype.onchange = function() {
+    $('.news-status-switcher .btn-success').prop('disabled', true);
     $('.btn.save-news').prop('disabled', false);
 };
