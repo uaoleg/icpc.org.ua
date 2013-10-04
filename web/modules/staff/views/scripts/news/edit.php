@@ -46,10 +46,8 @@
         <button class="btn btn-primary save-news btn-lg pull-left" disabled="">
             <?=\yii::t('app', 'Save News')?>
         </button>
-        <?php if (!$news->getIsNewRecord()): ?>
-            <div class="pull-right">
-                <?php $this->widget('\web\widgets\news\StatusSwitcher', array('news' => $news)); ?>
-            </div>
-        <?php endif; ?>
+        <div class="pull-right">
+            <?php $this->widget('\web\widgets\news\StatusSwitcher', array('news' => $news)); ?>
+        </div>
     </div>
 </div>

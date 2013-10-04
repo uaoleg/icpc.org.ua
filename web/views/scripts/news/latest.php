@@ -1,5 +1,7 @@
 <?php if (\yii::app()->user->checkAccess('newsCreate')): ?>
-    <a href="<?=$this->createUrl('/staff/news/create')?>" class="btn btn-success btn-lg"><?=\yii::t('app', 'Add News')?></a>
+    <a href="<?=$this->createUrl('/staff/news/edit')?>" class="btn btn-success btn-lg">
+        <?=\yii::t('app', 'Add News')?>
+    </a>
     <hr />
 <?php endif; ?>
 

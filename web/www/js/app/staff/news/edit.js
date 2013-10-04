@@ -3,7 +3,20 @@ function appStaffNewsEdit() {
     var self = this;
     self.init();
 
-    // Save news
+    /**
+     * On window unload
+     */
+    window.onbeforeunload = function() {
+        if ($('.btn.save-news', self.$form).is(':disabled')) {
+            return null;
+        } else {
+            return _t('appjs', 'You have unsaved changes.');
+        }
+    };
+
+    /**
+     * Save news
+     */
     $('.btn.save-news', self.$form).on('click', function() {
         var $selfElement = $(this);
         $selfElement.prop('disabled', true);
@@ -19,6 +32,8 @@ function appStaffNewsEdit() {
                 appShowErrors(response.errors, self.$form);
                 if (response.errors) {
                     return;
+                } else if (response.isNew) {
+                    location.href = response.url;
                 }
             }
         });
