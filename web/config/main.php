@@ -27,7 +27,6 @@ $config = array(
                     ),
                     'css' => array(
                         'lib/bootstrap-3.0.0/css/bootstrap.min.css',
-                        'lib/bootstrap-3.0.0/css/bootstrap-theme.min.css',
                     ),
                     'depends' => array('jquery'),
                 ),
