@@ -75,10 +75,10 @@ class NewsController extends \web\modules\staff\ext\Controller
         $news = News::model()->findByPk(new \MongoId($id));
         $news->isPublished = $status;
         $news->save();
-        $errors = $news -> getErrors();
-        $this -> renderJson(array(
-            'id' => (string)$news -> _id,
-            'errors' => count($errors) ? $errors: FALSE
+        $errors = $news->getErrors();
+        $this->renderJson(array(
+            'id' => (string)$news->_id,
+            'errors' => count($errors) ? $errors : false
         ));
     }
 
