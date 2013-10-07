@@ -20,7 +20,6 @@ function appStaffNewsEdit() {
     $('.btn.save-news', self.$form).on('click', function() {
         var $selfElement = $(this);
         $selfElement.prop('disabled', true);
-        $('.news-status-switcher .btn-success').prop('disabled', false);
         $.ajax({
             url: app.baseUrl + '/staff/news/edit',
             data: {
@@ -33,8 +32,11 @@ function appStaffNewsEdit() {
                 appShowErrors(response.errors, self.$form);
                 if (response.errors) {
                     return;
-                } else if (response.isNew) {
-                    location.href = response.url;
+                } else {
+                    $('.news-status-switcher .btn').prop('disabled', false);
+                    if (response.isNew) {
+                        location.href = response.url;
+                    }
                 }
             }
         });

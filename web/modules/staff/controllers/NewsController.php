@@ -76,8 +76,8 @@ class NewsController extends \web\modules\staff\ext\Controller
         $news->isPublished = $status;
         $news->save();
         $this->renderJson(array(
-            'id' => (string)$news->_id,
-            'errors' => ($news->hasErrors()) ? $news->getErrors() : false
+            'id'        => (string)$news->_id,
+            'errors'    => ($news->hasErrors()) ? $news->getErrors() : false,
         ));
     }
 
