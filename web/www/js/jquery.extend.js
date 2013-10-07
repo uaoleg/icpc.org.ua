@@ -58,6 +58,38 @@
             return (
                 S4() + S4() + S4() + S4() + S4() + S4() + S4()
             );
+        },
+
+        /**
+         * Ctrl+S events
+         *
+         * @return {object} [for jQuery chaining]
+         */
+        onCtrlS: function(callback, editor) {
+            $(this).on('keydown', function(e) {
+                if (e.ctrlKey && e.keyCode === 83) {
+                    callback();
+                    e.preventDefault();
+                }
+            }
+            );
+
+            if (editor != undefined) {
+                editor.addCommand("saveNews", {
+                    exec: function () {
+                    callback();
+                },
+                modes: {
+                    wysiwyg: 1,
+                    source: 1
+                },
+                readOnly: 1,
+                canUndo: !1
+                });
+                editor.setKeystroke(CKEDITOR.CTRL + 83, "saveNews");
+            }
+
+            return $(this);
         }
 
     };

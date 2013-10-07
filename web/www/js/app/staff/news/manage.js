@@ -8,13 +8,6 @@ appStaffNewsManage.prototype.init = function() {
     var self = this;
     self.$form = $('.form-horizontal');
 
-    $(document).on('keydown', function(e) {
-        if (e.ctrlKey && e.keyCode === 83) {
-            self.save();
-            e.preventDefault();
-        }
-    });
-
     // On language changed
     $('select', self.$form).on('change', function() {
         self.onchange();
@@ -34,19 +27,10 @@ appStaffNewsManage.prototype.init = function() {
         self.onchange();
     });
 
-    self.editor.addCommand("saveNews", {
-        exec: function () {
-            self.save();
-        },
-        modes: {
-            wysiwyg: 1,
-            source: 1
-        },
-        readOnly: 1,
-        canUndo: !1
-    });
-
-    self.editor.setKeystroke(CKEDITOR.CTRL + 83, "saveNews");
+    // on Ctrl + S
+    $(document).onCtrlS(function(){
+        self.save();
+    }, self.editor);
 
 };
 
@@ -54,6 +38,7 @@ appStaffNewsManage.prototype.init = function() {
  * On change event
  */
 appStaffNewsManage.prototype.onchange = function() {
+    $('.news-status-switcher .btn-success').prop('disabled', true);
     $('.btn.save-news').prop('disabled', false);
 };
 
