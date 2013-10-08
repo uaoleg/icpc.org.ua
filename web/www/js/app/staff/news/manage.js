@@ -27,6 +27,11 @@ appStaffNewsManage.prototype.init = function() {
         self.onchange();
     });
 
+    // on Ctrl + S
+    $(document).onCtrlS(function(){
+        self.save();
+    }, self.editor);
+
 };
 
 /**
@@ -36,3 +41,7 @@ appStaffNewsManage.prototype.onchange = function() {
     $('.news-status-switcher .btn').prop('disabled', true);
     $('.btn.save-news').prop('disabled', false);
 };
+
+appStaffNewsManage.prototype.save = function() {
+    $('.btn.save-news').click();
+}
