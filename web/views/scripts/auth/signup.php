@@ -50,7 +50,7 @@
                                 <li><a href="#" data-val="<?=Coordinator::TYPE_UKRAINE?>"><?=\yii::t('app', 'Ukraine')?></a></li>
                                 <li class="dropdown-submenu">
                                     <a href="#"><?=\yii::t('app', 'Region')?></a>
-                                    <ul class="dropdown-menu" role="menu">
+                                    <ul class="dropdown-menu dropup" role="menu">
                                         <li><a href="#" data-val="<?=Coordinator::TYPE_REGION_CENTER?>"><?=\yii::t('app', 'Center')?></a></li>
                                         <li><a href="#" data-val="<?=Coordinator::TYPE_REGION_EAST?>"><?=\yii::t('app', 'East')?></a></li>
                                         <li><a href="#" data-val="<?=Coordinator::TYPE_REGION_NORTH?>"><?=\yii::t('app', 'North')?></a></li>
@@ -60,7 +60,7 @@
                                 </li>
                                 <li class="dropdown-submenu">
                                     <a href="#"><?=\yii::t('app', 'State')?></a>
-                                    <ul class="dropdown-menu" role="menu">
+                                    <ul class="dropdown-menu dropdown-sorted" role="menu" style="margin-top: -350px;">
                                         <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_ARC?>"><?=\yii::t('app', 'ARC')?></a></li>
                                         <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_CHERKASY?>"><?=\yii::t('app', 'Cherkasy')?></a></li>
                                         <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_CHERNIHIV?>"><?=\yii::t('app', 'Chernihiv')?></a></li>

@@ -34,6 +34,8 @@ function appAuthSignup() {
         });
     });
 
+    // Sort states
+    $('.dropdown-menu.dropdown-sorted').sortList();
 
     // Signup request
     $('.btn.signup').on('click', function() {

@@ -3,6 +3,38 @@
     var functionList = {
 
         /**
+         * Ctrl+S events
+         *
+         * @return {object} [for jQuery chaining]
+         */
+        onCtrlS: function(callback, editor) {
+            $(this).on('keydown', function(e) {
+                if (e.ctrlKey && e.keyCode === 83) {
+                    callback();
+                    e.preventDefault();
+                }
+            }
+            );
+
+            if (editor != undefined) {
+                editor.addCommand("saveNews", {
+                    exec: function () {
+                    callback();
+                },
+                modes: {
+                    wysiwyg: 1,
+                    source: 1
+                },
+                readOnly: 1,
+                canUndo: !1
+                });
+                editor.setKeystroke(CKEDITOR.CTRL + 83, "saveNews");
+            }
+
+            return $(this);
+        },
+
+        /**
          * Returns bootstrap progress bar component
          *
          * @return {String}
@@ -17,6 +49,38 @@
                         .css('width', '100%')
                 );
             return progressBar;
+        },
+
+        /**
+         * Sort list
+         */
+        sortList: function(order) {
+
+            if (order !== -1) {
+                order = 1;
+            }
+
+            var self = this,
+                $lis = $('li', self),
+                vals = [];
+
+            // Collect values
+            $lis.each(function(i, $li) {
+                vals.push($('a', $li).text());
+            });
+
+            // Sort
+            vals.sort();
+            if (order === -1) {
+                vals.reverse();
+            }
+
+            // Reorder list
+            $.each(vals, function(i, val) {
+                $('li:contains(' + val + ')', self).insertAfter($('li:last', self));
+            });
+
+            return self;
         },
 
         /**
@@ -58,38 +122,6 @@
             return (
                 S4() + S4() + S4() + S4() + S4() + S4() + S4()
             );
-        },
-
-        /**
-         * Ctrl+S events
-         *
-         * @return {object} [for jQuery chaining]
-         */
-        onCtrlS: function(callback, editor) {
-            $(this).on('keydown', function(e) {
-                if (e.ctrlKey && e.keyCode === 83) {
-                    callback();
-                    e.preventDefault();
-                }
-            }
-            );
-
-            if (editor != undefined) {
-                editor.addCommand("saveNews", {
-                    exec: function () {
-                    callback();
-                },
-                modes: {
-                    wysiwyg: 1,
-                    source: 1
-                },
-                readOnly: 1,
-                canUndo: !1
-                });
-                editor.setKeystroke(CKEDITOR.CTRL + 83, "saveNews");
-            }
-
-            return $(this);
         }
 
     };
