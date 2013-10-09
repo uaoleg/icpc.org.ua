@@ -52,11 +52,19 @@ class RbacCommand extends \console\ext\ConsoleCommand
             'documentRead',
             'newsRead',
         );
-        foreach ($guestOperationList as $guestOperation) {
-            if (!$guest->hasChild($guestOperation)) {
-                $guest->addChild($guestOperation);
-            }
+        $this->_addOperations($guest, $guestOperationList);
+
+        /**
+         * User role
+         */
+        $user = $this->auth->getAuthItem(User::ROLE_USER);
+        if (!$user) {
+            $user = $this->auth->createRole(User::ROLE_USER);
         }
+        $userOperationList = array(
+            User::ROLE_GUEST,
+        );
+        $this->_addOperations($user, $userOperationList);
 
         /**
          * Student role
@@ -65,9 +73,10 @@ class RbacCommand extends \console\ext\ConsoleCommand
         if (!$student) {
             $student = $this->auth->createRole(User::ROLE_STUDENT);
         }
-        if (!$student->hasChild(User::ROLE_GUEST)) {
-            $student->addChild(User::ROLE_GUEST);
-        }
+        $studentOperationList = array(
+            User::ROLE_USER,
+        );
+        $this->_addOperations($student, $studentOperationList);
 
         /**
          * Coach role
@@ -76,9 +85,10 @@ class RbacCommand extends \console\ext\ConsoleCommand
         if (!$coach) {
             $coach = $this->auth->createRole(User::ROLE_COACH);
         }
-        if (!$coach->hasChild(User::ROLE_STUDENT)) {
-            $coach->addChild(User::ROLE_STUDENT);
-        }
+        $coachOperationList = array(
+            User::ROLE_STUDENT,
+        );
+        $this->_addOperations($coach, $coachOperationList);
 
         /**
          * Coordinator role
@@ -87,9 +97,14 @@ class RbacCommand extends \console\ext\ConsoleCommand
         if (!$coordinator) {
             $coordinator = $this->auth->createRole(User::ROLE_COORDINATOR);
         }
-        if (!$coordinator->hasChild(User::ROLE_STUDENT)) {
-            $coordinator->addChild(User::ROLE_STUDENT);
-        }
+        $coordinatorOperationList = array(
+            User::ROLE_COACH,
+            'documentCreate',
+            'documentUpdate',
+            'newsCreate',
+            'newsUpdate',
+        );
+        $this->_addOperations($coordinator, $coordinatorOperationList);
 
         /**
          * Admin role
@@ -100,18 +115,19 @@ class RbacCommand extends \console\ext\ConsoleCommand
         }
         $adminOperationList = array(
             User::ROLE_COORDINATOR,
-            'documentCreate',
-            'documentUpdate',
-            'newsCreate',
-            'newsUpdate',
         );
-        foreach ($adminOperationList as $adminOperation) {
-            if (!$admin->hasChild($adminOperation)) {
-                $admin->addChild($adminOperation);
-            }
-        }
+        $this->_addOperations($admin, $adminOperationList);
 
         echo "RBAC inited succesfully.";
+    }
+
+    protected function _addOperations(\CAuthItem $authItem, array $operationList)
+    {
+        foreach ($operationList as $operation) {
+            if (!$authItem->hasChild($operation)) {
+                $authItem->addChild($operation);
+            }
+        }
     }
 
     /**

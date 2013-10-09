@@ -75,18 +75,39 @@ class Controller extends \web\ext\Controller
     }
 
     /**
-     * Init
+     * Returns the filter configurations
+     *
+     * @return array
      */
-    public function init()
+    public function filters()
     {
-        parent::init();
+        return array_merge(parent::filters(), array(
+            'accessControl',
+        ));
+    }
 
-        // Check access
-        if ((!\yii::app()->user->isGuest) && (!\yii::app()->user->checkAccess(User::ROLE_ADMIN))) {
-            return $this->httpException(403);
-        } elseif ((\yii::app()->user->isGuest) && ($this->id !== 'auth')) {
-            return $this->redirect(array('/auth/login'));
-        }
+    /**
+     * Returns the access rules for this controller
+     *
+     * @return array
+     */
+    public function accessRules()
+    {
+        return array_merge(parent::accessRules(), array(
+            array(
+                'allow',
+                'controllers'   => array('staff/docs', 'staff/news'),
+                'roles'         => array(User::ROLE_COORDINATOR),
+            ),
+            array(
+                'allow',
+                'controllers'   => array('staff/index', 'staff/lang'),
+                'roles'         => array(User::ROLE_ADMIN),
+            ),
+            array(
+                'deny',
+            ),
+        ));
     }
 
 }
