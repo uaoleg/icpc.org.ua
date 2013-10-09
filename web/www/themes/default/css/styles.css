@@ -54,6 +54,7 @@ body > div#main .container {
 
 .slogan {
     font-size: 18px;
+    font-style: italic;
     text-align: right;
     margin: -10px 10px 10px;
 }
