@@ -30,11 +30,11 @@
                 </div>
                 <div class="form-group">
                     <div class="btn-group btn-group-justified" data-toggle="buttons">
-                        <a class="btn btn-default ">
+                        <a class="btn btn-default active">
                             <input type="checkbox" name="type" value="<?=\common\models\User::ROLE_STUDENT?>" />
                             <?=\yii::t('app', 'I\'m a student')?>
                         </a>
-                        <a class="btn btn-default active">
+                        <a class="btn btn-default">
                             <input type="checkbox" name="type" value="<?=\common\models\User::ROLE_COACH?>" />
                             <?=\yii::t('app', 'I\'m a coach')?>
                         </a>
