@@ -70,14 +70,25 @@ class RbacCommand extends \console\ext\ConsoleCommand
         }
 
         /**
-         * Teacher role
+         * Coach role
          */
-        $teacher = $this->auth->getAuthItem(User::ROLE_TEACHER);
-        if (!$teacher) {
-            $teacher = $this->auth->createRole(User::ROLE_TEACHER);
+        $coach = $this->auth->getAuthItem(User::ROLE_COACH);
+        if (!$coach) {
+            $coach = $this->auth->createRole(User::ROLE_COACH);
         }
-        if (!$teacher->hasChild(User::ROLE_STUDENT)) {
-            $teacher->addChild(User::ROLE_STUDENT);
+        if (!$coach->hasChild(User::ROLE_STUDENT)) {
+            $coach->addChild(User::ROLE_STUDENT);
+        }
+
+        /**
+         * Coordinator role
+         */
+        $coordinator = $this->auth->getAuthItem(User::ROLE_COORDINATOR);
+        if (!$coordinator) {
+            $coordinator = $this->auth->createRole(User::ROLE_COORDINATOR);
+        }
+        if (!$coordinator->hasChild(User::ROLE_STUDENT)) {
+            $coordinator->addChild(User::ROLE_STUDENT);
         }
 
         /**
@@ -88,7 +99,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             $admin = $this->auth->createRole(User::ROLE_ADMIN);
         }
         $adminOperationList = array(
-            User::ROLE_TEACHER,
+            User::ROLE_COORDINATOR,
             'documentCreate',
             'documentUpdate',
             'newsCreate',

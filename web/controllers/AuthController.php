@@ -117,7 +117,8 @@ class AuthController extends \web\ext\Controller
         $email          = $this->request->getPost('email');
         $password       = $this->request->getPost('password');
         $passwordRepeat = $this->request->getPost('passwordRepeat');
-        $role           = $this->request->getPost('role');
+        $type           = $this->request->getPost('type');
+        $coordinator    = $this->request->getPost('coordinator');
         $rulesAgree     = (bool)$this->request->getPost('rulesAgree');
 
         // Register a new user
@@ -126,10 +127,11 @@ class AuthController extends \web\ext\Controller
             // Validate user date
             $user = new User();
             $user->setAttributes(array(
-                'firstName'  => $firstName,
-                'lastName'   => $lastName,
-                'email'      => $email,
-                'role'       => $role,
+                'firstName'     => $firstName,
+                'lastName'      => $lastName,
+                'email'         => $email,
+                'type'          => $type,
+                'coordinator'   => $coordinator,
             ), false);
             $user->validate();
             $user->setPassword($password, $passwordRepeat);

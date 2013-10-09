@@ -1,3 +1,5 @@
+<?php use common\models\User\Coordinator; ?>
+
 <script type="text/javascript">
     $(document).ready(function() {
         new appAuthSignup();
@@ -28,14 +30,66 @@
                 </div>
                 <div class="form-group">
                     <div class="btn-group btn-group-justified" data-toggle="buttons">
-                        <label class="btn btn-default active">
-                            <input type="radio" name="role" value="<?=\common\models\User::ROLE_STUDENT?>" />
+                        <a class="btn btn-default ">
+                            <input type="checkbox" name="type" value="<?=\common\models\User::ROLE_STUDENT?>" />
                             <?=\yii::t('app', 'I\'m a student')?>
-                        </label>
-                        <label class="btn btn-default">
-                            <input type="radio" name="role" value="<?=\common\models\User::ROLE_TEACHER?>" />
-                            <?=\yii::t('app', 'I\'m a teacher')?>
-                        </label>
+                        </a>
+                        <a class="btn btn-default active">
+                            <input type="checkbox" name="type" value="<?=\common\models\User::ROLE_COACH?>" />
+                            <?=\yii::t('app', 'I\'m a coach')?>
+                        </a>
+                        <a class="btn btn-default">
+                            <input type="checkbox" name="coordinator" value="" />
+                            <?=\yii::t('app', 'Coordinator')?> <span class="caret"></span>
+                        </a>
+                    </div>
+                    <div class="btn-group" style="margin-top: -17px; width: 100%;">
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"></a>
+                            <ul class="dropdown-menu pull-right" role="menu">
+                                <li><a href="#" data-val="<?=Coordinator::TYPE_UKRAINE?>"><?=\yii::t('app', 'Ukraine')?></a></li>
+                                <li class="dropdown-submenu">
+                                    <a href="#"><?=\yii::t('app', 'Region')?></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_REGION_CENTER?>"><?=\yii::t('app', 'Center')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_REGION_EAST?>"><?=\yii::t('app', 'East')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_REGION_NORTH?>"><?=\yii::t('app', 'North')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_REGION_SOUTH?>"><?=\yii::t('app', 'South')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_REGION_WEST?>"><?=\yii::t('app', 'West')?></a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#"><?=\yii::t('app', 'State')?></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_ARC?>"><?=\yii::t('app', 'ARC')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_CHERKASY?>"><?=\yii::t('app', 'Cherkasy')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_CHERNIHIV?>"><?=\yii::t('app', 'Chernihiv')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_CHERNIVTSI?>"><?=\yii::t('app', 'Chernivtsi')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_DNIPROPETROVSK?>"><?=\yii::t('app', 'Dnipropetrovsk')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_DONETSK?>"><?=\yii::t('app', 'Donetsk')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_IVANO_FRANKIVSK?>"><?=\yii::t('app', 'Ivano-Frankivsk')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_KHARKIV?>"><?=\yii::t('app', 'Kharkiv')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_KHERSON?>"><?=\yii::t('app', 'Kherson')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_KHMELNYTSKYI?>"><?=\yii::t('app', 'Khmelnytskyi')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_KIEV?>"><?=\yii::t('app', 'Kiev')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_KIROVOHRAD?>"><?=\yii::t('app', 'Kirovohrad')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_LUHANSK?>"><?=\yii::t('app', 'Luhansk')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_LVIV?>"><?=\yii::t('app', 'Lviv')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_MYKOLAIV?>"><?=\yii::t('app', 'Mykolaiv')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_ODESSA?>"><?=\yii::t('app', 'Odessa')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_POLTAVA?>"><?=\yii::t('app', 'Poltava')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_RIVNE?>"><?=\yii::t('app', 'Rivne')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_SUMY?>"><?=\yii::t('app', 'Sumy')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_TERNOPIL?>"><?=\yii::t('app', 'Ternopil')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_VINNYTSIA?>"><?=\yii::t('app', 'Vinnytsia')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_VOLYN?>"><?=\yii::t('app', 'Volyn')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_ZAKARPATTIA?>"><?=\yii::t('app', 'Zakarpattia')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_ZAPORIZHIA?>"><?=\yii::t('app', 'Zaporizhia')?></a></li>
+                                        <li><a href="#" data-val="<?=Coordinator::TYPE_STATE_ZHYTOMYR?>"><?=\yii::t('app', 'Zhytomyr')?></a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">

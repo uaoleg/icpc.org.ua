@@ -8,11 +8,12 @@ class User extends \common\ext\MongoDb\Document
     /**
      * List of user roles
      */
-    const ROLE_GUEST    = 'guest';
-    const ROLE_USER     = 'user';
-    const ROLE_STUDENT  = 'student';
-    const ROLE_TEACHER  = 'teacher';
-    const ROLE_ADMIN    = 'admin';
+    const ROLE_GUEST        = 'guest';
+    const ROLE_USER         = 'user';
+    const ROLE_STUDENT      = 'student';
+    const ROLE_COACH        = 'coach';
+    const ROLE_COORDINATOR  = 'coordinator';
+    const ROLE_ADMIN        = 'admin';
 
     /**
      * First name
@@ -41,10 +42,16 @@ class User extends \common\ext\MongoDb\Document
     public $hash;
 
     /**
-     * Assigned role
+     * User type (static::ROLE_STUDENT or static::ROLE_COACH only)
      * @var string
      */
-    public $role = self::ROLE_USER;
+    public $type;
+
+    /**
+     * Coordinator type (User\Coordinator::TYPE_)
+     * @var string
+     */
+    public $coordinator;
 
     /**
      * Date created
@@ -67,7 +74,7 @@ class User extends \common\ext\MongoDb\Document
             'lastName'      => \yii::t('app', 'Last name'),
             'email'         => \yii::t('app', 'Email'),
             'hash'          => \yii::t('app', 'Password hash'),
-            'role'          => \yii::t('app', 'Role'),
+            'type'          => \yii::t('app', 'Type'),
             'dateCreated'   => \yii::t('app', 'Registration date'),
         ));
     }
@@ -80,7 +87,7 @@ class User extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('firstName, lastName, email, role, dateCreated', 'required'),
+            array('firstName, lastName, email, dateCreated', 'required'),
             array('email', 'email'),
             array('email', 'unique'),
             array('firstName, lastName', 'length', 'max' => 100),
@@ -125,6 +132,16 @@ class User extends \common\ext\MongoDb\Document
 
         // Email
         $this->email = mb_strtolower($this->email);
+
+        // Type
+        if (!in_array($this->type, array(static::ROLE_STUDENT, static::ROLE_COACH))) {
+            $this->type = null;
+        }
+
+        // Coordinator
+        if ((empty($this->coordinator)) || ($this->type === static::ROLE_STUDENT)) {
+            $this->coordinator = null;
+        }
 
         // Set created date
         if ($this->dateCreated == null) {

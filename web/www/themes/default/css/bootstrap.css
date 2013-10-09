@@ -1,3 +1,61 @@
+/* Table of Contents:
+
+    Dropdown
+    Navbar
+    Panel
+
+*/
+
+/* Dropdown
+----------------------------------------------------------------------------- */
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    border-radius: 0 6px 6px 6px;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    top: 0;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu > a:after {
+    border-color: transparent;
+    border-left-color: #cccccc;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    content: " ";
+    display: block;
+    float: right;
+    height: 0;
+    margin-top: 5px;
+    margin-right: -10px;
+    width: 0;
+}
+
+.dropdown-submenu:hover > a:after {
+    border-left-color: #ffffff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+    border-radius: 6px 0 6px 6px;
+    left: -100%;
+    margin-left: 10px;
+}
+
+/* Navbar
+----------------------------------------------------------------------------- */
+
 .navbar-static-bottom {
     background: #2e2e2e;
     color: #ffffff;
@@ -21,6 +79,9 @@
     border-radius: 7px;
     box-shadow: 2px 1px 2px #000000;
 }
+
+/* Panel
+----------------------------------------------------------------------------- */
 
 .panel {
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
