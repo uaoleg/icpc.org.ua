@@ -1,8 +1,9 @@
 $(window).on('scroll', function(e) {
-    var $navbar = $('#main > .container > .navbar');
-    if ($(window).scrollTop() > $('.header-title').outerHeight()) {
+    var $navbar = $('#main > .container > .navbar'),
+        height = $('.header-title').outerHeight() + $('.slogan').outerHeight();
+    if ($(window).scrollTop() > height) {
         if ($navbar.hasClass('navbar-static-top')) {
-            $('body').css('padding-top', $('.header-title').outerHeight() + 'px');
+            $('body').css('padding-top', height - 65 + 'px');
             $navbar.removeClass('navbar-static-top').addClass('navbar-fixed-top');
         }
     } else {

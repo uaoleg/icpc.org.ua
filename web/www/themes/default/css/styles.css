@@ -52,6 +52,12 @@ body > div#main .container {
     padding: 0 20px;
 }
 
+.slogan {
+    font-size: 18px;
+    text-align: right;
+    margin: -10px 10px 10px;
+}
+
 /* Document
 ----------------------------------------------------------------------------- */
 

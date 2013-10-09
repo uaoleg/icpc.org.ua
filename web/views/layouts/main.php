@@ -47,6 +47,9 @@
                     </tr>
                 </table>
             </div>
+            <div class="slogan">
+                &mdash; «<?=\yii::t('app', 'Do it with us, do it like us, do it better than us!')?>»
+            </div>
             <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="<?=\yii::app()->baseUrl?>/"></a>
