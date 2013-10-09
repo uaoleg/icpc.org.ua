@@ -1,9 +1,15 @@
 <div class="col-lg-offset-4 col-lg-5">
 
-    <?php if ((!empty($user->coordinator)) && (!\yii::app()->user->checkAccess(\common\models\User::ROLE_COORDINATOR))): ?>
-        <div class="alert alert-warning">
-            <?=\yii::t('app', 'Waiting approval of coordinator request.')?>
-        </div>
+    <?php if (!empty($user->coordinator)): ?>
+        <?php if (\yii::app()->user->checkAccess(\common\models\User::ROLE_COORDINATOR)): ?>
+            <div class="alert alert-success">
+                <?=\yii::t('app', 'You are approved coordinator.')?>
+            </div>
+        <?php else: ?>
+            <div class="alert alert-warning">
+                <?=\yii::t('app', 'Waiting approval of coordinator request.')?>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
 
     <table class="table table-bordered">
