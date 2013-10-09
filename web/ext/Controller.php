@@ -11,12 +11,6 @@ class Controller extends \CController
 {
 
     /**
-     * Response data
-     * @var array
-     */
-    public $data = array();
-
-    /**
      * Nav active items
      * @var array
      * @see setNavActiveItem()

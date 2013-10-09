@@ -78,10 +78,15 @@
                                 'href'      => '/results',
                                 'caption'   => \yii::t('app', 'Results'),
                             ),
+                            'staff' => array(
+                                'href'      => $this->createUrl('/staff'),
+                                'caption'   => \yii::t('app', 'Staff'),
+                                'rbac'      => \common\models\User::ROLE_ADMIN,
+                            ),
                             'lang' => array(
                                 'href'      => $this->createUrl('/staff/lang'),
                                 'caption'   => \yii::t('app', 'Langs'),
-                                'rbac'      => 'admin',
+                                'rbac'      => \common\models\User::ROLE_ADMIN,
                             ),
                         ),
                     )); ?>

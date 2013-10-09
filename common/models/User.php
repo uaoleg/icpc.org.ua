@@ -2,6 +2,11 @@
 
 namespace common\models;
 
+/**
+ * User
+ *
+ * @property-read bool $isApprovedCoordinator
+ */
 class User extends \common\ext\MongoDb\Document
 {
 
@@ -58,6 +63,16 @@ class User extends \common\ext\MongoDb\Document
      * @var int
      */
     public $dateCreated;
+
+    /**
+     * Returns whether coordinator role is approved
+     *
+     * @return bool
+     */
+    public function getIsApprovedCoordinator()
+    {
+        return \yii::app()->authManager->checkAccess(static::ROLE_COORDINATOR, $this->_id);
+    }
 
     /**
      * Returns the attribute labels.

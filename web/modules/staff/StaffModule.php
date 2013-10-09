@@ -13,7 +13,7 @@ class StaffModule extends \web\ext\WebModule
         parent::init();
 
         // Set default controller
-        $this->defaultController = 'news';
+        $this->defaultController = 'index';
     }
 
 }

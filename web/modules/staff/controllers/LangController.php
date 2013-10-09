@@ -24,7 +24,7 @@ class LangController extends \web\modules\staff\ext\Controller
     public function actionIndex()
     {
         // Render view
-        $this->render('index', $this->data);
+        $this->render('index');
     }
 
     /**
@@ -49,13 +49,12 @@ class LangController extends \web\modules\staff\ext\Controller
         }
 
         // Render json
-        $this->data = array(
+        $this->renderJson(array(
             'page'      => $jqgrid['page'],
             'total'     => ceil($jqgrid['totalCount'] / $jqgrid['perPage']),
             'records'   => count($jqgrid['itemList']),
             'rows'      => $rows,
-        );
-        $this->renderJson($this->data);
+        ));
     }
 
     /**
@@ -91,69 +90,6 @@ class LangController extends \web\modules\staff\ext\Controller
     public function actionGenerateJs()
     {
         \yii::app()->cli->runCommand('message', 'generateJs', array(), array(), false);
-    }
-
-    /**
-     * Dictionaries manage
-     */
-    public function actionDictionaries()
-    {
-        // Set active language submenu item
-        $this->setNavActiveItem('lang', 'dictionaries');
-
-        // Render view
-        $this->render('dictionaries', $this->data);
-    }
-
-    /**
-     * Get list of dictionaries for jqGrid
-     */
-    public function actionGetDictionaryList()
-    {
-        // Get jqGrid params
-        $jqgrid = $this->_getJqgridParams(Dictionary::model());
-
-        // Fill rows
-        $rows = array();
-        foreach ($jqgrid['itemList'] as $dictionary) {
-            $rows[] = array(
-                'id'   => (string)$dictionary->_id,
-                'cell' => array(
-                    $dictionary->name,
-                    $this->renderPartial('dictionaries/cellMessageList', array('dictionary' => $dictionary), true),
-                    $this->renderPartial('dictionaries/cellActions', array(), true),
-                ),
-            );
-        }
-
-        // Render json
-        $this->data = array(
-            'page'      => $jqgrid['page'],
-            'total'     => ceil($jqgrid['totalCount'] / $jqgrid['perPage']),
-            'records'   => count($jqgrid['itemList']),
-            'rows'      => $rows,
-        );
-        $this->renderJson($this->data);
-    }
-
-    /**
-     * Save dictionary
-     */
-    public function actionSaveDictionary()
-    {
-        // Get params
-        $id             = $this->getParam('id');
-        $messageList    = $this->getParam('messageList');
-
-        // Convert string to array
-        if (is_string($messageList)) {
-            $messageList = explode("\n", $messageList);
-        }
-
-        // Save dictionary
-        $dictionary = Dictionary::model()->findByPk(new \MongoId($id));
-        $dictionary->messageList = $messageList;
-        $dictionary->save();
     }
 
 }
