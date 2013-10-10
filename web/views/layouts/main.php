@@ -36,7 +36,7 @@
                 <table>
                     <tr>
                         <td>
-                            <img src="<?=\yii::app()->theme->baseUrl?>/images/layout/herb.png" />
+                            <img src="<?=\yii::app()->theme->baseUrl?>/images/layout/icpc.png" style="width: 98px;" />
                         </td>
                         <td>
                             <?=\yii::t('app', 'Ukranian Collegiate Programming Contest')?>
