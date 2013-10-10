@@ -48,6 +48,11 @@ class IndexController extends \web\modules\staff\ext\Controller
         $userId = $this->request->getPost('userId');
         $state  = (bool)$this->request->getPost('state', 0);
 
+        // Can't set state for oneself
+        if ($userId === \yii::app()->user->getId()) {
+            return $this->httpException(403, \yii::t('app', 'Can not set state for oneself.'));
+        }
+
         // Assign coordination role to the user
         if ($state) {
 

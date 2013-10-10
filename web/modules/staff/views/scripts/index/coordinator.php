@@ -22,10 +22,14 @@
                 <td><?=$user->email?></td>
                 <td><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
                 <td style="width: 200px;">
-                    <button class="btn btn-success coordinator-state <?=$user->isApprovedCoordinator ? 'hide' : ''?>" data-state="1">
+                    <button class="btn btn-success coordinator-state <?=$user->isApprovedCoordinator ? 'hide' : ''?>"
+                            <?=((string)$user->_id === \yii::app()->user->getId()) ? 'disabled' : ''?>
+                            data-state="1">
                         <?=\yii::t('app', 'Activate')?>
                     </button>
-                    <button class="btn btn-danger coordinator-state <?=$user->isApprovedCoordinator ? '' : 'hide'?>" data-state="0">
+                    <button class="btn btn-danger coordinator-state <?=$user->isApprovedCoordinator ? '' : 'hide'?>"
+                            <?=((string)$user->_id === \yii::app()->user->getId()) ? 'disabled' : ''?>
+                            data-state="0">
                         <?=\yii::t('app', 'Suspend')?>
                     </button>
                 </td>
