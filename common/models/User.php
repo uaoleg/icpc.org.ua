@@ -22,6 +22,41 @@ class User extends \common\ext\MongoDb\Document
     const ROLE_ADMIN                = 'admin';
 
     /**
+     * List of coordinator levels
+     */
+    const COORD_UKRAINE                 = 'ukraine';
+    const COORD_REGION_CENTER           = 'center';
+    const COORD_REGION_EAST             = 'east';
+    const COORD_REGION_NORTH            = 'north';
+    const COORD_REGION_SOUTH            = 'south';
+    const COORD_REGION_WEST             = 'west';
+    const COORD_STATE_ARC               = 'arc';
+    const COORD_STATE_CHERKASY          = 'cherkasy';
+    const COORD_STATE_CHERNIHIV         = 'chernihiv';
+    const COORD_STATE_CHERNIVTSI        = 'chernivtsi';
+    const COORD_STATE_DNIPROPETROVSK    = 'dnipropetrovsk';
+    const COORD_STATE_DONETSK           = 'donetsk';
+    const COORD_STATE_IVANO_FRANKIVSK   = 'ivano-Frankivsk';
+    const COORD_STATE_KHARKIV           = 'kharkiv';
+    const COORD_STATE_KHERSON           = 'kherson';
+    const COORD_STATE_KHMELNYTSKYI      = 'khmelnytskyi';
+    const COORD_STATE_KIEV              = 'kiev';
+    const COORD_STATE_KIROVOHRAD        = 'kirovohrad';
+    const COORD_STATE_LUHANSK           = 'luhansk';
+    const COORD_STATE_LVIV              = 'lviv';
+    const COORD_STATE_MYKOLAIV          = 'mykolaiv';
+    const COORD_STATE_ODESSA            = 'odessa';
+    const COORD_STATE_POLTAVA           = 'poltava';
+    const COORD_STATE_RIVNE             = 'rivne';
+    const COORD_STATE_SUMY              = 'sumy';
+    const COORD_STATE_TERNOPIL          = 'ternopil';
+    const COORD_STATE_VINNYTSIA         = 'vinnytsia';
+    const COORD_STATE_VOLYN             = 'volyn';
+    const COORD_STATE_ZAKARPATTIA       = 'zakarpattia';
+    const COORD_STATE_ZAPORIZHIA        = 'zaporizhia';
+    const COORD_STATE_ZHYTOMYR          = 'zhytomyr';
+
+    /**
      * First name
      * @var string
      */
@@ -54,7 +89,7 @@ class User extends \common\ext\MongoDb\Document
     public $type;
 
     /**
-     * Coordination type (User\Coordinator::TYPE_)
+     * Coordination type (static::COORD_)
      * @var string
      */
     public $coordinator;
@@ -93,6 +128,39 @@ class User extends \common\ext\MongoDb\Document
             'type'          => \yii::t('app', 'Type'),
             'coordinator'   => \yii::t('app', 'Coordination type'),
             'dateCreated'   => \yii::t('app', 'Registration date'),
+            'const.coord'   => array(
+                static::COORD_UKRAINE               => \yii::t('app', 'Ukraine'),
+                static::COORD_REGION_CENTER         => \yii::t('app', 'Center'),
+                static::COORD_REGION_EAST           => \yii::t('app', 'East'),
+                static::COORD_REGION_NORTH          => \yii::t('app', 'North'),
+                static::COORD_REGION_SOUTH          => \yii::t('app', 'South'),
+                static::COORD_REGION_WEST           => \yii::t('app', 'West'),
+                static::COORD_STATE_ARC             => \yii::t('app', 'ARC'),
+                static::COORD_STATE_CHERKASY        => \yii::t('app', 'Cherkasy'),
+                static::COORD_STATE_CHERNIHIV       => \yii::t('app', 'Chernihiv'),
+                static::COORD_STATE_CHERNIVTSI      => \yii::t('app', 'Chernivtsi'),
+                static::COORD_STATE_DNIPROPETROVSK  => \yii::t('app', 'Dnipropetrovsk'),
+                static::COORD_STATE_DONETSK         => \yii::t('app', 'Donetsk'),
+                static::COORD_STATE_IVANO_FRANKIVSK => \yii::t('app', 'Ivano-Frankivsk'),
+                static::COORD_STATE_KHARKIV         => \yii::t('app', 'Kharkiv'),
+                static::COORD_STATE_KHERSON         => \yii::t('app', 'Kherson'),
+                static::COORD_STATE_KHMELNYTSKYI    => \yii::t('app', 'Khmelnytskyi'),
+                static::COORD_STATE_KIEV            => \yii::t('app', 'Kiev'),
+                static::COORD_STATE_KIROVOHRAD      => \yii::t('app', 'Kirovohrad'),
+                static::COORD_STATE_LUHANSK         => \yii::t('app', 'Luhansk'),
+                static::COORD_STATE_LVIV            => \yii::t('app', 'Lviv'),
+                static::COORD_STATE_MYKOLAIV        => \yii::t('app', 'Mykolaiv'),
+                static::COORD_STATE_ODESSA          => \yii::t('app', 'Odessa'),
+                static::COORD_STATE_POLTAVA         => \yii::t('app', 'Poltava'),
+                static::COORD_STATE_RIVNE           => \yii::t('app', 'Rivne'),
+                static::COORD_STATE_SUMY            => \yii::t('app', 'Sumy'),
+                static::COORD_STATE_TERNOPIL        => \yii::t('app', 'Ternopil'),
+                static::COORD_STATE_VINNYTSIA       => \yii::t('app', 'Vinnytsia'),
+                static::COORD_STATE_VOLYN           => \yii::t('app', 'Volyn'),
+                static::COORD_STATE_ZAKARPATTIA     => \yii::t('app', 'Zakarpattia'),
+                static::COORD_STATE_ZAPORIZHIA      => \yii::t('app', 'Zaporizhia'),
+                static::COORD_STATE_ZHYTOMYR        => \yii::t('app', 'Zhytomyr'),
+            ),
         ));
     }
 

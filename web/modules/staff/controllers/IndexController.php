@@ -60,7 +60,7 @@ class IndexController extends \web\modules\staff\ext\Controller
             $user = User::model()->findByPk(new \MongoId($userId));
 
             // Define role
-            if ($user->coordinator === User\Coordinator::TYPE_UKRAINE) {
+            if ($user->coordinator === User::COORD_UKRAINE) {
                 $role = User::ROLE_COORDINATOR_UKRAINE;
             } else {
                 $role = User::ROLE_COORDINATOR;
