@@ -16,6 +16,9 @@ class IndexController extends \web\modules\staff\ext\Controller
 
         // Set default action
         $this->defaultAction = 'coordinator';
+
+        // Set active main menu item
+        $this->setNavActiveItem('main', 'staff');
     }
 
     /**
@@ -45,14 +48,27 @@ class IndexController extends \web\modules\staff\ext\Controller
         $userId = $this->request->getPost('userId');
         $state  = (bool)$this->request->getPost('state', 0);
 
-        // Assign coordination role to a given user
+        // Assign coordination role to the user
         if ($state) {
-            \yii::app()->authManager->assign(User::ROLE_COORDINATOR, $userId);
+
+            // Get user
+            $user = User::model()->findByPk(new \MongoId($userId));
+
+            // Define role
+            if ($user->coordinator === User\Coordinator::TYPE_UKRAINE) {
+                $role = User::ROLE_COORDINATOR_UKRAINE;
+            } else {
+                $role = User::ROLE_COORDINATOR;
+            }
+
+            // Assign role
+            \yii::app()->authManager->assign($role, $userId);
         }
 
-        // Revoke coordination role
+        // Revoke coordination roles
         else {
             \yii::app()->authManager->revoke(User::ROLE_COORDINATOR, $userId);
+            \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_UKRAINE, $userId);
         }
     }
 

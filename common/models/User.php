@@ -13,12 +13,13 @@ class User extends \common\ext\MongoDb\Document
     /**
      * List of user roles
      */
-    const ROLE_GUEST        = 'guest';
-    const ROLE_USER         = 'user';
-    const ROLE_STUDENT      = 'student';
-    const ROLE_COACH        = 'coach';
-    const ROLE_COORDINATOR  = 'coordinator';
-    const ROLE_ADMIN        = 'admin';
+    const ROLE_GUEST                = 'guest';
+    const ROLE_USER                 = 'user';
+    const ROLE_STUDENT              = 'student';
+    const ROLE_COACH                = 'coach';
+    const ROLE_COORDINATOR          = 'coordinator';
+    const ROLE_COORDINATOR_UKRAINE  = 'coordinator_ukraine';
+    const ROLE_ADMIN                = 'admin';
 
     /**
      * First name
@@ -53,7 +54,7 @@ class User extends \common\ext\MongoDb\Document
     public $type;
 
     /**
-     * Coordinator type (User\Coordinator::TYPE_)
+     * Coordination type (User\Coordinator::TYPE_)
      * @var string
      */
     public $coordinator;
@@ -90,6 +91,7 @@ class User extends \common\ext\MongoDb\Document
             'email'         => \yii::t('app', 'Email'),
             'hash'          => \yii::t('app', 'Password hash'),
             'type'          => \yii::t('app', 'Type'),
+            'coordinator'   => \yii::t('app', 'Coordination type'),
             'dateCreated'   => \yii::t('app', 'Registration date'),
         ));
     }
@@ -164,6 +166,20 @@ class User extends \common\ext\MongoDb\Document
         }
 
         return true;
+    }
+
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
+        // Revoke coordination roles if it was changed
+        if ((!$this->_isFirstTimeSaved) && ($this->attributeHasChanged('coordinator'))) {
+            \yii::app()->authManager->revoke(static::ROLE_COORDINATOR, $this->_id);
+            \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_UKRAINE, $this->_id);
+        }
+
+        parent::afterSave();
     }
 
     /**

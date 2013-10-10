@@ -84,7 +84,7 @@
                             'staff' => array(
                                 'href'      => $this->createUrl('/staff'),
                                 'caption'   => \yii::t('app', 'Staff'),
-                                'rbac'      => \common\models\User::ROLE_ADMIN,
+                                'rbac'      => \common\models\User::ROLE_COORDINATOR_UKRAINE,
                             ),
                             'lang' => array(
                                 'href'      => $this->createUrl('/staff/lang'),

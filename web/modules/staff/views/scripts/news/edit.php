@@ -7,15 +7,17 @@
 </script>
 
 <div class="page-header clearfix">
-    <h1>
-        <?=\yii::t('app', 'Edit News')?>
-    </h1>
-    <small><b><?=\yii::t('app', 'Preview')?>:</b> <a href="<?=$this->createUrl('/news/view', array(
-        'id'    => $news->commonId,
-        'lang'  => $news->lang,
-    ))?>" target="_blank">
-        <?=$this->createAbsoluteUrl('/news/view', array('id' => $news->commonId))?>
-    </a></small>
+    <?php if (empty($news->commonId)): ?>
+        <h1><?=\yii::t('app', 'Create News')?></h1>
+    <?php else: ?>
+        <h1><?=\yii::t('app', 'Edit News')?></h1>
+        <small><b><?=\yii::t('app', 'Preview')?>:</b> <a href="<?=$this->createUrl('/news/view', array(
+            'id'    => $news->commonId,
+            'lang'  => $news->lang,
+        ))?>" target="_blank">
+            <?=$this->createAbsoluteUrl('/news/view', array('id' => $news->commonId))?>
+        </a></small>
+    <?php endif; ?>
 </div>
 <div class="form-horizontal clearfix">
     <ul class="nav nav-tabs">

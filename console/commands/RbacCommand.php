@@ -52,7 +52,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             'documentRead',
             'newsRead',
         );
-        $this->_addOperations($guest, $guestOperationList);
+        $this->_assignOperations($guest, $guestOperationList);
 
         /**
          * User role
@@ -64,7 +64,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $userOperationList = array(
             User::ROLE_GUEST,
         );
-        $this->_addOperations($user, $userOperationList);
+        $this->_assignOperations($user, $userOperationList);
 
         /**
          * Student role
@@ -76,7 +76,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $studentOperationList = array(
             User::ROLE_USER,
         );
-        $this->_addOperations($student, $studentOperationList);
+        $this->_assignOperations($student, $studentOperationList);
 
         /**
          * Coach role
@@ -88,7 +88,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $coachOperationList = array(
             User::ROLE_STUDENT,
         );
-        $this->_addOperations($coach, $coachOperationList);
+        $this->_assignOperations($coach, $coachOperationList);
 
         /**
          * Coordinator role
@@ -104,7 +104,19 @@ class RbacCommand extends \console\ext\ConsoleCommand
             'newsCreate',
             'newsUpdate',
         );
-        $this->_addOperations($coordinator, $coordinatorOperationList);
+        $this->_assignOperations($coordinator, $coordinatorOperationList);
+
+        /**
+         * Coordinator of Ukraine role
+         */
+        $coordinatorUkraine = $this->auth->getAuthItem(User::ROLE_COORDINATOR_UKRAINE);
+        if (!$coordinatorUkraine) {
+            $coordinatorUkraine = $this->auth->createRole(User::ROLE_COORDINATOR_UKRAINE);
+        }
+        $coordinatorUkraineOperationList = array(
+            User::ROLE_COORDINATOR,
+        );
+        $this->_assignOperations($coordinatorUkraine, $coordinatorUkraineOperationList);
 
         /**
          * Admin role
@@ -114,14 +126,20 @@ class RbacCommand extends \console\ext\ConsoleCommand
             $admin = $this->auth->createRole(User::ROLE_ADMIN);
         }
         $adminOperationList = array(
-            User::ROLE_COORDINATOR,
+            User::ROLE_COORDINATOR_UKRAINE,
         );
-        $this->_addOperations($admin, $adminOperationList);
+        $this->_assignOperations($admin, $adminOperationList);
 
         echo "RBAC inited succesfully.";
     }
 
-    protected function _addOperations(\CAuthItem $authItem, array $operationList)
+    /**
+     * Assign the list of given operation to the given role
+     *
+     * @param \CAuthItem $authItem
+     * @param array $operationList
+     */
+    protected function _assignOperations(\CAuthItem $authItem, array $operationList)
     {
         foreach ($operationList as $operation) {
             if (!$authItem->hasChild($operation)) {
