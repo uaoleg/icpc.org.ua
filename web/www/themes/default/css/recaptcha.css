@@ -1,0 +1,4 @@
+.recaptcha_theme_blackglass #recaptcha_response_field,
+.recaptcha_theme_white #recaptcha_response_field {
+    line-height: normal;
+}
