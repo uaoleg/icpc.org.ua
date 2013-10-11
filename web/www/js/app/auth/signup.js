@@ -15,7 +15,9 @@ function appAuthSignup() {
 
     // Coordinator dropdown
     $(':checkbox[name=coordinator]').on('change', function() {
+
         var $this = $(this),
+            $btn = $this.closest('.btn'),
             $group = $this.closest('.btn-group'),
             $dropdown = $group.next('.btn-group').find('.dropdown-menu:first');
 
@@ -29,9 +31,33 @@ function appAuthSignup() {
         // Select value
         $('li a', $dropdown).on('click', function() {
             $this.val($(this).data('val'));
+            $('.caption', $btn).html($(this).html());
             $dropdown.hide();
             return false;
         });
+
+        // Bind hide on document click
+        if (!$this.data('hide-on-document-click')) {
+            $this.data('hide-on-document-click', true);
+            $(document).on('click', function(e) {
+                var $target = $(e.target)
+                if (!$target.hasClass('btn')) {
+                    $target = $target.closest('.btn')
+                }
+                $target = $target.filter(function() {
+                    return ($(':checkbox[name=coordinator]', this).length > 0);
+                });
+                if (!$target.length) {
+                    $dropdown.hide();
+                    if (!$this.val()) {
+                        $btn.removeClass('active');
+                        $(':checkbox', $btn).prop('checked', false).change();
+                    }
+                }
+                e.preventDefault();
+            });
+        }
+
     });
 
     // Sort states

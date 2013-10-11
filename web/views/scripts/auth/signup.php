@@ -40,7 +40,8 @@
                         </a>
                         <a class="btn btn-default">
                             <input type="checkbox" name="coordinator" value="" />
-                            <?=\yii::t('app', 'Coordinator')?> <span class="caret"></span>
+                            <span class="caption"><?=\yii::t('app', 'Coordinator')?></span>
+                            <span class="caret"></span>
                         </a>
                     </div>
                     <div class="btn-group" style="margin-top: -17px; width: 100%;">
