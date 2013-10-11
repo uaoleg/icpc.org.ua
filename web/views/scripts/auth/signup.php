@@ -6,7 +6,7 @@
     });
 </script>
 
-<div class="col-lg-offset-4 col-lg-5">
+<div class="col-lg-offset-3 col-lg-6">
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title"><?=\yii::t('app', 'Signup')?></h3>
