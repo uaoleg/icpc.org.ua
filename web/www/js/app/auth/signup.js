@@ -54,7 +54,6 @@ function appAuthSignup() {
                         $(':checkbox', $btn).prop('checked', false).change();
                     }
                 }
-                e.preventDefault();
             });
         }
 
