@@ -60,6 +60,20 @@ $main = array(
             ),
         ),
 
+        'mail' => array(
+            'class'            => '\common\ext\Mail\Mail',
+            'transportType'    => 'smtp',
+            'layoutPath'       => \yii::getPathOfAlias('web.views.layouts'),
+            'viewPath'         => 'web.views.mail',
+            'dryRun'           => false,
+            'transportOptions' => array(
+                'host'     => 'smtp.mandrillapp.com',
+                'port'     => 587,
+                'username' => 'ua.oleg@gmail.com',
+                'password' => 'mkanRspYdB4JlOs_EQmoeQ',
+            ),
+        ),
+
         'messages' => array(
             'class'             => '\common\ext\Message\Source',
             'forceTranslation'  => true,

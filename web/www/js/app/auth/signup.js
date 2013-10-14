@@ -82,20 +82,8 @@ function appAuthSignup() {
                 recaptcha_response_field:  $('#recaptcha_response_field').val()
             },
             success: function(resposne) {
-                $('.form-group', $form).removeClass('has-error');
-                $('.form-group .help-block', $form).remove();
+                appShowErrors(resposne.errors, $form);
                 if (resposne.errors) {
-                    $.each(resposne.errors, function(name, error) {
-                        var $control = $('.form-group [name=' + name + ']', $form),
-                            $group = $control.closest('.form-group'),
-                            $helpBlock = $('<span>').addClass('help-block').html(error);
-                        if (name !== 'recaptcha') {
-                            $group.addClass('has-error').append($helpBlock);
-                        } else {
-                            Recaptcha.reload();
-                        }
-                    })
-                    $('.form-group.has-error:first input', $form).focus();
                     $thisElement.prop('disabled', false);
                 } else {
                     location.href = app.baseUrl + '/user/me';

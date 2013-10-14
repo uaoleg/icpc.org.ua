@@ -6,11 +6,15 @@ function appShowErrors(errors, $context) {
     $('.form-group .help-block', $context).remove();
     if (errors) {
         $.each(errors, function(key, value) {
-            var $input = $('.form-control.' + key, $context),
+            var $input = $('.form-control[name=' + key + ']', $context),
                 $group = $input.closest('.form-group')
                 $help  = $('<div>');
+            if (key === 'recaptcha') {
+                Recaptcha.reload();
+            }
             $group.addClass('has-error');
             $help.addClass('help-block').html(value).appendTo($group);
         });
+        $('.form-group.has-error:first input', $context).focus();
     }
 }

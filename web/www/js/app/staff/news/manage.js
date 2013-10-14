@@ -19,7 +19,7 @@ appStaffNewsManage.prototype.init = function() {
     });
 
     // Init ckeditor
-    self.editor = CKEDITOR.replace($('textarea.content', self.$form)[0], {
+    self.editor = CKEDITOR.replace($('textarea[name=content]', self.$form)[0], {
         extraPlugins: 'onchange',
         height: '400px'
     });

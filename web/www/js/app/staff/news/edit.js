@@ -24,9 +24,9 @@ function appStaffNewsEdit() {
         $.ajax({
             url: app.baseUrl + '/staff/news/edit',
             data: {
-                id:      $('.id', self.$form).val(),
-                lang:    $('.lang', self.$form).val(),
-                title:   $('.title', self.$form).val(),
+                id:      $('[name=id]', self.$form).val(),
+                lang:    $('[name=lang]', self.$form).val(),
+                title:   $('[name=title]', self.$form).val(),
                 content: self.editor.getData()
             },
             success: function(response) {

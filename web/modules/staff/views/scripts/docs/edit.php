@@ -20,7 +20,7 @@
     <?php endif; ?>
 </div>
 <div class="form-horizontal clearfix">
-    <input type="hidden" class="id" value="<?=$document->_id?>" />
+    <input type="hidden" name="id" value="<?=$document->_id?>" />
     <div class="form-group">
         <?php if ($document->getIsNewRecord()): ?>
             <div id="container" style="position: relative;">
@@ -37,13 +37,13 @@
         <?php endif; ?>
     </div>
     <div class="form-group">
-        <input type="text" class="form-control title" value="<?=\CHtml::encode($document->title)?>" placeholder="<?=\yii::t('app', 'Title')?>">
+        <input type="text" class="form-control" name="title" value="<?=\CHtml::encode($document->title)?>" placeholder="<?=\yii::t('app', 'Title')?>">
     </div>
     <div class="form-group">
-        <textarea class="form-control desc"><?=\CHtml::encode($document->desc)?></textarea>
+        <textarea class="form-control" name="desc"><?=\CHtml::encode($document->desc)?></textarea>
     </div>
     <div class="form-group">
-        <select class="form-control type">
+        <select class="form-control" name="type">
             <?php foreach (Document::model()->getConstantList('TYPE_') as $type): ?>
             <option value="<?=$type?>" <?=($type === $document->type) ? 'selected' : ''?>>
                 <?=Document::model()->getAttributeLabel($type, 'type')?>

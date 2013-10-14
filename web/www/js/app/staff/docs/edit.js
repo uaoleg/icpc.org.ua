@@ -16,21 +16,21 @@ function appStaffDocsEdit() {
     $('.btn.save-document', $form).on('click', function(e) {
         $(this).prop('disabled', true);
         $('#pickfiles').prop('disabled', true);
-        if ($('.id', $form).val()) {
+        if ($('[name=id]', $form).val()) {
             $.ajax({
                 url: app.baseUrl + '/staff/docs/edit',
                 data: {
-                    id:    $('.id', $form).val(),
-                    title: $('.title', $form).val(),
-                    desc:  $('.desc', $form).val(),
-                    type:  $('.type', $form).val()
+                    id:    $('[name=id]', $form).val(),
+                    title: $('[name=title]', $form).val(),
+                    desc:  $('[name=desc]', $form).val(),
+                    type:  $('[name=type]', $form).val()
                 },
                 success: function(response) {
                     appShowErrors(response.errors, $form);
                     if (response.errors) {
                         return;
                     } else {
-                        location.href = app.baseUrl + '/docs/' + $('.type', $form).val();
+                        location.href = app.baseUrl + '/docs/' + $('[name=type]', $form).val();
                     }
                 }
             });
@@ -88,9 +88,9 @@ appStaffDocsEdit.prototype.initUploader = function () {
     self.uploader.bind('BeforeUpload', function (up, file) {
         var fileExt = file.name.split('.').pop();
         up.settings.multipart_params.uniqueName = $.fn.uniqueId() + '.' + fileExt;
-        up.settings.multipart_params.title      = $('.title', self.$form).val();
-        up.settings.multipart_params.desc       = $('.desc', self.$form).val();
-        up.settings.multipart_params.type       = $('.type', self.$form).val();
+        up.settings.multipart_params.title      = $('[name=title]', self.$form).val();
+        up.settings.multipart_params.desc       = $('[name=desc]', self.$form).val();
+        up.settings.multipart_params.type       = $('[name=type]', self.$form).val();
     });
 
     self.uploader.bind('UploadProgress', function(up, file) {
@@ -107,6 +107,6 @@ appStaffDocsEdit.prototype.initUploader = function () {
     });
 
     self.uploader.bind('FileUploaded', function(up, file) {
-        location.href = app.baseUrl + '/docs/' + $('.type', self.$form).val();
+        location.href = app.baseUrl + '/docs/' + $('[name=type]', self.$form).val();
     });
 }

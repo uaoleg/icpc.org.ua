@@ -75,18 +75,6 @@ class Controller extends \web\ext\Controller
     }
 
     /**
-     * Returns the filter configurations
-     *
-     * @return array
-     */
-    public function filters()
-    {
-        return array_merge(parent::filters(), array(
-            'accessControl',
-        ));
-    }
-
-    /**
      * Returns the access rules for this controller
      *
      * @return array

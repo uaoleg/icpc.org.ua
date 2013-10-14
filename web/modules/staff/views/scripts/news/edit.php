@@ -31,18 +31,18 @@
         <?php endforeach; ?>
     </ul>
     <br />
-    <input type="hidden" class="id" value="<?=$news->commonId?>" />
-    <input type="hidden" class="lang" value="<?=$news->lang?>" />
+    <input type="hidden" name="id" value="<?=$news->commonId?>" />
+    <input type="hidden" name="lang" value="<?=$news->lang?>" />
     <div class="form-group">
         <small><a href="http://postimage.org/index.php?um=computer&content=family" target="_blank">
             <b><?=\yii::t('app', 'Upload images here')?></b>
         </a></small>
     </div>
     <div class="form-group">
-        <input type="text" class="form-control title" value="<?=\CHtml::encode($news->title)?>" placeholder="<?=\yii::t('app', 'Title')?>">
+        <input type="text" class="form-control" name="title" value="<?=\CHtml::encode($news->title)?>" placeholder="<?=\yii::t('app', 'Title')?>">
     </div>
     <div class="form-group">
-        <textarea class="form-control content" style="height: 500px;"><?=\CHtml::encode($news->content)?></textarea>
+        <textarea class="form-control" name="content" style="height: 500px;"><?=\CHtml::encode($news->content)?></textarea>
     </div>
     <div class="form-group">
         <button class="btn btn-primary save-news btn-lg pull-left" disabled="">

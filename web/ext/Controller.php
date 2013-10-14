@@ -19,6 +19,16 @@ class Controller extends \CController
     protected $_navActiveItems = array();
 
     /**
+     * Returns HTTP request
+     *
+     * @return \web\ext\HttpRequest
+     */
+    public function getRequest()
+    {
+        return \yii::app()->request;
+    }
+
+    /**
      * Init
      */
     public function init()
@@ -43,13 +53,15 @@ class Controller extends \CController
     }
 
     /**
-     * Returns HTTP request
+     * Returns the filter configurations
      *
-     * @return \web\ext\HttpRequest
+     * @return array
      */
-    public function getRequest()
+    public function filters()
     {
-        return \yii::app()->request;
+        return array_merge(parent::filters(), array(
+            'accessControl',
+        ));
     }
 
     /**
