@@ -84,6 +84,7 @@
 }
 
 .navbar-static-bottom .navbar-nav > li > a,
+.navbar-static-bottom .navbar-nav > li > a:focus,
 .navbar-static-bottom .navbar-nav > li > a:hover {
     color: #ffffff;
     padding: 0;
