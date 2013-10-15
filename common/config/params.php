@@ -19,7 +19,7 @@ $params = array(
         'notAlphanumericStrong'     => "\!@#$%^&+*=\[\]{}\"\\\\\/|<>\?,~" . "()\-\._'", // Alphanumeric only
     ),
 
-    'version' => 'beta.2013-10-11.2',
+    'version' => 'beta.2013-10-15.1',
 
 );
 
