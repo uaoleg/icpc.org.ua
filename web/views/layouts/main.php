@@ -119,10 +119,13 @@
                     &copy; 2013 <a href="http://www.dataart.ua" target="_blank" class="inline">DataArt</a>
                 </li>
                 <li>
-                    <?=\yii::t('app', 'Find us on {a}GitHub{/a}', array(
-                        '{a}'  => '<a href="https://github.com/uaoleg/icpc.org.ua" target="_blank" class="inline">',
-                        '{/a}' => '</a>',
-                    ))?>
+                    <?=\yii::t('app', 'Find us on')?>:
+                    <a href="https://github.com/uaoleg/icpc.org.ua" target="_blank" class="inline">
+                        <img src="<?=\yii::app()->theme->baseUrl?>/images/layout/github-24.png" /></a>
+                    <a href="https://github.com/uaoleg/icpc.org.ua" target="_blank" class="inline">GitHub</a>,
+                    <a href="https://twitter.com/IcpcOrgUa" target="_blank" class="inline">
+                        <img src="<?=\yii::app()->theme->baseUrl?>/images/layout/twitter-24.png" /></a>
+                    <a href="https://twitter.com/IcpcOrgUa" target="_blank" class="inline">Twitter</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

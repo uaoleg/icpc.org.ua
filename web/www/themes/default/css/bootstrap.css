@@ -73,15 +73,30 @@
     padding: 0 50px;
 }
 
+.navbar-static-bottom .navbar-nav > li {
+    border-right: 1px solid #ccc;
+    margin: 0 20px 0 0;
+    padding: 0 20px 0 0;
+}
+
+.navbar-static-bottom .navbar-nav > li:last-child {
+    border-right: none;
+}
+
 .navbar-static-bottom .navbar-nav > li > a,
 .navbar-static-bottom .navbar-nav > li > a:hover {
     color: #ffffff;
+    padding: 0;
     text-decoration: underline;
 }
 
 .navbar-static-bottom .navbar-nav > li > a.inline {
     display: inline;
     padding-left: 0;
+}
+
+.navbar-static-bottom .navbar-nav.navbar-right > li > a {
+    padding: 15px 10px;
 }
 
 .navbar-static-top {
