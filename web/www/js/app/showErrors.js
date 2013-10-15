@@ -6,7 +6,7 @@ function appShowErrors(errors, $context) {
     $('.form-group .help-block', $context).remove();
     if (errors) {
         $.each(errors, function(key, value) {
-            var $input = $('.form-control[name=' + key + ']', $context),
+            var $input = $('[name=' + key + ']', $context),
                 $group = $input.closest('.form-group')
                 $help  = $('<div>');
             if (key === 'recaptcha') {
