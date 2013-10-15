@@ -35,6 +35,11 @@ class Controller extends \CController
     {
         parent::init();
 
+        // Generate sprite
+        if (APPLICATION_ENV === 'development') {
+            \yii::app()->sprite->generate();
+        }
+
         // Remember last visited URL
         if (($this->getId() != 'auth') && (!\yii::app()->request->isAjaxRequest)) {
             \yii::app()->user->setState('last-visited-url',  \yii::app()->request->url);

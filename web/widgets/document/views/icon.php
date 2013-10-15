@@ -1,1 +1,1 @@
-<img src="<?=\yii::app()->theme->baseUrl?>/images/document/icon/<?=$icon?>-64.png" />
+<span class="img-document-icon-<?=$icon?>-64"></span>

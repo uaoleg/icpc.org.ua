@@ -8,7 +8,7 @@
                 <?php if (isset($item['icon'])): ?>
                     <i class="<?=$item['icon']?>"></i>
                 <?php elseif (isset($item['iconImg'])): ?>
-                    <img src="<?=\yii::app()->theme->baseUrl?>/images/<?=$item['iconImg']?>" />
+                    <span class="<?=$item['iconImg']?>"></span>
                 <?php endif; ?>
                 <?=$item['caption']?>
                 <?php if ((isset($item['captionAppend'])) && ($item['captionAppend'] !== null)): ?>

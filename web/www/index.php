@@ -38,6 +38,7 @@ class Yii extends YiiBase {
  * @property-read \common\components\ErrorHandler               $errorHandler
  * @property-read \CLogRouter                                   $log
  * @property-read \common\ext\MongoDb\DB                        $mongodb
+ * @property-read \YiiBootstrapCssSprite                        $sprite
  * @property-read \common\components\Rbac                       $rbac
  * @property-read \web\ext\WebUser                              $user
  */

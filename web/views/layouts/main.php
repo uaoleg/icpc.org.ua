@@ -120,23 +120,23 @@
                 </li>
                 <li>
                     <a href="https://github.com/uaoleg/icpc.org.ua" target="_blank" class="inline">
-                        <img src="<?=\yii::app()->theme->baseUrl?>/images/layout/github-24.png" /></a>
+                        <span class="img-layout-github-24"></span></a>
                     <a href="https://github.com/uaoleg/icpc.org.ua" target="_blank" class="inline">GitHub</a>
                 </li>
                 <li>
                     <a href="https://twitter.com/IcpcOrgUa" target="_blank" class="inline">
-                        <img src="<?=\yii::app()->theme->baseUrl?>/images/layout/twitter-24.png" /></a>
+                        <span class="img-layout-twitter-24"></span></a>
                     <a href="https://twitter.com/IcpcOrgUa" target="_blank" class="inline">Twitter</a>
                 </li>
                 <li>
-                    <img src="<?=\yii::app()->theme->baseUrl?>/images/layout/mail-24.png" />
+                    <span class="img-layout-mail-24"></span>
                     <a href="mailto:info@icpc.org.ua" class="inline">info@icpc.org.ua</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown dropup language-select">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="text-decoration: none;">
-                        <img src="<?=\yii::app()->theme->baseUrl?>/images/language/<?=\yii::app()->language?>-16.png" />
+                        <span class="img-language-<?=\yii::app()->language?>-16"></span>
                         <?=isset(\yii::app()->params['languages'][\yii::app()->language])
                             ? \yii::app()->params['languages'][\yii::app()->language]
                             : \yii::t('app', 'Language')
@@ -148,7 +148,7 @@
                             <a href="<?=$this->createUrl('/setting/lang', array(
                                 'code' => $langKey,
                             ))?>" data-lang="<?=$langKey?>">
-                                <img src="<?=\yii::app()->theme->baseUrl?>/images/language/<?=$langKey?>-16.png" />
+                                <span class="img-language-<?=$langKey?>-16"></span>
                                 <?=$langVal?>
                             </a>
                         </li>

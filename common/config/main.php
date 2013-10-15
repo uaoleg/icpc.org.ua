@@ -101,16 +101,26 @@ $main = array(
             'savePath'  => \yii::getPathOfAlias('common.runtime.session'),
         ),
 
-        'urlManager' => array(
-            'caseSensitive'     => false,
-            'showScriptName'    => false,
-            'urlFormat'         => 'path',
-            'rules'             => require(__DIR__ . '/urlManagerRules.php'),
+        'sprite' => array(
+            'class'             => 'common.lib.YiiBootstrapCssSprite',
+            'imgSourcePath'     => \yii::getPathOfAlias('web.www.themes.default.images'),
+            'imgSourceExt'      => 'jpg,jpeg,gif,png',
+            'imgSourceSkipSize' => 64,
+            'imgDestPath'       => \yii::getPathOfAlias('web.www.themes.default.images') . '/sprite.png',
+            'cssPath'           => \yii::getPathOfAlias('web.www.themes.default.css') . '/sprite.css',
+            'cssImgUrl'         => '/themes/default/images/sprite.png',
         ),
 
         'themeManager' => array(
             'class'     => 'CThemeManager',
             'baseUrl'   => '/themes',
+        ),
+
+        'urlManager' => array(
+            'caseSensitive'     => false,
+            'showScriptName'    => false,
+            'urlFormat'         => 'path',
+            'rules'             => require(__DIR__ . '/urlManagerRules.php'),
         ),
 
     ),
