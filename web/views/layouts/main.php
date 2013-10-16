@@ -159,6 +159,8 @@
         </div>
     </nav>
 
+    <?php $this->widget('\web\widgets\GoogleAnalytics'); ?>
+
 </body>
 
 </html>
