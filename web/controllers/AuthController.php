@@ -12,29 +12,29 @@ class AuthController extends \web\ext\Controller
      *
      * @return bool|string
      */
-	protected function _checkRecaptcha()
-	{
-            $challengeField = $this->request->getParam('recaptcha_challenge_field');
-            $responseField  = $this->request->getParam('recaptcha_response_field');
-            $errorMessage   = \yii::t('app', 'The recaptcha code is incorrect.');
+    protected function _checkRecaptcha()
+    {
+        $challengeField = $this->request->getParam('recaptcha_challenge_field');
+        $responseField  = $this->request->getParam('recaptcha_response_field');
+        $errorMessage   = \yii::t('app', 'The recaptcha code is incorrect.');
 
-            if (($responseField === null) || ($challengeField === null)) {
-                return $errorMessage;
-            }
+        if (($responseField === null) || ($challengeField === null)) {
+            return $errorMessage;
+        }
 
-            \yii::import('common.lib.recaptcha.reCAPTCHA.recaptchalib', true);
-            $response = recaptcha_check_answer(
-                \yii::app()->params['recaptcha']['privateKey'],
-                \yii::app()->request->userHostAddress,
-                $challengeField,
-                $responseField
-            );
-            if ($response->is_valid) {
-                return true;
-            } else {
-                return $errorMessage;
-            }
-	}
+        \yii::import('common.lib.recaptcha.reCAPTCHA.recaptchalib', true);
+        $response = recaptcha_check_answer(
+            \yii::app()->params['recaptcha']['privateKey'],
+            \yii::app()->request->userHostAddress,
+            $challengeField,
+            $responseField
+        );
+        if ($response->is_valid) {
+            return true;
+        } else {
+            return $errorMessage;
+        }
+    }
 
     /**
      * Init
