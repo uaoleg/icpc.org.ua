@@ -81,7 +81,7 @@ class DocsController extends \web\ext\Controller
         }
 
         // Nice filename
-        $filename = $document->title;        
+        $filename = $document->title;
         $lastOccur = mb_strrpos($filename, $document->fileExt);
         if (($lastOccur === false) || ($lastOccur < mb_strlen($filename) - mb_strlen($document->fileExt) - 1)) {
             $filename .= '.' . $document->fileExt;
