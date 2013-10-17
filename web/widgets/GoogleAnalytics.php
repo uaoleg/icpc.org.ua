@@ -14,11 +14,11 @@ class GoogleAnalytics extends \web\ext\Widget
     public function run()
     {
         // Render view
-        switch (APPLICATION_ENV) {
-            case 'acceptance':
+        switch (APP_ENV) {
+            case APP_ENV_ACC:
                 $this->render('googleAnalyticsAcceptance');
                 break;
-            case 'production':
+            case APP_ENV_PROD:
                 $this->render('googleAnalyticsProduction');
                 break;
             default:

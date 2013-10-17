@@ -21,7 +21,7 @@ class Cli extends \CApplicationComponent
 
         // Set environment variable
         if (!$this->isWindows()) {
-            $cmd .= 'APPLICATION_ENV=' . APPLICATION_ENV . ' ';
+            $cmd .= 'APP_ENV=' . APP_ENV . ' ';
         }
 
         // Create command

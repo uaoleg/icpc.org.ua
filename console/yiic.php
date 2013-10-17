@@ -4,8 +4,8 @@
  * Define application environment
  * @filesource /etc/environment
  */
-$appEnv = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'development';
-defined('APPLICATION_ENV') or define('APPLICATION_ENV', $appEnv);
+$appEnv = isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : APP_ENV_DEV;
+defined('APP_ENV') or define('APP_ENV', $appEnv);
 
 $yii = __DIR__ . '/../common/lib/yii/yii.php';
 require_once($yii);

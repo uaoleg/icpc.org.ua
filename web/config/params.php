@@ -15,7 +15,7 @@ $params = array(
 );
 
 // Environment configuration
-$file = __DIR__ . '/env/' . APPLICATION_ENV . '/params.php';
+$file = __DIR__ . '/env/' . APP_ENV . '/params.php';
 if (is_file($file)) {
     $params = \CMap::mergeArray($params, require($file));
 }

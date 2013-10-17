@@ -36,7 +36,7 @@ class Controller extends \CController
         parent::init();
 
         // Generate sprite
-        if (APPLICATION_ENV === 'development') {
+        if (APP_ENV === APP_ENV_DEV) {
             \yii::app()->sprite->generate();
         }
 

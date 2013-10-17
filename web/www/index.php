@@ -4,16 +4,19 @@
  * Define application environment
  * @filesource /vhosts.conf
  */
-$appEnv = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'development';
-defined('APPLICATION_ENV') or define('APPLICATION_ENV', $appEnv);
-switch (APPLICATION_ENV) {
-    case 'development':
+defined('APP_ENV_DEV') or define('APP_ENV_DEV', 'development');
+defined('APP_ENV_ACC') or define('APP_ENV_ACC', 'acceptance');
+defined('APP_ENV_PROD') or define('APP_ENV_PROD', 'production');
+$appEnv = isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : APP_ENV_DEV;
+defined('APP_ENV') or define('APP_ENV', $appEnv);
+switch (APP_ENV) {
+    case APP_ENV_DEV:
         defined('YII_DEBUG') or define('YII_DEBUG', true);
         break;
-    case 'acceptance':
+    case APP_ENV_ACC:
         defined('YII_DEBUG') or define('YII_DEBUG', true);
         break;
-    case 'production':
+    case APP_ENV_PROD:
         defined('YII_DEBUG') or define('YII_DEBUG', false);
         break;
 }

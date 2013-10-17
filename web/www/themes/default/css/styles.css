@@ -30,6 +30,20 @@ body > div#main .container {
     padding-bottom: 70px;
 }
 
+.app-env-label {
+    color: #ccc;
+    left: -44px;
+    position: fixed;
+    top: 80px;
+    width: 100px;
+
+-webkit-transform: rotate(-90deg);
+-moz-transform: rotate(-90deg);
+-ms-transform: rotate(-90deg);
+-o-transform: rotate(-90deg);
+transform: rotate(-90deg);
+}
+
 .header-title {
     background-image: url('../images/layout/flag.png');
     background-size: 100% 100px;

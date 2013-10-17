@@ -29,6 +29,8 @@
 
 <body>
 
+    <?php $this->widget('\web\widgets\AppEnv'); ?>
+
     <div id="main">
 
         <div class="container">

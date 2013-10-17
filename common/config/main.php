@@ -136,7 +136,7 @@ $main = array(
 );
 
 // Environment configuration
-$file = __DIR__ . '/env/' . APPLICATION_ENV . '/main.php';
+$file = __DIR__ . '/env/' . APP_ENV . '/main.php';
 if (is_file($file)) {
     $main = \CMap::mergeArray($main, require($file));
 }
