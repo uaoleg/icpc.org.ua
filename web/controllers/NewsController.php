@@ -44,8 +44,8 @@ class NewsController extends \web\ext\Controller
             $criteria->addCond('isPublished', '==', true);
         }
         $newsList = News::model()->findAll($criteria);
-        $newsCount  = $newsList->count(true);
-        $totalCount = $newsList->count(false);
+        $newsCount  = ($newsList) ? $newsList->count(true) : 0;
+        $totalCount = ($newsList) ? $newsList->count(false) : 0;
         $pageCount  = ceil($totalCount / $perPage);
         if (($newsCount === 0) && ($page > 1) && ($page > $pageCount)) {
             return $this->redirect(array('latest', 'page' => 1));

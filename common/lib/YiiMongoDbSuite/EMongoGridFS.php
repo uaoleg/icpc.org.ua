@@ -187,7 +187,7 @@ abstract class EMongoGridFS extends EMongoDocument
 	 * @throws CException if the record is new
 	 * @since v1.3
 	 */
-	public function update(array $attributes=null)
+	public function update(array $attributes=null, $modify = false)
 	{
 		Yii::trace('Trace: '.__CLASS__.'::'.__FUNCTION__.'()', 'ext.MongoDb.EMongoGridFS');
 		if($this->getIsNewRecord())
