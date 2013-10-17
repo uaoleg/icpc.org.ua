@@ -108,6 +108,15 @@ class AuthController extends \web\ext\Controller
         $passwordRepeat = $this->request->getParam('passwordRepeat');
         $passwordSetNew = (bool)$this->request->getParam('passwordSetNew', 0);
 
+        if ($this->request->isPostRequest && !strlen($this->request->getParam('email', ''))) {
+            $this->renderJson(array(
+                'errors' => array(
+                    'email' => \yii::t('app', 'We do not know such a email.'),
+                ),
+            ));
+            exit();
+        }        
+        
         // Send reset password email
         if ((!empty($email)) && (empty($tokenId))) {
 
@@ -160,7 +169,7 @@ class AuthController extends \web\ext\Controller
 
         // Render set new password form
         } elseif ((!empty($tokenId)) && (!$passwordSetNew)) {
-
+            
             // Get token record
             $token = User\PasswordReset::model()->findByPk(new \MongoId($tokenId));
 
