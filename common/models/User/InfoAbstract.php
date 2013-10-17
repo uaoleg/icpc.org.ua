@@ -12,40 +12,34 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public $userId;
 
     /**
-     * Name of university
+     * Lang of the information (e.g. "en", "ua")
      * @var string
      */
-    public $universityName;
+    public $lang;
 
     /**
-     * Short form of the name of the univesity
+     * First name
      * @var string
      */
-    public $universityShortName;
+    public $firstName;
 
     /**
-     * Official post and email addresses of the university
-     * @var string
-     */
-    public $universityPostEmailAddresses;
-
-    /**
-     * Name of the team
-     * @var string
-     */
-    public $universityTeamName;
-
-    /**
-     * Middle Name
+     * Middle name
      * @var string
      */
     public $middleName;
 
     /**
-     * Size of a T-shirt
+     * Last name
      * @var string
      */
-    public $tshirtSize;
+    public $lastName;
+
+    /**
+     * Email
+     * @var string
+     */
+    public $email;
 
     /**
      * Home phone number
@@ -72,6 +66,32 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public $ACMNumber;
 
     /**
+     * Institution name
+     * @var string
+     */
+    public $instName;
+
+    /**
+     * Short form of the institution name
+     * @var string
+     */
+    public $instNameShort;
+
+    /**
+     * Division
+     * I-offers advanced degree in computer science
+     * II-does not offer advanced degree in computer science
+     * @var string
+     */
+    public $instDivision;
+
+    /**
+     * Official post and email addresses
+     * @var string
+     */
+    public $instPostEmailAddresses;
+
+    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -83,15 +103,13 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     {
         return array_merge(parent::attributeLabels(), array(
             'userId'                       => \yii::t('app', 'Related user ID'),
-            'universityName'               => \yii::t('app', 'Name of university'),
-            'universityShortName'          => \yii::t('app', 'Short name of the university'),
-            'universityPostEmailAddresses' => \yii::t('app', 'Official post and email addresses of the university'),
-            'universityTeamName'           => \yii::t('app', 'Name of the team'),
+            'instName'               => \yii::t('app', 'Institution name'),
+            'instNameShort'          => \yii::t('app', 'Short name of the institution name'),
+            'instPostEmailAddresses' => \yii::t('app', 'Official post and email addresses'),
             'lastName'                     => \yii::t('app', 'Last name'),
             'firstName'                    => \yii::t('app', 'First name'),
             'middleName'                   => \yii::t('app', 'Middle name'),
             'email'                        => \yii::t('app', 'Email'),
-            'tshirtSize'                   => \yii::t('app', 'T-shirt size'),
             'phoneHome'                    => \yii::t('app', 'Home phone number'),
             'phoneMobile'                  => \yii::t('app', 'Mobile phone number'),
             'skype'                        => \yii::t('app', 'Skype'),
@@ -107,8 +125,8 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('userId, universityName, universityShortName, universityPostEmailAddresses, universityTeamName,
-                lastName, firstName, middleName, email, tshirtSize, phoneMobile, skype', 'required'),
+            array('userId, instName, instNameShort, instPostEmailAddresses,
+                lastName, firstName, middleName, email, phoneMobile, skype', 'required'),
         ));
     }
 
@@ -130,13 +148,29 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function indexes()
     {
         return array_merge(parent::indexes(), array(
-            'userId' => array(
+            'userId_lang' => array(
                 'key' => array(
-                    'userId' => \EMongoCriteria::SORT_ASC,
+                    'userId'    => \EMongoCriteria::SORT_ASC,
+                    'lang'      => \EMongoCriteria::SORT_ASC,
                 ),
                 'unique' => true,
             ),
         ));
+    }
+
+    /**
+     * Before validate action
+     *
+     * @return bool
+     */
+    protected function beforeValidate()
+    {
+        if (!parent::beforeValidate()) return false;
+
+        // Convert MongoId to string
+        $this->userId = (string)$this->userId;
+
+        return true;
     }
 
 }

@@ -6,28 +6,28 @@ class InfoCoach extends InfoAbstract
 {
 
     /**
-     * Coach's position
+     * Position
      * @var string
      */
-    public $coachPosition;
+    public $position;
 
     /**
-     * Coach's working address
+     * Office address
      * @var string
      */
-    public $coachWorkindAddress;
+    public $officeAddress;
 
     /**
-     * Coach's working phone
+     * Work phone number
      * @var string
      */
-    public $coachPhoneWork;
+    public $phoneWork;
 
     /**
-     * Coach's fax number
+     * Fax number
      * @var string
      */
-    public $coachFax;
+    public $fax;
 
     /**
      * Returns the attribute labels.
@@ -41,10 +41,10 @@ class InfoCoach extends InfoAbstract
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'coachPosition'       => \yii::t('app', 'Coach\'s position'),
-            'coachWorkingAddress' => \yii::t('app', 'Coach\'s working address'),
-            'coachPhoneWork'      => \yii::t('app', 'Coach\'s work phone number'),
-            'coachFax'            => \yii::t('app', 'Coach\'s fax number')
+            'position'      => \yii::t('app', 'Position'),
+            'officeAddress' => \yii::t('app', 'Office address'),
+            'phoneWork'     => \yii::t('app', 'Work phone number'),
+            'fax'           => \yii::t('app', 'Fax number')
         ));
     }
 
@@ -56,7 +56,7 @@ class InfoCoach extends InfoAbstract
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('coachPosition, coachWorkingAddress, coachPhoneWork', 'required'),
+            array('position, officeAddress, phoneWork', 'required'),
         ));
     }
 

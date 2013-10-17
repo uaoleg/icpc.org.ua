@@ -6,51 +6,45 @@ class InfoStudent extends InfoAbstract
 {
 
     /**
-     * Field of student's study
+     * Field of study
      */
-    public $studentStudyField;
+    public $studyField;
 
     /**
      * Speciality of study
      * @var string
      */
-    public $studentSpeciality;
+    public $speciality;
 
     /**
      * Faculty of study
      * @var string
      */
-    public $studentFaculty;
+    public $faculty;
 
     /**
-     * Student's group
+     * Group
      * @var string
      */
-    public $studentGroup;
+    public $group;
 
     /**
-     * The year student is on
-     * @var string
+     * Year of admission to University
+     * @var int
      */
-    public $studentYear;
+    public $instAdmissionYear;
 
     /**
      * Date of birth
      * @var string
      */
-    public $studentDateOfBirth;
-
-    /**
-     * Year which student entered university
-     * @var string
-     */
-    public $studentUnivesityEntryYear;
+    public $dateOfBirth;
 
     /**
      * Student document serial number
      * @var string
      */
-    public $studentDocument;
+    public $document;
 
     /**
      * Returns the attribute labels.
@@ -64,14 +58,13 @@ class InfoStudent extends InfoAbstract
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'studentStudyField'         => \yii::t('app', 'Field of student\'s study'),
-            'studentSpeciality'         => \yii::t('app', 'Speciality of study'),
-            'studentFaculty'            => \yii::t('app', 'Faculty of study'),
-            'studentGroup'              => \yii::t('app', 'Student\' group'),
-            'studentYear'               => \yii::t('app', 'Student\'s year of study'),
-            'studentDateOfBirth'        => \yii::t('app', 'Student\'s date of birth'),
-            'studentUnivesityEntryYear' => \yii::t('app', 'Year which student entered the university'),
-            'studentDocument'           => \yii::t('app', 'Student\'s document serial number')
+            'studyField'         => \yii::t('app', 'Field of study'),
+            'speciality'         => \yii::t('app', 'Speciality of study'),
+            'faculty'            => \yii::t('app', 'Faculty of study'),
+            'group'              => \yii::t('app', 'Group'),
+            'instAdmissionYear'  => \yii::t('app', 'Year of admission to University'),
+            'dateOfBirth'        => \yii::t('app', 'Date of birth'),
+            'document'           => \yii::t('app', 'Document serial number')
         ));
     }
 
@@ -83,8 +76,7 @@ class InfoStudent extends InfoAbstract
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('studentStudyField, studentSpeciality, studentFaculty, studentGroup, studentYear, studentDateOfBirth,
-                studentUnivesityEntryYear, studentStudentDocument', 'required'),
+            array('studyField, speciality, faculty, group, instAdmissionYear, dateOfBirth, document', 'required'),
         ));
     }
 
