@@ -89,7 +89,12 @@ class DocsController extends \web\ext\Controller
 
         // Download file
         header('Content-type: application/' . $document->fileExt);
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        if ( preg_match( "/MSIE/", $_SERVER["HTTP_USER_AGENT"] ) ) {
+            header('Content-Disposition: attachment; filename="' . urlencode($filename) . '"');
+        } else {
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+        }
+        
         echo $document->file->getBytes();
     }
 
