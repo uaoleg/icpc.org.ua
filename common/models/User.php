@@ -228,6 +228,11 @@ class User extends \common\ext\MongoDb\Document
             $this->coordinator = null;
         }
 
+        // Check that either type or coordinator is filled
+        if ((empty($this->type)) && (empty($this->coordinator))) {
+            $this->addError('role', \yii::t('app', 'User should have some role.'));
+        }
+
         // Set created date
         if ($this->dateCreated == null) {
             $this->dateCreated = time();
