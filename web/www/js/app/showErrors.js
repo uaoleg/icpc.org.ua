@@ -6,17 +6,18 @@ function appShowErrors(errors, $context) {
     $('.form-group .help-block', $context).remove();
     if (errors) {
         $.each(errors, function(key, value) {
-            var $help = $('<div>');
+            var $input,
+                $group,
+                $help = $('<div>');
             if (key === 'recaptcha') {
                 Recaptcha.reload();
-                var $input = $('#recaptcha_widget_div'),
-                    $group = $input.parent().parent();
+                $input = $('#recaptcha_widget_div');
             } else {
-                var $input = $('[name=' + key + ']', $context),
-                    $group = $input.closest('.form-group');                 
+                $input = $('[name=' + key + ']', $context);
             }
-            $help.addClass('help-block').html(value).appendTo($group);              
-            $group.addClass('has-error');            
+            $group = $input.closest('.form-group');
+            $help.addClass('help-block').html(value).appendTo($group);
+            $group.addClass('has-error');
         });
         $('.form-group.has-error:first input', $context).focus();
     }

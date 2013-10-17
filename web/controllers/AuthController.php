@@ -29,6 +29,7 @@ class AuthController extends \web\ext\Controller
             $challengeField,
             $responseField
         );
+        
         if ($response->is_valid) {
             return true;
         } else {
