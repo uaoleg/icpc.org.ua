@@ -4,8 +4,7 @@
     </div>
     <div class="pull-left">
         <a href="<?=$this->createUrl('/docs/download', array('id' => $this->document->_id))?>" class="document-title">
-            <?=$this->document->title?>
-        </a>
+            <?=$this->document->title?></a>
         <span class="document-size"><?=$sizeLabel?></span>
         <?php if (\yii::app()->user->checkAccess('documentUpdate')): ?>
             <a href="<?=$this->createUrl('/staff/docs/edit', array(
