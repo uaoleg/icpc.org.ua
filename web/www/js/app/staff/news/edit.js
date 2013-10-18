@@ -8,7 +8,7 @@ function appStaffNewsEdit() {
      */
     window.onbeforeunload = function() {
         if ($('.btn.save-news', self.$form).is(':disabled')) {
-            return null;
+            return;
         } else {
             return _t('appjs', 'You have unsaved changes.');
         }
