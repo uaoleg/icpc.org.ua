@@ -106,123 +106,21 @@ class AuthController extends \web\ext\Controller
         $tokenId        = $this->request->getParam('token');
         $password       = $this->request->getParam('password');
         $passwordRepeat = $this->request->getParam('passwordRepeat');
-        $passwordSetNew = (bool)$this->request->getParam('passwordSetNew', 0);
-
-        if ($this->request->isPostRequest && !strlen($this->request->getParam('email', ''))) {
-            $this->renderJson(array(
-                'errors' => array(
-                    'email' => \yii::t('app', 'We do not know such a email.'),
-                ),
-            ));
-            exit();
-        }        
+        $passwordSetNew = (bool)$this->request->getParam('passwordSetNew', 0);   
         
-        // Send reset password email
-        if ((!empty($email)) && (empty($tokenId))) {
-
-            // Get user by email
-            $userExists = (User::model()->countByAttributes(array(
-                'email' => mb_strtolower($email),
-            )) > 0);
-
-            // Check recaptcha
-            $recaptchaStatus = $this->_checkRecaptcha();
-
-            // Form errors
-            $errors = array();
-            if (!$userExists) {
-                $errors['email'] = \yii::t('app', 'We do not know such a email.');
+        if ($this->request->isPostRequest || $tokenId) {
+            if (($email !== null) && (empty($tokenId))) {
+                $this->_emailResetPwd($email);
+            } elseif ((!empty($tokenId)) && (!$passwordSetNew)) {
+                $this->_renderSetNewPwdForm($tokenId);
+            } elseif ((!empty($tokenId)) && ($passwordSetNew)) {
+                $this->_setNewPwd($tokenId, $password, $passwordRepeat);
             }
-            if ($recaptchaStatus !== true) {
-                $errors['recaptcha'] = $recaptchaStatus;
-            }
-
-            // Send password reset email
-            if (count($errors) === 0) {
-
-                // Get reset token
-                $criteriaResetToken = new \EMongoCriteria();
-                $criteriaResetToken->addCond('email', '==', $email);
-                User\PasswordReset::model()->deleteAll($criteriaResetToken);
-                $resetToken = new User\PasswordReset();
-                $resetToken->email = $email;
-                $resetToken->save();
-
-                // Send email
-                $message = new \common\ext\Mail\MailMessage();
-                $message
-                    ->addTo($email)
-                    ->setFrom(\yii::app()->params['emails']['noreply']['address'], \yii::app()->params['emails']['noreply']['name'])
-                    ->setSubject(\yii::t('app', 'Password reset'))
-                    ->setView('passwordReset', array(
-                        'link' => $this->createAbsoluteUrl('/auth/passwordReset', array(
-                            'token' => (string)$resetToken->_id,
-                        )),
-                    ));
-                \yii::app()->mail->send($message);
-            }
-
-            // Render json
-            $this->renderJson(array(
-                'errors' => count($errors) ? $errors : false,
-            ));
-
-        // Render set new password form
-        } elseif ((!empty($tokenId)) && (!$passwordSetNew)) {
-            
-            // Get token record
-            $token = User\PasswordReset::model()->findByPk(new \MongoId($tokenId));
-
-            // Render view
-            if (($token === null) || (!$token->isValid)) {
-                $this->render('passwordResetTokenError');
-            } else {
-                $this->render('passwordResetToken', array(
-                    'token' => $token,
-                ));
-            }
-
-        // Set new password
-        } elseif ((!empty($tokenId)) && ($passwordSetNew)) {
-
-            // Get token record
-            $token = User\PasswordReset::model()->findByPk(new \MongoId($tokenId));
-
-            // Get user
-            $user = User::model()->findByAttributes(array(
-                'email' => $token->email,
-            ));
-
-            // Set new password and login user
-            $user->setPassword($password, $passwordRepeat);
-            if (!$user->hasErrors()) {
-
-                // Save new password
-                $user->save();
-
-                // Authenticate user
-                $identity = new \web\ext\UserIdentity($token->email, $password);
-                $identity->authenticate();
-                \yii::app()->user->login($identity);
-
-                // Delete token
-                $token->delete();
-            }
-
-            // Render json
-            $this->renderJson(array(
-                'errors' => $user->hasErrors() ? $user->getErrors() : false,
-            ));
-
-        // Render reset password form
         } else {
-
-            // Render view
             $this->render('passwordReset');
-
         }
     }
-
+    
     /**
      * Password reset sent notification
      */
@@ -311,4 +209,74 @@ class AuthController extends \web\ext\Controller
         }
     }
 
+    protected function _emailResetPwd($email)
+    {
+        // Get user by email
+        $userExists = (User::model()->countByAttributes(array(
+            'email' => mb_strtolower($email),
+        )) > 0);
+
+        // Check recaptcha
+        $recaptchaStatus = $this->_checkRecaptcha();
+
+        // Form errors
+        $errors = array();
+        if (!$userExists) {
+            $errors['email'] = \yii::t('app', 'We do not know such a email.');
+        }
+        if ($recaptchaStatus !== true) {
+            $errors['recaptcha'] = $recaptchaStatus;
+        }
+
+        // Send password reset email
+        if (count($errors) === 0) {
+
+            $criteriaResetToken = new \EMongoCriteria();
+            $criteriaResetToken->addCond('email', '==', $email);
+            User\PasswordReset::model()->deleteAll($criteriaResetToken);
+            $resetToken = new User\PasswordReset();
+            $resetToken->email = $email;
+            $resetToken->save();
+
+            $this->getHelper('mail')->sendMail(
+                array(
+                    'email' => $email,
+                    'subject' => \yii::t('app', 'Password reset'),
+                    'view' => 'passwordReset',
+                    'params' => array(
+                        'link' => $this->createAbsoluteUrl('/auth/passwordReset', array(
+                            'token' => (string)$resetToken->_id,
+                        )),
+                    ),
+                )
+            );
+        }
+        $this->renderJson(array(
+            'errors' => count($errors) ? $errors : false,
+        ));        
+    }
+    
+    protected function _renderSetNewPwdForm($tokenId)
+    {
+        $token = User\PasswordReset::model()->findByPk(new \MongoId($tokenId));
+        if (($token === null) || (!$token->isValid)) {
+            $this->render('passwordResetTokenError');
+        } else {
+            $this->render('passwordResetToken', array(
+                'token' => $token,
+            ));
+        }        
+    }
+    
+    protected function _setNewPwd($tokenId, $password, $passwordRepeat)
+    {
+        $token = User\PasswordReset::model()->findByPk(new \MongoId($tokenId));
+        $user = User::model()->findByAttributes(array(
+            'email' => $token->email,
+        ));
+        $this->getHelper('user')->resetPwdAndLogin($user, $token, $password, $passwordRepeat);
+        $this->renderJson(array(
+            'errors' => $user->hasErrors() ? $user->getErrors() : false,
+        ));        
+    }
 }
