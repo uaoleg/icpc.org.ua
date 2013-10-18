@@ -12,6 +12,7 @@ defined('SECONDS_IN_MONTH') or define('SECONDS_IN_MONTH', 2678400); // 31 day
 defined('SECONDS_IN_YEAR') or define('SECONDS_IN_YEAR', 31449600); // 364 days
 
 // PHP settings
+date_default_timezone_set('Europe/Kiev');
 ini_set('display_errors', YII_DEBUG);
 ini_set('display_startup_errors', YII_DEBUG);
 ini_set('session.gc_maxlifetime', SECONDS_IN_WEEK);

@@ -10,7 +10,7 @@ namespace web\ext;
 class Controller extends \CController
 {
     const HELPERS_NAMESPACE = '\web\helpers\\';
-    
+
     /**
      * Nav active items
      * @var array
@@ -171,11 +171,4 @@ class Controller extends \CController
         throw new \CHttpException($status, $message, $code);
     }
 
-    protected function getHelper($name)
-    {
-        $name = ucfirst(strtolower($name));
-        $className = self::HELPERS_NAMESPACE . $name;
-        $helper = new $className;
-        return $helper;
-    }
 }

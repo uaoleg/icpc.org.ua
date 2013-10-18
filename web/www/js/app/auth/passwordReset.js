@@ -6,7 +6,7 @@ function appAuthPasswordReset() {
             $form = $thisElement.closest('.form-horizontal');
         $thisElement.prop('disabled', true);
         $.ajax({
-            url: app.baseUrl + '/auth/emailResetPwd',
+            url: app.baseUrl + '/auth/passwordResetSendEmail',
             data: {
                 email:          $('.form-group .form-control[name=email]').val(),
                 recaptcha_challenge_field: $('#recaptcha_challenge_field').val(),

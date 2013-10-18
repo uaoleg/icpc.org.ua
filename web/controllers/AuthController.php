@@ -29,7 +29,7 @@ class AuthController extends \web\ext\Controller
             $challengeField,
             $responseField
         );
-        
+
         if ($response->is_valid) {
             return true;
         } else {
@@ -97,23 +97,41 @@ class AuthController extends \web\ext\Controller
         ));
     }
 
+    /**
+     * Password reset page
+     */
     public function actionPasswordReset()
     {
+        // Render view
         $this->render('passwordReset');
     }
 
+    /**
+     * Password reset sent success page
+     */
     public function actionPasswordResetSent()
     {
+        // Render view
         $this->render('passwordResetSent');
     }
 
-    public function actionEmailResetPwd()
+    /**
+     * Send email with password reset URL
+     */
+    public function actionPasswordResetSendEmail()
     {
+        // Get params
         $email = $this->request->getParam('email');
+
+        // Get user by email
         $userExists = (User::model()->countByAttributes(array(
             'email' => mb_strtolower($email),
         )) > 0);
+
+        // Check recaptcha
         $recaptchaStatus = $this->_checkRecaptcha();
+
+        // Form errors
         $errors = array();
         if (!$userExists) {
             $errors['email'] = \yii::t('app', 'We do not know such a email.');
@@ -121,54 +139,97 @@ class AuthController extends \web\ext\Controller
         if ($recaptchaStatus !== true) {
             $errors['recaptcha'] = $recaptchaStatus;
         }
+
+        // Send password reset email
         if (count($errors) === 0) {
+
+            // Get reset token
             $criteriaResetToken = new \EMongoCriteria();
             $criteriaResetToken->addCond('email', '==', $email);
             User\PasswordReset::model()->deleteAll($criteriaResetToken);
             $resetToken = new User\PasswordReset();
             $resetToken->email = $email;
             $resetToken->save();
-            $this->getHelper('mail')->sendMail(
-                array(
-                    'email' => $email,
-                    'subject' => \yii::t('app', 'Password reset'),
-                    'view' => 'passwordReset',
-                    'params' => array(
-                        'link' => $this->createAbsoluteUrl('/auth/newPwd', array(
-                            'token' => (string)$resetToken->_id,
-                        )),
-                    ),
-                )
-            );
+
+            // Send email
+            $message = new \common\ext\Mail\MailMessage();
+            $message
+                ->addTo($email)
+                ->setFrom(\yii::app()->params['emails']['noreply']['address'], \yii::app()->params['emails']['noreply']['name'])
+                ->setSubject(\yii::t('app', 'Password reset'))
+                ->setView('passwordReset', array(
+                    'link' => $this->createAbsoluteUrl('/auth/passwordResetEnterNew', array(
+                        'token' => (string)$resetToken->_id,
+                    )),
+                ));
+            \yii::app()->mail->send($message);
         }
+
+        // Render json
         $this->renderJson(array(
             'errors' => count($errors) ? $errors : false,
         ));
     }
 
-    public function actionNewPwd()
+    /**
+     * Enter new password page
+     */
+    public function actionPasswordResetEnterNew()
     {
+        // Get params
         $tokenId = $this->request->getParam('token');
+
+        // Get token record
         $token = User\PasswordReset::model()->findByPk(new \MongoId($tokenId));
+
+        // Render view
         if (($token === null) || (!$token->isValid)) {
             $this->render('passwordResetTokenError');
         } else {
-            $this->render('passwordResetToken', array(
+            $this->render('passwordResetEnterNew', array(
                 'token' => $token,
             ));
         }
     }
 
-    public function actionSetNewPwd()
+    /**
+     * Set new password
+     */
+    public function actionPasswordResetSetNew()
     {
-        $tokenId = $this->request->getParam('token');
-        $password = $this->request->getParam('password');
+        // Get params
+        $tokenId        = $this->request->getParam('token');
+        $password       = $this->request->getParam('password');
         $passwordRepeat = $this->request->getParam('passwordRepeat');
+
+        // Get and check token
         $token = User\PasswordReset::model()->findByPk(new \MongoId($tokenId));
+        if (($token === null) || (!$token->isValid)) {
+            return;
+        }
+
+        // Get user
         $user = User::model()->findByAttributes(array(
             'email' => $token->email,
         ));
-        $this->getHelper('user')->resetPwdAndLogin($user, $token, $password, $passwordRepeat);
+
+        // Set new password and login user
+        $user->setPassword($password, $passwordRepeat);
+        if (!$user->hasErrors()) {
+
+            // Save new password
+            $user->save();
+
+            // Authenticate user
+            $identity = new \web\ext\UserIdentity($token->email, $password);
+            $identity->authenticate();
+            \yii::app()->user->login($identity);
+
+            // Delete token
+            $token->delete();
+        }
+
+        // Render json
         $this->renderJson(array(
             'errors' => $user->hasErrors() ? $user->getErrors() : false,
         ));

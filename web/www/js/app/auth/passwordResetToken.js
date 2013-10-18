@@ -6,7 +6,7 @@ function appAuthPasswordResetToken() {
             $form = $thisElement.closest('.form-horizontal');
         $thisElement.prop('disabled', true);
         $.ajax({
-            url: app.baseUrl + '/auth/setNewPwd',
+            url: app.baseUrl + '/auth/passwordResetSetNew',
             data: {
                 token:          $('[name=token]', $form).val(),
                 email:          $('[name=email]', $form).val(),
