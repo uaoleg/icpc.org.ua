@@ -1,6 +1,21 @@
 function appAuthSignup() {
 
-    // Type and Coordinator checkboxes
+    /**
+     * On window unload
+     */
+    window.onbeforeunload = function() {
+        if ($('.btn.signup', self.$form).is(':disabled')) {
+            return;
+        } else if ($('input[type=text]:visible, input[type=password]:visible').filter(function() {
+            return ($(this).val().length !== 0);
+        }).length > 0) {
+            return _t('appjs', 'You have unsaved changes.');
+        }
+    };
+
+    /**
+     * Type and Coordinator checkboxes
+     */
     $(':checkbox[name=type], :checkbox[name=coordinator]').on('change', function() {
         var $group = $(this).closest('.btn-group');
         if ($(this).is(':checked')) {
@@ -13,7 +28,9 @@ function appAuthSignup() {
         }
     });
 
-    // Coordinator dropdown
+    /**
+     * Coordinator dropdown
+     */
     $(':checkbox[name=coordinator]').on('change', function() {
 
         var $this = $(this),
@@ -59,10 +76,14 @@ function appAuthSignup() {
 
     });
 
-    // Sort states
+    /**
+     * Sort states
+     */
     $('.dropdown-menu.dropdown-sorted').sortList();
 
-    // Signup request
+    /**
+     * Signup request
+     */
     $('.btn.signup').on('click', function() {
         var $thisElement = $(this),
             $form = $thisElement.closest('.form-horizontal');
