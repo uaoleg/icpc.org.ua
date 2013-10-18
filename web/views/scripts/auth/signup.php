@@ -51,7 +51,7 @@
                                 <ul class="dropdown-menu pull-right" role="menu">
                                     <li><a href="#" data-val="<?=User::COORD_UKRAINE?>"><?=\yii::t('app', 'Ukraine')?></a></li>
                                     <li class="dropdown-submenu">
-                                        <a href="#"><?=\yii::t('app', 'Region')?></a>
+                                        <span><?=\yii::t('app', 'Region')?></span>
                                         <ul class="dropdown-menu dropup" role="menu">
                                             <?php foreach (User::model()->getConstantList('COORD_REGION_') as $region): ?>
                                             <li><a href="#" data-val="<?=$region?>"><?=User::model()->getAttributeLabel($region)?></a></li>
@@ -59,7 +59,7 @@
                                         </ul>
                                     </li>
                                     <li class="dropdown-submenu">
-                                        <a href="#"><?=\yii::t('app', 'State')?></a>
+                                        <span><?=\yii::t('app', 'State')?></span>
                                         <ul class="dropdown-menu dropdown-sorted" role="menu" style="margin-top: -350px;">
                                             <?php foreach (User::model()->getConstantList('COORD_STATE_') as $state): ?>
                                             <li><a href="#" data-val="<?=$state?>"><?=User::model()->getAttributeLabel($state)?></a></li>
