@@ -4,6 +4,7 @@
 <head>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title><?=$this->pageTitle?></title>
     <link rel="icon" type="image/x-icon" href="<?=\yii::app()->theme->baseUrl?>/favicon.ico" />
 
@@ -15,6 +16,9 @@
 
         // Bootsrtap
         $cs->registerCoreScript('bootstrap');
+
+        // Respond
+        $cs->registerCoreScript('respond');
 
         // App JS
         $cs->registerScriptFile($cs->getCoreScriptUrl() . '/min/?g=js&v=' . \yii::app()->params['version']);
