@@ -21,10 +21,9 @@
 </div>
 <div class="form-horizontal clearfix">
     <input type="hidden" name="id" value="<?=$document->_id?>" />
-    <input type="hidden" id="flag_has_file" value="0" />
     <div class="form-group">
         <?php if ($document->getIsNewRecord()): ?>
-            <div id="container" name="js-uploader" style="position: relative;">
+            <div id="container" style="position: relative;">
                 <button class="btn btn-primary" id="pickfiles">
                     <?=\yii::t('app', 'Upload')?>
                 </button>

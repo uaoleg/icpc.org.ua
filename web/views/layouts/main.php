@@ -18,7 +18,9 @@
         $cs->registerCoreScript('bootstrap');
 
         // Respond
-        $cs->registerCoreScript('respond');
+        if (\yii::app()->request->userAgentIsIe()) {
+            $cs->registerCoreScript('respond');
+        }
 
         // App JS
         $cs->registerScriptFile($cs->getCoreScriptUrl() . '/min/?g=js&v=' . \yii::app()->params['version']);

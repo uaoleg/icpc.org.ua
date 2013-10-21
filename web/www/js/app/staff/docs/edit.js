@@ -14,34 +14,28 @@ function appStaffDocsEdit() {
 
     // Save news
     $('.btn.save-document', $form).on('click', function(e) {
-        if (parseInt($('#flag_has_file').val()) == 1) {
-            $(this).prop('disabled', true);
-            $('#pickfiles').prop('disabled', true);
-            if ($('[name=id]', $form).val()) {
-                $.ajax({
-                    url: app.baseUrl + '/staff/docs/edit',
-                    data: {
-                        id:    $('[name=id]', $form).val(),
-                        title: $('[name=title]', $form).val(),
-                        desc:  $('[name=desc]', $form).val(),
-                        type:  $('[name=type]', $form).val()
-                    },
-                    success: function(response) {
-                        appShowErrors(response.errors, $form);
-                        if (response.errors) {
-                            return;
-                        } else {
-                            location.href = app.baseUrl + '/docs/' + $('[name=type]', $form).val();
-                        }
+        $(this).prop('disabled', true);
+        $('#pickfiles').prop('disabled', true);
+        if ($('[name=id]', $form).val()) {
+            $.ajax({
+                url: app.baseUrl + '/staff/docs/edit',
+                data: {
+                    id:    $('[name=id]', $form).val(),
+                    title: $('[name=title]', $form).val(),
+                    desc:  $('[name=desc]', $form).val(),
+                    type:  $('[name=type]', $form).val()
+                },
+                success: function(response) {
+                    appShowErrors(response.errors, $form);
+                    if (response.errors) {
+                        return;
+                    } else {
+                        location.href = app.baseUrl + '/docs/' + $('[name=type]', $form).val();
                     }
-                });
-            } else {
-                self.uploader.start();
-            }
+                }
+            });
         } else {
-            appShowErrors({
-                    "js-uploader":"We do not know such a email."
-            }, $form);
+            self.uploader.start();
         }
     });
 
@@ -80,7 +74,6 @@ appStaffDocsEdit.prototype.initUploader = function () {
     self.uploader.init();
 
     self.uploader.bind('FilesAdded', function(up, files) {
-        $('#flag_has_file').val(1);
         $('#pickfiles').closest('.form-group')
             .removeClass('has-error')
             .find('.help-block').text('');

@@ -34,16 +34,17 @@ class Yii extends YiiBase {
     }
 }
 /**
- * @property-read \common\components\ArrayHelper                $array
- * @property-read \common\ext\MongoDb\Auth\Manager              $authManager
- * @property-read \common\components\Cli                        $cli
- * @property-read \CClientScript                                $clientScript
- * @property-read \common\components\ErrorHandler               $errorHandler
- * @property-read \CLogRouter                                   $log
- * @property-read \common\ext\MongoDb\DB                        $mongodb
- * @property-read \YiiBootstrapCssSprite                        $sprite
- * @property-read \common\components\Rbac                       $rbac
- * @property-read \web\ext\WebUser                              $user
+ * @property-read \common\components\ArrayHelper    $array
+ * @property-read \common\ext\MongoDb\Auth\Manager  $authManager
+ * @property-read \common\components\Cli            $cli
+ * @property-read \CClientScript                    $clientScript
+ * @property-read \common\components\ErrorHandler   $errorHandler
+ * @property-read \CLogRouter                       $log
+ * @property-read \common\ext\MongoDb\DB            $mongodb
+ * @property-read \YiiBootstrapCssSprite            $sprite
+ * @property-read \common\components\Rbac           $rbac
+ * @property-read \web\ext\HttpRequest              $request
+ * @property-read \web\ext\WebUser                  $user
  */
 abstract class WebApplication extends CApplication
 {
