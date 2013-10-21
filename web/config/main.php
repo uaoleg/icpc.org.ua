@@ -55,6 +55,11 @@ $config = array(
                     ),
                     'depends' => array('jquery'),
                 ),
+                'respond' => array(
+                    'js' => array(
+                        'lib/Respond/respond.min.js'
+                    ),
+                ),
                 'plupload' => array(
                     'js' => array(
                         'lib/plupload-2.0.0-beta/js/plupload.full.min.js',
