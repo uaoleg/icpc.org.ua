@@ -94,6 +94,14 @@ appStaffDocsEdit.prototype.initUploader = function () {
         $('#' + file.id + " b").html(file.percent + "%");
     });
 
+    self.uploader.bind('Error', function(up, err) {
+        $('#pickfiles').closest('.form-group')
+            .addClass('has-error')
+            .find('.help-block').text(err.message);
+
+        up.refresh(); // Reposition Flash/Silverlight
+    });
+
     self.uploader.bind('FileUploaded', function(up, file) {
         location.href = app.baseUrl + '/docs/' + $('[name=type]', self.$form).val();
     });
