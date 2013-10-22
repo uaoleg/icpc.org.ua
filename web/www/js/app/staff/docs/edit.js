@@ -9,7 +9,7 @@ function appStaffDocsEdit() {
 
     // On change
     $('input, textarea, select', $form).on('keydown change', function() {
-        if (self.uploader.files.length > 0) {
+        if ((self.uploader.files.length > 0) || ($('[name=id]', $form).val().length > 0)) {
             self.onchange();
         }
     });

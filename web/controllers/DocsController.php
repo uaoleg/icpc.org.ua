@@ -86,10 +86,13 @@ class DocsController extends \web\ext\Controller
         if (($lastOccur === false) || ($lastOccur < mb_strlen($filename) - mb_strlen($document->fileExt) - 1)) {
             $filename .= '.' . $document->fileExt;
         }
+        if (\yii::app()->request->userAgentIsIe()) {
+            $filename = urlencode($filename);
+        }
 
         // Download file
         header('Content-type: application/' . $document->fileExt);
-        header('Content-Disposition: attachment; filename="' . urlencode($filename) . '"');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
 
         echo $document->file->getBytes();
     }
