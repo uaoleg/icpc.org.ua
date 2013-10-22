@@ -69,7 +69,7 @@ class News extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, dateCreated', 'required'),
+            array('lang, title, content, dateCreated', 'required'),
             array('title', 'length', 'max' => 300),
             array('content', 'length', 'max' => 5000),
         ));
@@ -126,15 +126,6 @@ class News extends \common\ext\MongoDb\Document
         // Set created date
         if ($this->dateCreated == null) {
             $this->dateCreated = time();
-        }
-
-        if ($this->isPublished) {
-            if (empty($this->title)) {
-                $this->addError('title', \yii::t('app', 'Title cannot be blank'));
-            }
-            if (empty($this->content)) {
-                $this->addError('content', \yii::t('app', 'Content cannot be blank'));
-            }
         }
 
         return true;

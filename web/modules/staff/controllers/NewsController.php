@@ -68,15 +68,24 @@ class NewsController extends \web\modules\staff\ext\Controller
     public function actionPublish()
     {
         // Get params
-        $id     = $this->request->getParam('id');
-        $status = (bool)$this->request->getParam('status');
+        $commonId   = $this->request->getParam('id');
+        $status     = (bool)$this->request->getParam('status');
 
-        // Get news
-        $news = News::model()->findByPk(new \MongoId($id));
-        $news->isPublished = $status;
-        $news->save();
+        // Get list of news
+        $criteria = new \EMongoCriteria();
+        $criteria
+            ->addCond('commonId', '==', $commonId)
+            ->addCond('isPublished', '!=', $status);
+        $newsList = News::model()->findAll($criteria);
+
+        // Change status
+        foreach ($newsList as $news) {
+            $news->isPublished = $status;
+            $news->save();
+        }
+
+        // Render json
         $this->renderJson(array(
-            'id'        => (string)$news->_id,
             'errors'    => ($news->hasErrors()) ? $news->getErrors() : false,
         ));
     }

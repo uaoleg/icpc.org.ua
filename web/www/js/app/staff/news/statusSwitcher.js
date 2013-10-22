@@ -28,12 +28,7 @@
                         id:     $(self.element).data('news-id'),
                         status: $selfElement.data('status')
                     },
-                    success: function(response) {
-                        appShowErrors(response.errors, self.$form);
-                        if (response.errors) {
-                            $selfElement.attr('disabled', false);
-                            return;
-                        }
+                    success: function() {
                         $('.btn', self.element).attr('disabled', false).removeClass('hide');
                         $selfElement.addClass('hide');
                     }
@@ -58,6 +53,6 @@
 
     };
 
-    $.widget('app.newsStatusSwitcher', widgetOptions);
+    $.widget('app.staffNewsStatusSwitcher', widgetOptions);
 
 }(jQuery));

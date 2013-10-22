@@ -1,10 +1,10 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.news-status-switcher').newsStatusSwitcher();
+        $('.news-status-switcher').staffNewsStatusSwitcher();
     });
 </script>
 
-<div class="news-status-switcher" data-news-id="<?=$this->news->_id?>">
+<div class="news-status-switcher" data-news-id="<?=$this->news->commonId?>">
     <button type="button" class="btn btn-success <?=$this->news->isPublished ? 'hide' : ''?>"
             <?=$this->news->getIsNewRecord() ? 'disabled' : ''?>
             data-status="1">
