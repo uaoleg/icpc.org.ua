@@ -85,7 +85,7 @@ class Controller extends \web\ext\Controller
             array(
                 'allow',
                 'controllers'   => array('staff/coaches', 'staff/docs', 'staff/news'),
-                'roles'         => array(User::ROLE_COORDINATOR),
+                'roles'         => array(User::ROLE_COORDINATOR_STATE),
             ),
             array(
                 'allow',

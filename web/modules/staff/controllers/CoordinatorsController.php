@@ -55,21 +55,18 @@ class CoordinatorsController extends \web\modules\staff\ext\Controller
 
             // Get user
             $user = User::model()->findByPk(new \MongoId($userId));
-
-            // Define role
-            if ($user->coordinator === User::COORD_UKRAINE) {
-                $role = User::ROLE_COORDINATOR_UKRAINE;
-            } else {
-                $role = User::ROLE_COORDINATOR;
+            if ($user === null) {
+                return $this->httpException(404);
             }
 
             // Assign role
-            \yii::app()->authManager->assign($role, $userId);
+            \yii::app()->authManager->assign($user->coordinator, $userId);
         }
 
         // Revoke coordination roles
         else {
-            \yii::app()->authManager->revoke(User::ROLE_COORDINATOR, $userId);
+            \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_STATE, $userId);
+            \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_REGION, $userId);
             \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_UKRAINE, $userId);
         }
     }

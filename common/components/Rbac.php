@@ -103,7 +103,7 @@ class Rbac extends \CApplicationComponent
      */
     public function bizRuleNewsUpdate(array $params)
     {
-        return $this->checkAccess(User::ROLE_COORDINATOR);
+        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
     }
 
 }

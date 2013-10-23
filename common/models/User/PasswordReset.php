@@ -38,16 +38,6 @@ class PasswordReset extends \common\ext\MongoDb\Document
     }
 
     /**
-     * Returns whether coordinator role is approved
-     *
-     * @return bool
-     */
-    public function getIsApprovedCoordinator()
-    {
-        return \yii::app()->authManager->checkAccess(static::ROLE_COORDINATOR, $this->_id);
-    }
-
-    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to

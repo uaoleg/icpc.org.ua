@@ -91,20 +91,32 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->_assignOperations($coach, $coachOperationList);
 
         /**
-         * Coordinator role
+         * Coordinator of State role
          */
-        $coordinator = $this->auth->getAuthItem(User::ROLE_COORDINATOR);
-        if (!$coordinator) {
-            $coordinator = $this->auth->createRole(User::ROLE_COORDINATOR);
+        $coordinatorState = $this->auth->getAuthItem(User::ROLE_COORDINATOR_STATE);
+        if (!$coordinatorState) {
+            $coordinatorState = $this->auth->createRole(User::ROLE_COORDINATOR_STATE);
         }
-        $coordinatorOperationList = array(
+        $coordinatorStateOperationList = array(
             User::ROLE_COACH,
             'documentCreate',
             'documentUpdate',
             'newsCreate',
             'newsUpdate',
         );
-        $this->_assignOperations($coordinator, $coordinatorOperationList);
+        $this->_assignOperations($coordinatorState, $coordinatorStateOperationList);
+
+        /**
+         * Coordinator of Region role
+         */
+        $coordinatorRegion = $this->auth->getAuthItem(User::ROLE_COORDINATOR_REGION);
+        if (!$coordinatorRegion) {
+            $coordinatorRegion = $this->auth->createRole(User::ROLE_COORDINATOR_REGION);
+        }
+        $coordinatorRegionOperationList = array(
+            User::ROLE_COORDINATOR_STATE,
+        );
+        $this->_assignOperations($coordinatorRegion, $coordinatorRegionOperationList);
 
         /**
          * Coordinator of Ukraine role
@@ -114,7 +126,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             $coordinatorUkraine = $this->auth->createRole(User::ROLE_COORDINATOR_UKRAINE);
         }
         $coordinatorUkraineOperationList = array(
-            User::ROLE_COORDINATOR,
+            User::ROLE_COORDINATOR_REGION,
         );
         $this->_assignOperations($coordinatorUkraine, $coordinatorUkraineOperationList);
 

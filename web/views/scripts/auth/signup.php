@@ -32,11 +32,11 @@
                     <div name="role" class="clearfix" style="margin-bottom: -20px;">
                         <div class="btn-group btn-group-justified" data-toggle="buttons">
                             <a class="btn btn-default active">
-                                <input type="checkbox" name="type" value="<?=\common\models\User::ROLE_STUDENT?>" />
+                                <input type="checkbox" name="type" value="<?=User::ROLE_STUDENT?>" />
                                 <?=\yii::t('app', 'I\'m a student')?>
                             </a>
                             <a class="btn btn-default">
-                                <input type="checkbox" name="type" value="<?=\common\models\User::ROLE_COACH?>" />
+                                <input type="checkbox" name="type" value="<?=User::ROLE_COACH?>" />
                                 <?=\yii::t('app', 'I\'m a coach')?>
                             </a>
                             <a class="btn btn-default">
@@ -49,23 +49,9 @@
                             <div class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"></a>
                                 <ul class="dropdown-menu pull-right" role="menu">
-                                    <li><a href="#" data-val="<?=User::COORD_UKRAINE?>"><?=\yii::t('app', 'Ukraine')?></a></li>
-                                    <li class="dropdown-submenu">
-                                        <span><?=\yii::t('app', 'Region')?></span>
-                                        <ul class="dropdown-menu dropup" role="menu">
-                                            <?php foreach (User::model()->getConstantList('COORD_REGION_') as $region): ?>
-                                            <li><a href="#" data-val="<?=$region?>"><?=User::model()->getAttributeLabel($region)?></a></li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown-submenu">
-                                        <span><?=\yii::t('app', 'State')?></span>
-                                        <ul class="dropdown-menu dropdown-sorted" role="menu" style="margin-top: -350px;">
-                                            <?php foreach (User::model()->getConstantList('COORD_STATE_') as $state): ?>
-                                            <li><a href="#" data-val="<?=$state?>"><?=User::model()->getAttributeLabel($state)?></a></li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </li>
+                                    <li><a href="#" data-val="<?=User::ROLE_COORDINATOR_UKRAINE?>"><?=\yii::t('app', 'Ukraine')?></a></li>
+                                    <li><a href="#" data-val="<?=User::ROLE_COORDINATOR_REGION?>"><?=\yii::t('app', 'Region')?></a></li>
+                                    <li><a href="#" data-val="<?=User::ROLE_COORDINATOR_STATE?>"><?=\yii::t('app', 'State')?></a></li>
                                 </ul>
                             </div>
                         </div>
