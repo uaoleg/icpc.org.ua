@@ -89,10 +89,20 @@
                                 'href'      => '/results',
                                 'caption'   => \yii::t('app', 'Results'),
                             ),
-                            'staff' => array(
-                                'href'      => $this->createUrl('/staff'),
-                                'caption'   => \yii::t('app', 'Staff'),
+                            'users' => array(
+                                'href'      => '#',
+                                'caption'   => \yii::t('app', 'Users'),
                                 'rbac'      => \common\models\User::ROLE_COORDINATOR_UKRAINE,
+                                'itemList'  => array(
+                                    'users-coordinators' => array(
+                                        'href'      => $this->createUrl('/staff/coordinators'),
+                                        'caption'   => \yii::t('app', 'Coordinators'),
+                                    ),
+                                    'users-coaches' => array(
+                                        'href'      => $this->createUrl('/staff/coaches'),
+                                        'caption'   => \yii::t('app', 'Coaches'),
+                                    ),
+                                ),
                             ),
                             'lang' => array(
                                 'href'      => $this->createUrl('/staff/lang'),

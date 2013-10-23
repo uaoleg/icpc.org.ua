@@ -5,6 +5,7 @@ namespace common\models;
 /**
  * User
  *
+ * @property-read bool $isApprovedCoach
  * @property-read bool $isApprovedCoordinator
  */
 class User extends \common\ext\MongoDb\Document
@@ -99,6 +100,16 @@ class User extends \common\ext\MongoDb\Document
      * @var int
      */
     public $dateCreated;
+
+    /**
+     * Returns whether coach role is approved
+     *
+     * @return bool
+     */
+    public function getIsApprovedCoach()
+    {
+        return \yii::app()->authManager->checkAccess(static::ROLE_COACH, $this->_id);
+    }
 
     /**
      * Returns whether coordinator role is approved

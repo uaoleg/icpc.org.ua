@@ -24,11 +24,23 @@
             <td>
                 <?php if (!empty($user->type)): ?>
                     <?=$user->type?>
+                <?php endif; ?>
+                <?php if ($user->type === \common\models\User::ROLE_COACH): ?>
+                    <?php if ($user->isApprovedCoach): ?>
+                        <span class="label label-success">
+                            <?=\yii::t('app', 'Approved')?>
+                        </span>
+                    <?php else: ?>
+                        <span class="label label-warning">
+                            <?=\yii::t('app', 'Waiting approval')?>
+                        </span>
+                    <?php endif; ?>
                     <br />
                 <?php endif; ?>
                 <?php if (!empty($user->coordinator)): ?>
+                    <br />
                     <?=\yii::t('app', 'Coordination')?>: <?=$user->getAttributeLabel($user->coordinator, 'coord')?>
-                    <?php if (\yii::app()->user->checkAccess(\common\models\User::ROLE_COORDINATOR)): ?>
+                    <?php if ($user->isApprovedCoordinator): ?>
                         <span class="label label-success">
                             <?=\yii::t('app', 'Approved')?>
                         </span>

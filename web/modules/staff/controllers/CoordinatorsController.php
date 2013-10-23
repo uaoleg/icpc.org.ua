@@ -4,7 +4,7 @@ namespace web\modules\staff\controllers;
 
 use \common\models\User;
 
-class IndexController extends \web\modules\staff\ext\Controller
+class CoordinatorsController extends \web\modules\staff\ext\Controller
 {
 
     /**
@@ -14,17 +14,14 @@ class IndexController extends \web\modules\staff\ext\Controller
     {
         parent::init();
 
-        // Set default action
-        $this->defaultAction = 'coordinator';
-
         // Set active main menu item
-        $this->setNavActiveItem('main', 'staff');
+        $this->setNavActiveItem('main', 'users');
     }
 
     /**
      * Manage coordinators
      */
-    public function actionCoordinator()
+    public function actionIndex()
     {
         // Get list of coordinators
         $criteria = new \EMongoCriteria();
@@ -34,7 +31,7 @@ class IndexController extends \web\modules\staff\ext\Controller
         $userList = User::model()->findAll($criteria);
 
         // Render view
-        $this->render('coordinator', array(
+        $this->render('index', array(
             'userList' => $userList,
         ));
     }
@@ -42,7 +39,7 @@ class IndexController extends \web\modules\staff\ext\Controller
     /**
      * Set coordinator's state
      */
-    public function actionCoordinatorSetState()
+    public function actionSetState()
     {
         // Get params
         $userId = $this->request->getPost('userId');

@@ -1,10 +1,10 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        new appStaffIndexCoordinator();
+        new appStaffCoordinatorsIndex();
     });
 </script>
 
-<h3><?=\yii::t('app', 'List of coordinators')?></h3>
+<h3><?=\yii::t('app', 'List of Coordinators')?></h3>
 
 <table class="table">
     <thead>
