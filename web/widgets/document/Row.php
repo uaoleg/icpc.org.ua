@@ -20,7 +20,11 @@ class Row extends \web\ext\Widget
     public function run()
     {
         // Define size
-        $size = $this->document->file->getSize();
+        if ($this->document->file !== null) {
+            $size = $this->document->file->getSize();
+        } else {
+            $size = 0;
+        }
         if ($size < BYTES_IN_KB) {
             $sizeLabel = $size . ' b';
         } elseif ($size < BYTES_IN_MB) {
