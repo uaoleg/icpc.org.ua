@@ -25,7 +25,6 @@ class State extends \common\ext\MongoDb\Document
     const NAME_KHMELNYTSKYI     = 'khmelnytskyi';
     const NAME_KIEV             = 'kiev';
     const NAME_KIROVOHRAD       = 'kirovohrad';
-    const NAME_KRYVYI_RIH       = 'kryvyi-rih';
     const NAME_LUHANSK          = 'luhansk';
     const NAME_LVIV             = 'lviv';
     const NAME_MYKOLAIV         = 'mykolaiv';
@@ -65,7 +64,6 @@ class State extends \common\ext\MongoDb\Document
                 case static::NAME_CHERNIHIV:
                 case static::NAME_DNIPROPETROVSK:
                 case static::NAME_KIROVOHRAD:
-                case static::NAME_KRYVYI_RIH:
                 case static::NAME_POLTAVA:
                 case static::NAME_SUMY:
                 case static::NAME_VINNYTSIA:
