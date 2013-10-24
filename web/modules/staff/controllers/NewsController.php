@@ -49,7 +49,7 @@ class NewsController extends \web\modules\staff\ext\Controller
                 'errors'    => $news->hasErrors() ? $news->getErrors() : false,
                 'url'       => $this->createUrl('edit', array(
                     'id'    => $news->commonId,
-                    'lange' => $news->lang,
+                    'lang'  => $news->lang,
                 )),
             ));
         }
