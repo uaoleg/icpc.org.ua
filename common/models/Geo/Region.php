@@ -24,6 +24,34 @@ class Region extends \common\ext\MongoDb\Document
     public $name;
 
     /**
+     * Returns an instance of region
+     *
+     * @param string $name
+     * @return Region
+     * @throws \CException
+     */
+    public static function get($name)
+    {
+        if (in_array($name, static::model()->getConstantList('NAME_'))) {
+            $region = new static();
+            $region->name = $name;
+            return $region;
+        } else {
+            throw new \CException(\yii::t('app', 'Unknown region name.'));
+        }
+    }
+
+    /**
+     * Returns region name
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -52,7 +80,7 @@ class Region extends \common\ext\MongoDb\Document
 	 */
 	public function getCollectionName()
 	{
-		throw new \CException(\yii::t('Not stored in DB.'));
+		return 'geo.region';
 	}
 
 }

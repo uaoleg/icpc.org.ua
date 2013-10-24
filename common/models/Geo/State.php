@@ -52,9 +52,37 @@ class State extends \common\ext\MongoDb\Document
     protected $_region;
 
     /**
-     * Returns name of the related region
+     * Returns an instance of state
+     *
+     * @param string $name
+     * @return State
+     * @throws \CException
+     */
+    public static function get($name)
+    {
+        if (in_array($name, static::model()->getConstantList('NAME_'))) {
+            $state = new static();
+            $state->name = $name;
+            return $state;
+        } else {
+            throw new \CException(\yii::t('app', 'Unknown state name.'));
+        }
+    }
+
+    /**
+     * Returns state name
      *
      * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Returns the related region
+     *
+     * @return Region
      */
     public function getRegion()
     {
@@ -68,22 +96,22 @@ class State extends \common\ext\MongoDb\Document
                 case static::NAME_SUMY:
                 case static::NAME_VINNYTSIA:
                 case static::NAME_ZHYTOMYR:
-                    $this->_region = Region::NAME_CENTER;
+                    $this->_region = Region::get(Region::NAME_CENTER);
                     break;
                 case static::NAME_DONETSK:
                 case static::NAME_KHARKIV:
                 case static::NAME_LUHANSK:
-                    $this->_region = Region::NAME_EAST;
+                    $this->_region = Region::get(Region::NAME_EAST);
                     break;
                 case static::NAME_KIEV:
-                    $this->_region = Region::NAME_KIEV;
+                    $this->_region = Region::get(Region::NAME_KIEV);
                     break;
                 case static::NAME_ARC:
                 case static::NAME_KHERSON:
                 case static::NAME_MYKOLAIV:
                 case static::NAME_ODESSA:
                 case static::NAME_ZAPORIZHIA:
-                    $this->_region = Region::NAME_SOUTH;
+                    $this->_region = Region::get(Region::NAME_SOUTH);
                     break;
                 case static::NAME_IVANO_FRANKIVSK:
                 case static::NAME_VOLYN:
@@ -93,7 +121,7 @@ class State extends \common\ext\MongoDb\Document
                 case static::NAME_ZAKARPATTIA:
                 case static::NAME_KHMELNYTSKYI:
                 case static::NAME_CHERNIVTSI:
-                    $this->_region = Region::NAME_WEST;
+                    $this->_region = Region::get(Region::NAME_WEST);
                     break;
             }
         }
@@ -149,7 +177,7 @@ class State extends \common\ext\MongoDb\Document
 	 */
 	public function getCollectionName()
 	{
-		throw new \CException(\yii::t('Not stored in DB.'));
+		return 'geo.state';
 	}
 
 }
