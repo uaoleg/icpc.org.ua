@@ -85,6 +85,12 @@
 /* Navbar
 ----------------------------------------------------------------------------- */
 
+/* Show dropdown on hover rather than click */
+.nav > li:hover > .dropdown-menu {
+    display: block;
+    margin: 0;
+}
+
 .navbar-static-bottom {
     background: #2e2e2e;
     color: #ffffff;
