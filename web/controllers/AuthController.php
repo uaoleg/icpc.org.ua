@@ -215,10 +215,12 @@ class AuthController extends \web\ext\Controller
 
         // Set new password and login user
         $user->setPassword($password, $passwordRepeat);
+
+        // Save to DB
         if (!$user->hasErrors()) {
 
-            // Save new password
-            $user->save();
+            // Save new password, no validation
+            $user->save(false);
 
             // Authenticate user
             $identity = new \web\ext\UserIdentity($token->email, $password);
