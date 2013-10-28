@@ -2,7 +2,8 @@
 
 namespace web\controllers;
 
-use \common\models\User;
+use \common\models\School,
+    \common\models\User;
 
 class AuthController extends \web\ext\Controller
 {
@@ -259,6 +260,7 @@ class AuthController extends \web\ext\Controller
         $passwordRepeat = $this->request->getPost('passwordRepeat');
         $type           = $this->request->getPost('type');
         $coordinator    = $this->request->getPost('coordinator');
+        $schoolId       = $this->request->getPost('schoolId');
         $rulesAgree     = (bool)$this->request->getPost('rulesAgree');
 
         // Register a new user
@@ -272,6 +274,7 @@ class AuthController extends \web\ext\Controller
                 'email'         => $email,
                 'type'          => $type,
                 'coordinator'   => $coordinator,
+                'schoolId'      => $schoolId,
             ), false);
             $user->validate();
             $user->setPassword($password, $passwordRepeat);
@@ -303,8 +306,15 @@ class AuthController extends \web\ext\Controller
             ));
         }
 
-        // Render view
+        // Render page
         else {
+
+            // Get list of schools
+            $criteria = new \EMongoCriteria();
+            $criteria->sort('fullNameUk', \EMongoCriteria::SORT_ASC);
+            $schools = School::model()->findAll($criteria);
+
+            // Render view
             $this->render('signup', array(
                 'firstName'         => $firstName,
                 'lastName'          => $lastName,
@@ -312,6 +322,7 @@ class AuthController extends \web\ext\Controller
                 'password'          => $password,
                 'passwordRepeat'    => $passwordRepeat,
                 'rulesAgree'        => $rulesAgree,
+                'schools'           => $schools
             ));
         }
     }

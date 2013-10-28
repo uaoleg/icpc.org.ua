@@ -17,6 +17,9 @@
         // Bootsrtap
         $cs->registerCoreScript('bootstrap');
 
+        // Select 2
+        $cs->registerCoreScript('select2');
+
         // Respond
         if (\yii::app()->request->userAgentIsIe()) {
             $cs->registerCoreScript('respond');

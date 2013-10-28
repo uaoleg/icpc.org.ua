@@ -58,6 +58,14 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <select class="form-control" name="schoolId" data-placeholder="Оберіть ВНЗ (українською)">
+                        <option value=""></option>
+                        <?php foreach($schools as $school): ?>
+                            <option value="<?=$school->_id?>"><?=$school->fullNameUk?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
                     <div style="margin-left: -3px;">
                         <?php $this->widget('common.lib.recaptcha.EReCaptcha', array(
                             'language'  => 'en_EN',

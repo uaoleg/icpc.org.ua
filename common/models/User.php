@@ -62,6 +62,11 @@ class User extends \common\ext\MongoDb\Document
     public $coordinator;
 
     /**
+     * School ID
+     */
+    public $schoolId;
+
+    /**
      * Date created
      * @var int
      */
@@ -104,6 +109,7 @@ class User extends \common\ext\MongoDb\Document
             'hash'          => \yii::t('app', 'Password hash'),
             'type'          => \yii::t('app', 'Type'),
             'coordinator'   => \yii::t('app', 'Coordination type'),
+            'schoolId'      => \yii::t('app', 'School'),
             'dateCreated'   => \yii::t('app', 'Registration date'),
         ));
     }
@@ -116,7 +122,7 @@ class User extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('firstName, lastName, email, dateCreated', 'required'),
+            array('firstName, lastName, email, schoolId, dateCreated', 'required'),
             array('email', 'email'),
             array('email', 'unique'),
             array('firstName, lastName', 'length', 'max' => 100),

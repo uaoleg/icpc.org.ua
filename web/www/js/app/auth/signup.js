@@ -77,9 +77,11 @@ function appAuthSignup() {
     });
 
     /**
-     * Sort states
+     * Init Select2
      */
-    $('.dropdown-menu.dropdown-sorted').sortList();
+    $('.form-group .form-control[name=schoolId]').select2({
+        'width': 'resolve'
+    });
 
     /**
      * Signup request
@@ -96,6 +98,7 @@ function appAuthSignup() {
                 email:          $('.form-group .form-control[name=email]').val(),
                 password:       $('.form-group .form-control[name=password]').val(),
                 passwordRepeat: $('.form-group .form-control[name=passwordRepeat]').val(),
+                schoolId:       $('.form-group .form-control[name=schoolId]').val(),
                 type:           $('.form-group .btn.active [name=type]').val(),
                 coordinator:    $('.form-group .btn.active [name=coordinator]').val(),
                 rulesAgree:     $('.form-group [name=rulesAgree]').is(':checked') ? 1 : 0,
