@@ -36,7 +36,15 @@ class News extends \common\ext\MongoDb\Document
     public $isPublished = false;
 
     /**
+     * Year created
+     * @see beforeValidate()
+     * @var int
+     */
+    public $yearCreated;
+
+    /**
      * Date created
+     * @see beforeValidate()
      * @var int
      */
     public $dateCreated;
@@ -57,7 +65,8 @@ class News extends \common\ext\MongoDb\Document
             'title'         => \yii::t('app', 'Title'),
             'content'       => \yii::t('app', 'Content'),
             'isPublished'   => \yii::t('app', 'Is published'),
-            'dateCreated'   => \yii::t('app', 'Registration date'),
+            'yearCreated'   => \yii::t('app', 'Year date'),
+            'dateCreated'   => \yii::t('app', 'Date date'),
         ));
     }
 
@@ -69,7 +78,7 @@ class News extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, title, content, dateCreated', 'required'),
+            array('lang, title, content, yearCreated, dateCreated', 'required'),
             array('title', 'length', 'max' => 300),
             array('content', 'length', 'max' => 5000),
         ));
@@ -98,10 +107,11 @@ class News extends \common\ext\MongoDb\Document
                     'commonId' => \EMongoCriteria::SORT_ASC,
                 ),
             ),
-            'isPublished_lang_dateCreated' => array(
+            'isPublished_lang_yearCreated_dateCreated' => array(
                 'key' => array(
                     'isPublished'   => \EMongoCriteria::SORT_ASC,
                     'lang'          => \EMongoCriteria::SORT_ASC,
+                    'yearCreated'   => \EMongoCriteria::SORT_DESC,
                     'dateCreated'   => \EMongoCriteria::SORT_DESC,
                 ),
             ),
@@ -126,6 +136,11 @@ class News extends \common\ext\MongoDb\Document
         // Set created date
         if ($this->dateCreated == null) {
             $this->dateCreated = time();
+        }
+
+        // Set year created
+        if ($this->attributeHasChanged('dateCreated')) {
+            $this->yearCreated = (int)date('Y', $this->dateCreated);
         }
 
         return true;

@@ -27,8 +27,16 @@ class NewsController extends \web\ext\Controller
     public function actionLatest()
     {
         // Get params
+        $year       = (int)$this->request->getParam('year', date('Y'));
         $page       = (int)$this->request->getParam('page', 1);
         $perPage    = 5;
+
+        // Year range
+        if (($year < \yii::app()->params['yearFirst']) || ($year > date('Y'))) {
+            $year = (int)date('Y');
+        }
+
+        // Page range
         if ($page < 1) {
             $page = 1;
         }
@@ -37,6 +45,7 @@ class NewsController extends \web\ext\Controller
         $criteria = new \EMongoCriteria();
         $criteria
             ->addCond('lang', '==', \yii::app()->language)
+            ->addCond('yearCreated', '==', $year)
             ->sort('dateCreated', \EMongoCriteria::SORT_DESC)
             ->offset(($page - 1) * $perPage)
             ->limit($perPage);
@@ -54,6 +63,7 @@ class NewsController extends \web\ext\Controller
         // Render view
         $this->render('latest', array(
             'newsList'      => $newsList,
+            'year'          => $year,
             'page'          => $page,
             'newsCount'     => $newsCount,
             'totalCount'    => $totalCount,

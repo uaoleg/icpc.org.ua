@@ -1,9 +1,41 @@
+<script>
+    $(document).ready(function() {
+        $('.dropdown').dropdownSelect();
+    });
+</script>
+
 <?php if (\yii::app()->user->checkAccess('newsCreate')): ?>
     <a href="<?=$this->createUrl('/staff/news/edit')?>" class="btn btn-success btn-lg">
         <?=\yii::t('app', 'Add News')?>
     </a>
     <hr />
 <?php endif; ?>
+
+<div class="btn-group pull-right">
+    <?php if (\yii::app()->params['yearFirst'] < date('Y')): ?>
+        <button class="btn btn-default active dropdown-toggle" data-toggle="dropdown">
+            <?=\yii::t('app', '{year} year', array(
+                '{year}' => $year,
+            ))?>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <?php foreach (range(date('Y'), \yii::app()->params['yearFirst']) as $_year): ?>
+                <?php if ($year === $_year) continue; ?>
+                <li><a href="<?=$this->createUrl('', array('year' => $_year))?>"><?=\yii::t('app', '{year} year', array(
+                    '{year}' => $_year,
+                ))?></a></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <button class="btn btn-default active" data-toggle="dropdown">
+            <?=\yii::t('app', '{year} year', array(
+                '{year}' => date('Y'),
+            ))?>
+        </button>
+    <?php endif; ?>
+</div>
+
 
 <?php foreach ($newsList as $news): ?>
     <div class="news">
@@ -42,5 +74,12 @@
     </div>
 <?php endif; ?>
 
-
-
+<?php if (($page >= $pageCount) && ($year > \yii::app()->params['yearFirst'])): ?>
+    <div style="text-align: center;">
+        <a class="btn btn-default" href="<?=$this->createUrl('', array('year' => $year - 1))?>">
+            <?=\yii::t('app', 'News for the previous year: {year}', array(
+                '{year}' => $year - 1,
+            ))?>
+        </a>
+    </div>
+<?php endif; ?>
