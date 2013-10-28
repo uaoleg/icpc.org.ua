@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <select id="schoolName" name="schoolName" class="form-control" data-placeholder="Оберіть ВНЗ...">
+                    <select id="schoolName" name="schoolName" class="form-control" data-placeholder="Оберіть ВНЗ (українською)">
                         <option value=""></option>
                         <?php foreach($schools as $school): ?>
                             <option value="<?=$school->_id?>"><?=$school->fullNameUk?></option>
