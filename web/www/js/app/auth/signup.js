@@ -77,9 +77,9 @@ function appAuthSignup() {
     });
 
     /**
-     * Sort states
+     * Init Select2
      */
-    $('.dropdown-menu.dropdown-sorted').sortList();
+    $('.form-group .form-control[name=school]').select2();
 
     /**
      * Signup request
@@ -96,7 +96,7 @@ function appAuthSignup() {
                 email:          $('.form-group .form-control[name=email]').val(),
                 password:       $('.form-group .form-control[name=password]').val(),
                 passwordRepeat: $('.form-group .form-control[name=passwordRepeat]').val(),
-                schoolName:     $('.form-group .form-control[name=schoolName]').val(),
+                school:         $('.form-group .form-control[name=school]').val(),
                 type:           $('.form-group .btn.active [name=type]').val(),
                 coordinator:    $('.form-group .btn.active [name=coordinator]').val(),
                 rulesAgree:     $('.form-group [name=rulesAgree]').is(':checked') ? 1 : 0,

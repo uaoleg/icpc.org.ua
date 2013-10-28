@@ -66,7 +66,7 @@ $config = array(
                 ),
                 'respond' => array(
                     'js' => array(
-                        'lib/Respond/respond.min.js'
+                        'lib/Respond/respond.min.js',
                     ),
                     'css' => array(
                     ),
@@ -75,14 +75,14 @@ $config = array(
 
                 'select2' => array(
                     'js' => array(
-                        'lib/select2/select2.js'
+                        'lib/select2/select2.js',
                     ),
                     'css' => array(
                         'lib/select2/select2.css',
                         'lib/select2/select2-bootstrap.css'
                     ),
                     'depends' => array(
-                        'jquery'
+                        'jquery',
                     )
                 )
 

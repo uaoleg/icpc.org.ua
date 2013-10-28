@@ -2,8 +2,8 @@
 
 namespace web\controllers;
 
-use \common\models\User,
-    \common\models\School as School;
+use \common\models\School,
+    \common\models\User;
 
 class AuthController extends \web\ext\Controller
 {
