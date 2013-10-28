@@ -79,7 +79,9 @@ function appAuthSignup() {
     /**
      * Init Select2
      */
-    $('.form-group .form-control[name=schoolId]').select2();
+    $('.form-group .form-control[name=schoolId]').select2({
+        'width': 'resolve'
+    });
 
     /**
      * Signup request
