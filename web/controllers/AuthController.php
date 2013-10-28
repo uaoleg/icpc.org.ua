@@ -2,7 +2,8 @@
 
 namespace web\controllers;
 
-use \common\models\User;
+use \common\models\User,
+    \common\models\School as School;
 
 class AuthController extends \web\ext\Controller
 {
@@ -249,6 +250,10 @@ class AuthController extends \web\ext\Controller
      */
     public function actionSignup()
     {
+        // Get list of schools
+        $criteria = new \EMongoCriteria();
+        $schools = School::model()->findAll($criteria);
+
         // Get params
         $firstName      = $this->request->getPost('firstName');
         $lastName       = $this->request->getPost('lastName');
@@ -310,6 +315,7 @@ class AuthController extends \web\ext\Controller
                 'password'          => $password,
                 'passwordRepeat'    => $passwordRepeat,
                 'rulesAgree'        => $rulesAgree,
+                'schools'           => $schools
             ));
         }
     }

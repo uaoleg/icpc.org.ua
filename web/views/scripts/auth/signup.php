@@ -3,6 +3,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         new appAuthSignup();
+        $('#schoolName').select2();
     });
 </script>
 
@@ -56,6 +57,13 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
+                    <select id="schoolName" name="schoolName" class="form-control">
+                        <?php foreach($schools as $school): ?>
+                            <option value="<?=$school->_id?>"><?=$school->fullNameUk?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="form-group">
                     <div style="margin-left: -3px;">

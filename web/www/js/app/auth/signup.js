@@ -96,6 +96,7 @@ function appAuthSignup() {
                 email:          $('.form-group .form-control[name=email]').val(),
                 password:       $('.form-group .form-control[name=password]').val(),
                 passwordRepeat: $('.form-group .form-control[name=passwordRepeat]').val(),
+                schoolName:     $('.form-group .form-control[name=schoolName]').val(),
                 type:           $('.form-group .btn.active [name=type]').val(),
                 coordinator:    $('.form-group .btn.active [name=coordinator]').val(),
                 rulesAgree:     $('.form-group [name=rulesAgree]').is(':checked') ? 1 : 0,
