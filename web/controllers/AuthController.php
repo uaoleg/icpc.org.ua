@@ -250,11 +250,6 @@ class AuthController extends \web\ext\Controller
      */
     public function actionSignup()
     {
-        // Get list of schools
-        $criteria = new \EMongoCriteria();
-        $criteria->sort('fullNameUk', \EMongoCriteria::SORT_ASC);
-        $schools = School::model()->findAll($criteria);
-
         // Get params
         $firstName      = $this->request->getPost('firstName');
         $lastName       = $this->request->getPost('lastName');
@@ -263,6 +258,7 @@ class AuthController extends \web\ext\Controller
         $passwordRepeat = $this->request->getPost('passwordRepeat');
         $type           = $this->request->getPost('type');
         $coordinator    = $this->request->getPost('coordinator');
+        $schoolId       = $this->request->getPost('schoolId');
         $rulesAgree     = (bool)$this->request->getPost('rulesAgree');
 
         // Register a new user
@@ -276,6 +272,7 @@ class AuthController extends \web\ext\Controller
                 'email'         => $email,
                 'type'          => $type,
                 'coordinator'   => $coordinator,
+                'schoolId'      => $schoolId,
             ), false);
             $user->validate();
             $user->setPassword($password, $passwordRepeat);
@@ -307,8 +304,15 @@ class AuthController extends \web\ext\Controller
             ));
         }
 
-        // Render view
+        // Render page
         else {
+
+            // Get list of schools
+            $criteria = new \EMongoCriteria();
+            $criteria->sort('fullNameUk', \EMongoCriteria::SORT_ASC);
+            $schools = School::model()->findAll($criteria);
+
+            // Render view
             $this->render('signup', array(
                 'firstName'         => $firstName,
                 'lastName'          => $lastName,
