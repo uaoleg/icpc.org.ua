@@ -26,10 +26,42 @@ class UserController extends \web\ext\Controller
      */
     public function actionMe()
     {
-        // Render view
-        $this->render('me', array(
-            'user' => \yii::app()->user->getInstance(),
-        ));
+        $sessionUser = \yii::app()->user->getInstance();
+
+        $firstName             = $this->request->getPost('firstName');
+        $lastName              = $this->request->getPost('lastName');
+        $currentPassword       = $this->request->getPost('currentPassword');
+        $newPassword           = $this->request->getPost('newPassword');
+        $repeatNewPassword     = $this->request->getPost('repeatNewPassword');
+
+        $wrongPassword = false;
+        if ($this->request->isPostRequest) {
+            $criteria = array('_id' => $sessionUser->_id);
+            $user = User::model()->find($criteria);
+            $user->firstName   = $firstName;
+            $user->lastName    = $lastName;
+            if (!empty($currentPassword)) {
+                if ($user->checkPassword($currentPassword)) {
+                    $user->setPassword($newPassword, $repeatNewPassword);
+                } else {
+                    $wrongPassword = true;
+                }
+            }
+            $user->save();
+            if ($wrongPassword) {
+                $user->addError('currentPassword', \yii::t('app', 'Password is incorrect'));
+            }
+            $this->renderJson(array(
+                'errors' => $user->hasErrors() ? $user->getErrors() : false
+            ));
+        } else {
+            // Render view
+            $this->render('me', array(
+                'firstName' => $firstName ? $firstName : $sessionUser->firstName,
+                'lastName'  => $lastName ? $lastName : $sessionUser->lastName,
+                'email'     => $sessionUser->email,
+            ));
+        }
     }
 
 }
