@@ -2,7 +2,8 @@
 
 namespace web\controllers;
 
-use \common\models\User;
+use \common\models\User,
+    \common\models\School;
 
 class UserController extends \web\ext\Controller
 {
@@ -28,11 +29,12 @@ class UserController extends \web\ext\Controller
     {
         $sessionUser = \yii::app()->user->getInstance();
 
-        $firstName             = $this->request->getPost('firstName');
-        $lastName              = $this->request->getPost('lastName');
-        $currentPassword       = $this->request->getPost('currentPassword');
-        $newPassword           = $this->request->getPost('newPassword');
-        $repeatNewPassword     = $this->request->getPost('repeatNewPassword');
+        $firstName         = $this->request->getPost('firstName');
+        $lastName          = $this->request->getPost('lastName');
+        $currentPassword   = $this->request->getPost('currentPassword');
+        $newPassword       = $this->request->getPost('newPassword');
+        $repeatNewPassword = $this->request->getPost('repeatNewPassword');
+        $schoolId          = $this->request->getPost('schoolId');
 
         $wrongPassword = false;
         if ($this->request->isPostRequest) {
@@ -40,6 +42,7 @@ class UserController extends \web\ext\Controller
             $user = User::model()->find($criteria);
             $user->firstName   = $firstName;
             $user->lastName    = $lastName;
+            $user->schoolId    = $schoolId;
             if (!empty($currentPassword)) {
                 if ($user->checkPassword($currentPassword)) {
                     $user->setPassword($newPassword, $repeatNewPassword);
@@ -55,14 +58,20 @@ class UserController extends \web\ext\Controller
                 'errors' => $user->hasErrors() ? $user->getErrors() : false
             ));
         } else {
+            // Get list of schools
+            $criteria = new \EMongoCriteria();
+            $criteria->sort('fullNameUk', \EMongoCriteria::SORT_ASC);
+            $schools = School::model()->findAll($criteria);
+
             // Render view
             $this->render('me', array(
                 'firstName' => $firstName ? $firstName : $sessionUser->firstName,
                 'lastName'  => $lastName ? $lastName : $sessionUser->lastName,
                 'email'     => $sessionUser->email,
+                'schoolId'  => $schoolId ? $schoolId : $sessionUser->schoolId,
+                'schools'   => $schools
             ));
         }
     }
 
 }
-

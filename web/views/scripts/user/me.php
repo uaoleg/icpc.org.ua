@@ -27,6 +27,19 @@
                         <label><?=\yii::t('app', 'Email')?></label>
                         <p class="form-control-static"><?=$email?></p>
                     </div>
+
+                    <div class="form-group">
+                        <label><?=\yii::t('app', 'School name')?></label>
+                        <select class="form-control" name="schoolId" id="schoolId" data-placeholder="Оберіть ВНЗ (українською)">
+                            <option value=""></option>
+                            <?php foreach($schools as $school): ?>
+                                <option value="<?=$school->_id?>"<?php if($schoolId==$school->_id):?> selected<?php endif;?>>
+                                    <?=$school->fullNameUk?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label for="currentPassword"><?=\yii::t('app', 'Current password (if you want to change it)')?></label>
                         <input type="password" class="form-control input-sm" id="currentPassword" name="currentPassword">
@@ -39,10 +52,10 @@
                         <label for="repeatNewPassword"><?=\yii::t('app', 'Repeat new password')?></label>
                         <input type="password" class="form-control input-sm" id="repeatNewPassword" name="repeatNewPassword">
                     </div>
+
                     <div class="form-group">
                         <button class="btn btn-lg btn-primary btn-save"><?=\yii::t('app', 'Save')?></button>
                     </div>
-
                 </div>
             </div>
 
