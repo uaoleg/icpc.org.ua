@@ -286,8 +286,7 @@ class User extends \common\ext\MongoDb\Document
      */
     public function checkPassword($password)
     {
-        $isValid = (crypt($password, $this->hash) == $this->hash);
-        return $isValid;
+        return (crypt($password, $this->hash) === $this->hash);
     }
 
 }
