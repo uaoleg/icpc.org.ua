@@ -201,7 +201,7 @@ class User extends \common\ext\MongoDb\Document
     protected function afterSave()
     {
         // Revoke coordination roles if it was changed
-        if ((!$this->_isFirstTimeSaved) && ($this->attributeHasChanged('coordinator'))) {
+        if ((!$this->_isFirstTimeSaved) && ($this->attributeHasChanged('coordinator')) && ($this->attributeHasChanged('type'))) {
             \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_STATE, $this->_id);
             \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_REGION, $this->_id);
             \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_UKRAINE, $this->_id);
