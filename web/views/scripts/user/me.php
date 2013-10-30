@@ -10,7 +10,7 @@
         <div class="panel panel-primary">
 
             <div class="panel-heading">
-                Info
+                <?=\yii::t('app', 'Profile info')?>
             </div>
 
             <div class="panel-body">
@@ -38,6 +38,34 @@
                                 </option>
                             <?php endforeach; ?>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <div name="role" class="clearfix" style="margin-bottom: -20px;">
+                            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                                <a class="btn btn-default<?php if($type==='student'):?> active<?php endif;?>">
+                                    <input type="checkbox" name="type" value="student">
+                                    I'm a student                            </a>
+                                <a class="btn btn-default<?php if($type==='coach'):?> active<?php endif;?>">
+                                    <input type="checkbox" name="type" value="coach">
+                                    I'm a coach                            </a>
+                                <a class="btn btn-default<?php if($type==='coach'):?> active<?php endif;?>">
+                                    <input type="checkbox" name="coordinator" value="coordinator_region">
+                                    <span class="caption"><?=$coordinator?></span>
+                                    <span class="caret"></span>
+                                </a>
+                            </div>
+                            <div class="btn-group" style="margin-top: -17px; width: 100%;">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"></a>
+                                    <ul class="dropdown-menu pull-right" role="menu" style="display: none;">
+                                        <li><a href="#" data-val="coordinator_ukraine">Ukraine</a></li>
+                                        <li><a href="#" data-val="coordinator_region">Region</a></li>
+                                        <li><a href="#" data-val="coordinator_state">State</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">

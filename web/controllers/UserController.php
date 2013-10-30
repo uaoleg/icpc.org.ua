@@ -35,6 +35,8 @@ class UserController extends \web\ext\Controller
         $newPassword       = $this->request->getPost('newPassword');
         $repeatNewPassword = $this->request->getPost('repeatNewPassword');
         $schoolId          = $this->request->getPost('schoolId');
+        $type              = $this->request->getPost('type');
+        $coordinator       = $this->request->getPost('coordinator');
 
         $wrongPassword = false;
         if ($this->request->isPostRequest) {
@@ -43,6 +45,8 @@ class UserController extends \web\ext\Controller
             $user->firstName   = $firstName;
             $user->lastName    = $lastName;
             $user->schoolId    = $schoolId;
+            $user->type        = $type;
+            $user->coordinator = $coordinator;
             if (!empty($currentPassword)) {
                 if ($user->checkPassword($currentPassword)) {
                     $user->setPassword($newPassword, $repeatNewPassword);
@@ -62,14 +66,15 @@ class UserController extends \web\ext\Controller
             $criteria = new \EMongoCriteria();
             $criteria->sort('fullNameUk', \EMongoCriteria::SORT_ASC);
             $schools = School::model()->findAll($criteria);
-
             // Render view
             $this->render('me', array(
-                'firstName' => $firstName ? $firstName : $sessionUser->firstName,
-                'lastName'  => $lastName ? $lastName : $sessionUser->lastName,
-                'email'     => $sessionUser->email,
-                'schoolId'  => $schoolId ? $schoolId : $sessionUser->schoolId,
-                'schools'   => $schools
+                'firstName'   => $firstName ? $firstName : $sessionUser->firstName,
+                'lastName'    => $lastName ? $lastName : $sessionUser->lastName,
+                'email'       => $sessionUser->email,
+                'schoolId'    => $schoolId ? $schoolId : $sessionUser->schoolId,
+                'type'        => $type ? $type : $sessionUser->type,
+                'coordinator' => isset($sessionUser->coordinator) ? ucfirst(substr($sessionUser->coordinator, 12)) : 'Coordinator',
+                'schools'     => $schools
             ));
         }
     }
