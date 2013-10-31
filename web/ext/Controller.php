@@ -107,11 +107,15 @@ class Controller extends \CController
      */
     public function getYear()
     {
-        // Get user's settings
-        $settings = \yii::app()->user->getInstance()->settings;
+        // Get saved year
+        if (\yii::app()->user->isGuest) {
+            $defaultYear = \yii::app()->user->getState('year');
+        } else {
+            $defaultYear = \yii::app()->user->getInstance()->settings->year;
+        }
 
         // Get params
-        $year = (int)$this->request->getParam('year', $settings->year);
+        $year = (int)$this->request->getParam('year', $defaultYear);
 
         // Check range
         if (($year < \yii::app()->params['yearFirst']) || ($year > date('Y'))) {
@@ -136,8 +140,13 @@ class Controller extends \CController
         }
 
         // Save the year to the user's settings
-        $settings->year = $year;
-        $settings->save();
+        if (\yii::app()->user->isGuest) {
+            \yii::app()->user->setState('year', $year);
+        } else {
+            $settings = \yii::app()->user->getInstance()->settings;
+            $settings->year = $year;
+            $settings->save();
+        }
 
         return $year;
     }
