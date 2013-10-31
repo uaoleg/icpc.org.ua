@@ -1,6 +1,7 @@
 /* Table of Contents:
 
     Button group
+    Checkbox
     Dropdown
     Navbar
     Panel
@@ -13,6 +14,14 @@
 .btn-group-justified .btn {
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* Checkbox
+----------------------------------------------------------------------------- */
+
+.checkbox input[type=checkbox],
+.checkbox-inline input[type=checkbox] {
+    margin-top: 4px; /* Fix for IE*/
 }
 
 /* Dropdown

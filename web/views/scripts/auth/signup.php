@@ -76,7 +76,7 @@
                 <div class="form-group">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="rulesAgree" class="checkbox" <?=$rulesAgree ? 'checked' : ''?> />
+                            <input type="checkbox" name="rulesAgree" <?=$rulesAgree ? 'checked' : ''?> />
                             <?=\yii::t('app', 'I agree with rules of the service')?>
                         </label>
                     </div>
