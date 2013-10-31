@@ -27,6 +27,7 @@ class UserController extends \web\ext\Controller
      */
     public function actionMe()
     {
+
         $sessionUser = \yii::app()->user->getInstance();
 
         $firstName         = $this->request->getPost('firstName');
@@ -37,16 +38,18 @@ class UserController extends \web\ext\Controller
         $schoolId          = $this->request->getPost('schoolId');
         $type              = $this->request->getPost('type');
         $coordinator       = $this->request->getPost('coordinator');
+        $user = \yii::app()->user->getInstance();
 
         $wrongPassword = false;
         if ($this->request->isPostRequest) {
-            $criteria = array('_id' => $sessionUser->_id);
-            $user = User::model()->find($criteria);
-            $user->firstName   = $firstName;
-            $user->lastName    = $lastName;
-            $user->schoolId    = $schoolId;
-            $user->type        = $type;
-            $user->coordinator = $coordinator;
+
+            $user->setAttributes(array(
+                'firstName'   => $firstName,
+                'lastName'    => $lastName,
+                'schoolId'    => $schoolId,
+                'type'        => $type,
+                'coordinator' => $coordinator
+            ), false);
             if (!empty($currentPassword)) {
                 if ($user->checkPassword($currentPassword)) {
                     $user->setPassword($newPassword, $repeatNewPassword);
@@ -68,12 +71,12 @@ class UserController extends \web\ext\Controller
             $schools = School::model()->findAll($criteria);
             // Render view
             $this->render('me', array(
-                'firstName'   => $firstName ? $firstName : $sessionUser->firstName,
-                'lastName'    => $lastName ? $lastName : $sessionUser->lastName,
-                'email'       => $sessionUser->email,
-                'schoolId'    => $schoolId ? $schoolId : $sessionUser->schoolId,
-                'type'        => $type ? $type : $sessionUser->type,
-                'coordinator' => isset($sessionUser->coordinator) ? ucfirst(substr($sessionUser->coordinator, 12)) : 'Coordinator',
+                'firstName'   => $user->firstName,
+                'lastName'    => $user->lastName,
+                'email'       => $user->email,
+                'schoolId'    => $user->schoolId,
+                'type'        => $user->type,
+                'coordinator' => isset($user->coordinator) ? ucfirst(substr($user->coordinator, 12)) : 'Coordinator',
                 'schools'     => $schools
             ));
         }

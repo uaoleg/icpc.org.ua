@@ -72,9 +72,7 @@ function appUserMe() {
             $form = $this.closest('.form');
         $this.prop('disabled', true);
         $.ajax({
-            cache: false,
             url: app.baseUrl + '/user/me',
-            type: 'POST',
             data: {
                 firstName:             $('#firstName').val(),
                 lastName:              $('#lastName').val(),

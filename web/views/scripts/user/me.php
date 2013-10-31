@@ -43,13 +43,13 @@
                     <div class="form-group">
                         <div name="role" class="clearfix" style="margin-bottom: -20px;">
                             <div class="btn-group btn-group-justified" data-toggle="buttons">
-                                <a class="btn btn-default<?php if($type==='student'):?> active<?php endif;?>">
+                                <a class="btn btn-default<?php if ($type === \common\models\User::ROLE_STUDENT):?> active<?php endif;?>">
                                     <input type="checkbox" name="type" value="student">
                                     I'm a student                            </a>
-                                <a class="btn btn-default<?php if($type==='coach'):?> active<?php endif;?>">
+                                <a class="btn btn-default<?php if ($type === \common\models\User::ROLE_COACH):?> active<?php endif;?>">
                                     <input type="checkbox" name="type" value="coach">
                                     I'm a coach                            </a>
-                                <a class="btn btn-default<?php if($type==='coach'):?> active<?php endif;?>">
+                                <a class="btn btn-default<?php if ($type === \common\models\User::ROLE_COACH):?> active<?php endif;?>">
                                     <input type="checkbox" name="coordinator" value="coordinator_region">
                                     <span class="caption"><?=$coordinator?></span>
                                     <span class="caret"></span>
