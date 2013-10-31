@@ -27,14 +27,9 @@ class NewsController extends \web\ext\Controller
     public function actionLatest()
     {
         // Get params
-        $year       = (int)$this->request->getParam('year', date('Y'));
+        $year       = $this->getYear();
         $page       = (int)$this->request->getParam('page', 1);
         $perPage    = 5;
-
-        // Year range
-        if (($year < \yii::app()->params['yearFirst']) || ($year > date('Y'))) {
-            $year = (int)date('Y');
-        }
 
         // Page range
         if ($page < 1) {
@@ -42,17 +37,9 @@ class NewsController extends \web\ext\Controller
         }
 
         // Get list of news
-        $criteria = new \EMongoCriteria();
-        $criteria
-            ->addCond('lang', '==', \yii::app()->language)
-            ->addCond('yearCreated', '==', $year)
-            ->sort('dateCreated', \EMongoCriteria::SORT_DESC)
-            ->offset(($page - 1) * $perPage)
-            ->limit($perPage);
-        if (!\yii::app()->user->checkAccess('newsUpdate')) {
-            $criteria->addCond('isPublished', '==', true);
-        }
-        $newsList = News::model()->findAll($criteria);
+        $newsList = News::model()
+            ->scopeByLatest($year, !\yii::app()->user->checkAccess('newsUpdate'), $page, $perPage)
+            ->findAll();
         $newsCount  = $newsList->count(true);
         $totalCount = $newsList->count(false);
         $pageCount  = ceil($totalCount / $perPage);

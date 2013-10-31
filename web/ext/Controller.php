@@ -2,6 +2,8 @@
 
 namespace web\ext;
 
+use \common\models\News;
+
 /**
  * Base controller
  *
@@ -96,6 +98,48 @@ class Controller extends \CController
         }
         $json = \CJSON::encode($data);
         return \CHtml::encode($json);
+    }
+
+    /**
+     * Returns year (News, Results, etc.)
+     *
+     * @return int
+     */
+    public function getYear()
+    {
+        // Get user's settings
+        $settings = \yii::app()->user->getInstance()->settings;
+
+        // Get params
+        $year = (int)$this->request->getParam('year', $settings->year);
+
+        // Check range
+        if (($year < \yii::app()->params['yearFirst']) || ($year > date('Y'))) {
+            $year = 0;
+        }
+
+        // Get default value
+        if ($year === 0) {
+            $year = (int)date('Y');
+            switch ($this->id) {
+                // Find latest year with news
+                case 'news':
+                    $publishedOnly = !\yii::app()->user->checkAccess('newsUpdate');
+                    while (News::model()->scopeByLatest($year, $publishedOnly)->count() === 0) {
+                        $year--;
+                        if ($year <= \yii::app()->params['yearFirst']) {
+                            break;
+                        }
+                    };
+                    break;
+            }
+        }
+
+        // Save the year to the user's settings
+        $settings->year = $year;
+        $settings->save();
+
+        return $year;
     }
 
     /**
