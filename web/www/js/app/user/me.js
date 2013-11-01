@@ -80,8 +80,8 @@ function appUserMe() {
                 currentPassword:       $('#currentPassword').val(),
                 type:                  $('.form-group .btn.active [name=type]').val(),
                 coordinator:           $('.form-group .btn.active [name=coordinator]').val(),
-                newPassword:           $('#newPassword').val(),
-                repeatNewPassword:     $('#repeatNewPassword').val()
+                password:              $('#password').val(),
+                passwordRepeat:        $('#passwordRepeat').val()
             },
             success: function(response) {
                 appShowErrors(response.errors, $form);

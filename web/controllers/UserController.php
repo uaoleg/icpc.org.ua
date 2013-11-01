@@ -30,14 +30,13 @@ class UserController extends \web\ext\Controller
         $firstName         = $this->request->getPost('firstName');
         $lastName          = $this->request->getPost('lastName');
         $currentPassword   = $this->request->getPost('currentPassword');
-        $newPassword       = $this->request->getPost('newPassword');
-        $repeatNewPassword = $this->request->getPost('repeatNewPassword');
+        $password          = $this->request->getPost('password');
+        $passwordRepeat    = $this->request->getPost('passwordRepeat');
         $schoolId          = $this->request->getPost('schoolId');
         $type              = $this->request->getPost('type');
         $coordinator       = $this->request->getPost('coordinator');
         $user = \yii::app()->user->getInstance();
 
-        $wrongPassword = false;
         if ($this->request->isPostRequest) {
 
             $user->setAttributes(array(
@@ -47,17 +46,19 @@ class UserController extends \web\ext\Controller
                 'type'        => $type,
                 'coordinator' => $coordinator
             ), false);
-            if (!empty($currentPassword)) {
+            if (!empty($password)) {
                 if ($user->checkPassword($currentPassword)) {
-                    $user->setPassword($newPassword, $repeatNewPassword);
+                    $user->setPassword($password, $passwordRepeat);
+                    if (!$user->hasErrors()) {
+                        $user->save();
+                    }
                 } else {
-                    $wrongPassword = true;
+                    $user->addError('currentPassword', \yii::t('app', '{attr} is incorrect', array(
+                        '{attr}' => $user->getAttributeLabel('password')
+                    )));
                 }
             }
-            $user->save();
-            if ($wrongPassword) {
-                $user->addError('currentPassword', \yii::t('app', 'Password is incorrect'));
-            }
+
             $this->renderJson(array(
                 'errors' => $user->hasErrors() ? $user->getErrors() : false
             ));

@@ -33,7 +33,7 @@
                         <select class="form-control" name="schoolId" id="schoolId" data-placeholder="Оберіть ВНЗ (українською)">
                             <option value=""></option>
                             <?php foreach($schools as $school): ?>
-                                <option value="<?=$school->_id?>"<?=($schoolId === $school->_id) ? ' selected' : ''?>>
+                                <option value="<?=$school->_id?>"<?=($schoolId == $school->_id) ? ' selected' : ''?>>
                                     <?=$school->fullNameUk?>
                                 </option>
                             <?php endforeach; ?>
@@ -73,12 +73,12 @@
                         <input type="password" class="form-control input-sm" id="currentPassword" name="currentPassword">
                     </div>
                     <div class="form-group">
-                        <label for="newPassword"><?=\yii::t('app', 'New password')?></label>
-                        <input type="password" class="form-control input-sm" id="newPassword" name="newPassword">
+                        <label for="password"><?=\yii::t('app', 'New password')?></label>
+                        <input type="password" class="form-control input-sm" id="password" name="password">
                     </div>
                     <div class="form-group">
-                        <label for="repeatNewPassword"><?=\yii::t('app', 'Repeat new password')?></label>
-                        <input type="password" class="form-control input-sm" id="repeatNewPassword" name="repeatNewPassword">
+                        <label for="passwordRepeat"><?=\yii::t('app', 'Repeat new password')?></label>
+                        <input type="password" class="form-control input-sm" id="passwordRepeat" name="passwordRepeat">
                     </div>
 
                     <div class="form-group">
