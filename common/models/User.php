@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use \common\models\School;
+
 /**
  * User
  *
@@ -94,6 +96,12 @@ class User extends \common\ext\MongoDb\Document
      * School ID
      */
     public $schoolId;
+
+    /**
+     * User's school
+     * @var School
+     */
+    protected $_school;
 
     /**
      * Date created
@@ -249,6 +257,18 @@ class User extends \common\ext\MongoDb\Document
             }
         }
         return $this->_info;
+    }
+
+    /**
+     * Returns user's school
+     * @return School
+     */
+    public function getSchool()
+    {
+        if (!isset($this->_school)) {
+            $this->_school = School::model()->findByPk(new \MongoId($this->schoolId));
+        }
+        return $this->_school;
     }
 
     /**

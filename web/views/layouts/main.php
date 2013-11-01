@@ -112,6 +112,21 @@
                                 'caption'   => \yii::t('app', 'Langs'),
                                 'rbac'      => \common\models\User::ROLE_ADMIN,
                             ),
+                            'team' => array(
+                                'href'     => $this->createUrl('/team'),
+                                'caption'  => \yii::t('app', 'Teams'),
+                                'rbac'     => \common\models\User::ROLE_COACH,
+                                'itemList' => array(
+                                    'list' => array(
+                                        'href'    => $this->createUrl('/team/list'),
+                                        'caption' => \yii::t('app', 'List')
+                                    ),
+                                    'create' => array(
+                                        'href'    => $this->createUrl('/team/create'),
+                                        'caption' => \yii::t('app', 'Create')
+                                    )
+                                )
+                            )
                         ),
                     )); ?>
                     <ul class="nav navbar-nav navbar-right">
