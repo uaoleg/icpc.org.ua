@@ -33,7 +33,7 @@
                         <select class="form-control" name="schoolId" id="schoolId" data-placeholder="Оберіть ВНЗ (українською)">
                             <option value=""></option>
                             <?php foreach($schools as $school): ?>
-                                <option value="<?=$school->_id?>"<?php if($schoolId==$school->_id):?> selected<?php endif;?>>
+                                <option value="<?=$school->_id?>"<?=($schoolId === $school->_id) ? ' selected' : ''?>>
                                     <?=$school->fullNameUk?>
                                 </option>
                             <?php endforeach; ?>
@@ -43,13 +43,13 @@
                     <div class="form-group">
                         <div name="role" class="clearfix" style="margin-bottom: -20px;">
                             <div class="btn-group btn-group-justified" data-toggle="buttons">
-                                <a class="btn btn-default<?php if ($type === \common\models\User::ROLE_STUDENT):?> active<?php endif;?>">
+                                <a class="btn btn-default<?=($type === \common\models\User::ROLE_STUDENT) ? ' active' : ''?>">
                                     <input type="checkbox" name="type" value="student">
                                     I'm a student                            </a>
-                                <a class="btn btn-default<?php if ($type === \common\models\User::ROLE_COACH):?> active<?php endif;?>">
+                                <a class="btn btn-default<?=($type === \common\models\User::ROLE_COACH) ? ' active' : '' ?>">
                                     <input type="checkbox" name="type" value="coach">
                                     I'm a coach                            </a>
-                                <a class="btn btn-default<?php if ($type === \common\models\User::ROLE_COACH):?> active<?php endif;?>">
+                                <a class="btn btn-default<?=($type === \common\models\User::ROLE_COACH) ? ' active' : ''?>">
                                     <input type="checkbox" name="coordinator" value="coordinator_region">
                                     <span class="caption"><?=$coordinator?></span>
                                     <span class="caret"></span>

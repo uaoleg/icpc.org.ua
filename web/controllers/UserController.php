@@ -27,9 +27,6 @@ class UserController extends \web\ext\Controller
      */
     public function actionMe()
     {
-
-        $sessionUser = \yii::app()->user->getInstance();
-
         $firstName         = $this->request->getPost('firstName');
         $lastName          = $this->request->getPost('lastName');
         $currentPassword   = $this->request->getPost('currentPassword');
