@@ -69,12 +69,10 @@ function appUserMe() {
 
     $('.btn-save').on('click', function() {
         var $this = $(this),
-            $form = $this.closest('.form');
+            $form = $this.closest('.form-horizontal');
         $this.prop('disabled', true);
         $.ajax({
-            cache: false,
             url: app.baseUrl + '/user/me',
-            type: 'POST',
             data: {
                 firstName:             $('#firstName').val(),
                 lastName:              $('#lastName').val(),
@@ -82,8 +80,8 @@ function appUserMe() {
                 currentPassword:       $('#currentPassword').val(),
                 type:                  $('.form-group .btn.active [name=type]').val(),
                 coordinator:           $('.form-group .btn.active [name=coordinator]').val(),
-                newPassword:           $('#newPassword').val(),
-                repeatNewPassword:     $('#repeatNewPassword').val()
+                password:              $('#password').val(),
+                passwordRepeat:        $('#passwordRepeat').val()
             },
             success: function(response) {
                 appShowErrors(response.errors, $form);

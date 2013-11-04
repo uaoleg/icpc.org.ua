@@ -7,6 +7,7 @@ namespace common\models;
  *
  * @property-read bool $isApprovedCoach
  * @property-read bool $isApprovedCoordinator
+ * @property-read User\Settings $settings
  */
 class User extends \common\ext\MongoDb\Document
 {
@@ -73,6 +74,12 @@ class User extends \common\ext\MongoDb\Document
     public $dateCreated;
 
     /**
+     * User's settings
+     * @var User\Settings
+     */
+    protected $_settings;
+
+    /**
      * Returns whether coach role is approved
      *
      * @return bool
@@ -90,6 +97,25 @@ class User extends \common\ext\MongoDb\Document
     public function getIsApprovedCoordinator()
     {
         return \yii::app()->authManager->checkAccess($this->coordinator, $this->_id);
+    }
+
+    /**
+     * Returns user's settings
+     *
+     * @return User\Settings
+     */
+    public function getSettings()
+    {
+        if ($this->_settings === null) {
+            $this->_settings = User\Settings::model()->findByAttributes(array(
+                'userId' => (string)$this->_id,
+            ));
+            if ($this->_settings === null) {
+                $this->_settings = new User\Settings();
+                $this->_settings->userId = (string)$this->_id;
+            }
+        }
+        return $this->_settings;
     }
 
     /**
@@ -201,7 +227,7 @@ class User extends \common\ext\MongoDb\Document
     protected function afterSave()
     {
         // Revoke coordination roles if it was changed
-        if ((!$this->_isFirstTimeSaved) && ($this->attributeHasChanged('coordinator')) && ($this->attributeHasChanged('type'))) {
+        if ((!$this->_isFirstTimeSaved) && (($this->attributeHasChanged('coordinator')) || ($this->attributeHasChanged('type')))) {
             \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_STATE, $this->_id);
             \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_REGION, $this->_id);
             \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_UKRAINE, $this->_id);

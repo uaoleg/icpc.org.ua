@@ -2,13 +2,13 @@ function appShowErrors(errors, $context) {
     if ($context === undefined) {
         $context = $('body');
     }
+    $('.form-group.has-error .help-block', $context).remove();
     $('.form-group', $context).removeClass('has-error');
-    $('.form-group .help-block', $context).remove();
     if (errors) {
         $.each(errors, function(key, value) {
             var $input,
                 $group,
-                $help = $('<div>');
+                $help;
             if (key === 'recaptcha') {
                 Recaptcha.reload();
                 $input = $('#recaptcha_widget_div');
@@ -16,8 +16,12 @@ function appShowErrors(errors, $context) {
                 $input = $('[name=' + key + ']', $context);
             }
             $group = $input.closest('.form-group');
-            $help.addClass('help-block').html(value).appendTo($group);
             $group.addClass('has-error');
+            $help = $('.help-block', $group);
+            if ($help.length === 0) {
+                $help = $('<div>').addClass('help-block').insertAfter($input);
+            }
+            $help.html(value);
         });
         $('.form-group.has-error:first input', $context).focus();
     }
