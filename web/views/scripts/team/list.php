@@ -1,5 +1,5 @@
 <ul>
-    <li>1</li>
-    <li>10</li>
-    <li>11</li>
+    <?php foreach ($teams as $team) : ?>
+        <li><?=CHtml::encode($team->name)?></li>
+    <?php endforeach; ?>
 </ul>

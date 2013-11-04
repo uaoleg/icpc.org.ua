@@ -5,7 +5,7 @@
 </script>
 
 <div class="row">
-    <div class="col-lg-5 col-lg-offset-1">
+    <div class="col-lg-6 col-lg-offset-3">
 
         <div class="panel panel-primary panel-school">
             <div class="panel-heading">
@@ -20,35 +20,104 @@
 
                 <div class="form-group">
 <!--                    <label>--><?//=\yii::t('app', 'Full name of university (ukrainian)')?><!--</label>-->
-                    <p class="form-control-static"><?=$school->fullNameUk?></p>
+                    <p class="form-control-static"><?=\CHtml::encode($school->fullNameUk)?></p>
                 </div>
 
                 <div class="form-group">
 <!--                    <label for="shortNameUk">--><?//=\yii::t('app', 'Short name of university (ukrainian)')?><!--</label>-->
                     <input type="text" class="form-control" id="shortNameUk" name="shortNameUk"
                            placeholder="<?=\yii::t('app', 'Short name of university (ukrainian)')?>"
-                           value="<?=$school->shortNameUk?>"
-                           <?=(!empty($school->shortNameUk)) ? ' disabled="disabled"' : ''?>>
+                           value="<?=\CHtml::encode($school->shortNameUk)?>"
+                           <?=(!empty($school->shortNameUk)) ? ' disabled' : ''?>>
                 </div>
 
                 <div class="form-group">
 <!--                    <label for="fullNameEn">--><?//=\yii::t('app', 'Full name of university (english)')?><!--</label>-->
                     <input type="text" class="form-control" id="fullNameEn" name="fullNameEn"
                            placeholder="<?=\yii::t('app', 'Full name of university (english)')?>"
-                           value="<?=$school->fullNameEn?>"
-                           <?=(!empty($school->fullNameEn)) ? ' disabled="disabled"' : ''?>>
+                           value="<?=\CHtml::encode($school->fullNameEn)?>"
+                           <?=(!empty($school->fullNameEn)) ? ' disabled' : ''?>>
                 </div>
 
                 <div class="form-group">
 <!--                    <label for="shortNameEn">--><?//=\yii::t('app', 'Short name of university (english)')?><!--</label>-->
-                    <input type="text" class="form-control" id="shortNameEn"
-                           name="shortNameEn" placeholder="<?=\yii::t('app', 'Short name of university (english)')?>"
-                           value="<?=$school->shortNameEn?>"
-                           <?=(!empty($school->shortNameEn)) ? ' disabled="disabled"' : ''?>>
+                    <input type="text" class="form-control" id="shortNameEn" name="shortNameEn"
+                           placeholder="<?=\yii::t('app', 'Short name of university (english)')?>"
+                           value="<?=\CHtml::encode($school->shortNameEn)?>"
+                           <?=(!empty($school->shortNameEn)) ? ' disabled' : ''?>>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <label for="name"><?=\yii::t('app', 'Name of a team')?></label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="<?=\yii::t('app', 'Name of your team')?>"/>
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-primary btn-lg save-school-info"<?=(!empty($school->shortNameUk) && !empty($school->fullNameEn) && !empty($school->shortNameEn))? ' disabled': ''?>>
+                    <label for="teamNamePrefix"><?=\yii::t('app', 'Name of a team with prefix   ')?></label>
+                    <input type="text" class="form-control" id="teamNamePrefix" name="teamNamePrefix" placeholder="<?=\yii::t('app', 'Name of your team with prefix')?>" readonly/>
+                </div>
+
+                <div class="form-group">
+                    <label for="member1">First member</label>
+                    <select name="member1" id="member1" class="form-control" data-placeholder="<?=\yii::t('app', 'First member')?>">
+                        <option></option>
+                        <?php foreach($members as $member): ?>
+                            <?php if ((string)$member->_id !== (string)\yii::app()->user->getInstance()['_id']): ?>
+                                <option value="<?=$member->_id?>">
+                                    <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
+                                </option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="member2">Second member</label>
+                    <select name="member2" id="member2" class="form-control" data-placeholder="<?=\yii::t('app', 'Second member')?>">
+                        <option></option>
+                        <?php foreach($members as $member): ?>
+                            <?php if ((string)$member->_id !== (string)\yii::app()->user->getInstance()['_id']): ?>
+                                <option value="<?=$member->_id?>">
+                                    <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
+                                </option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="member3">First member</label>
+                    <select name="member3" id="member3" class="form-control" data-placeholder="<?=\yii::t('app', 'Third member')?>">
+                        <option></option>
+                        <?php foreach($members as $member): ?>
+                            <?php if ((string)$member->_id !== (string)\yii::app()->user->getInstance()['_id']): ?>
+                                <option value="<?=$member->_id?>">
+                                    <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
+                                </option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="member4">First member</label>
+                    <select name="member4" id="member4" class="form-control" data-placeholder="<?=\yii::t('app', 'Fourth member (reserve)')?>">
+                        <option></option>
+                        <?php foreach($members as $member): ?>
+                            <?php if ((string)$member->_id !== (string)\yii::app()->user->getInstance()['_id']): ?>
+                                <option value="<?=$member->_id?>">
+                                    <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
+                                </option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <button class="btn btn-primary btn-lg btn-save">
                         <?=\yii::t('app', 'Save')?>
                     </button>
                 </div>
@@ -59,29 +128,4 @@
 
     </div>
 
-
-
-    <div class="col-lg-5">
-
-        <div class="panel panel-primary panel-team">
-            <div class="panel-heading">
-                <?=\yii::t('app', 'Team info')?>
-            </div>
-
-            <div class="panel-body form">
-
-                <div class="form-group">
-                    <label for="teamName"><?=\yii::t('app', 'Name of a team')?></label>
-                    <input type="text" class="form-control" id="teamName" name="teamName" placeholder="<?=\yii::t('app', 'Name of your team')?>"/>
-                </div>
-
-                <div class="form-group">
-                    <label for="teamNamePrefix"><?=\yii::t('app', 'Name of a team with prefix   ')?></label>
-                    <input type="text" class="form-control" id="teamNamePrefix" name="teamNamePrefix" placeholder="<?=\yii::t('app', 'Name of your team with prefix')?>" readonly/>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
 </div>

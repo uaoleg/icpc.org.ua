@@ -1,7 +1,7 @@
 <?php
-
 namespace common\models;
 
+use CModelEvent;
 use \common\models\School;
 
 class Team extends \common\ext\MongoDb\Document
@@ -23,12 +23,6 @@ class Team extends \common\ext\MongoDb\Document
     public $name;
 
     /**
-     * Name of a team concatenated with short english name of school as a prefix
-     * @var string
-     */
-    public $nameWithPrefix;
-
-    /**
      * Year in which team participated
      * @var string
      */
@@ -39,6 +33,12 @@ class Team extends \common\ext\MongoDb\Document
      * @var string
      */
     public $schoolId;
+
+    /**
+     * ID of team's coach
+     * @var string
+     */
+    public $coachId;
 
     /**
      * List of members IDs
@@ -67,9 +67,9 @@ class Team extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'name' => \yii::t('app', 'Team name'),
+            'name'     => \yii::t('app', 'Name of a team'),
             'schoolId' => \yii::t('app', 'ID of team\'s school'),
-            'members' => \yii::t('app', 'List of members')
+            'members'  => \yii::t('app', 'List of members')
         ));
     }
 
@@ -85,63 +85,33 @@ class Team extends \common\ext\MongoDb\Document
         ));
     }
 
-    /**
-     * Returns the number of team members
-     * @return int
-     */
-    public function getMembersCount()
+    protected function beforeValidate()
     {
-        return count($this->members);
-    }
+        if (!parent::beforeValidate()) return false;
 
-    /**
-     * Method which adds user with given ID to the team
-     * @param  $userId string ID of user to be added
-     * @return         bool   if user was added to team or not
-     */
-    public function addMember($userId)
-    {
-        if ($this->getMembersCount() < self::COUNT_MAX_MEMBERS) {
-            $this->members = array_merge($this->members, $userId);
-            return true;
-        } else {
-            return false;
+//        var_dump($this->schoolId);
+        $school = School::model()->findByPk(new \MongoId($this->schoolId));
+
+        if (empty($school->shortNameUk)) {
+            $this->addError('shortNameUk', \yii::t('app', '{attr} cannot be empty', array(
+                '{attr}' => $school->getAttributeLabel('shortNameUk')
+            )));
         }
-    }
 
-    /**
-     * Method which removes user with given ID from the team
-     * @param  $userId string ID of user to be removed
-     * @return         bool   if user was deleted or not
-     */
-    public function removeMember($userId)
-    {
-        $key = array_search($userId, $this->members);
-        if ($key !== false) {
-            unset($this->members[$key]);
-            return true;
-        } else {
-            return false;
+        if (empty($school->fullNameEn)) {
+            $this->addError('fullNameEn', \yii::t('app', '{attr} cannot be empty', array(
+                '{attr}' => $school->getAttributeLabel('fullNameEn')
+            )));
         }
+
+        if (empty($school->shortNameEn)) {
+            $this->addError('shortNameEn', \yii::t('app', '{attr} cannot be empty', array(
+                '{attr}' => $school->getAttributeLabel('shortNameEn')
+            )));
+        }
+
+        return true;
     }
 
-    /**
-     * Sets name with prefix
-     */
-    public function setNameWithPrefix()
-    {
-        $school = School::model()->find(array('_id' => $this->schoolId));
-        $this->nameWithPrefix = $school->shortNameEn . $this->name;
-    }
-
-    /**
-     * After save action
-     */
-    protected function afterSave()
-    {
-        $this->setNameWithPrefix();
-
-        parent::afterSave();
-    }
 
 }

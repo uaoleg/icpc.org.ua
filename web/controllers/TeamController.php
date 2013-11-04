@@ -2,6 +2,9 @@
 
 namespace web\controllers;
 
+use \common\models\Team;
+use \common\models\User;
+
 class TeamController extends \web\ext\Controller
 {
 
@@ -21,40 +24,55 @@ class TeamController extends \web\ext\Controller
 
     public function actionList()
     {
-        $this->render('list', array());
+        $criteria = new \EMongoCriteria();
+        $criteria->sort('name', \EMongoCriteria::SORT_ASC);
+        $teams = Team::model()->findAll($criteria);
+        $this->render('list', array(
+            'teams' => $teams
+        ));
     }
 
     public function actionCreate()
     {
         $school = \yii::app()->user->getInstance()->getSchool();
-        $this->render('create', array(
-            'school' => $school
-        ));
-    }
-
-    public function actionSaveSchoolInfo()
-    {
-        // Action is available only for post/ajax requests
         if ($this->request->isAjaxRequest && $this->request->isPostRequest) {
 
             $shortNameUk = $this->request->getPost('shortNameUk');
             $fullNameEn  = $this->request->getPost('fullNameEn');
             $shortNameEn = $this->request->getPost('shortNameEn');
-
-            $school = \yii::app()->user->getInstance()->getSchool();
-
             $school->setAttributes(array(
-                'shortNameUk' => $shortNameUk,
-                'fullNameEn'  => $fullNameEn,
-                'shortNameEn' => $shortNameEn,
+                'shortNameUk'  => $shortNameUk,
+                'fullNameEn'   => $fullNameEn,
+                'shortNameEn'  => $shortNameEn
             ));
             $school->save();
 
-            $this->renderJson(array(
-                'errors' => $school->hasErrors() ? $school->getErrors() : false
+            $teamName = $this->request->getPost('teamNamePrefix');
+            $team = new Team();
+            $team->setAttributes(array(
+                'name' => $teamName,
+                'year' => date('Y'),
+                'schoolId' => (string)$school->_id,
+                'coachId' => \yii::app()->user->id,
+                'members' => array(
+                    0 => $this->request->getPost('member1'),
+                    1 => $this->request->getPost('member2'),
+                    2 => $this->request->getPost('member3'),
+                    3 => $this->request->getPost('member4')
+                )
             ));
+            $team->save();
+
+            $this->renderJson(array(
+                'errors' => $team->hasErrors() ? $team->getErrors() : false
+            ));
+
         } else {
-            return $this->httpException(403);
+            $members = User::model()->findAll(array('schoolId' => (string)$school->_id));
+            $this->render('create', array(
+                'school'  => $school,
+                'members' => $members
+            ));
         }
     }
 
