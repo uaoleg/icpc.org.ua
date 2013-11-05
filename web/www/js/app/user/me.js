@@ -74,8 +74,12 @@ function appUserMe() {
         $.ajax({
             url: app.baseUrl + '/user/me',
             data: {
-                firstName:             $('#firstName').val(),
-                lastName:              $('#lastName').val(),
+                firstNameUk:           $('#firstNameUk').val(),
+                middleNameUk:          $('#middleNameUk').val(),
+                lastNameUk:            $('#lastNameUk').val(),
+                firstNameEn:           $('#firstNameEn').val(),
+                middleNameEn:          $('#middleNameEn').val(),
+                lastNameEn:            $('#lastNameEn').val(),
                 schoolId:              $('#schoolId').val(),
                 currentPassword:       $('#currentPassword').val(),
                 type:                  $('.form-group .btn.active [name=type]').val(),

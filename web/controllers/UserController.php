@@ -2,8 +2,10 @@
 
 namespace web\controllers;
 
-use \common\models\User,
-    \common\models\School;
+use \common\models\User;
+use \common\models\School;
+use \common\models\User\InfoCoach;
+use \common\models\User\InfoStudent;
 
 class UserController extends \web\ext\Controller
 {
@@ -28,8 +30,12 @@ class UserController extends \web\ext\Controller
     public function actionMe()
     {
         // Get params
-        $firstName         = $this->request->getPost('firstName');
-        $lastName          = $this->request->getPost('lastName');
+        $firstNameUk       = $this->request->getPost('firstNameUk');
+        $middleNameUk       = $this->request->getPost('middleNameUk');
+        $lastNameUk        = $this->request->getPost('lastNameUk');
+        $firstNameEn       = $this->request->getPost('firstNameEn');
+        $middleNameEn       = $this->request->getPost('middleNameEn');
+        $lastNameEn        = $this->request->getPost('lastNameEn');
         $currentPassword   = $this->request->getPost('currentPassword');
         $password          = $this->request->getPost('password');
         $passwordRepeat    = $this->request->getPost('passwordRepeat');
@@ -39,17 +45,20 @@ class UserController extends \web\ext\Controller
 
         // Get logged in user
         $user = \yii::app()->user->getInstance();
-
         // Update user data
         if ($this->request->isPostRequest) {
 
             // Set new attributes
             $user->setAttributes(array(
-                'firstName'   => $firstName,
-                'lastName'    => $lastName,
-                'schoolId'    => $schoolId,
-                'type'        => $type,
-                'coordinator' => $coordinator
+                'firstNameUk'  => $firstNameUk,
+                'middleNameUk' => $middleNameUk,
+                'lastNameUk'   => $lastNameUk,
+                'firstNameEn'  => $firstNameEn,
+                'middleNameEn' => $middleNameEn,
+                'lastNameEn'   => $lastNameEn,
+                'schoolId'     => $schoolId,
+                'type'         => $type,
+                'coordinator'  => $coordinator
             ), false);
             $user->validate();
 
@@ -101,14 +110,52 @@ class UserController extends \web\ext\Controller
 
             // Render view
             $this->render('me', array(
-                'firstName'         => $user->firstName,
-                'lastName'          => $user->lastName,
+                'firstNameUk'       => $user->firstNameUk,
+                'middleNameUk'      => $user->middleNameUk,
+                'lastNameUk'        => $user->lastNameUk,
+                'firstNameEn'       => $user->firstNameEn,
+                'middleNameEn'      => $user->middleNameEn,
+                'lastNameEn'        => $user->lastNameEn,
                 'email'             => $user->email,
                 'schoolId'          => $user->schoolId,
                 'type'              => $user->type,
                 'coordinator'       => $user->coordinator,
                 'coordinatorLabel'  => $coordinatorLabel,
                 'schools'           => $schools
+            ));
+        }
+    }
+
+    public function actionAdditional_Uk()
+    {
+        $lang = 'uk';
+        $user = \yii::app()->user->getInstance();
+        if ($user->type === 'student') {
+            $this->render('additional_student', array(
+                'lang' => $lang,
+                'info' => $user->info
+            ));
+        } elseif ($user->type === 'coach') {
+            $this->render('additional_coach', array(
+                'lang' => $lang,
+                'info' => $user->info
+            ));
+        }
+    }
+
+    public function actionAdditional_En()
+    {
+        $lang = 'en';
+        $user = \yii::app()->user->getInstance();
+        if ($user->type === 'student') {
+            $this->render('additional_student', array(
+                'lang' => $lang,
+                'info' => $user->info
+            ));
+        } elseif ($user->type === 'coach') {
+            $this->render('additional_coach', array(
+                'lang' => $lang,
+                'info' => $user->info
             ));
         }
     }

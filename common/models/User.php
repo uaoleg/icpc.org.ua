@@ -5,9 +5,13 @@ namespace common\models;
 /**
  * User
  *
- * @property-read bool $isApprovedCoach
- * @property-read bool $isApprovedCoordinator
- * @property-read User\Settings $settings
+ * @property-read bool                            $isApprovedCoach
+ * @property-read bool                            $isApprovedCoordinator
+ * @property-read string                          $firstName
+ * @property-read string                          $middleName
+ * @property-read string                          $lastName
+ * @property-read User\InfoCoach|User\InfoStudent $info
+ * @property-read User\Settings                   $settings
  */
 class User extends \common\ext\MongoDb\Document
 {
@@ -25,16 +29,40 @@ class User extends \common\ext\MongoDb\Document
     const ROLE_ADMIN                = 'admin';
 
     /**
-     * First name
+     * First name in ukrainian
      * @var string
      */
-    public $firstName;
+    public $firstNameUk;
 
     /**
-     * Last name
+     * Middle name in ukrainian
      * @var string
      */
-    public $lastName;
+    public $middleNameUk;
+
+    /**
+     * Last name in ukrainian
+     * @var string
+     */
+    public $lastNameUk;
+
+    /**
+     * First name in english
+     * @var string
+     */
+    public $firstNameEn;
+
+    /**
+     * Middle name in english
+     * @var string
+     */
+    public $middleNameEn;
+
+    /**
+     * Last name in english
+     * @var string
+     */
+    public $lastNameEn;
 
     /**
      * Contact email
@@ -80,6 +108,66 @@ class User extends \common\ext\MongoDb\Document
     protected $_settings;
 
     /**
+     * User's additional info
+     * @var User\InfoCoach|User\InfoStudent
+     */
+    protected $_info;
+
+    /**
+     * Returns first name in appropriate language
+     * @return null|string
+     */
+    public function getFirstName()
+    {
+        $lang = \yii::app()->getLanguage();
+        switch ($lang) {
+            case 'uk':
+                return $this->firstNameUk;
+                break;
+            case 'en':
+                return $this->firstNameEn;
+                break;
+        }
+        return null;
+    }
+
+    /**
+     * Returns middle name in appropriate language
+     * @return null|string
+     */
+    public function getMiddleName()
+    {
+        $lang = \yii::app()->getLanguage();
+        switch ($lang) {
+            case 'uk':
+                return $this->middleNameUk;
+                break;
+            case 'en':
+                return $this->middleNameEn;
+                break;
+        }
+        return null;
+    }
+
+    /**
+     * Returns last name in appropriate language
+     * @return null|string
+     */
+    public function getLastName()
+    {
+        $lang = \yii::app()->getLanguage();
+        switch ($lang) {
+            case 'uk':
+                return $this->lastNameUk;
+                break;
+            case 'en':
+                return $this->lastNameEn;
+                break;
+        }
+        return null;
+    }
+
+    /**
      * Returns whether coach role is approved
      *
      * @return bool
@@ -118,6 +206,30 @@ class User extends \common\ext\MongoDb\Document
         return $this->_settings;
     }
 
+    public function getInfo()
+    {
+        if (!isset($this->_info)) {
+            if ($this->type === 'student') {
+                $this->_info = User\InfoStudent::model()->findByAttributes(array(
+                    'userId' => (string)$this->_id
+                ));
+                if (!isset($this->_info)) {
+                    $this->_info = new User\InfoStudent();
+                    $this->_info->userId = (string)$this->_id;
+                }
+            } elseif ($this->type === 'coach') {
+                $this->_info = User\InfoCoach::model()->findByAttributes(array(
+                    'userId' => (string)$this->_id
+                ));
+                if (!isset($this->_info)) {
+                    $this->_info = new User\InfoCoach();
+                    $this->_info->userId = (string)$this->_id;
+                }
+            }
+        }
+        return $this->_info;
+    }
+
     /**
      * Returns the attribute labels.
      *
@@ -129,14 +241,18 @@ class User extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'firstName'     => \yii::t('app', 'First name'),
-            'lastName'      => \yii::t('app', 'Last name'),
-            'email'         => \yii::t('app', 'Email'),
-            'hash'          => \yii::t('app', 'Password hash'),
-            'type'          => \yii::t('app', 'Type'),
-            'coordinator'   => \yii::t('app', 'Coordination type'),
-            'schoolId'      => \yii::t('app', 'School'),
-            'dateCreated'   => \yii::t('app', 'Registration date'),
+            'firstNameUk'    => \yii::t('app', 'First name in ukrainian'),
+            'middleNameUk'   => \yii::t('app', 'Middle name in ukranian'),
+            'lastNameUk'     => \yii::t('app', 'Last name in ukrainian'),
+            'firstNameEn'    => \yii::t('app', 'First name in english'),
+            'middleNameEn'   => \yii::t('app', 'Middle name in english'),
+            'lastNameEn'     => \yii::t('app', 'Last name in english'),
+            'email'          => \yii::t('app', 'Email'),
+            'hash'           => \yii::t('app', 'Password hash'),
+            'type'           => \yii::t('app', 'Type'),
+            'coordinator'    => \yii::t('app', 'Coordination type'),
+            'schoolId'       => \yii::t('app', 'School'),
+            'dateCreated'    => \yii::t('app', 'Registration date'),
         ));
     }
 

@@ -18,30 +18,6 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public $lang;
 
     /**
-     * First name
-     * @var string
-     */
-    public $firstName;
-
-    /**
-     * Middle name
-     * @var string
-     */
-    public $middleName;
-
-    /**
-     * Last name
-     * @var string
-     */
-    public $lastName;
-
-    /**
-     * Email
-     * @var string
-     */
-    public $email;
-
-    /**
      * Home phone number
      * @var string
      */
@@ -103,9 +79,9 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     {
         return array_merge(parent::attributeLabels(), array(
             'userId'                       => \yii::t('app', 'Related user ID'),
-            'instName'               => \yii::t('app', 'Institution name'),
-            'instNameShort'          => \yii::t('app', 'Short name of the institution name'),
-            'instPostEmailAddresses' => \yii::t('app', 'Official post and email addresses'),
+            'instName'                     => \yii::t('app', 'Institution name'),
+            'instNameShort'                => \yii::t('app', 'Short name of the institution name'),
+            'instPostEmailAddresses'       => \yii::t('app', 'Official post and email addresses'),
             'lastName'                     => \yii::t('app', 'Last name'),
             'firstName'                    => \yii::t('app', 'First name'),
             'middleName'                   => \yii::t('app', 'Middle name'),

@@ -9,25 +9,51 @@
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
 
-        <div class="panel panel-primary">
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a href="<?=$this->createUrl('/user/me')?>"><?=\yii::t('app', 'General info')?></a></li>
+            <li><a href="<?=$this->createUrl('/user/additional_uk')?>"><?=\yii::t('app', 'Additional info (ukrainian)')?></a></li>
+            <li><a href="<?=$this->createUrl('/user/additional_en')?>"><?=\yii::t('app', 'Additional info (english)')?></a></li>
+        </ul>
 
-            <div class="panel-heading">
-                <?=\yii::t('app', 'Profile info')?>
-            </div>
+        <div class="panel panel-primary">
 
             <div class="panel-body">
                 <div class="form-horizontal">
 
                     <div class="form-group">
-                        <label for="firstName" class="col-lg-3 control-label"><?=\yii::t('app', 'First name')?></label>
+                        <label for="firstNameUk" class="col-lg-3 control-label"><?=\yii::t('app', 'First name (ukranian)')?></label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" id="firstName" name="firstName" value="<?=\CHtml::encode($firstName)?>" placeholder="Ім'я (українською)">
+                            <input type="text" class="form-control" id="firstNameUk" name="firstNameUk" value="<?=\CHtml::encode($firstNameUk)?>" placeholder="Ім'я (українською)">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="lastName" class="col-lg-3 control-label"><?=\yii::t('app', 'Last name')?></label>
+                        <label for="middleNameUk" class="col-lg-3 control-label"><?=\yii::t('app', 'Middle name (ukranian)')?></label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" id="lastName" name="lastName" value="<?=\CHtml::encode($lastName)?>" placeholder="Прізвище (українською)">
+                            <input type="text" class="form-control" id="middleNameUk" name="middleNameUk" value="<?=\CHtml::encode($middleNameUk)?>" placeholder="По-батьковi (українською)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastNameUk" class="col-lg-3 control-label"><?=\yii::t('app', 'Last name (ukranian)')?></label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="lastNameUk" name="lastNameUk" value="<?=\CHtml::encode($lastNameUk)?>" placeholder="Прізвище (українською)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstNameEn" class="col-lg-3 control-label"><?=\yii::t('app', 'First name (english)')?></label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="firstNameEn" name="firstNameEn" value="<?=\CHtml::encode($firstNameEn)?>" placeholder="First name (english)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="middleNameEn" class="col-lg-3 control-label"><?=\yii::t('app', 'Middle name (english)')?></label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="middleNameEn" name="middleNameEn" value="<?=\CHtml::encode($middleNameEn)?>" placeholder="Middle name (english)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastNameEn" class="col-lg-3 control-label"><?=\yii::t('app', 'Last name (english)')?></label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="lastNameEn" name="lastNameEn" value="<?=\CHtml::encode($lastNameEn)?>" placeholder="Last name (english)">
                         </div>
                     </div>
                     <div class="form-group">
@@ -117,8 +143,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
-    </div>
+     </div>
 </div>
