@@ -14,7 +14,7 @@
             ))?>" class="btn btn-info btn-xs"><?=\yii::t('app', 'Edit')?></a>
         <?php endif; ?>
         <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_DELETE, array(
-            'document' => $document,
+            'document' => $this->document,
         ))): ?>
             <button class="btn btn-danger btn-xs document-delete"
                     data-confirm="<?=\yii::t('app', 'Delete {file} ?', array(
