@@ -33,7 +33,7 @@
 <?php foreach ($newsList as $news): ?>
     <div class="news">
         <h2 class="news-title">
-            <a href="<?=$this->createUrl('/news/view', array('id' => $news->commonId))?>"><?=CHtml::encode($news->title)?></a>
+            <a href="<?=$this->createUrl('/news/view', array('id' => $news->commonId))?>"><?=\CHtml::encode($news->title)?></a>
             <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_UPDATE, array('news' => $news))): ?>
                 <?php \web\widgets\news\StatusSwitcher::create(array('news' => $news)); ?>
                 <a href="<?=$this->createUrl('/staff/news/edit', array(
