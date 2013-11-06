@@ -1,6 +1,8 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        new appTeamCreate();
+        new appTeamManage({
+            teamId: '<?=\yii::app()->request->getParam('id')?>'
+        });
     });
 </script>
 
@@ -64,7 +66,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="member1">First member</label>
+                    <label for="member1"><?=\yii::t('app', 'First member')?></label>
                     <select name="member1" id="member1" class="form-control" data-placeholder="<?=\yii::t('app', 'First member')?>">
                         <option></option>
                         <?php foreach($members as $member): ?>
@@ -78,7 +80,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="member2">Second member</label>
+                    <label for="member2"><?=\yii::t('app', 'Second member')?></label>
                     <select name="member2" id="member2" class="form-control" data-placeholder="<?=\yii::t('app', 'Second member')?>">
                         <option></option>
                         <?php foreach($members as $member): ?>
@@ -92,7 +94,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="member3">First member</label>
+                    <label for="member3"><?=\yii::t('app', 'Third member')?></label>
                     <select name="member3" id="member3" class="form-control" data-placeholder="<?=\yii::t('app', 'Third member')?>">
                         <option></option>
                         <?php foreach($members as $member): ?>
@@ -106,7 +108,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="member4">First member</label>
+                    <label for="member4"><?=\yii::t('app', 'Fourth member')?></label>
                     <select name="member4" id="member4" class="form-control" data-placeholder="<?=\yii::t('app', 'Fourth member (reserve)')?>">
                         <option></option>
                         <?php foreach($members as $member): ?>

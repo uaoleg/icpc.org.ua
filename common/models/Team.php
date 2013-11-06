@@ -89,6 +89,10 @@ class Team extends \common\ext\MongoDb\Document
     {
         if (!parent::beforeValidate()) return false;
 
+        if (count($this->members) !== count(array_unique($this->members))) {
+            $this->addError('member4', \yii::t('app', 'You cannot add a person to team more than once. Check and try again.'));
+        }
+
 //        var_dump($this->schoolId);
         $school = School::model()->findByPk(new \MongoId($this->schoolId));
 

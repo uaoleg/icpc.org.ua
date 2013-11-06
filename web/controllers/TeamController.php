@@ -53,7 +53,8 @@ class TeamController extends \web\ext\Controller
             $school->save();
 
             $teamName = $this->request->getPost('teamNamePrefix');
-            $team = new Team();
+            $team = Team::model()->findByPk(new \MongoId($this->request->getPost('teamId')));
+            $team = (isset($team)) ? $team : new Team();
             $team->setAttributes(array(
                 'name' => $teamName,
                 'year' => date('Y'),
@@ -66,7 +67,6 @@ class TeamController extends \web\ext\Controller
                     3 => $this->request->getPost('member4')
                 )
             ), false);
-            var_dump($team->getAttributes());
             $team->save();
 
             $this->renderJson(array(

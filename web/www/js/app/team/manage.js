@@ -1,4 +1,4 @@
-function appTeamCreate()
+function appTeamManage(options)
 {
 
     /**
@@ -13,7 +13,6 @@ function appTeamCreate()
      * Click handler to save school info
      */
     $('.btn-save').on('click', function() {
-
         var $this = $(this),
             $form = $this.closest('.form');
         $this.prop('disabled', true);
@@ -21,6 +20,7 @@ function appTeamCreate()
         $.ajax({
             url: app.baseUrl + '/team/manage',
             data: {
+                teamId:         options.teamId,
                 shortNameUk:    $('#shortNameUk').val(),
                 fullNameEn:     $('#fullNameEn').val(),
                 shortNameEn:    $('#shortNameEn').val(),
@@ -35,7 +35,11 @@ function appTeamCreate()
                 if (response.errors) {
                     $this.prop('disabled', false);
                 } else {
-                    location.href = app.baseUrl + '/team/list';
+                    if (options.teamId !== '') {
+                        location.href = app.baseUrl + '/team/view/id/' + options.teamId;
+                    } else {
+                        location.href = app.baseUrl + '/team/list';
+                    }
                 }
             }
         });
