@@ -128,7 +128,7 @@ class DocsController extends \web\modules\staff\ext\Controller
         }
 
         // Delete document
-//        $document->delete();
+        $document->delete();
     }
 
 }
