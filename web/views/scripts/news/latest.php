@@ -1,10 +1,3 @@
-<?php if (\yii::app()->user->checkAccess('newsCreate')): ?>
-    <a href="<?=$this->createUrl('/staff/news/edit')?>" class="btn btn-success btn-lg">
-        <?=\yii::t('app', 'Add News')?>
-    </a>
-    <hr />
-<?php endif; ?>
-
 <div class="btn-group pull-right">
     <?php if (\yii::app()->params['yearFirst'] < date('Y')): ?>
         <button class="btn btn-default active dropdown-toggle" data-toggle="dropdown">
@@ -30,6 +23,12 @@
     <?php endif; ?>
 </div>
 
+<?php if (\yii::app()->user->checkAccess('newsCreate')): ?>
+    <a href="<?=$this->createUrl('/staff/news/edit')?>" class="btn btn-success btn-lg">
+        <?=\yii::t('app', 'Add News')?>
+    </a>
+    <hr />
+<?php endif; ?>
 
 <?php foreach ($newsList as $news): ?>
     <div class="news">
