@@ -1,3 +1,11 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        new appUserAdditionalCoach({
+            lang: '<?=$lang?>'
+        });
+    });
+</script>
+
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
         <ul class="nav nav-tabs nav-justified">
@@ -44,6 +52,12 @@
                             <input class="form-control" id="fax" name="fax" type="text"
                                    value="<?=\CHtml::encode($info->fax)?>"
                                    placeholder="<?=\yii::t('app', 'Fax number', null, null, $lang)?>" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-9 col-lg-offset-3">
+                            <button class="btn btn-lg btn-primary btn-save"><?=\yii::t('app', 'Save')?></button>
                         </div>
                     </div>
 

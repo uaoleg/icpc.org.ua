@@ -1,3 +1,11 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        new appUserAdditionalStudent({
+            lang: '<?=$lang?>'
+        });
+    });
+</script>
+
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
         <ul class="nav nav-tabs nav-justified">
@@ -71,6 +79,11 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <div class="col-lg-9 col-lg-offset-3">
+                            <button class="btn btn-lg btn-primary btn-save"><?=\yii::t('app', 'Save')?></button>
+                        </div>
+                    </div>
 
                 </div>
             </div>

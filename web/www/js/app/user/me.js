@@ -67,6 +67,9 @@ function appUserMe() {
 
     });
 
+    /**
+     * Save button handler
+     */
     $('.btn-save').on('click', function() {
         var $this = $(this),
             $form = $this.closest('.form-horizontal');

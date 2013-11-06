@@ -26,10 +26,10 @@
 </div>
 
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="acmNumber"><?=\yii::t('app', 'ACM Number', null, null, $lang)?></label>
+    <label class="col-lg-3 control-label" for="ACMNumber"><?=\yii::t('app', 'ACM Number', null, null, $lang)?></label>
     <div class="col-lg-9">
-        <input class="form-control" id="acmnumber" name="acmnumber" type="text"
-               value="<?=\CHtml::encode($info->phoneMobile)?>"
+        <input class="form-control" id="ACMNumber" name="ACMNumber" type="text"
+               value="<?=\CHtml::encode($info->ACMNumber)?>"
                placeholder="<?=\yii::t('app', 'ACM Number', null, null, $lang)?>" />
     </div>
 </div>
@@ -55,9 +55,18 @@
 <div class="form-group">
     <label class="col-lg-3 control-label" for="instDivision"><?=\yii::t('app', 'Divison (I or II)', null, null, $lang)?></label>
     <div class="col-lg-9">
-        <input class="form-control" id="instDivision" name="instDivision" type="text"
-               value="<?=\CHtml::encode($info->instDivision)?>"
-               placeholder="<?=\yii::t('app', 'Division (I or II)', null, null, $lang)?>" />
+        <div class="radio">
+            <label>
+                <input type="radio" name="instDivision" value="I"<?=($info->instDivision === 'I') ? ' checked' : ''?>>
+                I
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="instDivision" value="II"<?=($info->instDivision === 'II') ? ' checked' : ''?>>
+                II
+            </label>
+        </div>
     </div>
 </div>
 

@@ -12,7 +12,7 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public $userId;
 
     /**
-     * Lang of the information (e.g. "en", "ua")
+     * Lang of the information (e.g. "en", "uk")
      * @var string
      */
     public $lang;
@@ -79,17 +79,15 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     {
         return array_merge(parent::attributeLabels(), array(
             'userId'                       => \yii::t('app', 'Related user ID'),
-            'instName'                     => \yii::t('app', 'Institution name'),
-            'instNameShort'                => \yii::t('app', 'Short name of the institution name'),
-            'instPostEmailAddresses'       => \yii::t('app', 'Official post and email addresses'),
-            'lastName'                     => \yii::t('app', 'Last name'),
-            'firstName'                    => \yii::t('app', 'First name'),
-            'middleName'                   => \yii::t('app', 'Middle name'),
-            'email'                        => \yii::t('app', 'Email'),
+            'lang'                         => \yii::t('app', 'Language of the information'),
             'phoneHome'                    => \yii::t('app', 'Home phone number'),
             'phoneMobile'                  => \yii::t('app', 'Mobile phone number'),
             'skype'                        => \yii::t('app', 'Skype'),
-            'ACMNumber'                    => \yii::t('app', 'ACM number if you have')
+            'ACMNumber'                    => \yii::t('app', 'ACM number if you have'),
+            'instName'                     => \yii::t('app', 'Institution name'),
+            'instNameShort'                => \yii::t('app', 'Short name of the institution name'),
+            'instDivision'                 => \yii::t('app', 'Division'),
+            'instPostEmailAddresses'       => \yii::t('app', 'Official post and email addresses')
         ));
     }
 
@@ -101,8 +99,7 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('userId, instName, instNameShort, instPostEmailAddresses,
-                lastName, firstName, middleName, email, phoneMobile, skype', 'required'),
+            array('lang, userId, instName, instNameShort, instPostEmailAddresses, phoneMobile, skype', 'required'),
         ));
     }
 

@@ -206,12 +206,16 @@ class User extends \common\ext\MongoDb\Document
         return $this->_settings;
     }
 
-    public function getInfo()
+    public function getInfo($lang = null)
     {
+        if (!isset($lang)) {
+            $lang = \yii::app()->language;
+        }
         if (!isset($this->_info)) {
             if ($this->type === 'student') {
                 $this->_info = User\InfoStudent::model()->findByAttributes(array(
-                    'userId' => (string)$this->_id
+                    'userId' => (string)$this->_id,
+                    'lang'   => $lang
                 ));
                 if (!isset($this->_info)) {
                     $this->_info = new User\InfoStudent();
@@ -219,7 +223,8 @@ class User extends \common\ext\MongoDb\Document
                 }
             } elseif ($this->type === 'coach') {
                 $this->_info = User\InfoCoach::model()->findByAttributes(array(
-                    'userId' => (string)$this->_id
+                    'userId' => (string)$this->_id,
+                    'lang'   => $lang
                 ));
                 if (!isset($this->_info)) {
                     $this->_info = new User\InfoCoach();
