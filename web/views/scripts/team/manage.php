@@ -51,12 +51,16 @@
 
                 <div class="form-group">
                     <label for="name"><?=\yii::t('app', 'Name of a team')?></label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="<?=\yii::t('app', 'Name of your team')?>"/>
+                    <input type="text" class="form-control" id="name" name="name"
+                           value="<?=\CHtml::encode(substr($team->name, strlen($school->shortNameEn)))?>"
+                           placeholder="<?=\yii::t('app', 'Name of your team')?>"/>
                 </div>
 
                 <div class="form-group">
                     <label for="teamNamePrefix"><?=\yii::t('app', 'Name of a team with prefix   ')?></label>
-                    <input type="text" class="form-control" id="teamNamePrefix" name="teamNamePrefix" placeholder="<?=\yii::t('app', 'Name of your team with prefix')?>" readonly/>
+                    <input type="text" class="form-control" id="teamNamePrefix" name="teamNamePrefix"
+                           value="<?=\CHtml::encode($team->name)?>"
+                           placeholder="<?=\yii::t('app', 'Name of your team with prefix')?>" readonly/>
                 </div>
 
                 <div class="form-group">
@@ -65,7 +69,7 @@
                         <option></option>
                         <?php foreach($members as $member): ?>
                             <?php if ((string)$member->_id !== (string)\yii::app()->user->getInstance()['_id']): ?>
-                                <option value="<?=$member->_id?>">
+                                <option value="<?=$member->_id?>"<?=($teamMembers[0] === (string)$member->_id) ? ' selected' : ''?>>
                                     <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
                                 </option>
                             <?php endif; ?>
@@ -79,7 +83,7 @@
                         <option></option>
                         <?php foreach($members as $member): ?>
                             <?php if ((string)$member->_id !== (string)\yii::app()->user->getInstance()['_id']): ?>
-                                <option value="<?=$member->_id?>">
+                                <option value="<?=$member->_id?>"<?=($teamMembers[1] === (string)$member->_id) ? ' selected' : ''?>>
                                     <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
                                 </option>
                             <?php endif; ?>
@@ -93,7 +97,7 @@
                         <option></option>
                         <?php foreach($members as $member): ?>
                             <?php if ((string)$member->_id !== (string)\yii::app()->user->getInstance()['_id']): ?>
-                                <option value="<?=$member->_id?>">
+                                <option value="<?=$member->_id?>"<?=($teamMembers[2] === (string)$member->_id) ? ' selected' : ''?>>
                                     <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
                                 </option>
                             <?php endif; ?>
@@ -107,7 +111,7 @@
                         <option></option>
                         <?php foreach($members as $member): ?>
                             <?php if ((string)$member->_id !== (string)\yii::app()->user->getInstance()['_id']): ?>
-                                <option value="<?=$member->_id?>">
+                                <option value="<?=$member->_id?>"<?=($teamMembers[3] === (string)$member->_id) ? ' selected' : ''?>>
                                     <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
                                 </option>
                             <?php endif; ?>

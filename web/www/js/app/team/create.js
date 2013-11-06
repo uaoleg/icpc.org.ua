@@ -19,7 +19,7 @@ function appTeamCreate()
         $this.prop('disabled', true);
 
         $.ajax({
-            url: app.baseUrl + '/team/create',
+            url: app.baseUrl + '/team/manage',
             data: {
                 shortNameUk:    $('#shortNameUk').val(),
                 fullNameEn:     $('#fullNameEn').val(),
@@ -35,7 +35,7 @@ function appTeamCreate()
                 if (response.errors) {
                     $this.prop('disabled', false);
                 } else {
-//                    location.href = app.baseUrl + '/user/me';
+                    location.href = app.baseUrl + '/team/list';
                 }
             }
         });

@@ -4,6 +4,7 @@ namespace web\controllers;
 
 use \common\models\Team;
 use \common\models\User;
+use \common\models\School;
 
 class TeamController extends \web\ext\Controller
 {
@@ -32,7 +33,11 @@ class TeamController extends \web\ext\Controller
         ));
     }
 
-    public function actionCreate()
+    /**
+     * Manage the team
+     * either create or edit it
+     */
+    public function actionManage()
     {
         $school = \yii::app()->user->getInstance()->getSchool();
         if ($this->request->isAjaxRequest && $this->request->isPostRequest) {
@@ -60,7 +65,8 @@ class TeamController extends \web\ext\Controller
                     2 => $this->request->getPost('member3'),
                     3 => $this->request->getPost('member4')
                 )
-            ));
+            ), false);
+            var_dump($team->getAttributes());
             $team->save();
 
             $this->renderJson(array(
@@ -68,11 +74,45 @@ class TeamController extends \web\ext\Controller
             ));
 
         } else {
+            $team = Team::model()->findByPk(new \MongoId($this->request->getParam('id')));
             $members = User::model()->findAll(array('schoolId' => (string)$school->_id));
-            $this->render('create', array(
+            $this->render('manage', array(
                 'school'  => $school,
-                'members' => $members
+                'members' => $members,
+                'team'    => (isset($team)) ? $team : new Team(),
+                'teamMembers' => array(
+                    (isset($team)) ? $team->members[0] : '',
+                    (isset($team)) ? $team->members[1] : '',
+                    (isset($team)) ? $team->members[2] : '',
+                    (isset($team)) ? $team->members[3] : '',
+                )
             ));
+        }
+    }
+
+    /**
+     * Method which shows the information about
+     */
+    public function actionView()
+    {
+        $teamId = $this->request->getParam('id');
+        if (isset($teamId)) {
+            $team   = Team::model()->findByPk(new \MongoId($teamId));
+            $school = School::model()->findByPk(new \MongoId($team->schoolId));
+            $coach  = User::model()->findByPk(new \MongoId($team->coachId));
+            $this->render('view', array(
+                'team'    => $team,
+                'school'  => $school,
+                'coach'   => $coach,
+                'members' => array(
+                    User::model()->findByPk(new \MongoId($team->members[0])),
+                    User::model()->findByPk(new \MongoId($team->members[1])),
+                    User::model()->findByPk(new \MongoId($team->members[2])),
+                    User::model()->findByPk(new \MongoId($team->members[3])),
+                )
+            ));
+        } else {
+            return $this->httpException(404);
         }
     }
 

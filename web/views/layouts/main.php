@@ -122,7 +122,7 @@
                                         'caption' => \yii::t('app', 'List')
                                     ),
                                     'create' => array(
-                                        'href'    => $this->createUrl('/team/create'),
+                                        'href'    => $this->createUrl('/team/manage'),
                                         'caption' => \yii::t('app', 'Create')
                                     )
                                 )
