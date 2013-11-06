@@ -9,5 +9,5 @@
 <?php endif; ?>
 
 <?php foreach ($documentList as $document): ?>
-    <?php $this->widget('\web\widgets\document\Row', array('document' => $document)); ?>
+    <?php \web\widgets\document\Row::create(array('document' => $document)); ?>
 <?php endforeach; ?>

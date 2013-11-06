@@ -35,7 +35,7 @@
         <h2 class="news-title">
             <a href="<?=$this->createUrl('/news/view', array('id' => $news->commonId))?>"><?=CHtml::encode($news->title)?></a>
             <?php if (\yii::app()->user->checkAccess('newsUpdate', array('news' => $news))): ?>
-                <?php $this->widget('\web\widgets\news\StatusSwitcher', array('news' => $news)); ?>
+                <?php \web\widgets\news\StatusSwitcher::create(array('news' => $news)); ?>
                 <a href="<?=$this->createUrl('/staff/news/edit', array(
                     'id'    => $news->commonId,
                     'lang'  => $news->lang,
@@ -44,7 +44,7 @@
                 </a>
             <?php endif; ?>
         </h2>
-        <p class="news-date"><?php $this->widget('\web\widgets\news\Date', array('news' => $news)); ?></p>
+        <p class="news-date"><?php \web\widgets\news\Date::create(array('news' => $news)); ?></p>
         <p class="news-content"><?=$news->content?></p>
         <hr />
     </div>

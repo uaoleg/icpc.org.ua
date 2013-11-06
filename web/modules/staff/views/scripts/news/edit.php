@@ -49,7 +49,7 @@
             <?=\yii::t('app', 'Save News')?>
         </button>
         <div class="pull-right">
-            <?php $this->widget('\web\widgets\news\StatusSwitcher', array('news' => $news)); ?>
+            <?php \web\widgets\news\StatusSwitcher::create(array('news' => $news)); ?>
         </div>
     </div>
 </div>

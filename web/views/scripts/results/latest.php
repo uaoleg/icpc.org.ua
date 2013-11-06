@@ -9,9 +9,7 @@
 <?php endif; ?>
 <?php if (count($phase1) > 0): ?>
     <?php foreach ($phase1 as $result): ?>
-        <?php $this->widget('\web\widgets\document\Row', array(
-            'document' => $result,
-        )); ?>
+        <?php \web\widgets\document\Row::create(array('document' => $result)); ?>
     <?php endforeach; ?>
 <?php else: ?>
     <div class="alert alert-info">
@@ -30,9 +28,7 @@
 <?php endif; ?>
 <?php if (count($phase2) > 0): ?>
     <?php foreach ($phase2 as $result): ?>
-        <?php $this->widget('\web\widgets\document\Row', array(
-            'document' => $result,
-        )); ?>
+        <?php \web\widgets\document\Row::create(array('document' => $result)); ?>
     <?php endforeach; ?>
 <?php else: ?>
     <div class="alert alert-info">
@@ -51,9 +47,7 @@
 <?php endif; ?>
 <?php if (count($phase3) > 0): ?>
     <?php foreach ($phase3 as $result): ?>
-        <?php $this->widget('\web\widgets\document\Row', array(
-            'document' => $result,
-        )); ?>
+        <?php \web\widgets\document\Row::create(array('document' => $result)); ?>
     <?php endforeach; ?>
 <?php else: ?>
     <div class="alert alert-info">

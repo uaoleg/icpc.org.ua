@@ -1,6 +1,6 @@
 <div class="clearfix document" style="margin-bottom: 20px;">
     <div class="pull-left">
-        <?php $this->widget('\web\widgets\document\Icon', array('document' => $this->document)); ?>
+        <?php \web\widgets\document\Icon::create(array('document' => $this->document)); ?>
     </div>
     <div class="pull-left">
         <a href="<?=$this->createUrl('/docs/download', array('id' => $this->document->_id))?>" class="document-title">

@@ -6,6 +6,17 @@ class Widget extends \CWidget
 {
 
     /**
+     * Static method to render widget (without specifying of class name)
+     *
+     * @param array $properties
+     * @param type $captureOutput
+     */
+    public static function create(array $properties = array(), $captureOutput = false)
+    {
+        \yii::app()->controller->widget(get_called_class(), $properties, $captureOutput);
+    }
+
+    /**
      * Create URL
      *
      * @param string $route

@@ -30,7 +30,7 @@
         $cs->registerCssFile($cs->getCoreScriptUrl() . '/min/?g=css&theme=' . \yii::app()->theme->name . '&v=' . \yii::app()->params['version']);
 
         // JS global vars
-        $this->widget('\web\widgets\HeadScript');
+        \web\widgets\HeadScript::create();
     ?>
 
 </head>
@@ -38,7 +38,7 @@
 
 <body>
 
-    <?php $this->widget('\web\widgets\AppEnv'); ?>
+    <?php \web\widgets\AppEnv::create(); ?>
 
     <div id="main">
 
@@ -66,7 +66,7 @@
                     <a class="navbar-brand" href="<?=\yii::app()->baseUrl?>/"></a>
                 </div>
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <?php $this->widget('\web\widgets\Nav', array(
+                    <?php \web\widgets\Nav::create(array(
                         'class'      => 'nav navbar-nav',
                         'activeItem' => $this->getNavActiveItem('main'),
                         'itemList'   => array(
@@ -180,7 +180,7 @@
         </div>
     </nav>
 
-    <?php $this->widget('\web\widgets\GoogleAnalytics'); ?>
+    <?php \web\widgets\GoogleAnalytics::create(); ?>
 
 </body>
 
