@@ -133,12 +133,12 @@ class UserController extends \web\ext\Controller
     {
         $lang = 'uk';
         $user = \yii::app()->user->getInstance();
-        if ($user->type === 'student') {
+        if ($user->type === User::ROLE_STUDENT) {
             $this->render('additional_student', array(
                 'lang' => $lang,
                 'info' => $user->getInfo($lang)
             ));
-        } elseif ($user->type === 'coach') {
+        } elseif ($user->type === User::ROLE_COACH) {
             $this->render('additional_coach', array(
                 'lang' => $lang,
                 'info' => $user->getInfo($lang)
@@ -153,12 +153,12 @@ class UserController extends \web\ext\Controller
     {
         $lang = 'en';
         $user = \yii::app()->user->getInstance();
-        if ($user->type === 'student') {
+        if ($user->type === User::ROLE_STUDENT) {
             $this->render('additional_student', array(
                 'lang' => $lang,
                 'info' => $user->getInfo($lang)
             ));
-        } elseif ($user->type === 'coach') {
+        } elseif ($user->type === User::ROLE_COACH) {
             $this->render('additional_coach', array(
                 'lang' => $lang,
                 'info' => $user->getInfo($lang)
