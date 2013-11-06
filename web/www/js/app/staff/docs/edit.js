@@ -57,16 +57,11 @@ appStaffDocsEdit.prototype.initUploader = function () {
 
     var self = this;
 
-    self.uploader = new plupload.Uploader({
-        runtimes:         'html5,flash,silverlight,browserplus',
+    self.uploader = new plupload.Uploader(pluploadHelpersSettings({
         browse_button:    'pickfiles',
         container:        'container',
-        max_file_size:    '10mb',
-        multi_selection:  false,
-        url:              app.baseUrl + '/upload/document',
-        multipart_params: {},
-        resize: {width: 320, height: 240, quality: 90}
-    });
+        url:              app.baseUrl + '/upload/document'
+    }));
 
     self.uploader.init();
 
