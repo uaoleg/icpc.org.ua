@@ -6,12 +6,16 @@
         <a href="<?=$this->createUrl('/docs/download', array('id' => $this->document->_id))?>" class="document-title">
             <?=\CHtml::encode($this->document->title)?></a>
         <span class="document-size"><?=$sizeLabel?></span>
-        <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_UPDATE)): ?>
+        <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_UPDATE, array(
+            'document' => $this->document,
+        ))): ?>
             <a href="<?=$this->createUrl('/staff/docs/edit', array(
                 'id' => $this->document->_id,
             ))?>" class="btn btn-info btn-xs"><?=\yii::t('app', 'Edit')?></a>
         <?php endif; ?>
-        <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_DELETE)): ?>
+        <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_DELETE, array(
+            'document' => $document,
+        ))): ?>
             <button class="btn btn-danger btn-xs document-delete"
                     data-confirm="<?=\yii::t('app', 'Delete {file} ?', array(
                         '{file}' => '<i>' . \CHtml::encode($this->document->title) . '</i>',

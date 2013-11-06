@@ -14,6 +14,15 @@ class DocsController extends \web\modules\staff\ext\Controller
      */
     public function accessRules()
     {
+        // Returns document by ID GET param
+        $controller = $this;
+        $getDocument = function() use($controller) {
+            $id = $controller->request->getParam('id');
+            $document = Document::model()->findByPk(new \MongoId($id));
+            return $document;
+        };
+
+        // Return rules
         return array(
             array(
                 'allow',
@@ -23,12 +32,16 @@ class DocsController extends \web\modules\staff\ext\Controller
             array(
                 'allow',
                 'actions'   => array('edit', 'publish'),
-                'roles'     => array(\common\components\Rbac::OP_DOCUMENT_UPDATE),
+                'roles'     => array(\common\components\Rbac::OP_DOCUMENT_UPDATE => array(
+                    'document' => $getDocument(),
+                )),
             ),
             array(
                 'allow',
                 'actions'   => array('delete'),
-                'roles'     => array(\common\components\Rbac::OP_DOCUMENT_DELETE),
+                'roles'     => array(\common\components\Rbac::OP_DOCUMENT_DELETE => array(
+                    'document' => $getDocument(),
+                )),
             ),
             array(
                 'deny',

@@ -167,14 +167,10 @@ class RbacCommand extends \console\ext\ConsoleCommand
      */
     protected function _operationsDocument()
     {
-        $bizRuleRead   = 'return \yii::app()->rbac->bizRuleDocumentRead($params);';
-        $bizRuleUpdate = 'return \yii::app()->rbac->bizRuleDocumentUpdate($params);';
-        $bizRuleDelete = 'return \yii::app()->rbac->bizRuleDocumentDelete($params);';
-
         $this->auth->createOperation(Rbac::OP_DOCUMENT_CREATE, 'Create document');
-        $this->auth->createOperation(Rbac::OP_DOCUMENT_READ, 'Read document', $bizRuleRead);
-        $this->auth->createOperation(Rbac::OP_DOCUMENT_UPDATE, 'Edit document', $bizRuleUpdate);
-        $this->auth->createOperation(Rbac::OP_DOCUMENT_DELETE, 'Delete document', $bizRuleDelete);
+        $this->auth->createOperation(Rbac::OP_DOCUMENT_READ, 'Read document');
+        $this->auth->createOperation(Rbac::OP_DOCUMENT_UPDATE, 'Edit document');
+        $this->auth->createOperation(Rbac::OP_DOCUMENT_DELETE, 'Delete document');
     }
 
     /**

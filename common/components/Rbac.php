@@ -69,39 +69,6 @@ class Rbac extends \CApplicationComponent
     }
 
     /**
-     * Biz rule for viewing and downloading document
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleDocumentRead(array $params)
-    {
-        return true;
-    }
-
-    /**
-     * Biz rule for edit document
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleDocumentUpdate(array $params)
-    {
-        return $this->checkAccess(User::ROLE_ADMIN);
-    }
-
-    /**
-     * Biz rule for delete document
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleDocumentDelete(array $params)
-    {
-        return $this->checkAccess(User::ROLE_ADMIN);
-    }
-
-    /**
      * Biz rule for reading news
      *
      * @param array $params
