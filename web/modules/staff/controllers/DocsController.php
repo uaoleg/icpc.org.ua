@@ -8,6 +8,35 @@ class DocsController extends \web\modules\staff\ext\Controller
 {
 
     /**
+     * Returns the access rules for this controller
+     *
+     * @return array
+     */
+    public function accessRules()
+    {
+        return array(
+            array(
+                'allow',
+                'actions'   => array('create'),
+                'roles'     => array('documentCreate'),
+            ),
+            array(
+                'allow',
+                'actions'   => array('edit', 'publish'),
+                'roles'     => array('documentUpdate'),
+            ),
+            array(
+                'allow',
+                'actions'   => array('delete'),
+                'roles'     => array('documentDelete'),
+            ),
+            array(
+                'deny',
+            ),
+        );
+    }
+
+    /**
      * Create page
      */
     public function actionCreate()
@@ -99,7 +128,7 @@ class DocsController extends \web\modules\staff\ext\Controller
         }
 
         // Delete document
-        $document->delete();
+//        $document->delete();
     }
 
 }
