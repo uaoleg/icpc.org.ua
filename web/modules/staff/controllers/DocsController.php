@@ -18,17 +18,17 @@ class DocsController extends \web\modules\staff\ext\Controller
             array(
                 'allow',
                 'actions'   => array('create'),
-                'roles'     => array('documentCreate'),
+                'roles'     => array(\common\components\Rbac::OP_DOCUMENT_CREATE),
             ),
             array(
                 'allow',
                 'actions'   => array('edit', 'publish'),
-                'roles'     => array('documentUpdate'),
+                'roles'     => array(\common\components\Rbac::OP_DOCUMENT_UPDATE),
             ),
             array(
                 'allow',
                 'actions'   => array('delete'),
-                'roles'     => array('documentDelete'),
+                'roles'     => array(\common\components\Rbac::OP_DOCUMENT_DELETE),
             ),
             array(
                 'deny',

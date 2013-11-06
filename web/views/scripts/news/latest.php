@@ -23,7 +23,7 @@
     <?php endif; ?>
 </div>
 
-<?php if (\yii::app()->user->checkAccess('newsCreate')): ?>
+<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_CREATE)): ?>
     <a href="<?=$this->createUrl('/staff/news/edit')?>" class="btn btn-success btn-lg">
         <?=\yii::t('app', 'Add News')?>
     </a>
@@ -34,7 +34,7 @@
     <div class="news">
         <h2 class="news-title">
             <a href="<?=$this->createUrl('/news/view', array('id' => $news->commonId))?>"><?=CHtml::encode($news->title)?></a>
-            <?php if (\yii::app()->user->checkAccess('newsUpdate', array('news' => $news))): ?>
+            <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_UPDATE, array('news' => $news))): ?>
                 <?php \web\widgets\news\StatusSwitcher::create(array('news' => $news)); ?>
                 <a href="<?=$this->createUrl('/staff/news/edit', array(
                     'id'    => $news->commonId,

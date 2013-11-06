@@ -8,7 +8,7 @@
     <h1><?=\yii::t('app', 'Guidance docs')?></h1>
 </div>
 
-<?php if (\yii::app()->user->checkAccess('documentCreate')): ?>
+<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_CREATE)): ?>
     <a href="<?=$this->createUrl('/staff/docs/create', array('type' => \common\models\Document::TYPE_GUIDANCE))?>" class="btn btn-success btn-lg">
         <?=\yii::t('app', 'Upload Doc')?>
     </a>

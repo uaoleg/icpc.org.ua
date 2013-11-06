@@ -13,6 +13,17 @@ class Rbac extends \CApplicationComponent
 {
 
     /**
+     * List of available operations
+     */
+    const OP_DOCUMENT_CREATE    = 'documentCreate';
+    const OP_DOCUMENT_READ      = 'documentRead';
+    const OP_DOCUMENT_UPDATE    = 'documentUpdate';
+    const OP_DOCUMENT_DELETE    = 'documentDelete';
+    const OP_NEWS_CREATE        = 'newsCreate';
+    const OP_NEWS_READ          = 'newsRead';
+    const OP_NEWS_UPDATE        = 'newsUpdate';
+
+    /**
      * Current user
      * @var User
      */

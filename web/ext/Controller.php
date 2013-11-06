@@ -128,7 +128,7 @@ class Controller extends \CController
             switch ($this->id) {
                 // Find latest year with news
                 case 'news':
-                    $publishedOnly = !\yii::app()->user->checkAccess('newsUpdate');
+                    $publishedOnly = !\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_UPDATE);
                     while (News::model()->scopeByLatest($year, $publishedOnly)->count() === 0) {
                         $year--;
                         if ($year <= \yii::app()->params['yearFirst']) {
