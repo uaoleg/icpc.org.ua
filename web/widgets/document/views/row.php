@@ -4,7 +4,7 @@
     </div>
     <div class="pull-left">
         <a href="<?=$this->createUrl('/docs/download', array('id' => $this->document->_id))?>" class="document-title">
-            <?=$this->document->title?></a>
+            <?=\CHtml::encode($this->document->title)?></a>
         <span class="document-size"><?=$sizeLabel?></span>
         <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_UPDATE)): ?>
             <a href="<?=$this->createUrl('/staff/docs/edit', array(
@@ -13,7 +13,9 @@
         <?php endif; ?>
         <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_DELETE)): ?>
             <button class="btn btn-danger btn-xs document-delete"
-                    data-confirm="<?=\yii::t('app', 'Are you sure?')?>">
+                    data-confirm="<?=\yii::t('app', 'Delete {file} ?', array(
+                        '{file}' => '<i>' . \CHtml::encode($this->document->title) . '</i>',
+                    ))?>">
                 <?=\yii::t('app', 'Delete')?>
             </button>
         <?php endif; ?>
