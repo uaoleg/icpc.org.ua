@@ -86,7 +86,7 @@ class DocsController extends \web\ext\Controller
         if (($lastOccur === false) || ($lastOccur < mb_strlen($filename) - mb_strlen($document->fileExt) - 1)) {
             $filename .= '.' . $document->fileExt;
         }
-        if (\yii::app()->request->userAgentIsIe()) {
+        if (\yii::app()->request->userAgentIsMsie()) {
             $filename = urlencode($filename);
         }
 

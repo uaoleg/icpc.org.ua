@@ -84,4 +84,22 @@ class DocsController extends \web\modules\staff\ext\Controller
         $this->redirect(array('edit', 'id' => $document->_id));
     }
 
+    /**
+     * Delete document
+     */
+    public function actionDelete()
+    {
+        // Get params
+        $id = $this->request->getParam('id');
+
+        // Get document
+        $document = Document::model()->findByPk(new \MongoId($id));
+        if ($document === null) {
+            return;
+        }
+
+        // Delete document
+        $document->delete();
+    }
+
 }

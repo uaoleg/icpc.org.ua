@@ -20,9 +20,9 @@
         // Select 2
         $cs->registerCoreScript('select2');
 
-        // Respond
-        if (\yii::app()->request->userAgentIsIe()) {
-            $cs->registerCoreScript('respond');
+        // MSIE fixes
+        if (\yii::app()->request->userAgentIsMsie()) {
+            $cs->registerCoreScript('msie');
         }
 
         // App JS

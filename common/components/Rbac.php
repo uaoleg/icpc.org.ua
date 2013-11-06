@@ -76,7 +76,18 @@ class Rbac extends \CApplicationComponent
      */
     public function bizRuleDocumentUpdate(array $params)
     {
-        return $this->checkAccess('admin');
+        return $this->checkAccess(User::ROLE_ADMIN);
+    }
+
+    /**
+     * Biz rule for delete document
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleDocumentDelete(array $params)
+    {
+        return $this->checkAccess(User::ROLE_ADMIN);
     }
 
     /**

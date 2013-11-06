@@ -1,12 +1,20 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        new appDocsItem();
+    });
+</script>
+
 <div class="page-header">
     <h1><?=\yii::t('app', '1st Phase Results')?></h1>
 </div>
+
 <?php if (\yii::app()->user->checkAccess('documentCreate')): ?>
     <a href="<?=$this->createUrl('/staff/docs/create', array('type' => \common\models\Document::TYPE_RESULTS_PHASE_1))?>" class="btn btn-success btn-lg">
         <?=\yii::t('app', 'Upload Results')?>
     </a>
     <hr />
 <?php endif; ?>
+
 <?php if (count($phase1) > 0): ?>
     <?php foreach ($phase1 as $result): ?>
         <?php \web\widgets\document\Row::create(array('document' => $result)); ?>

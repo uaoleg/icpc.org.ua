@@ -1,2 +1,4 @@
 KEY_ENTER   = 13;
 KEY_ESC     = 27;
+
+OPACITY_DISABLED = 0.5;

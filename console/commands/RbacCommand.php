@@ -101,6 +101,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             User::ROLE_COACH,
             'documentCreate',
             'documentUpdate',
+            'documentDelete',
             'newsCreate',
             'newsUpdate',
         );
@@ -167,10 +168,12 @@ class RbacCommand extends \console\ext\ConsoleCommand
     {
         $bizRuleRead   = 'return \yii::app()->rbac->bizRuleDocumentRead($params);';
         $bizRuleUpdate = 'return \yii::app()->rbac->bizRuleDocumentUpdate($params);';
+        $bizRuleDelete = 'return \yii::app()->rbac->bizRuleDocumentDelete($params);';
 
         $this->auth->createOperation('documentCreate', 'Create document');
         $this->auth->createOperation('documentRead', 'Read document', $bizRuleRead);
         $this->auth->createOperation('documentUpdate', 'Edit document', $bizRuleUpdate);
+        $this->auth->createOperation('documentDelete', 'Delete document', $bizRuleDelete);
     }
 
     /**
