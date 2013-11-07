@@ -4,10 +4,7 @@ function appTeamManage(options)
     /**
      * Select2 initialization
      */
-    $('#member1').select2();
-    $('#member2').select2();
-    $('#member3').select2();
-    $('#member4').select2();
+    $('[name=member1], [name=member2], [name=member3], [name=member4]').select2();
 
     /**
      * Click handler to save school info
@@ -21,14 +18,14 @@ function appTeamManage(options)
             url: app.baseUrl + '/team/manage',
             data: {
                 teamId:         options.teamId,
-                shortNameUk:    $('#shortNameUk').val(),
-                fullNameEn:     $('#fullNameEn').val(),
-                shortNameEn:    $('#shortNameEn').val(),
-                teamNamePrefix: $('#teamNamePrefix').val(),
-                member1:        $('#member1').val(),
-                member2:        $('#member2').val(),
-                member3:        $('#member3').val(),
-                member4:        $('#member4').val()
+                shortNameUk:    $('[name=shortNameUk]').val(),
+                fullNameEn:     $('[name=fullNameEn]').val(),
+                shortNameEn:    $('[name=shortNameEn]').val(),
+                teamNamePrefix: $('[name=teamNamePrefix]').val(),
+                member1:        $('[name=member1]').val(),
+                member2:        $('[name=member2]').val(),
+                member3:        $('[name=member3]').val(),
+                member4:        $('[name=member4]').val()
             },
             success: function(response) {
                 appShowErrors(response.errors, $form);

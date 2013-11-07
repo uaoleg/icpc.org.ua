@@ -21,12 +21,10 @@
                 </div>
 
                 <div class="form-group">
-<!--                    <label>--><?//=\yii::t('app', 'Full name of university (ukrainian)')?><!--</label>-->
                     <p class="form-control-static"><?=\CHtml::encode($school->fullNameUk)?></p>
                 </div>
 
                 <div class="form-group">
-<!--                    <label for="shortNameUk">--><?//=\yii::t('app', 'Short name of university (ukrainian)')?><!--</label>-->
                     <input type="text" class="form-control" id="shortNameUk" name="shortNameUk"
                            placeholder="<?=\yii::t('app', 'Short name of university (ukrainian)')?>"
                            value="<?=\CHtml::encode($school->shortNameUk)?>"
@@ -34,7 +32,6 @@
                 </div>
 
                 <div class="form-group">
-<!--                    <label for="fullNameEn">--><?//=\yii::t('app', 'Full name of university (english)')?><!--</label>-->
                     <input type="text" class="form-control" id="fullNameEn" name="fullNameEn"
                            placeholder="<?=\yii::t('app', 'Full name of university (english)')?>"
                            value="<?=\CHtml::encode($school->fullNameEn)?>"
@@ -42,7 +39,6 @@
                 </div>
 
                 <div class="form-group">
-<!--                    <label for="shortNameEn">--><?//=\yii::t('app', 'Short name of university (english)')?><!--</label>-->
                     <input type="text" class="form-control" id="shortNameEn" name="shortNameEn"
                            placeholder="<?=\yii::t('app', 'Short name of university (english)')?>"
                            value="<?=\CHtml::encode($school->shortNameEn)?>"

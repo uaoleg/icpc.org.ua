@@ -49,7 +49,7 @@ class TeamController extends \web\ext\Controller
                 'shortNameUk'  => $shortNameUk,
                 'fullNameEn'   => $fullNameEn,
                 'shortNameEn'  => $shortNameEn
-            ));
+            ), false);
             $school->save();
 
             $teamName = $this->request->getPost('teamNamePrefix');
@@ -98,12 +98,11 @@ class TeamController extends \web\ext\Controller
         $teamId = $this->request->getParam('id');
         if (isset($teamId)) {
             $team   = Team::model()->findByPk(new \MongoId($teamId));
-            $school = School::model()->findByPk(new \MongoId($team->schoolId));
-            $coach  = User::model()->findByPk(new \MongoId($team->coachId));
+
             $this->render('view', array(
                 'team'    => $team,
-                'school'  => $school,
-                'coach'   => $coach,
+                'school'  => $team->school,
+                'coach'   => $team->coach,
                 'members' => array(
                     User::model()->findByPk(new \MongoId($team->members[0])),
                     User::model()->findByPk(new \MongoId($team->members[1])),

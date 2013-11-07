@@ -4,6 +4,11 @@ namespace common\models;
 use CModelEvent;
 use \common\models\School;
 
+/**
+ * Team
+ * @property-read School $school
+ * @property-read User   $coach
+ */
 class Team extends \common\ext\MongoDb\Document
 {
 
@@ -35,10 +40,22 @@ class Team extends \common\ext\MongoDb\Document
     public $schoolId;
 
     /**
+     * Team's school
+     * @var Team
+     */
+    protected $_school;
+
+    /**
      * ID of team's coach
      * @var string
      */
     public $coachId;
+
+    /**
+     * Team's coach
+     * @var User
+     */
+    protected $_coach;
 
     /**
      * List of members IDs
@@ -54,6 +71,20 @@ class Team extends \common\ext\MongoDb\Document
     public function getCollectionName()
     {
         return 'team';
+    }
+
+    public function getSchool() {
+        if (!isset($this->_school)) {
+            $this->_school = School::model()->findByPk(new \MongoId($this->schoolId));
+        }
+        return $this->_school;
+    }
+
+    public function getCoach() {
+        if (!isset($this->_coach)) {
+            $this->_school = User::model()->findByPk(new \MongoId($this->coachId));
+        }
+        return $this->_school;
     }
 
     /**
