@@ -117,10 +117,11 @@ class User extends \common\ext\MongoDb\Document
      * Returns first name in appropriate language
      * @return null|string
      */
-    public function getFirstName()
+    public function getFirstName($lang = null)
     {
-        $lang = \yii::app()->getLanguage();
+        $lang = (isset($lang)) ? \yii::app()->getLanguage() : $lang;
         switch ($lang) {
+            default:
             case 'uk':
                 return $this->firstNameUk;
                 break;
@@ -128,17 +129,17 @@ class User extends \common\ext\MongoDb\Document
                 return $this->firstNameEn;
                 break;
         }
-        return null;
     }
 
     /**
      * Returns middle name in appropriate language
      * @return null|string
      */
-    public function getMiddleName()
+    public function getMiddleName($lang = null)
     {
-        $lang = \yii::app()->getLanguage();
+        $lang = (isset($lang)) ? \yii::app()->getLanguage() : $lang;
         switch ($lang) {
+            default:
             case 'uk':
                 return $this->middleNameUk;
                 break;
@@ -146,17 +147,17 @@ class User extends \common\ext\MongoDb\Document
                 return $this->middleNameEn;
                 break;
         }
-        return null;
     }
 
     /**
      * Returns last name in appropriate language
      * @return null|string
      */
-    public function getLastName()
+    public function getLastName($lang = null)
     {
-        $lang = \yii::app()->getLanguage();
+        $lang = (isset($lang)) ? \yii::app()->getLanguage() : $lang;
         switch ($lang) {
+            default:
             case 'uk':
                 return $this->lastNameUk;
                 break;
@@ -164,7 +165,6 @@ class User extends \common\ext\MongoDb\Document
                 return $this->lastNameEn;
                 break;
         }
-        return null;
     }
 
     /**
@@ -246,6 +246,9 @@ class User extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
+            'firstName'      => \yii::t('app', 'First name'),
+            'middleName'     => \yii::t('app', 'First name'),
+            'lastName'       => \yii::t('app', 'First name'),
             'firstNameUk'    => \yii::t('app', 'First name in ukrainian'),
             'middleNameUk'   => \yii::t('app', 'Middle name in ukranian'),
             'lastNameUk'     => \yii::t('app', 'Last name in ukrainian'),
@@ -269,7 +272,7 @@ class User extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('firstName, lastName, email, schoolId, dateCreated', 'required'),
+            array('firstNameUk, middleNameUk, lastNameUk, email, schoolId, dateCreated', 'required'),
             array('email', 'email'),
             array('email', 'unique'),
             array('firstName, lastName', 'length', 'max' => 100),

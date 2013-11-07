@@ -10,8 +10,8 @@
     <div class="col-lg-6 col-lg-offset-3">
         <ul class="nav nav-tabs nav-justified">
             <li><a href="<?=$this->createUrl('/user/me')?>"><?=\yii::t('app', 'General info')?></a></li>
-            <li<?=($lang==='uk') ? ' class="active"' : ''?>><a href="<?=$this->createUrl('/user/additional_uk')?>"><?=\yii::t('app', 'Additional info (ukrainian)')?></a></li>
-            <li<?=($lang==='en') ? ' class="active"' : ''?>><a href="<?=$this->createUrl('/user/additional_en')?>"><?=\yii::t('app', 'Additional info (english)')?></a></li>
+            <li class="<?=($lang==='uk') ? 'active' : ''?>"><a href="<?=$this->createUrl('/user/additionaluk')?>"><?=\yii::t('app', 'Additional info (ukrainian)')?></a></li>
+            <li class="<?=($lang==='en') ? 'active' : ''?>"><a href="<?=$this->createUrl('/user/additionalen')?>"><?=\yii::t('app', 'Additional info (english)')?></a></li>
         </ul>
 
         <div class="panel panel-primary">

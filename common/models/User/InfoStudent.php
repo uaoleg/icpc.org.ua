@@ -32,7 +32,7 @@ class InfoStudent extends InfoAbstract
      * Year of admission to University
      * @var int
      */
-    public $instAdmissionYear;
+    public $schoolAdmissionYear;
 
     /**
      * Date of birth
@@ -58,13 +58,13 @@ class InfoStudent extends InfoAbstract
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'studyField'         => \yii::t('app', 'Field of study'),
-            'speciality'         => \yii::t('app', 'Speciality of study'),
-            'faculty'            => \yii::t('app', 'Faculty of study'),
-            'group'              => \yii::t('app', 'Group'),
-            'instAdmissionYear'  => \yii::t('app', 'Year of admission to University'),
-            'dateOfBirth'        => \yii::t('app', 'Date of birth'),
-            'document'           => \yii::t('app', 'Document serial number')
+            'studyField'           => \yii::t('app', 'Field of study'),
+            'speciality'           => \yii::t('app', 'Speciality of study'),
+            'faculty'              => \yii::t('app', 'Faculty of study'),
+            'group'                => \yii::t('app', 'Group'),
+            'schoolAdmissionYear'  => \yii::t('app', 'Year of admission to University'),
+            'dateOfBirth'          => \yii::t('app', 'Date of birth'),
+            'document'             => \yii::t('app', 'Document serial number')
         ));
     }
 
@@ -76,7 +76,7 @@ class InfoStudent extends InfoAbstract
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('studyField, speciality, faculty, group, instAdmissionYear, dateOfBirth, document', 'required'),
+            array('studyField, speciality, faculty, group, schoolAdmissionYear, dateOfBirth, document', 'required'),
         ));
     }
 

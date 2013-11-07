@@ -39,19 +39,19 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
      * ACM Number
      * @var string
      */
-    public $ACMNumber;
+    public $acmNumber;
 
     /**
      * Institution name
      * @var string
      */
-    public $instName;
+    public $schoolName;
 
     /**
      * Short form of the institution name
      * @var string
      */
-    public $instNameShort;
+    public $schoolNameShort;
 
     /**
      * Division
@@ -59,13 +59,13 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
      * II-does not offer advanced degree in computer science
      * @var string
      */
-    public $instDivision;
+    public $schoolDivision;
 
     /**
      * Official post and email addresses
      * @var string
      */
-    public $instPostEmailAddresses;
+    public $schoolPostEmailAddresses;
 
     /**
      * Returns the attribute labels.
@@ -83,11 +83,11 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
             'phoneHome'                    => \yii::t('app', 'Home phone number'),
             'phoneMobile'                  => \yii::t('app', 'Mobile phone number'),
             'skype'                        => \yii::t('app', 'Skype'),
-            'ACMNumber'                    => \yii::t('app', 'ACM number if you have'),
-            'instName'                     => \yii::t('app', 'Institution name'),
-            'instNameShort'                => \yii::t('app', 'Short name of the institution name'),
-            'instDivision'                 => \yii::t('app', 'Division'),
-            'instPostEmailAddresses'       => \yii::t('app', 'Official post and email addresses')
+            'acmNumber'                    => \yii::t('app', 'ACM number if you have'),
+            'schoolName'                   => \yii::t('app', 'School name'),
+            'schoolNameShort'              => \yii::t('app', 'Short name of the institution name'),
+            'schoolDivision'               => \yii::t('app', 'Division'),
+            'schoolPostEmailAddresses'     => \yii::t('app', 'Official post and email addresses')
         ));
     }
 
@@ -99,7 +99,7 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, userId, instName, instNameShort, instPostEmailAddresses, phoneMobile, skype', 'required'),
+            array('lang, userId, schoolName, schoolNameShort, schoolPostEmailAddresses, phoneMobile, skype', 'required'),
         ));
     }
 

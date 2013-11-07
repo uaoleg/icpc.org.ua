@@ -11,8 +11,8 @@
 
         <ul class="nav nav-tabs nav-justified">
             <li class="active"><a href="<?=$this->createUrl('/user/me')?>"><?=\yii::t('app', 'General info')?></a></li>
-            <li><a href="<?=$this->createUrl('/user/additional_uk')?>"><?=\yii::t('app', 'Additional info (ukrainian)')?></a></li>
-            <li><a href="<?=$this->createUrl('/user/additional_en')?>"><?=\yii::t('app', 'Additional info (english)')?></a></li>
+            <li><a href="<?=$this->createUrl('/user/additionaluk')?>"><?=\yii::t('app', 'Additional info (ukrainian)')?></a></li>
+            <li><a href="<?=$this->createUrl('/user/additionalen')?>"><?=\yii::t('app', 'Additional info (english)')?></a></li>
         </ul>
 
         <div class="panel panel-primary">

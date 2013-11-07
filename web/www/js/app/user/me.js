@@ -77,18 +77,18 @@ function appUserMe() {
         $.ajax({
             url: app.baseUrl + '/user/me',
             data: {
-                firstNameUk:           $('#firstNameUk').val(),
-                middleNameUk:          $('#middleNameUk').val(),
-                lastNameUk:            $('#lastNameUk').val(),
-                firstNameEn:           $('#firstNameEn').val(),
-                middleNameEn:          $('#middleNameEn').val(),
-                lastNameEn:            $('#lastNameEn').val(),
-                schoolId:              $('#schoolId').val(),
-                currentPassword:       $('#currentPassword').val(),
+                firstNameUk:           $('[name=firstNameUk]').val(),
+                middleNameUk:          $('[name=middleNameUk]').val(),
+                lastNameUk:            $('[name=lastNameUk]').val(),
+                firstNameEn:           $('[name=firstNameEn]').val(),
+                middleNameEn:          $('[name=middleNameEn]').val(),
+                lastNameEn:            $('[name=lastNameEn]').val(),
+                schoolId:              $('[name=schoolId]').val(),
+                currentPassword:       $('[name=currentPassword]').val(),
                 type:                  $('.form-group .btn.active [name=type]').val(),
                 coordinator:           $('.form-group .btn.active [name=coordinator]').val(),
-                password:              $('#password').val(),
-                passwordRepeat:        $('#passwordRepeat').val()
+                password:              $('[name=password]').val(),
+                passwordRepeat:        $('[name=passwordRepeat]').val()
             },
             success: function(response) {
                 appShowErrors(response.errors, $form);

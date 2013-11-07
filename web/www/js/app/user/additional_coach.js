@@ -8,30 +8,30 @@ function appUserAdditionalCoach(options) {
             $form = $this.closest('.form-horizontal');
         $this.prop('disabled', true);
         $.ajax({
-            url: app.baseUrl + '/user/additional_coach',
+            url: app.baseUrl + '/user/additionalcoach',
             data: {
                 language: options.lang,
 
-                phoneHome:              $('#phoneHome').val(),
-                phoneMobile:            $('#phoneMobile').val(),
-                skype:                  $('#skype').val(),
-                ACMNumber:              $('#ACMNumber').val(),
-                instName:               $('#instName').val(),
-                instNameShort:          $('#instNameShort').val(),
-                instDivision:           $('[name=instDivision]:checked').val(),
-                instPostEmailAddresses: $('#instPostEmailAddresses').val(),
+                phoneHome:                $('[name=phoneHome]').val(),
+                phoneMobile:              $('[name=phoneMobile]').val(),
+                skype:                    $('[name=skype]').val(),
+                acmNumber:                $('[name=acmNumber]').val(),
+                schoolName:               $('[name=schoolName]').val(),
+                schoolNameShort:          $('[name=schoolNameShort]').val(),
+                schoolDivision:           $('[name=schoolDivision]:checked').val(),
+                schoolPostEmailAddresses: $('[name=schoolPostEmailAddresses]').val(),
 
-                position:      $('#position').val(),
-                officeAddress: $('#officeAddress').val(),
-                phoneWork:     $('#phoneWork').val(),
-                fax:           $('#fax').val()
+                position:      $('[name=position]').val(),
+                officeAddress: $('[name=officeAddress]').val(),
+                phoneWork:     $('[name=phoneWork]').val(),
+                fax:           $('[name=fax]').val()
             },
             success: function(response) {
                 appShowErrors(response.errors, $form);
                 if (response.errors) {
                     $this.prop('disabled', false);
                 } else {
-                    location.href = app.baseUrl + '/user/additional_' + options.lang;
+                    location.href = app.baseUrl + '/user/additional' + options.lang;
                 }
             }
         });

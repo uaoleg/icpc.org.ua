@@ -129,7 +129,7 @@ class UserController extends \web\ext\Controller
     /**
      * Page for additional information in ukrainian
      */
-    public function actionAdditional_Uk()
+    public function actionAdditionalUk()
     {
         $lang = 'uk';
         $user = \yii::app()->user->getInstance();
@@ -149,7 +149,7 @@ class UserController extends \web\ext\Controller
     /**
      * Page for additional information in english
      */
-    public function actionAdditional_En()
+    public function actionAdditionalEn()
     {
         $lang = 'en';
         $user = \yii::app()->user->getInstance();
@@ -169,19 +169,19 @@ class UserController extends \web\ext\Controller
     /**
      * Method for saving coach additional information
      */
-    public function actionAdditional_Coach()
+    public function actionAdditionalCoach()
     {
         if ($this->request->isPostRequest && $this->request->isAjaxRequest) {
 
-            $lang                   = $this->request->getPost('language');
-            $phoneHome              = $this->request->getPost('phoneHome');
-            $phoneMobile            = $this->request->getPost('phoneMobile');
-            $skype                  = $this->request->getPost('skype');
-            $acmnumber              = $this->request->getPost('ACMNumber');
-            $instName               = $this->request->getPost('instName');
-            $instNameShort          = $this->request->getPost('instNameShort');
-            $instDivision           = $this->request->getPost('instDivision');
-            $instPostEmailAddresses = $this->request->getPost('instPostEmailAddresses');
+            $lang                     = $this->request->getPost('language');
+            $phoneHome                = $this->request->getPost('phoneHome');
+            $phoneMobile              = $this->request->getPost('phoneMobile');
+            $skype                    = $this->request->getPost('skype');
+            $acmnumber                = $this->request->getPost('acmNumber');
+            $schoolName               = $this->request->getPost('schoolName');
+            $schoolNameShort          = $this->request->getPost('schoolNameShort');
+            $schoolDivision           = $this->request->getPost('schoolDivision');
+            $schoolPostEmailAddresses = $this->request->getPost('schoolPostEmailAddresses');
 
             $position      = $this->request->getPost('position');
             $officeAddress = $this->request->getPost('officeAddress');
@@ -191,20 +191,20 @@ class UserController extends \web\ext\Controller
             $user = \yii::app()->user->getInstance();
 
             $user->info->setAttributes(array(
-                'lang'                   => $lang,
-                'phoneHome'              => $phoneHome,
-                'phoneMobile'            => $phoneMobile,
-                'skype'                  => $skype,
-                'ACMNumber'              => $acmnumber,
-                'instName'               => $instName,
-                'instNameShort'          => $instNameShort,
-                'instDivision'           => $instDivision,
-                'instPostEmailAddresses' => $instPostEmailAddresses,
+                'lang'                     => $lang,
+                'phoneHome'                => $phoneHome,
+                'phoneMobile'              => $phoneMobile,
+                'skype'                    => $skype,
+                'acmNumber'                => $acmnumber,
+                'schoolName'               => $schoolName,
+                'schoolNameShort'          => $schoolNameShort,
+                'schoolDivision'           => $schoolDivision,
+                'schoolPostEmailAddresses' => $schoolPostEmailAddresses,
 
-                'position'               => $position,
-                'officeAddress'          => $officeAddress,
-                'phoneWork'              => $phoneWork,
-                'fax'                    => $fax
+                'position'      => $position,
+                'officeAddress' => $officeAddress,
+                'phoneWork'     => $phoneWork,
+                'fax'           => $fax
             ), false);
             $user->info->save();
 
@@ -221,48 +221,48 @@ class UserController extends \web\ext\Controller
     /**
      * Method for saving student additional information
      */
-    public function actionAdditional_Student()
+    public function actionAdditionalStudent()
     {
         if ($this->request->isPostRequest && $this->request->isAjaxRequest) {
 
-            $lang                   = $this->request->getPost('language');
-            $phoneHome              = $this->request->getPost('phoneHome');
-            $phoneMobile            = $this->request->getPost('phoneMobile');
-            $skype                  = $this->request->getPost('skype');
-            $acmnumber              = $this->request->getPost('ACMNumber');
-            $instName               = $this->request->getPost('instName');
-            $instNameShort          = $this->request->getPost('instNameShort');
-            $instDivision           = $this->request->getPost('instDivision');
-            $instPostEmailAddresses = $this->request->getPost('instPostEmailAddresses');
+            $lang                     = $this->request->getPost('language');
+            $phoneHome                = $this->request->getPost('phoneHome');
+            $phoneMobile              = $this->request->getPost('phoneMobile');
+            $skype                    = $this->request->getPost('skype');
+            $acmnumber                = $this->request->getPost('acmNumber');
+            $schoolName               = $this->request->getPost('schoolName');
+            $schoolNameShort          = $this->request->getPost('schoolNameShort');
+            $schoolDivision           = $this->request->getPost('schoolDivision');
+            $schoolPostEmailAddresses = $this->request->getPost('schoolPostEmailAddresses');
 
-            $studyField        = $this->request->getPost('studyField');
-            $speciality        = $this->request->getPost('speciality');
-            $faculty           = $this->request->getPost('faculty');
-            $group             = $this->request->getPost('group');
-            $instAdmissionYear = $this->request->getPost('instAdmissionYear');
-            $dateOfBirth       = $this->request->getPost('dateOfBirth');
-            $document          = $this->request->getPost('document');
+            $studyField          = $this->request->getPost('studyField');
+            $speciality          = $this->request->getPost('speciality');
+            $faculty             = $this->request->getPost('faculty');
+            $group               = $this->request->getPost('group');
+            $schoolAdmissionYear = $this->request->getPost('schoolAdmissionYear');
+            $dateOfBirth         = $this->request->getPost('dateOfBirth');
+            $document            = $this->request->getPost('document');
 
             $user = \yii::app()->user->getInstance();
 
             $user->info->setAttributes(array(
-                'lang'                   => $lang,
-                'phoneHome'              => $phoneHome,
-                'phoneMobile'            => $phoneMobile,
-                'skype'                  => $skype,
-                'ACMNumber'              => $acmnumber,
-                'instName'               => $instName,
-                'instNameShort'          => $instNameShort,
-                'instDivision'           => $instDivision,
-                'instPostEmailAddresses' => $instPostEmailAddresses,
+                'lang'                     => $lang,
+                'phoneHome'                => $phoneHome,
+                'phoneMobile'              => $phoneMobile,
+                'skype'                    => $skype,
+                'acmNumber'                => $acmnumber,
+                'schoolName'               => $schoolName,
+                'schoolNameShort'          => $schoolNameShort,
+                'schoolDivision'           => $schoolDivision,
+                'schoolPostEmailAddresses' => $schoolPostEmailAddresses,
 
-                'studyField'        => $studyField,
-                'speciality'        => $speciality,
-                'faculty'           => $faculty,
-                'group'             => $group,
-                'instAdmissionYear' => $instAdmissionYear,
-                'dateOfBirth'       => $dateOfBirth,
-                'document'          => $document,
+                'studyField'          => $studyField,
+                'speciality'          => $speciality,
+                'faculty'             => $faculty,
+                'group'               => $group,
+                'schoolAdmissionYear' => $schoolAdmissionYear,
+                'dateOfBirth'         => $dateOfBirth,
+                'document'            => $document,
             ), false);
             $user->info->save();
 

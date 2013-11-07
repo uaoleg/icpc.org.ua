@@ -194,6 +194,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         // Define admin params
         $email      = \yii::app()->params['rbac']['admin']['email'];
         $password   = \yii::app()->params['rbac']['admin']['password'];
+        $schoolId   = \yii::app()->params['rbac']['admin']['schoolId'];
 
         // Save admin to DB
         $admin = new \common\models\User();
@@ -201,7 +202,8 @@ class RbacCommand extends \console\ext\ConsoleCommand
             'firstName' => 'Root',
             'lastName'  => 'Admin',
             'email'     => $email,
-            'role'      => User::ROLE_ADMIN,
+            'type'      => User::ROLE_COACH,
+            'schoolId'  => $schoolId
         ), false);
         $admin->setPassword($password, $password);
         $admin->save();
