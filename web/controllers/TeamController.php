@@ -2,6 +2,7 @@
 
 namespace web\controllers;
 
+use common\components\Rbac;
 use \common\models\Team;
 use \common\models\User;
 use \common\models\School;
@@ -23,6 +24,27 @@ class TeamController extends \web\ext\Controller
         $this->setNavActiveItem('main', '');
     }
 
+    public function filters()
+    {
+        return array(
+            'accessControl'
+        );
+    }
+
+    public function accessRules()
+    {
+        return array(
+            array(
+                'allow',
+                'actions' => array('manage'),
+                'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE)
+            )
+        );
+    }
+
+    /**
+     * List all the teams
+     */
     public function actionList()
     {
         $criteria = new \EMongoCriteria();

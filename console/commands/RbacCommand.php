@@ -52,6 +52,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $guestOperationList = array(
             Rbac::OP_DOCUMENT_READ,
             Rbac::OP_NEWS_READ,
+            Rbac::OP_TEAM_READ,
         );
         $this->_assignOperations($guest, $guestOperationList);
 
@@ -88,6 +89,8 @@ class RbacCommand extends \console\ext\ConsoleCommand
         }
         $coachOperationList = array(
             User::ROLE_STUDENT,
+            Rbac::OP_TEAM_CREATE,
+            Rbac::OP_TEAM_UPDATE
         );
         $this->_assignOperations($coach, $coachOperationList);
 
