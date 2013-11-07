@@ -199,11 +199,12 @@ class RbacCommand extends \console\ext\ConsoleCommand
         // Save admin to DB
         $admin = new \common\models\User();
         $admin->setAttributes(array(
-            'firstName' => 'Root',
-            'lastName'  => 'Admin',
-            'email'     => $email,
-            'type'      => User::ROLE_COACH,
-            'schoolId'  => $schoolId
+            'firstName'     => 'Root',
+            'middleName'    => 'System',
+            'lastName'      => 'Admin',
+            'email'         => $email,
+            'type'          => User::ROLE_ADMIN,
+            'schoolId'      => $schoolId
         ), false);
         $admin->setPassword($password, $password);
         $admin->save();

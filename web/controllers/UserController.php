@@ -2,10 +2,8 @@
 
 namespace web\controllers;
 
-use \common\models\User;
 use \common\models\School;
-use \common\models\User\InfoCoach;
-use \common\models\User\InfoStudent;
+use \common\models\User;
 
 class UserController extends \web\ext\Controller
 {
@@ -45,6 +43,7 @@ class UserController extends \web\ext\Controller
 
         // Get logged in user
         $user = \yii::app()->user->getInstance();
+
         // Update user data
         if ($this->request->isPostRequest) {
 
@@ -127,153 +126,128 @@ class UserController extends \web\ext\Controller
     }
 
     /**
-     * Page for additional information in ukrainian
+     * Page with additional information
      */
-    public function actionAdditionalUk()
+    public function actionAdditional()
     {
-        $lang = 'uk';
+        // Get params
+        $lang = $this->request->getParam('lang');
         $user = \yii::app()->user->getInstance();
+
+        // Get view name
         if ($user->type === User::ROLE_STUDENT) {
-            $this->render('additional_student', array(
-                'lang' => $lang,
-                'info' => $user->getInfo($lang)
-            ));
+            $view = 'additionalStudent';
         } elseif ($user->type === User::ROLE_COACH) {
-            $this->render('additional_coach', array(
-                'lang' => $lang,
-                'info' => $user->getInfo($lang)
-            ));
-        }
-    }
-
-    /**
-     * Page for additional information in english
-     */
-    public function actionAdditionalEn()
-    {
-        $lang = 'en';
-        $user = \yii::app()->user->getInstance();
-        if ($user->type === User::ROLE_STUDENT) {
-            $this->render('additional_student', array(
-                'lang' => $lang,
-                'info' => $user->getInfo($lang)
-            ));
-        } elseif ($user->type === User::ROLE_COACH) {
-            $this->render('additional_coach', array(
-                'lang' => $lang,
-                'info' => $user->getInfo($lang)
-            ));
-        }
-    }
-
-    /**
-     * Method for saving coach additional information
-     */
-    public function actionAdditionalCoach()
-    {
-        if ($this->request->isPostRequest && $this->request->isAjaxRequest) {
-
-            $lang                     = $this->request->getPost('language');
-            $phoneHome                = $this->request->getPost('phoneHome');
-            $phoneMobile              = $this->request->getPost('phoneMobile');
-            $skype                    = $this->request->getPost('skype');
-            $acmnumber                = $this->request->getPost('acmNumber');
-            $schoolName               = $this->request->getPost('schoolName');
-            $schoolNameShort          = $this->request->getPost('schoolNameShort');
-            $schoolDivision           = $this->request->getPost('schoolDivision');
-            $schoolPostEmailAddresses = $this->request->getPost('schoolPostEmailAddresses');
-
-            $position      = $this->request->getPost('position');
-            $officeAddress = $this->request->getPost('officeAddress');
-            $phoneWork     = $this->request->getPost('phoneWork');
-            $fax           = $this->request->getPost('fax');
-
-            $user = \yii::app()->user->getInstance();
-
-            $user->info->setAttributes(array(
-                'lang'                     => $lang,
-                'phoneHome'                => $phoneHome,
-                'phoneMobile'              => $phoneMobile,
-                'skype'                    => $skype,
-                'acmNumber'                => $acmnumber,
-                'schoolName'               => $schoolName,
-                'schoolNameShort'          => $schoolNameShort,
-                'schoolDivision'           => $schoolDivision,
-                'schoolPostEmailAddresses' => $schoolPostEmailAddresses,
-
-                'position'      => $position,
-                'officeAddress' => $officeAddress,
-                'phoneWork'     => $phoneWork,
-                'fax'           => $fax
-            ), false);
-            $user->info->save();
-
-            // Render json
-            $this->renderJson(array(
-                'errors' => $user->info->hasErrors() ? $user->info->getErrors() : false
-            ));
-
+            $view = 'additionalCoach';
         } else {
-            return $this->httpException(403);
+            return $this->httpException(400);
         }
+
+        // Render view
+        $this->render($view, array(
+            'lang' => $lang,
+            'info' => $user->getInfo($lang)
+        ));
     }
 
     /**
-     * Method for saving student additional information
+     * Save coach additional information
      */
-    public function actionAdditionalStudent()
+    public function actionAdditionalCoachSave()
     {
-        if ($this->request->isPostRequest && $this->request->isAjaxRequest) {
+        // Get params
+        $lang                     = $this->request->getPost('language');
+        $phoneHome                = $this->request->getPost('phoneHome');
+        $phoneMobile              = $this->request->getPost('phoneMobile');
+        $skype                    = $this->request->getPost('skype');
+        $acmnumber                = $this->request->getPost('acmNumber');
+        $schoolName               = $this->request->getPost('schoolName');
+        $schoolNameShort          = $this->request->getPost('schoolNameShort');
+        $schoolDivision           = $this->request->getPost('schoolDivision');
+        $schoolPostEmailAddresses = $this->request->getPost('schoolPostEmailAddresses');
 
-            $lang                     = $this->request->getPost('language');
-            $phoneHome                = $this->request->getPost('phoneHome');
-            $phoneMobile              = $this->request->getPost('phoneMobile');
-            $skype                    = $this->request->getPost('skype');
-            $acmnumber                = $this->request->getPost('acmNumber');
-            $schoolName               = $this->request->getPost('schoolName');
-            $schoolNameShort          = $this->request->getPost('schoolNameShort');
-            $schoolDivision           = $this->request->getPost('schoolDivision');
-            $schoolPostEmailAddresses = $this->request->getPost('schoolPostEmailAddresses');
+        $position      = $this->request->getPost('position');
+        $officeAddress = $this->request->getPost('officeAddress');
+        $phoneWork     = $this->request->getPost('phoneWork');
+        $fax           = $this->request->getPost('fax');
 
-            $studyField          = $this->request->getPost('studyField');
-            $speciality          = $this->request->getPost('speciality');
-            $faculty             = $this->request->getPost('faculty');
-            $group               = $this->request->getPost('group');
-            $schoolAdmissionYear = $this->request->getPost('schoolAdmissionYear');
-            $dateOfBirth         = $this->request->getPost('dateOfBirth');
-            $document            = $this->request->getPost('document');
+        // Save additional info
+        $info = \yii::app()->user->getInstance()->info;
+        $info->setAttributes(array(
+            'lang'                     => $lang,
+            'phoneHome'                => $phoneHome,
+            'phoneMobile'              => $phoneMobile,
+            'skype'                    => $skype,
+            'acmNumber'                => $acmnumber,
+            'schoolName'               => $schoolName,
+            'schoolNameShort'          => $schoolNameShort,
+            'schoolDivision'           => $schoolDivision,
+            'schoolPostEmailAddresses' => $schoolPostEmailAddresses,
 
-            $user = \yii::app()->user->getInstance();
+            'position'      => $position,
+            'officeAddress' => $officeAddress,
+            'phoneWork'     => $phoneWork,
+            'fax'           => $fax
+        ), false);
+        $info->save();
 
-            $user->info->setAttributes(array(
-                'lang'                     => $lang,
-                'phoneHome'                => $phoneHome,
-                'phoneMobile'              => $phoneMobile,
-                'skype'                    => $skype,
-                'acmNumber'                => $acmnumber,
-                'schoolName'               => $schoolName,
-                'schoolNameShort'          => $schoolNameShort,
-                'schoolDivision'           => $schoolDivision,
-                'schoolPostEmailAddresses' => $schoolPostEmailAddresses,
+        // Render json
+        $this->renderJson(array(
+            'errors' => $info->hasErrors() ? $info->getErrors() : false
+        ));
+    }
 
-                'studyField'          => $studyField,
-                'speciality'          => $speciality,
-                'faculty'             => $faculty,
-                'group'               => $group,
-                'schoolAdmissionYear' => $schoolAdmissionYear,
-                'dateOfBirth'         => $dateOfBirth,
-                'document'            => $document,
-            ), false);
-            $user->info->save();
+    /**
+     * Save student additional information
+     */
+    public function actionAdditionalStudentSave()
+    {
+        // Get params
+        $lang                     = $this->request->getPost('language');
+        $phoneHome                = $this->request->getPost('phoneHome');
+        $phoneMobile              = $this->request->getPost('phoneMobile');
+        $skype                    = $this->request->getPost('skype');
+        $acmnumber                = $this->request->getPost('acmNumber');
+        $schoolName               = $this->request->getPost('schoolName');
+        $schoolNameShort          = $this->request->getPost('schoolNameShort');
+        $schoolDivision           = $this->request->getPost('schoolDivision');
+        $schoolPostEmailAddresses = $this->request->getPost('schoolPostEmailAddresses');
 
-            // Render json
-            $this->renderJson(array(
-                'errors' => $user->info->hasErrors() ? $user->info->getErrors() : false
-            ));
+        $studyField          = $this->request->getPost('studyField');
+        $speciality          = $this->request->getPost('speciality');
+        $faculty             = $this->request->getPost('faculty');
+        $group               = $this->request->getPost('group');
+        $schoolAdmissionYear = $this->request->getPost('schoolAdmissionYear');
+        $dateOfBirth         = $this->request->getPost('dateOfBirth');
+        $document            = $this->request->getPost('document');
 
-        } else {
-            return $this->httpException(403);
-        }
+        // Save additional info
+        $info = \yii::app()->user->getInstance()->info;
+        $info->setAttributes(array(
+            'lang'                     => $lang,
+            'phoneHome'                => $phoneHome,
+            'phoneMobile'              => $phoneMobile,
+            'skype'                    => $skype,
+            'acmNumber'                => $acmnumber,
+            'schoolName'               => $schoolName,
+            'schoolNameShort'          => $schoolNameShort,
+            'schoolDivision'           => $schoolDivision,
+            'schoolPostEmailAddresses' => $schoolPostEmailAddresses,
+
+            'studyField'          => $studyField,
+            'speciality'          => $speciality,
+            'faculty'             => $faculty,
+            'group'               => $group,
+            'schoolAdmissionYear' => $schoolAdmissionYear,
+            'dateOfBirth'         => $dateOfBirth,
+            'document'            => $document,
+        ), false);
+        $info->save();
+
+        // Render json
+        $this->renderJson(array(
+            'errors' => $info->hasErrors() ? $info->getErrors() : false
+        ));
     }
 
 }

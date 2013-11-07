@@ -1,4 +1,4 @@
-function appUserAdditionalStudent(options) {
+function appUserAdditionalCoach(options) {
 
     /**
      * Save button handler
@@ -8,7 +8,7 @@ function appUserAdditionalStudent(options) {
             $form = $this.closest('.form-horizontal');
         $this.prop('disabled', true);
         $.ajax({
-            url: app.baseUrl + '/user/additionalstudent',
+            url: app.baseUrl + '/user/additionalCoachSave',
             data: {
                 language: options.lang,
 
@@ -21,20 +21,17 @@ function appUserAdditionalStudent(options) {
                 schoolDivision:           $('[name=schoolDivision]:checked').val(),
                 schoolPostEmailAddresses: $('[name=schoolPostEmailAddresses]').val(),
 
-                studyField:          $('[name=studyField]').val(),
-                speciality:          $('[name=speciality]').val(),
-                faculty:             $('[name=faculty]').val(),
-                group:               $('[name=group]').val(),
-                schoolAdmissionYear: $('[name=schoolAdmissionYear]').val(),
-                dateOfBirth:         $('[name=dateOfBirth]').val(),
-                document:            $('[name=document]').val(),
+                position:      $('[name=position]').val(),
+                officeAddress: $('[name=officeAddress]').val(),
+                phoneWork:     $('[name=phoneWork]').val(),
+                fax:           $('[name=fax]').val()
             },
             success: function(response) {
                 appShowErrors(response.errors, $form);
                 if (response.errors) {
                     $this.prop('disabled', false);
                 } else {
-                    location.href = app.baseUrl + '/user/additional' + options.lang;
+                    location.href = app.baseUrl + '/user/additional/lang/' + options.lang;
                 }
             }
         });

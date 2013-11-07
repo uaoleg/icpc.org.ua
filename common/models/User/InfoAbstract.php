@@ -42,13 +42,13 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public $acmNumber;
 
     /**
-     * Institution name
+     * School name
      * @var string
      */
     public $schoolName;
 
     /**
-     * Short form of the institution name
+     * Short form of the school name
      * @var string
      */
     public $schoolNameShort;
@@ -85,7 +85,7 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
             'skype'                        => \yii::t('app', 'Skype'),
             'acmNumber'                    => \yii::t('app', 'ACM number if you have'),
             'schoolName'                   => \yii::t('app', 'School name'),
-            'schoolNameShort'              => \yii::t('app', 'Short name of the institution name'),
+            'schoolNameShort'              => \yii::t('app', 'Short name of the school name'),
             'schoolDivision'               => \yii::t('app', 'Division'),
             'schoolPostEmailAddresses'     => \yii::t('app', 'Official post and email addresses')
         ));

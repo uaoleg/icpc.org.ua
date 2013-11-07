@@ -5,11 +5,11 @@ namespace common\models;
 /**
  * User
  *
- * @property-read bool                            $isApprovedCoach
- * @property-read bool                            $isApprovedCoordinator
  * @property-read string                          $firstName
  * @property-read string                          $middleName
  * @property-read string                          $lastName
+ * @property-read bool                            $isApprovedCoach
+ * @property-read bool                            $isApprovedCoordinator
  * @property-read User\InfoCoach|User\InfoStudent $info
  * @property-read User\Settings                   $settings
  */
@@ -29,37 +29,37 @@ class User extends \common\ext\MongoDb\Document
     const ROLE_ADMIN                = 'admin';
 
     /**
-     * First name in ukrainian
+     * First name in Ukrainian
      * @var string
      */
     public $firstNameUk;
 
     /**
-     * Middle name in ukrainian
+     * Middle name in Ukrainian
      * @var string
      */
     public $middleNameUk;
 
     /**
-     * Last name in ukrainian
+     * Last name in Ukrainian
      * @var string
      */
     public $lastNameUk;
 
     /**
-     * First name in english
+     * First name in English
      * @var string
      */
     public $firstNameEn;
 
     /**
-     * Middle name in english
+     * Middle name in English
      * @var string
      */
     public $middleNameEn;
 
     /**
-     * Last name in english
+     * Last name in English
      * @var string
      */
     public $lastNameEn;
@@ -115,11 +115,13 @@ class User extends \common\ext\MongoDb\Document
 
     /**
      * Returns first name in appropriate language
-     * @return null|string
+     *
+     * @param strign $lang
+     * @return string
      */
     public function getFirstName($lang = null)
     {
-        $lang = (isset($lang)) ? \yii::app()->getLanguage() : $lang;
+        $lang = ($lang === null) ? \yii::app()->language : $lang;
         switch ($lang) {
             default:
             case 'uk':
@@ -133,11 +135,13 @@ class User extends \common\ext\MongoDb\Document
 
     /**
      * Returns middle name in appropriate language
-     * @return null|string
+     *
+     * @param strign $lang
+     * @return string
      */
     public function getMiddleName($lang = null)
     {
-        $lang = (isset($lang)) ? \yii::app()->getLanguage() : $lang;
+        $lang = ($lang === null) ? \yii::app()->language : $lang;
         switch ($lang) {
             default:
             case 'uk':
@@ -151,11 +155,13 @@ class User extends \common\ext\MongoDb\Document
 
     /**
      * Returns last name in appropriate language
-     * @return null|string
+     *
+     * @param strign $lang
+     * @return string
      */
     public function getLastName($lang = null)
     {
-        $lang = (isset($lang)) ? \yii::app()->getLanguage() : $lang;
+        $lang = ($lang === null) ? \yii::app()->language : $lang;
         switch ($lang) {
             default:
             case 'uk':
@@ -206,29 +212,39 @@ class User extends \common\ext\MongoDb\Document
         return $this->_settings;
     }
 
+    /**
+     * Returns user's additional info
+     *
+     * @param string $lang
+     * @return User\InfoAbstract
+     */
     public function getInfo($lang = null)
     {
-        if (!isset($lang)) {
-            $lang = \yii::app()->language;
-        }
+        $lang = ($lang === null) ? \yii::app()->language : $lang;
         if (!isset($this->_info)) {
-            if ($this->type === 'student') {
+            if ($this->type === static::ROLE_STUDENT) {
                 $this->_info = User\InfoStudent::model()->findByAttributes(array(
                     'userId' => (string)$this->_id,
                     'lang'   => $lang
                 ));
                 if (!isset($this->_info)) {
                     $this->_info = new User\InfoStudent();
-                    $this->_info->userId = (string)$this->_id;
+                    $this->_info->setAttributes(array(
+                        'userId'    => (string)$this->_id,
+                        'lang'      => $lang,
+                    ), false);
                 }
-            } elseif ($this->type === 'coach') {
+            } elseif ($this->type === static::ROLE_COACH) {
                 $this->_info = User\InfoCoach::model()->findByAttributes(array(
                     'userId' => (string)$this->_id,
                     'lang'   => $lang
                 ));
                 if (!isset($this->_info)) {
                     $this->_info = new User\InfoCoach();
-                    $this->_info->userId = (string)$this->_id;
+                    $this->_info->setAttributes(array(
+                        'userId'    => (string)$this->_id,
+                        'lang'      => $lang,
+                    ), false);
                 }
             }
         }
@@ -249,12 +265,12 @@ class User extends \common\ext\MongoDb\Document
             'firstName'      => \yii::t('app', 'First name'),
             'middleName'     => \yii::t('app', 'First name'),
             'lastName'       => \yii::t('app', 'First name'),
-            'firstNameUk'    => \yii::t('app', 'First name in ukrainian'),
-            'middleNameUk'   => \yii::t('app', 'Middle name in ukranian'),
-            'lastNameUk'     => \yii::t('app', 'Last name in ukrainian'),
-            'firstNameEn'    => \yii::t('app', 'First name in english'),
-            'middleNameEn'   => \yii::t('app', 'Middle name in english'),
-            'lastNameEn'     => \yii::t('app', 'Last name in english'),
+            'firstNameUk'    => \yii::t('app', 'First name in Ukrainian'),
+            'middleNameUk'   => \yii::t('app', 'Middle name in Ukranian'),
+            'lastNameUk'     => \yii::t('app', 'Last name in Ukrainian'),
+            'firstNameEn'    => \yii::t('app', 'First name in English'),
+            'middleNameEn'   => \yii::t('app', 'Middle name in English'),
+            'lastNameEn'     => \yii::t('app', 'Last name in English'),
             'email'          => \yii::t('app', 'Email'),
             'hash'           => \yii::t('app', 'Password hash'),
             'type'           => \yii::t('app', 'Type'),
