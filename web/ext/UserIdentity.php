@@ -22,7 +22,7 @@ class UserIdentity extends \CUserIdentity
     {
         if ($this->username) {
             $criteria = new \EMongoCriteria();
-            $criteria->addCond('email', '==', $this->username);
+            $criteria->addCond('email', '==', mb_strtolower($this->username));
             return User::model()->find($criteria);
         } else {
             return null;

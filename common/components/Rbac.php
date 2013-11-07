@@ -13,6 +13,17 @@ class Rbac extends \CApplicationComponent
 {
 
     /**
+     * List of available operations
+     */
+    const OP_DOCUMENT_CREATE    = 'documentCreate';
+    const OP_DOCUMENT_READ      = 'documentRead';
+    const OP_DOCUMENT_UPDATE    = 'documentUpdate';
+    const OP_DOCUMENT_DELETE    = 'documentDelete';
+    const OP_NEWS_CREATE        = 'newsCreate';
+    const OP_NEWS_READ          = 'newsRead';
+    const OP_NEWS_UPDATE        = 'newsUpdate';
+
+    /**
      * Current user
      * @var User
      */
@@ -55,28 +66,6 @@ class Rbac extends \CApplicationComponent
     public function checkAccess($operation, array $params = array())
     {
         return \yii::app()->authManager->checkAccess($operation, (string)$this->user->_id, $params);
-    }
-
-    /**
-     * Biz rule for viewing and downloading document
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleDocumentRead(array $params)
-    {
-        return true;
-    }
-
-    /**
-     * Biz rule for edit document
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleDocumentUpdate(array $params)
-    {
-        return $this->checkAccess('admin');
     }
 
     /**

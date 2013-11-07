@@ -39,11 +39,11 @@ class HttpRequest extends \CHttpRequest
     }
 
     /**
-     * If user agent is IE
+     * If user agent is MSIE
      *
      * @return bool
      */
-    public function userAgentIsIe()
+    public function userAgentIsMsie()
     {
         return stripos(\yii::app()->request->userAgent, 'msie') !== false;
     }

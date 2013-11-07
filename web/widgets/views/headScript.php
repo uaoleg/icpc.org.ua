@@ -8,8 +8,30 @@
     ))?>;
 
     $(document).ready(function(){
+
+        // Tooltips
         $('[rel=tooltip]').tooltip();
-        $('input, textarea').placeholder();
+
+        // Bootbox confirmation
+        bootbox.setDefaults({
+            animate: false
+        });
+        $('.btn[data-confirm]').on('click', function() {
+            var $this = $(this);
+            bootbox.confirm($this.data('confirm'), function(confirmed) {
+                if (confirmed) {
+                    $this.trigger('confirmed');
+                }
+            });
+        });
+
+        // Disable labels
         $(':disabled').closest('label').addClass('disabled');
+
+        // Placeholder for MSIE
+        <?php if (\yii::app()->request->userAgentIsMsie()): ?>
+            $('input, textarea').placeholder();
+        <?php endif; ?>
+
     });
 </script>

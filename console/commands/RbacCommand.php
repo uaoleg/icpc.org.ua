@@ -1,6 +1,7 @@
 <?php
 
-use \common\ext\MongoDb\Auth,
+use \common\components\Rbac,
+    \common\ext\MongoDb\Auth,
     \common\models\User;
 
 class RbacCommand extends \console\ext\ConsoleCommand
@@ -49,8 +50,8 @@ class RbacCommand extends \console\ext\ConsoleCommand
             $guest = $this->auth->createRole(User::ROLE_GUEST);
         }
         $guestOperationList = array(
-            'documentRead',
-            'newsRead',
+            Rbac::OP_DOCUMENT_READ,
+            Rbac::OP_NEWS_READ,
         );
         $this->_assignOperations($guest, $guestOperationList);
 
@@ -99,10 +100,11 @@ class RbacCommand extends \console\ext\ConsoleCommand
         }
         $coordinatorStateOperationList = array(
             User::ROLE_COACH,
-            'documentCreate',
-            'documentUpdate',
-            'newsCreate',
-            'newsUpdate',
+            Rbac::OP_DOCUMENT_CREATE,
+            Rbac::OP_DOCUMENT_UPDATE,
+            Rbac::OP_DOCUMENT_DELETE,
+            Rbac::OP_NEWS_CREATE,
+            Rbac::OP_NEWS_UPDATE,
         );
         $this->_assignOperations($coordinatorState, $coordinatorStateOperationList);
 
@@ -165,12 +167,10 @@ class RbacCommand extends \console\ext\ConsoleCommand
      */
     protected function _operationsDocument()
     {
-        $bizRuleRead   = 'return \yii::app()->rbac->bizRuleDocumentRead($params);';
-        $bizRuleUpdate = 'return \yii::app()->rbac->bizRuleDocumentUpdate($params);';
-
-        $this->auth->createOperation('documentCreate', 'Create document');
-        $this->auth->createOperation('documentRead', 'Read document', $bizRuleRead);
-        $this->auth->createOperation('documentUpdate', 'Edit document', $bizRuleUpdate);
+        $this->auth->createOperation(Rbac::OP_DOCUMENT_CREATE, 'Create document');
+        $this->auth->createOperation(Rbac::OP_DOCUMENT_READ, 'Read document');
+        $this->auth->createOperation(Rbac::OP_DOCUMENT_UPDATE, 'Edit document');
+        $this->auth->createOperation(Rbac::OP_DOCUMENT_DELETE, 'Delete document');
     }
 
     /**
@@ -181,9 +181,9 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $bizRuleRead   = 'return \yii::app()->rbac->bizRuleNewsRead($params);';
         $bizRuleUpdate = 'return \yii::app()->rbac->bizRuleNewsUpdate($params);';
 
-        $this->auth->createOperation('newsCreate', 'Create news');
-        $this->auth->createOperation('newsRead', 'Read news', $bizRuleRead);
-        $this->auth->createOperation('newsUpdate', 'Edit news', $bizRuleUpdate);
+        $this->auth->createOperation(Rbac::OP_NEWS_CREATE, 'Create news');
+        $this->auth->createOperation(Rbac::OP_NEWS_READ, 'Read news', $bizRuleRead);
+        $this->auth->createOperation(Rbac::OP_NEWS_UPDATE, 'Edit news', $bizRuleUpdate);
     }
 
     /**

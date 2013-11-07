@@ -19,11 +19,14 @@ $config = array(
     'components' => array(
 
         'clientScript' => array(
-            'coreScriptUrl' => '',
+            'coreScriptUrl'             => '',
+            'coreScriptPosition'        => CClientScript::POS_HEAD,
+            'defaultScriptFilePosition' => CClientScript::POS_END,
             'packages' => array(
                 'bootstrap' => array(
                     'js' => array(
                         'lib/bootstrap-3.0.0/js/bootstrap.min.js',
+                        'lib/bootbox-4.1.0/bootbox.min.js',
                     ),
                     'css' => array(
                         'lib/bootstrap-3.0.0/css/bootstrap.min.css',
@@ -39,7 +42,6 @@ $config = array(
                     'js' => array(
                         'lib/jquery/jquery-1.10.2.min.js',
                         'lib/jquery-ui-1.10.3/ui/minified/jquery.ui.widget.min.js',
-                        'lib/jquery/placeholder/jquery.placeholder.min.js',
                     ),
                     'css' => array(
                         'lib/jquery-ui-1.10.3/themes/base/minified/jquery-ui.min.css',
@@ -55,6 +57,15 @@ $config = array(
                     ),
                     'depends' => array('jquery'),
                 ),
+                'msie' => array( // Fixes for MSIE
+                    'js' => array(
+                        'lib/jquery/placeholder/jquery.placeholder.min.js',
+                        'lib/respond-1.3.0/respond.min.js',
+                    ),
+                    'css' => array(
+                    ),
+                    'depends' => array('jquery'),
+                ),
                 'plupload' => array(
                     'js' => array(
                         'lib/plupload-2.0.0-beta/js/plupload.full.min.js',
@@ -64,15 +75,6 @@ $config = array(
                     ),
                     'depends' => array('jquery'),
                 ),
-                'respond' => array(
-                    'js' => array(
-                        'lib/Respond/respond.min.js',
-                    ),
-                    'css' => array(
-                    ),
-                    'depends' => array('jquery'),
-                ),
-
                 'select2' => array(
                     'js' => array(
                         'lib/select2/select2.js',

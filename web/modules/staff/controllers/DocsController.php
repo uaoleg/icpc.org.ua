@@ -8,6 +8,48 @@ class DocsController extends \web\modules\staff\ext\Controller
 {
 
     /**
+     * Returns the access rules for this controller
+     *
+     * @return array
+     */
+    public function accessRules()
+    {
+        // Returns document by ID GET param
+        $controller = $this;
+        $getDocument = function() use($controller) {
+            $id = $controller->request->getParam('id');
+            $document = Document::model()->findByPk(new \MongoId($id));
+            return $document;
+        };
+
+        // Return rules
+        return array(
+            array(
+                'allow',
+                'actions'   => array('create'),
+                'roles'     => array(\common\components\Rbac::OP_DOCUMENT_CREATE),
+            ),
+            array(
+                'allow',
+                'actions'   => array('edit', 'publish'),
+                'roles'     => array(\common\components\Rbac::OP_DOCUMENT_UPDATE => array(
+                    'document' => $getDocument(),
+                )),
+            ),
+            array(
+                'allow',
+                'actions'   => array('delete'),
+                'roles'     => array(\common\components\Rbac::OP_DOCUMENT_DELETE => array(
+                    'document' => $getDocument(),
+                )),
+            ),
+            array(
+                'deny',
+            ),
+        );
+    }
+
+    /**
      * Create page
      */
     public function actionCreate()
@@ -82,6 +124,24 @@ class DocsController extends \web\modules\staff\ext\Controller
 
         // Redirect to edit page
         $this->redirect(array('edit', 'id' => $document->_id));
+    }
+
+    /**
+     * Delete document
+     */
+    public function actionDelete()
+    {
+        // Get params
+        $id = $this->request->getParam('id');
+
+        // Get document
+        $document = Document::model()->findByPk(new \MongoId($id));
+        if ($document === null) {
+            return;
+        }
+
+        // Delete document
+        $document->delete();
     }
 
 }

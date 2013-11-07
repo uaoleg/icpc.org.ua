@@ -28,9 +28,16 @@
                         id:     $(self.element).data('news-id'),
                         status: $selfElement.data('status')
                     },
-                    success: function() {
-                        $('.btn', self.element).attr('disabled', false).removeClass('hide');
-                        $selfElement.addClass('hide');
+                    success: function(response) {
+                        if (response.errors) {
+                            for (attrName in response.errors) {break;}
+                            $('.btn:visible', self.element).tooltip({
+                                title: response.errors[attrName][0]
+                            }).tooltip('show');
+                        } else {
+                            $('.btn', self.element).attr('disabled', false).removeClass('hide');
+                            $selfElement.addClass('hide');
+                        }
                     }
                 });
             });

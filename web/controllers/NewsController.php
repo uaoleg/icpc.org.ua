@@ -38,7 +38,7 @@ class NewsController extends \web\ext\Controller
 
         // Get list of news
         $newsList = News::model()
-            ->scopeByLatest($year, !\yii::app()->user->checkAccess('newsUpdate'), $page, $perPage)
+            ->scopeByLatest($year, !\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_UPDATE), $page, $perPage)
             ->findAll();
         $newsCount  = $newsList->count(true);
         $totalCount = $newsList->count(false);
@@ -92,7 +92,7 @@ class NewsController extends \web\ext\Controller
         }
 
         // Check access
-        if (!\yii::app()->user->checkAccess('newsRead', array('news' => $news))) {
+        if (!\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_READ, array('news' => $news))) {
             return $this->httpException(403);
         }
 
