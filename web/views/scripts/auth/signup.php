@@ -14,10 +14,13 @@
         <div class="panel-body">
             <div class="form-horizontal col-lg-offset-1 col-lg-10">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="firstName" value="<?=\CHtml::encode($firstName)?>" placeholder="Ім'я (українською)">
+                    <input type="text" class="form-control" name="firstNameUk" value="<?=\CHtml::encode($firstNameUk)?>" placeholder="Ім'я (українською)">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="lastName" value="<?=\CHtml::encode($lastName)?>" placeholder="Прізвище (українською)">
+                    <input type="text" class="form-control" name="middleNameUk" value="<?=\CHtml::encode($middleNameUk)?>" placeholder="По-батькові (українською)">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="lastNameUk" value="<?=\CHtml::encode($lastNameUk)?>" placeholder="Прізвище (українською)">
                 </div>
                 <div class="form-group">
                         <input type="email" class="form-control" name="email" value="<?=\CHtml::encode($email)?>" placeholder="<?=\yii::t('app', 'Email')?>">

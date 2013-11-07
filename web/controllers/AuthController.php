@@ -253,8 +253,9 @@ class AuthController extends \web\ext\Controller
     public function actionSignup()
     {
         // Get params
-        $firstName      = $this->request->getPost('firstName');
-        $lastName       = $this->request->getPost('lastName');
+        $firstNameUk    = $this->request->getPost('firstNameUk');
+        $middleNameUk   = $this->request->getPost('middleNameUk');
+        $lastNameUk     = $this->request->getPost('lastNameUk');
         $email          = mb_strtolower($this->request->getPost('email'));
         $password       = $this->request->getPost('password');
         $passwordRepeat = $this->request->getPost('passwordRepeat');
@@ -269,8 +270,9 @@ class AuthController extends \web\ext\Controller
             // Validate user date
             $user = new User();
             $user->setAttributes(array(
-                'firstName'     => $firstName,
-                'lastName'      => $lastName,
+                'firstNameUk'   => $firstNameUk,
+                'middleNameUk'  => $lastNameUk,
+                'lastNameUk'    => $lastNameUk,
                 'email'         => $email,
                 'type'          => $type,
                 'coordinator'   => $coordinator,
@@ -316,8 +318,9 @@ class AuthController extends \web\ext\Controller
 
             // Render view
             $this->render('signup', array(
-                'firstName'         => $firstName,
-                'lastName'          => $lastName,
+                'firstNameUk'       => $firstNameUk,
+                'middleNameUk'      => $middleNameUk,
+                'lastNameUk'        => $lastNameUk,
                 'email'             => $email,
                 'password'          => $password,
                 'passwordRepeat'    => $passwordRepeat,

@@ -93,8 +93,9 @@ function appAuthSignup() {
         $.ajax({
             url: app.baseUrl + '/auth/signup',
             data: {
-                firstName:      $('.form-group .form-control[name=firstName]').val(),
-                lastName:       $('.form-group .form-control[name=lastName]').val(),
+                firstNameUk:    $('.form-group .form-control[name=firstNameUk]').val(),
+                middleNameUk:   $('.form-group .form-control[name=middleNameUk]').val(),
+                lastNameUk:     $('.form-group .form-control[name=lastNameUk]').val(),
                 email:          $('.form-group .form-control[name=email]').val(),
                 password:       $('.form-group .form-control[name=password]').val(),
                 passwordRepeat: $('.form-group .form-control[name=passwordRepeat]').val(),

@@ -116,7 +116,7 @@ class User extends \common\ext\MongoDb\Document
     /**
      * Returns first name in appropriate language
      *
-     * @param strign $lang
+     * @param string $lang
      * @return string
      */
     public function getFirstName($lang = null)
@@ -136,7 +136,7 @@ class User extends \common\ext\MongoDb\Document
     /**
      * Returns middle name in appropriate language
      *
-     * @param strign $lang
+     * @param string $lang
      * @return string
      */
     public function getMiddleName($lang = null)
@@ -156,7 +156,7 @@ class User extends \common\ext\MongoDb\Document
     /**
      * Returns last name in appropriate language
      *
-     * @param strign $lang
+     * @param string $lang
      * @return string
      */
     public function getLastName($lang = null)
@@ -291,7 +291,7 @@ class User extends \common\ext\MongoDb\Document
             array('firstNameUk, middleNameUk, lastNameUk, email, schoolId, dateCreated', 'required'),
             array('email', 'email'),
             array('email', 'unique'),
-            array('firstName, lastName', 'length', 'max' => 100),
+            array('firstNameUk, middleName, lastNameUk', 'length', 'max' => 100),
         ));
     }
 
