@@ -76,7 +76,7 @@ class AuthController extends \web\ext\Controller
     public function actionLogin()
     {
         // Get params
-        $email      = mb_strtolower($this->request->getPost('email'));
+        $email      = $this->request->getPost('email');
         $password   = $this->request->getPost('password');
 
         // Login
