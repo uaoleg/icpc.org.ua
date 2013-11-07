@@ -27,6 +27,11 @@ class UserController extends \web\ext\Controller
      */
     public function actionMe()
     {
+        // Check access
+        if (\yii::app()->user->isGuest) {
+            return $this->redirect(\yii::app()->user->loginUrl);
+        }
+
         // Get params
         $firstNameUk       = $this->request->getPost('firstNameUk');
         $middleNameUk      = $this->request->getPost('middleNameUk');

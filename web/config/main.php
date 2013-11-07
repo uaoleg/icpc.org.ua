@@ -95,7 +95,7 @@ $config = array(
             'class'             => '\web\ext\WebUser',
             'allowAutoLogin'    => true,
             'authTimeout'       => SECONDS_IN_HOUR,
-            'loginUrl'          => array('/auth/index'),
+            'loginUrl'          => array('/auth/login'),
         ),
 
         'widgetFactory' => array(
