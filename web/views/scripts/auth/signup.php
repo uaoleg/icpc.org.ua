@@ -34,9 +34,9 @@
                                placeholder="<?=$user->getAttributeLabel('email')?>">
                 </div>
                 <div class="form-group">
-                        <input type="password" class="form-control" name="password"
-                               value="<?=\CHtml::encode($password)?>"
-                               placeholder="<?=\yii::t('app', 'Password')?>">
+                    <input type="password" class="form-control" name="password"
+                           value="<?=\CHtml::encode($password)?>"
+                           placeholder="<?=\yii::t('app', 'Password')?>">
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" name="passwordRepeat"
