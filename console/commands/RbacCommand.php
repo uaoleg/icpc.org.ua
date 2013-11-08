@@ -40,6 +40,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
          * Create operations
          */
         $this->_operationsDocument();
+        $this->_operationsTeam();
         $this->_operationsNews();
 
         /**
@@ -90,7 +91,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $coachOperationList = array(
             User::ROLE_STUDENT,
             Rbac::OP_TEAM_CREATE,
-            Rbac::OP_TEAM_UPDATE
+            Rbac::OP_TEAM_UPDATE,
         );
         $this->_assignOperations($coach, $coachOperationList);
 
@@ -174,6 +175,16 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->auth->createOperation(Rbac::OP_DOCUMENT_READ, 'Read document');
         $this->auth->createOperation(Rbac::OP_DOCUMENT_UPDATE, 'Edit document');
         $this->auth->createOperation(Rbac::OP_DOCUMENT_DELETE, 'Delete document');
+    }
+
+    /**
+     * Team operations
+     */
+    protected function _operationsTeam()
+    {
+        $this->auth->createOperation(Rbac::OP_TEAM_CREATE, 'Create team');
+        $this->auth->createOperation(Rbac::OP_TEAM_READ, 'Read team');
+        $this->auth->createOperation(Rbac::OP_TEAM_UPDATE, 'Edit team');
     }
 
     /**

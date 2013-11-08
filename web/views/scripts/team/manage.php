@@ -1,7 +1,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         new appTeamManage({
-            teamId: '<?=\yii::app()->request->getParam('id')?>'
+            teamId: '<?=$team->_id?>'
         });
     });
 </script>

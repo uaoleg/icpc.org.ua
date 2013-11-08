@@ -113,19 +113,8 @@
                                 'rbac'      => \common\models\User::ROLE_ADMIN,
                             ),
                             'team' => array(
-                                'href'     => $this->createUrl('/team'),
+                                'href'     => $this->createUrl('/team/list'),
                                 'caption'  => \yii::t('app', 'Teams'),
-                                'rbac'     => \common\models\User::ROLE_COACH,
-                                'itemList' => array(
-                                    'list' => array(
-                                        'href'    => $this->createUrl('/team/list'),
-                                        'caption' => \yii::t('app', 'List')
-                                    ),
-                                    'create' => array(
-                                        'href'    => $this->createUrl('/team/manage'),
-                                        'caption' => \yii::t('app', 'Create')
-                                    )
-                                )
                             )
                         ),
                     )); ?>

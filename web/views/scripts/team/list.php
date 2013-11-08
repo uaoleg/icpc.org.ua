@@ -1,7 +1,12 @@
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
 
-        <table class="table table-striped table-hover table-bordered">
+        <?php if ($user->type == \common\models\User::ROLE_COACH) : ?>
+            <a class="btn btn-primary btn-lg" href="<?=$this->createUrl('/team/manage')?>"><?=\yii::t('app', 'Create a new team')?></a>
+            <hr>
+        <?php endif; ?>
+
+        <table class="table table-striped table-hover table-bordered" style="">
             <thead>
                 <tr>
                     <th>

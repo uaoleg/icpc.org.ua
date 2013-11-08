@@ -24,6 +24,11 @@ class TeamController extends \web\ext\Controller
         $this->setNavActiveItem('main', '');
     }
 
+
+    /**
+     * Filters for this controller
+     * @return array
+     */
     public function filters()
     {
         return array(
@@ -31,13 +36,24 @@ class TeamController extends \web\ext\Controller
         );
     }
 
+    /**
+     * All the rules of access to methods of this controller
+     * @return array
+     */
     public function accessRules()
     {
         return array(
             array(
                 'allow',
+                'actions' => array('list', 'view'),
+            ),
+            array(
+                'allow',
                 'actions' => array('manage'),
-                'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE)
+                'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE),
+            ),
+            array(
+                'deny',
             )
         );
     }
@@ -51,6 +67,7 @@ class TeamController extends \web\ext\Controller
         $criteria->sort('name', \EMongoCriteria::SORT_ASC);
         $teams = Team::model()->findAll($criteria);
         $this->render('list', array(
+            'user'  => \yii::app()->user->getInstance(),
             'teams' => $teams
         ));
     }
