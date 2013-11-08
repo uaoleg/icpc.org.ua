@@ -14,22 +14,34 @@
         <div class="panel-body">
             <div class="form-horizontal col-lg-offset-1 col-lg-10">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="firstNameUk" value="<?=\CHtml::encode($firstNameUk)?>" placeholder="Ім'я (українською)">
+                    <input type="text" class="form-control" name="firstNameUk"
+                           value="<?=\CHtml::encode($user->firstNameUk)?>"
+                           placeholder="<?=$user->getAttributeLabel('firstNameUk')?>">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="middleNameUk" value="<?=\CHtml::encode($middleNameUk)?>" placeholder="По-батькові (українською)">
+                    <input type="text" class="form-control" name="middleNameUk"
+                           value="<?=\CHtml::encode($user->middleNameUk)?>"
+                           placeholder="<?=$user->getAttributeLabel('middleNameUk')?>">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="lastNameUk" value="<?=\CHtml::encode($lastNameUk)?>" placeholder="Прізвище (українською)">
+                    <input type="text" class="form-control" name="lastNameUk"
+                           value="<?=\CHtml::encode($user->lastNameUk)?>"
+                           placeholder="<?=$user->getAttributeLabel('lastNameUk')?>">
                 </div>
                 <div class="form-group">
-                        <input type="email" class="form-control" name="email" value="<?=\CHtml::encode($email)?>" placeholder="<?=\yii::t('app', 'Email')?>">
+                        <input type="email" class="form-control" name="email"
+                               value="<?=\CHtml::encode($user->email)?>"
+                               placeholder="<?=$user->getAttributeLabel('email')?>">
                 </div>
                 <div class="form-group">
-                        <input type="password" class="form-control" name="password" value="<?=\CHtml::encode($password)?>" placeholder="<?=\yii::t('app', 'Password')?>">
+                        <input type="password" class="form-control" name="password"
+                               value="<?=\CHtml::encode($password)?>"
+                               placeholder="<?=\yii::t('app', 'Password')?>">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" name="passwordRepeat" value="<?=\CHtml::encode($passwordRepeat)?>" placeholder="<?=\yii::t('app', 'Repeat password')?>">
+                    <input type="password" class="form-control" name="passwordRepeat"
+                           value="<?=\CHtml::encode($passwordRepeat)?>"
+                           placeholder="<?=\yii::t('app', 'Repeat password')?>">
                 </div>
                 <div class="form-group">
                     <div name="role" class="clearfix" style="margin-bottom: -20px;">

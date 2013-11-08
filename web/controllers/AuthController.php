@@ -264,20 +264,22 @@ class AuthController extends \web\ext\Controller
         $schoolId       = $this->request->getPost('schoolId');
         $rulesAgree     = (bool)$this->request->getPost('rulesAgree');
 
+        // Set attributes
+        $user = new User();
+        $user->setAttributes(array(
+            'firstNameUk'   => $firstNameUk,
+            'middleNameUk'  => $middleNameUk,
+            'lastNameUk'    => $lastNameUk,
+            'email'         => $email,
+            'type'          => $type,
+            'coordinator'   => $coordinator,
+            'schoolId'      => $schoolId,
+        ), false);
+
         // Register a new user
         if ($this->request->isPostRequest) {
 
             // Validate user date
-            $user = new User();
-            $user->setAttributes(array(
-                'firstNameUk'   => $firstNameUk,
-                'middleNameUk'  => $lastNameUk,
-                'lastNameUk'    => $lastNameUk,
-                'email'         => $email,
-                'type'          => $type,
-                'coordinator'   => $coordinator,
-                'schoolId'      => $schoolId,
-            ), false);
             $user->validate();
             $user->setPassword($password, $passwordRepeat);
 
@@ -318,10 +320,7 @@ class AuthController extends \web\ext\Controller
 
             // Render view
             $this->render('signup', array(
-                'firstNameUk'       => $firstNameUk,
-                'middleNameUk'      => $middleNameUk,
-                'lastNameUk'        => $lastNameUk,
-                'email'             => $email,
+                'user'              => $user,
                 'password'          => $password,
                 'passwordRepeat'    => $passwordRepeat,
                 'rulesAgree'        => $rulesAgree,
