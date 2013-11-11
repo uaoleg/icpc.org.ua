@@ -40,8 +40,8 @@ class RbacCommand extends \console\ext\ConsoleCommand
          * Create operations
          */
         $this->_operationsDocument();
-        $this->_operationsTeam();
         $this->_operationsNews();
+        $this->_operationsTeam();
 
         /**
          * Guest role
@@ -178,16 +178,6 @@ class RbacCommand extends \console\ext\ConsoleCommand
     }
 
     /**
-     * Team operations
-     */
-    protected function _operationsTeam()
-    {
-        $this->auth->createOperation(Rbac::OP_TEAM_CREATE, 'Create team');
-        $this->auth->createOperation(Rbac::OP_TEAM_READ, 'Read team');
-        $this->auth->createOperation(Rbac::OP_TEAM_UPDATE, 'Edit team');
-    }
-
-    /**
      * News operations
      */
     protected function _operationsNews()
@@ -198,6 +188,18 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->auth->createOperation(Rbac::OP_NEWS_CREATE, 'Create news');
         $this->auth->createOperation(Rbac::OP_NEWS_READ, 'Read news', $bizRuleRead);
         $this->auth->createOperation(Rbac::OP_NEWS_UPDATE, 'Edit news', $bizRuleUpdate);
+    }
+
+    /**
+     * Team operations
+     */
+    protected function _operationsTeam()
+    {
+        $bizRuleUpdate = 'return \yii::app()->rbac->bizRuleTeamUpdate($params);';
+
+        $this->auth->createOperation(Rbac::OP_TEAM_CREATE, 'Create team');
+        $this->auth->createOperation(Rbac::OP_TEAM_READ, 'Read team');
+        $this->auth->createOperation(Rbac::OP_TEAM_UPDATE, 'Edit team', $bizRuleUpdate);
     }
 
     /**

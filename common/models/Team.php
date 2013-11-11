@@ -1,25 +1,16 @@
 <?php
 namespace common\models;
 
-use CModelEvent;
 use \common\models\School;
 
 /**
  * Team
- * @property-read School $school
+ *
  * @property-read User   $coach
+ * @property-read School $school
  */
 class Team extends \common\ext\MongoDb\Document
 {
-
-    /**
-     * number of needed members in team
-     */
-    const COUNT_NEEDED_MEMBERS = 3;
-    /**
-     * number of maximum members in team
-     */
-    const COUNT_MAX_MEMBERS = 4;
 
     /**
      * Name of a team
@@ -29,21 +20,9 @@ class Team extends \common\ext\MongoDb\Document
 
     /**
      * Year in which team participated
-     * @var string
+     * @var int
      */
     public $year;
-
-    /**
-     * ID of team's school
-     * @var string
-     */
-    public $schoolId;
-
-    /**
-     * Team's school
-     * @var Team
-     */
-    protected $_school;
 
     /**
      * ID of team's coach
@@ -52,10 +31,10 @@ class Team extends \common\ext\MongoDb\Document
     public $coachId;
 
     /**
-     * Team's coach
-     * @var User
+     * ID of team's school
+     * @var string
      */
-    protected $_coach;
+    public $schoolId;
 
     /**
      * List of members IDs
@@ -64,25 +43,39 @@ class Team extends \common\ext\MongoDb\Document
     public $members = array();
 
     /**
-     * This returns the name of the collection for this class
-     *
-     * @return string
+     * Team's coach
+     * @var User
      */
-    public function getCollectionName()
-    {
-        return 'team';
-    }
+    protected $_coach;
 
-    public function getSchool() {
-        if (!isset($this->_school)) {
-            $this->_school = School::model()->findByPk(new \MongoId($this->schoolId));
+    /**
+     * Team's school
+     * @var Team
+     */
+    protected $_school;
+
+    /**
+     * Returns related coach
+     *
+     * @return User
+     */
+    public function getCoach()
+    {
+        if ($this->_coach === null) {
+            $this->_school = User::model()->findByPk(new \MongoId($this->coachId));
         }
         return $this->_school;
     }
 
-    public function getCoach() {
-        if (!isset($this->_coach)) {
-            $this->_school = User::model()->findByPk(new \MongoId($this->coachId));
+    /**
+     * Returns related school
+     *
+     * @return School
+     */
+    public function getSchool()
+    {
+        if ($this->_school === null) {
+            $this->_school = School::model()->findByPk(new \MongoId($this->schoolId));
         }
         return $this->_school;
     }
@@ -98,50 +91,93 @@ class Team extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'name'     => \yii::t('app', 'Name of a team'),
-            'schoolId' => \yii::t('app', 'ID of team\'s school'),
-            'members'  => \yii::t('app', 'List of members')
+            'name'      => \yii::t('app', 'Name of a team'),
+            'year'      => \yii::t('app', 'Year in which team participated'),
+            'coachId'   => \yii::t('app', 'Related coach ID'),
+            'schoolId'  => \yii::t('app', 'Related school ID'),
+            'members'   => \yii::t('app', 'List of members')
         ));
     }
 
     /**
      * Define attribute rules
+     *
      * @return array
      */
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('name, schoolId', 'required'),
-            array('name', 'unique'),
+            array('name, year, coachId, schoolId, members', 'required'),
+            array('year', 'numerical',
+                'integerOnly'   => true,
+                'min'           => (int)\yii::app()->params['yearFirst'],
+                'max'           => (int)date('Y')
+            ),
         ));
     }
 
+    /**
+     * This returns the name of the collection for this class
+     *
+     * @return string
+     */
+    public function getCollectionName()
+    {
+        return 'team';
+    }
+
+    /**
+     * List of collection indexes
+     *
+     * @return array
+     */
+    public function indexes()
+    {
+        return array_merge(parent::indexes(), array(
+            'year_name' => array(
+                'key' => array(
+                    'year' => \EMongoCriteria::SORT_DESC,
+                    'name' => \EMongoCriteria::SORT_ASC,
+                ),
+                'unique' => true,
+            ),
+        ));
+    }
+
+    /**
+     * Before validate action
+     *
+     * @return bool
+     */
     protected function beforeValidate()
     {
         if (!parent::beforeValidate()) return false;
 
+        // Year
+        if (empty($this->year)) {
+            $this->year = date('Y');
+        }
+        $this->year = (int)$this->year;
+
+        // Check members to be unique
         if (count($this->members) !== count(array_unique($this->members))) {
             $this->addError('member4', \yii::t('app', 'You cannot add a person to team more than once. Check and try again.'));
         }
 
-//        var_dump($this->schoolId);
-        $school = School::model()->findByPk(new \MongoId($this->schoolId));
-
-        if (empty($school->shortNameUk)) {
-            $this->addError('shortNameUk', \yii::t('app', '{attr} cannot be empty', array(
-                '{attr}' => $school->getAttributeLabel('shortNameUk')
+        // Check school names to be not empty
+        if (empty($this->school->shortNameUk)) {
+            $this->addError('schoolShortNameUk', \yii::t('app', '{attr} cannot be empty', array(
+                '{attr}' => $this->school->getAttributeLabel('shortNameUk')
             )));
         }
-
-        if (empty($school->fullNameEn)) {
-            $this->addError('fullNameEn', \yii::t('app', '{attr} cannot be empty', array(
-                '{attr}' => $school->getAttributeLabel('fullNameEn')
+        if (empty($this->school->fullNameEn)) {
+            $this->addError('schoolFullNameEn', \yii::t('app', '{attr} cannot be empty', array(
+                '{attr}' => $this->school->getAttributeLabel('fullNameEn')
             )));
         }
-
-        if (empty($school->shortNameEn)) {
-            $this->addError('shortNameEn', \yii::t('app', '{attr} cannot be empty', array(
-                '{attr}' => $school->getAttributeLabel('shortNameEn')
+        if (empty($this->school->shortNameEn)) {
+            $this->addError('schoolShortNameEn', \yii::t('app', '{attr} cannot be empty', array(
+                '{attr}' => $this->school->getAttributeLabel('shortNameEn')
             )));
         }
 
