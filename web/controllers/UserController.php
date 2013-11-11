@@ -183,7 +183,7 @@ class UserController extends \web\ext\Controller
         $fax           = $this->request->getPost('fax');
 
         // Save additional info
-        $info = \yii::app()->user->getInstance()->info;
+        $info = \yii::app()->user->getInstance()->getInfo($lang);
         $info->setAttributes(array(
             'lang'                     => $lang,
             'phoneHome'                => $phoneHome,
@@ -233,7 +233,7 @@ class UserController extends \web\ext\Controller
         $document            = $this->request->getPost('document');
 
         // Save additional info
-        $info = \yii::app()->user->getInstance()->info;
+        $info = \yii::app()->user->getInstance()->getInfo($lang);
         $info->setAttributes(array(
             'lang'                     => $lang,
             'phoneHome'                => $phoneHome,
