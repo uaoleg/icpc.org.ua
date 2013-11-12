@@ -111,6 +111,7 @@ class DocsController extends \web\ext\Controller
             $this->httpException(404);
         }
 
+        // Render view
         $this->render('view', array(
             'document' => $document,
         ));
