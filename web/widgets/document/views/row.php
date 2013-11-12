@@ -5,7 +5,7 @@
     <div class="pull-left">
         <a href="<?=$this->createUrl('/docs/download', array('id' => $this->document->_id))?>" class="document-title">
             <?=\CHtml::encode($this->document->title)?></a>
-        <span class="document-size"><?=$sizeLabel?></span>
+        <span class="document-size"><?php \web\widgets\document\Size::create(array('document' => $this->document)); ?></span>
         <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_UPDATE, array(
             'document' => $this->document,
         ))): ?>

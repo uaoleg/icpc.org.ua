@@ -14,8 +14,8 @@
         <?=\yii::t('app', 'Document')?>
     </h1>
     <?php if (!$document->getIsNewRecord()): ?>
-        <small><a href="<?=$this->createUrl('/document/view', array('id' => $document->_id))?>" target="_blank">
-            <?=$this->createAbsoluteUrl('/document/view', array('id' => $document->_id))?>
+        <small><a href="<?=$this->createUrl('/docs/view', array('id' => $document->_id))?>" target="_blank">
+            <?=$this->createAbsoluteUrl('/docs/view', array('id' => $document->_id))?>
         </a></small>
     <?php endif; ?>
 </div>

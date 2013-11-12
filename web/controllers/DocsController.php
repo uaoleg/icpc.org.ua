@@ -97,4 +97,23 @@ class DocsController extends \web\ext\Controller
         echo $document->file->getBytes();
     }
 
+    /**
+     * View info about document
+     */
+    public function actionView()
+    {
+        // Get params
+        $documentId = $this->request->getParam('id');
+
+        // Get document
+        $document = Document::model()->findByPk(new \MongoId($documentId));
+        if ($document === null) {
+            $this->httpException(404);
+        }
+
+        $this->render('view', array(
+            'document' => $document,
+        ));
+    }
+
 }
