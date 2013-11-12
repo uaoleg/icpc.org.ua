@@ -1,6 +1,6 @@
 <?php
 
-namespace web\controllers;
+namespace web\modules\staff\controllers;
 
 use \common\components\Rbac;
 use \common\models\Team;
@@ -73,9 +73,9 @@ class TeamController extends \web\ext\Controller
             } else {
                 $team = new Team();
             }
-            if ($team === null) {
+           if ($team === null) {
                 $this->httpException(404);
-            }
+           }
 
             // Update team
             $team->setAttributes(array(
