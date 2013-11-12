@@ -6,22 +6,28 @@
             <hr>
         <?php endif; ?>
 
-        <table class="table table-striped table-hover table-bordered" style="">
-            <thead>
-                <tr>
-                    <th>
-                        <?=\yii::t('app', 'Team name')?>
-                    </th>
-                </tr>
-            </thead>
-            <?php foreach ($teams as $team) : ?>
-                <tr>
-                    <td>
-                        <a href="<?=$this->createUrl('/team/view', array('id' => $team->_id))?>"><?=\CHtml::encode($team->name)?></a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
+        <?php if (count($teams) > 0) :?>
+            <table class="table table-striped table-hover table-bordered" style="">
+                <thead>
+                    <tr>
+                        <th>
+                            <?=\yii::t('app', 'Team name')?>
+                        </th>
+                    </tr>
+                </thead>
+                <?php foreach ($teams as $team) : ?>
+                    <tr>
+                        <td>
+                            <a href="<?=$this->createUrl('/team/view', array('id' => $team->_id))?>"><?=\CHtml::encode($team->name)?></a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php else : ?>
+            <div class="alert alert-info">
+                <?=\yii::t('app', 'There are no teams')?>
+            </div>
+        <?php endif; ?>
 
     </div>
 </div>
