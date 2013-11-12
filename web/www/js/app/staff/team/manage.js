@@ -1,4 +1,4 @@
-function appTeamManage(options)
+function appStaffTeamManage(options)
 {
 
     /**

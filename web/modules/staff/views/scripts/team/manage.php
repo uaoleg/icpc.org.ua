@@ -1,6 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        new appTeamManage({
+        new appStaffTeamManage({
             teamId: '<?=$team->_id?>'
         });
     });
@@ -17,7 +17,7 @@
             <div class="panel-body form">
 
                 <div class="form-group">
-                    <p class="form-control-static"><b><?=date('Y')?></b>&nbsp;<?=\yii::t('app', 'year')?></p>
+                    <p class="form-control-static"><b><?=$school->year?></b>&nbsp;<?=\yii::t('app', 'year')?></p>
                 </div>
 
                 <div class="form-group">
@@ -66,7 +66,7 @@
                     <select name="member1" id="member1" class="form-control" data-placeholder="<?=\yii::t('app', 'First member')?>">
                         <option></option>
                         <?php foreach($members as $member): ?>
-                            <?php if ((string)$member->_id !== (string)\yii::app()->user->getInstance()['_id']): ?>
+                            <?php if ((string)$member->_id !== \yii::app()->user->id): ?>
                                 <option value="<?=$member->_id?>"<?=($teamMembers[0] === (string)$member->_id) ? ' selected' : ''?>>
                                     <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
                                 </option>
@@ -80,7 +80,7 @@
                     <select name="member2" id="member2" class="form-control" data-placeholder="<?=\yii::t('app', 'Second member')?>">
                         <option></option>
                         <?php foreach($members as $member): ?>
-                            <?php if ((string)$member->_id !== (string)\yii::app()->user->getInstance()['_id']): ?>
+                            <?php if ((string)$member->_id !== \yii::app()->user->id): ?>
                                 <option value="<?=$member->_id?>"<?=($teamMembers[1] === (string)$member->_id) ? ' selected' : ''?>>
                                     <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
                                 </option>
@@ -94,7 +94,7 @@
                     <select name="member3" id="member3" class="form-control" data-placeholder="<?=\yii::t('app', 'Third member')?>">
                         <option></option>
                         <?php foreach($members as $member): ?>
-                            <?php if ((string)$member->_id !== (string)\yii::app()->user->getInstance()['_id']): ?>
+                            <?php if ((string)$member->_id !== \yii::app()->user->id): ?>
                                 <option value="<?=$member->_id?>"<?=($teamMembers[2] === (string)$member->_id) ? ' selected' : ''?>>
                                     <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
                                 </option>
@@ -108,7 +108,7 @@
                     <select name="member4" id="member4" class="form-control" data-placeholder="<?=\yii::t('app', 'Fourth member (reserve)')?>">
                         <option></option>
                         <?php foreach($members as $member): ?>
-                            <?php if ((string)$member->_id !== (string)\yii::app()->user->getInstance()['_id']): ?>
+                            <?php if ((string)$member->_id !== \yii::app()->user->id): ?>
                                 <option value="<?=$member->_id?>"<?=($teamMembers[3] === (string)$member->_id) ? ' selected' : ''?>>
                                     <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
                                 </option>
@@ -117,13 +117,11 @@
                     </select>
                 </div>
 
-
                 <div class="form-group">
                     <button class="btn btn-primary btn-lg btn-save">
                         <?=\yii::t('app', 'Save')?>
                     </button>
                 </div>
-
 
             </div>
         </div>

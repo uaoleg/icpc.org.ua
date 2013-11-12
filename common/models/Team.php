@@ -153,15 +153,22 @@ class Team extends \common\ext\MongoDb\Document
     {
         if (!parent::beforeValidate()) return false;
 
+        // Convert MongoId to String
+        $this->coachId = (string)$this->coachId;
+        $this->schoolId = (string)$this->schoolId;
+
         // Year
         if (empty($this->year)) {
             $this->year = date('Y');
         }
         $this->year = (int)$this->year;
 
-        // Check members to be unique
-        if (count($this->members) !== count(array_unique($this->members))) {
-            $this->addError('member4', \yii::t('app', 'You cannot add a person to team more than once. Check and try again.'));
+        // Members
+        $this->members = array_unique($this->members);
+        if (count($this->members) < 3) {
+            $this->addError('members', \yii::t('app', 'The nubmer of members should be greater or equal then 3.'));
+        } elseif (count($this->members) > 4) {
+            $this->addError('members', \yii::t('app', 'The nubmer of members should be less or equal then 4.'));
         }
 
         // Check school names to be not empty
