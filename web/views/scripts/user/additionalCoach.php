@@ -8,11 +8,8 @@
 
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
-        <ul class="nav nav-tabs nav-justified">
-            <li><a href="<?=$this->createUrl('/user/me')?>"><?=\yii::t('app', 'General info')?></a></li>
-            <li class="<?=($lang==='uk') ? 'active' : ''?>"><a href="<?=$this->createUrl('/user/additional/lang/uk')?>"><?=\yii::t('app', 'Additional info (ukrainian)')?></a></li>
-            <li class="<?=($lang==='en') ? 'active' : ''?>"><a href="<?=$this->createUrl('/user/additional/lang/en')?>"><?=\yii::t('app', 'Additional info (english)')?></a></li>
-        </ul>
+
+        <?php $this->renderPartial('partial/additionalTabs'); ?>
 
         <div class="panel panel-primary">
             <div class="panel-body">

@@ -32,6 +32,9 @@ class UserController extends \web\ext\Controller
             return $this->redirect(\yii::app()->user->loginUrl);
         }
 
+        // Set active user submenu item
+        $this->setNavActiveItem('user', 'me');
+
         // Get params
         $firstNameUk       = $this->request->getPost('firstNameUk');
         $middleNameUk      = $this->request->getPost('middleNameUk');
@@ -139,13 +142,16 @@ class UserController extends \web\ext\Controller
         $lang = $this->request->getParam('lang');
         $user = \yii::app()->user->getInstance();
 
+        // Set active user submenu item
+        $this->setNavActiveItem('user', 'additional' . $lang);
+
         // Get view name
         if ($user->type === User::ROLE_STUDENT) {
             $view = 'additionalStudent';
         } elseif ($user->type === User::ROLE_COACH) {
             $view = 'additionalCoach';
         } else {
-            return $this->httpException(400);
+            $view = 'additionalEmpty';
         }
 
         // Render view
