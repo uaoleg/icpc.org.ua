@@ -1,4 +1,4 @@
-<?php if (!\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_CREATE)): ?>
+<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_CREATE)): ?>
     <a class="btn btn-success btn-lg" href="<?=$this->createUrl('/staff/team/manage')?>"><?=\yii::t('app', 'Create a new team')?></a>
     <hr>
 <?php endif; ?>
