@@ -58,6 +58,7 @@ class TeamController extends \web\ext\Controller
             $shortNameUk    = $this->request->getPost('shortNameUk');
             $fullNameEn     = $this->request->getPost('fullNameEn');
             $shortNameEn    = $this->request->getPost('shortNameEn');
+            $memberIds      = $this->request->getPost('memberIds');
 
             // Update school
             $school->setAttributes(array(
@@ -82,12 +83,7 @@ class TeamController extends \web\ext\Controller
                 'name'      => $teamName,
                 'coachId'   => \yii::app()->user->id,
                 'schoolId'  => $school->_id,
-                'members'   => array(
-                    0 => $this->request->getPost('member1'),
-                    1 => $this->request->getPost('member2'),
-                    2 => $this->request->getPost('member3'),
-                    3 => $this->request->getPost('member4')
-                )
+                'memberIds' => $memberIds,
             ), false);
             $team->save();
 
@@ -96,33 +92,40 @@ class TeamController extends \web\ext\Controller
                 'errors' => $team->hasErrors() ? $team->getErrors() : false
             ));
 
-        }
 
+        }
         // Display manage page
         else {
-
             // Get params
             $teamId = $this->request->getParam('id');
-
-            // Get team
-            $team = Team::model()->findByPk(new \MongoId($teamId));
-            if ($team === null) {
-                $this->httpException(404);
+            if (isset($teamId)) {
+                // Get team
+                $team = Team::model()->findByPk(new \MongoId($teamId));
+            } else {
+                $team = new Team();
+                $team->year = date('Y');
             }
+//            echo "<pre>";
+//            var_dump($team->getAttributes());
+//            echo "</pre>";
+//            exit;
 
             // Get team members
-            $members = User::model()->findAll(array('schoolId' => (string)$school->_id));
+            $users = User::model()->findAll(array(
+                'schoolId' => (string)$school->_id,
+                'type'     => User::ROLE_STUDENT
+            ));
 
             // Render view
             $this->render('manage', array(
                 'school'  => $school,
-                'members' => $members,
+                'users' => $users,
                 'team'    => $team,
                 'teamMembers' => array(
-                    (isset($team)) ? $team->members[0] : '',
-                    (isset($team)) ? $team->members[1] : '',
-                    (isset($team)) ? $team->members[2] : '',
-                    (isset($team)) ? $team->members[3] : '',
+                    (isset($team->memberIds[0])) ? $team->memberIds[0] : '',
+                    (isset($team->memberIds[1])) ? $team->memberIds[1] : '',
+                    (isset($team->memberIds[2])) ? $team->memberIds[2] : '',
+                    (isset($team->memberIds[3])) ? $team->memberIds[3] : '',
                 )
             ));
         }

@@ -17,7 +17,9 @@
         <strong><?=\yii::t('app', 'Participants')?></strong>:
         <ul>
             <?php foreach ($members as $member): ?>
-            <li><?=\CHtml::encode($member->firstName)?></li>
+            <li><?=\CHtml::encode($member->firstName)?>&nbsp;
+                <?=\CHtml::encode($member->middleName)?>&nbsp;
+                <?=\CHtml::encode($member->lastName)?></li>
             <?php endforeach; ?>
         </ul>
 

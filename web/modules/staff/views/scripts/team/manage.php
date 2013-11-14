@@ -17,7 +17,7 @@
             <div class="panel-body form">
 
                 <div class="form-group">
-                    <p class="form-control-static"><b><?=$school->year?></b>&nbsp;<?=\yii::t('app', 'year')?></p>
+                    <p class="form-control-static"><b><?=$team->year?></b>&nbsp;<?=\yii::t('app', 'year')?></p>
                 </div>
 
                 <div class="form-group">
@@ -61,58 +61,16 @@
                            placeholder="<?=\yii::t('app', 'Name of your team with prefix')?>" readonly/>
                 </div>
 
-                <div class="form-group">
-                    <label for="member1"><?=\yii::t('app', 'First member')?></label>
-                    <select name="member1" id="member1" class="form-control" data-placeholder="<?=\yii::t('app', 'First member')?>">
-                        <option></option>
-                        <?php foreach($members as $member): ?>
-                            <?php if ((string)$member->_id !== \yii::app()->user->id): ?>
-                                <option value="<?=$member->_id?>"<?=($teamMembers[0] === (string)$member->_id) ? ' selected' : ''?>>
-                                    <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
-                                </option>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
 
                 <div class="form-group">
-                    <label for="member2"><?=\yii::t('app', 'Second member')?></label>
-                    <select name="member2" id="member2" class="form-control" data-placeholder="<?=\yii::t('app', 'Second member')?>">
-                        <option></option>
-                        <?php foreach($members as $member): ?>
-                            <?php if ((string)$member->_id !== \yii::app()->user->id): ?>
-                                <option value="<?=$member->_id?>"<?=($teamMembers[1] === (string)$member->_id) ? ' selected' : ''?>>
-                                    <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
-                                </option>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="member3"><?=\yii::t('app', 'Third member')?></label>
-                    <select name="member3" id="member3" class="form-control" data-placeholder="<?=\yii::t('app', 'Third member')?>">
-                        <option></option>
-                        <?php foreach($members as $member): ?>
-                            <?php if ((string)$member->_id !== \yii::app()->user->id): ?>
-                                <option value="<?=$member->_id?>"<?=($teamMembers[2] === (string)$member->_id) ? ' selected' : ''?>>
-                                    <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
-                                </option>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="member4"><?=\yii::t('app', 'Fourth member')?></label>
-                    <select name="member4" id="member4" class="form-control" data-placeholder="<?=\yii::t('app', 'Fourth member (reserve)')?>">
-                        <option></option>
-                        <?php foreach($members as $member): ?>
-                            <?php if ((string)$member->_id !== \yii::app()->user->id): ?>
-                                <option value="<?=$member->_id?>"<?=($teamMembers[3] === (string)$member->_id) ? ' selected' : ''?>>
-                                    <?=\CHtml::encode($member->lastName)?>&nbsp;<?=\CHtml::encode($member->firstName)?> (<?=\CHtml::encode($member->email)?>)
-                                </option>
-                            <?php endif; ?>
+                    <label for="members"><?=\yii::t('app', 'Members')?></label>
+                    <select name="members" id="members" class="form-control" data-placeholder="231d" multiple>
+                        <?php foreach($users as $user): ?>
+                            <option value="<?=$user->_id?>"<?=(in_array($user->_id, $teamMembers)) ? ' selected' : ''?>>
+                                <?=\CHtml::encode($user->firstName)?>&nbsp;
+                                <?=\CHtml::encode($user->lastName)?>&nbsp;
+                                <?=\CHtml::encode($user->email)?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </div>

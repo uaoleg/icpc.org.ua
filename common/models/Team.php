@@ -8,6 +8,7 @@ use \common\models\School;
  *
  * @property-read User   $coach
  * @property-read School $school
+ * @property-read array  $members
  */
 class Team extends \common\ext\MongoDb\Document
 {
@@ -40,7 +41,13 @@ class Team extends \common\ext\MongoDb\Document
      * List of members IDs
      * @var array
      */
-    public $members = array();
+    public $memberIds = array();
+
+    /**
+     * Objects of member users
+     * @var array
+     */
+    protected $_members;
 
     /**
      * Team's coach
@@ -53,6 +60,26 @@ class Team extends \common\ext\MongoDb\Document
      * @var Team
      */
     protected $_school;
+
+    /**
+     * Returns objects of all team members
+     * @return array
+     */
+    public function getMembers()
+    {
+        $memberMongoIds = array();
+        foreach ($this->memberIds as $id) {
+            $memberMongoIds[] = new \MongoId($id);
+        }
+
+        if (!isset($this->_members)) {
+            $criteria = new \EMongoCriteria();
+            $criteria->addCond('_id', 'in', $memberMongoIds);
+            $this->_members = User::model()->findAll($criteria);
+        }
+
+        return $this->_members;
+    }
 
     /**
      * Returns related coach
@@ -164,11 +191,10 @@ class Team extends \common\ext\MongoDb\Document
         $this->year = (int)$this->year;
 
         // Members
-        $this->members = array_unique($this->members);
         if (count($this->members) < 3) {
-            $this->addError('members', \yii::t('app', 'The nubmer of members should be greater or equal then 3.'));
+            $this->addError('members', \yii::t('app', 'The number of members should be greater or equal then 3.'));
         } elseif (count($this->members) > 4) {
-            $this->addError('members', \yii::t('app', 'The nubmer of members should be less or equal then 4.'));
+            $this->addError('members', \yii::t('app', 'The number of members should be less or equal then 4.'));
         }
 
         // Check school names to be not empty

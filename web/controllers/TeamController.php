@@ -60,12 +60,7 @@ class TeamController extends \web\ext\Controller
             'team'    => $team,
             'school'  => $team->school,
             'coach'   => $team->coach,
-            'members' => array(
-                User::model()->findByPk(new \MongoId($team->members[0])),
-                User::model()->findByPk(new \MongoId($team->members[1])),
-                User::model()->findByPk(new \MongoId($team->members[2])),
-                User::model()->findByPk(new \MongoId($team->members[3])),
-            )
+            'members' => $team->members
         ));
     }
 
