@@ -96,19 +96,17 @@ class TeamController extends \web\ext\Controller
         }
         // Display manage page
         else {
+
             // Get params
             $teamId = $this->request->getParam('id');
+
+            // Get team
             if (isset($teamId)) {
-                // Get team
                 $team = Team::model()->findByPk(new \MongoId($teamId));
             } else {
                 $team = new Team();
                 $team->year = date('Y');
             }
-//            echo "<pre>";
-//            var_dump($team->getAttributes());
-//            echo "</pre>";
-//            exit;
 
             // Get team members
             $users = User::model()->findAll(array(
@@ -118,15 +116,9 @@ class TeamController extends \web\ext\Controller
 
             // Render view
             $this->render('manage', array(
-                'school'  => $school,
-                'users' => $users,
-                'team'    => $team,
-                'teamMembers' => array(
-                    (isset($team->memberIds[0])) ? $team->memberIds[0] : '',
-                    (isset($team->memberIds[1])) ? $team->memberIds[1] : '',
-                    (isset($team->memberIds[2])) ? $team->memberIds[2] : '',
-                    (isset($team->memberIds[3])) ? $team->memberIds[3] : '',
-                )
+                'school'    => $school,
+                'users'     => $users,
+                'team'      => $team,
             ));
         }
     }

@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="teamNamePrefix"><?=\yii::t('app', 'Name of a team with prefix   ')?></label>
+                    <label for="teamNamePrefix"><?=\yii::t('app', 'Name of a team with prefix')?></label>
                     <input type="text" class="form-control" id="teamNamePrefix" name="teamNamePrefix"
                            value="<?=\CHtml::encode($team->name)?>"
                            placeholder="<?=\yii::t('app', 'Name of your team with prefix')?>" readonly/>
@@ -64,9 +64,9 @@
 
                 <div class="form-group">
                     <label for="members"><?=\yii::t('app', 'Members')?></label>
-                    <select name="members" id="members" class="form-control" data-placeholder="231d" multiple>
+                    <select name="members" id="members" class="form-control" multiple>
                         <?php foreach($users as $user): ?>
-                            <option value="<?=$user->_id?>"<?=(in_array($user->_id, $teamMembers)) ? ' selected' : ''?>>
+                            <option value="<?=$user->_id?>" <?=(in_array((string)$user->_id, $team->memberIds)) ? 'selected' : ''?>>
                                 <?=\CHtml::encode($user->firstName)?>&nbsp;
                                 <?=\CHtml::encode($user->lastName)?>&nbsp;
                                 <?=\CHtml::encode($user->email)?>

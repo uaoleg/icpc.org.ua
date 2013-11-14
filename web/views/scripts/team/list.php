@@ -1,12 +1,12 @@
-<div class="row">
-    <div class="col-lg-6 col-lg-offset-3">
+<?php if (!\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_CREATE)): ?>
+    <a class="btn btn-success btn-lg" href="<?=$this->createUrl('/staff/team/manage')?>"><?=\yii::t('app', 'Create a new team')?></a>
+    <hr>
+<?php endif; ?>
 
-        <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_CREATE)): ?>
-            <a class="btn btn-primary btn-lg" href="<?=$this->createUrl('/staff/team/manage')?>"><?=\yii::t('app', 'Create a new team')?></a>
-            <hr>
-        <?php endif; ?>
+<?php if (count($teams) > 0): ?>
 
-        <?php if (count($teams) > 0) :?>
+    <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
             <table class="table table-striped table-hover table-bordered" style="">
                 <thead>
                     <tr>
@@ -23,11 +23,13 @@
                     </tr>
                 <?php endforeach; ?>
             </table>
-        <?php else : ?>
-            <div class="alert alert-info">
-                <?=\yii::t('app', 'There are no teams')?>
-            </div>
-        <?php endif; ?>
-
+        </div>
     </div>
-</div>
+
+<?php else: ?>
+
+    <div class="alert alert-info">
+        <?=\yii::t('app', 'There are no teams.')?>
+    </div>
+    
+<?php endif; ?>

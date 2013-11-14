@@ -6,9 +6,9 @@ use \common\models\School;
 /**
  * Team
  *
- * @property-read User   $coach
- * @property-read School $school
- * @property-read array  $members
+ * @property-read User          $coach
+ * @property-read School        $school
+ * @property-read \EMongoCursor $members
  */
 class Team extends \common\ext\MongoDb\Document
 {
@@ -62,22 +62,21 @@ class Team extends \common\ext\MongoDb\Document
     protected $_school;
 
     /**
-     * Returns objects of all team members
-     * @return array
+     * Returns members as list of the Users
+     *
+     * @return \EMongoCursor
      */
     public function getMembers()
     {
-        $memberMongoIds = array();
-        foreach ($this->memberIds as $id) {
-            $memberMongoIds[] = new \MongoId($id);
-        }
-
-        if (!isset($this->_members)) {
+        if ($this->_members === null) {
+            $memberMongoIds = array();
+            foreach ($this->memberIds as $id) {
+                $memberMongoIds[] = new \MongoId($id);
+            }
             $criteria = new \EMongoCriteria();
             $criteria->addCond('_id', 'in', $memberMongoIds);
             $this->_members = User::model()->findAll($criteria);
         }
-
         return $this->_members;
     }
 
@@ -122,7 +121,7 @@ class Team extends \common\ext\MongoDb\Document
             'year'      => \yii::t('app', 'Year in which team participated'),
             'coachId'   => \yii::t('app', 'Related coach ID'),
             'schoolId'  => \yii::t('app', 'Related school ID'),
-            'members'   => \yii::t('app', 'List of members')
+            'memberIds' => \yii::t('app', 'List of members')
         ));
     }
 
@@ -134,7 +133,7 @@ class Team extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('name, year, coachId, schoolId, members', 'required'),
+            array('name, year, coachId, schoolId, memberIds', 'required'),
             array('year', 'numerical',
                 'integerOnly'   => true,
                 'min'           => (int)\yii::app()->params['yearFirst'],
@@ -191,10 +190,10 @@ class Team extends \common\ext\MongoDb\Document
         $this->year = (int)$this->year;
 
         // Members
-        if (count($this->members) < 3) {
-            $this->addError('members', \yii::t('app', 'The number of members should be greater or equal then 3.'));
-        } elseif (count($this->members) > 4) {
-            $this->addError('members', \yii::t('app', 'The number of members should be less or equal then 4.'));
+        if (count($this->memberIds) < 3) {
+            $this->addError('memberIds', \yii::t('app', 'The number of members should be greater or equal then 3.'));
+        } elseif (count($this->memberIds) > 4) {
+            $this->addError('memberIds', \yii::t('app', 'The number of members should be less or equal then 4.'));
         }
 
         // Check school names to be not empty
