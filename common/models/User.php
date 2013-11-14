@@ -5,13 +5,14 @@ namespace common\models;
 /**
  * User
  *
- * @property-read string                          $firstName
- * @property-read string                          $middleName
- * @property-read string                          $lastName
- * @property-read bool                            $isApprovedCoach
- * @property-read bool                            $isApprovedCoordinator
+ * @property-read string        $firstName
+ * @property-read string        $middleName
+ * @property-read string        $lastName
+ * @property-read bool          $isApprovedCoach
+ * @property-read bool          $isApprovedCoordinator
+ * @property-read School        $school
+ * @property-read User\Settings $settings
  * @property-read User\InfoCoach|User\InfoStudent $info
- * @property-read User\Settings                   $settings
  */
 class User extends \common\ext\MongoDb\Document
 {
@@ -100,6 +101,12 @@ class User extends \common\ext\MongoDb\Document
      * @var int
      */
     public $dateCreated;
+
+    /**
+     * User's school
+     * @var School
+     */
+    protected $_school;
 
     /**
      * User's settings
@@ -191,6 +198,19 @@ class User extends \common\ext\MongoDb\Document
     public function getIsApprovedCoordinator()
     {
         return \yii::app()->authManager->checkAccess($this->coordinator, $this->_id);
+    }
+
+    /**
+     * Returns user's school
+     *
+     * @return School
+     */
+    public function getSchool()
+    {
+        if ($this->_school === null) {
+            $this->_school = School::model()->findByPk(new \MongoId($this->schoolId));
+        }
+        return $this->_school;
     }
 
     /**

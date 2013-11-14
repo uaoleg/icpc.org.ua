@@ -41,6 +41,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
          */
         $this->_operationsDocument();
         $this->_operationsNews();
+        $this->_operationsTeam();
 
         /**
          * Guest role
@@ -52,6 +53,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $guestOperationList = array(
             Rbac::OP_DOCUMENT_READ,
             Rbac::OP_NEWS_READ,
+            Rbac::OP_TEAM_READ,
         );
         $this->_assignOperations($guest, $guestOperationList);
 
@@ -88,6 +90,8 @@ class RbacCommand extends \console\ext\ConsoleCommand
         }
         $coachOperationList = array(
             User::ROLE_STUDENT,
+            Rbac::OP_TEAM_CREATE,
+            Rbac::OP_TEAM_UPDATE,
         );
         $this->_assignOperations($coach, $coachOperationList);
 
@@ -184,6 +188,18 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->auth->createOperation(Rbac::OP_NEWS_CREATE, 'Create news');
         $this->auth->createOperation(Rbac::OP_NEWS_READ, 'Read news', $bizRuleRead);
         $this->auth->createOperation(Rbac::OP_NEWS_UPDATE, 'Edit news', $bizRuleUpdate);
+    }
+
+    /**
+     * Team operations
+     */
+    protected function _operationsTeam()
+    {
+        $bizRuleUpdate = 'return \yii::app()->rbac->bizRuleTeamUpdate($params);';
+
+        $this->auth->createOperation(Rbac::OP_TEAM_CREATE, 'Create team');
+        $this->auth->createOperation(Rbac::OP_TEAM_READ, 'Read team');
+        $this->auth->createOperation(Rbac::OP_TEAM_UPDATE, 'Edit team', $bizRuleUpdate);
     }
 
     /**

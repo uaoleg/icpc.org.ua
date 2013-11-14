@@ -112,6 +112,10 @@
                                 'caption'   => \yii::t('app', 'Langs'),
                                 'rbac'      => \common\models\User::ROLE_ADMIN,
                             ),
+                            'team' => array(
+                                'href'     => $this->createUrl('/team/list'),
+                                'caption'  => \yii::t('app', 'Teams'),
+                            )
                         ),
                     )); ?>
                     <ul class="nav navbar-nav navbar-right">
