@@ -96,9 +96,9 @@
                                     <div class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"></a>
                                         <ul class="dropdown-menu pull-right" role="menu" style="display: none;">
-                                            <li><a href="#" data-val="coordinator_ukraine">Ukraine</a></li>
-                                            <li><a href="#" data-val="coordinator_region">Region</a></li>
-                                            <li><a href="#" data-val="coordinator_state">State</a></li>
+                                            <li><a href="#" data-val="<?=User::ROLE_COORDINATOR_UKRAINE?>"><?=\yii::t('app', 'Ukraine')?></a></li>
+                                            <li><a href="#" data-val="<?=User::ROLE_COORDINATOR_REGION?>"><?=\yii::t('app', 'Region')?></a></li>
+                                            <li><a href="#" data-val="<?=User::ROLE_COORDINATOR_STATE?>"><?=\yii::t('app', 'State')?></a></li>
                                         </ul>
                                     </div>
                                 </div>
