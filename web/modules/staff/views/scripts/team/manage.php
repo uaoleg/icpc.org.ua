@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="teamNamePrefix"><?=\yii::t('app', 'Name of a team with prefix')?></label>
+                    <label for="teamNamePrefix"><?=\yii::t('app', 'Full name preview')?></label>
                     <input type="text" class="form-control" id="teamNamePrefix" name="teamNamePrefix"
                            value="<?=\CHtml::encode($team->name)?>"
                            placeholder="<?=\yii::t('app', 'Name of your team with prefix')?>" readonly/>
