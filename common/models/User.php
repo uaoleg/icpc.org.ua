@@ -128,7 +128,7 @@ class User extends \common\ext\MongoDb\Document
                 return $this->firstNameUk;
                 break;
             case 'en':
-                return $this->firstNameEn;
+                return (!empty($this->firstNameEn)) ? $this->firstNameEn : $this->firstNameUk;
                 break;
         }
     }
@@ -148,7 +148,7 @@ class User extends \common\ext\MongoDb\Document
                 return $this->middleNameUk;
                 break;
             case 'en':
-                return $this->middleNameEn;
+                return (!empty($this->middleNameEn)) ? $this->middleNameEn : $this->middleNameUk;
                 break;
         }
     }
@@ -168,7 +168,7 @@ class User extends \common\ext\MongoDb\Document
                 return $this->lastNameUk;
                 break;
             case 'en':
-                return $this->lastNameEn;
+                return (!empty($this->lastNameEn)) ? $this->lastNameEn : $this->lastNameUk;
                 break;
         }
     }
