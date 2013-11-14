@@ -31,6 +31,7 @@ function appStaffNewsEdit() {
             success: function(response) {
                 appShowErrors(response.errors, self.$form);
                 if (response.errors) {
+                    $selfElement.prop('disabled', false);
                     return;
                 } else {
                     if (response.isNew) {
