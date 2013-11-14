@@ -94,32 +94,46 @@ class TeamController extends \web\ext\Controller
 
 
         }
+
         // Display manage page
         else {
 
-            // Get params
-            $teamId = $this->request->getParam('id');
+            if ($school === null) {
 
-            // Get team
-            if (isset($teamId)) {
-                $team = Team::model()->findByPk(new \MongoId($teamId));
+                 $this->render('manageError', array(
+                     'error' => \yii::t('app', 'To manage teams, you must specify your school on the {a}profile page{/a}.', array(
+                         '{a}'  => '<a href="' . $this->createUrl('/user/me') . '">',
+                         '{/a}' => '</a>',
+                     )),
+                 ));
+
             } else {
-                $team = new Team();
-                $team->year = date('Y');
+
+                // Get params
+                $teamId = $this->request->getParam('id');
+
+                // Get team
+                if (isset($teamId)) {
+                    $team = Team::model()->findByPk(new \MongoId($teamId));
+                } else {
+                    $team = new Team();
+                    $team->year = date('Y');
+                }
+
+                // Get team members
+                $users = User::model()->findAll(array(
+                    'schoolId' => (string)$school->_id,
+                    'type'     => User::ROLE_STUDENT
+                ));
+
+                // Render view
+                $this->render('manage', array(
+                    'school'    => $school,
+                    'users'     => $users,
+                    'team'      => $team,
+                ));
+
             }
-
-            // Get team members
-            $users = User::model()->findAll(array(
-                'schoolId' => (string)$school->_id,
-                'type'     => User::ROLE_STUDENT
-            ));
-
-            // Render view
-            $this->render('manage', array(
-                'school'    => $school,
-                'users'     => $users,
-                'team'      => $team,
-            ));
         }
     }
 

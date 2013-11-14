@@ -11,7 +11,7 @@
 
         <div class="panel panel-primary panel-school">
             <div class="panel-heading">
-                <?=\yii::t('app', 'School info')?>
+                <?=\yii::t('app', 'Team Info')?>
             </div>
 
             <div class="panel-body form">
