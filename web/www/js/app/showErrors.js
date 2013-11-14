@@ -8,7 +8,7 @@ function appShowErrors(errors, $context) {
         $.each(errors, function(key, value) {
             var $input,
                 $group,
-                $help = $('<div>');
+                $help = $('<div>').addClass('help-block').html(value);
             if (key === 'recaptcha') {
                 Recaptcha.reload();
                 $input = $('#recaptcha_widget_div');
@@ -16,8 +16,13 @@ function appShowErrors(errors, $context) {
                 $input = $('[name=' + key + ']', $context);
             }
             $group = $input.closest('.form-group');
-            $help.addClass('help-block').html(value).appendTo($group);
             $group.addClass('has-error');
+            $col = $('div[class^="col-"], div[class*=" col-"]', $group)
+            if ($col.length > 0) {
+                $help.appendTo($col);
+            } else {
+                $help.appendTo($group);
+            }
         });
         $('.form-group.has-error:first input', $context).focus();
     }
