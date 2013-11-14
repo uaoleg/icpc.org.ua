@@ -43,11 +43,8 @@ function appStaffTeamManage(options)
     /**
      * onChange team name handler to show what will the name with prefix be
      */
-    var $shortNameEn = $('#shortNameEn').val();
-    $('#name').on('keyup', function() {
-
-        $('#teamNamePrefix').val($shortNameEn + $(this).val());
-
+    $('#shortNameEn, #name').on('keyup', function() {
+        $('#teamNamePrefix').val($('#shortNameEn').val() + $('#name').val());
     });
 
 
