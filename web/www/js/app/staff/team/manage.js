@@ -4,7 +4,7 @@ function appStaffTeamManage(options)
     /**
      * Select2 initialization
      */
-    $('[name=member1], [name=member2], [name=member3], [name=member4], [name=members]').select2();
+    $('[name=members]').select2();
 
     /**
      * Click handler to save school info
