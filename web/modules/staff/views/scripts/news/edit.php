@@ -19,6 +19,7 @@
         </a></small>
     <?php endif; ?>
 </div>
+
 <div class="form-horizontal clearfix">
     <ul class="nav nav-tabs">
         <?php foreach (\yii::app()->params['languages'] as $langKey => $langVal): ?>
@@ -37,6 +38,9 @@
         <small><a href="http://postimage.org/index.php?um=computer&content=family" target="_blank">
             <b><?=\yii::t('app', 'Upload images here')?></b>
         </a></small>
+    </div>
+    <div class="form-group">
+        <?php \web\widgets\filter\Geo::create(array('checked' => $news->geo)); ?>
     </div>
     <div class="form-group">
         <input type="text" class="form-control" name="title" value="<?=\CHtml::encode($news->title)?>" placeholder="<?=\yii::t('app', 'Title')?>">

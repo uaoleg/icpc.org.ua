@@ -8,13 +8,8 @@ appStaffNewsManage.prototype.init = function() {
     var self = this;
     self.$form = $('.form-horizontal');
 
-    // On language changed
-    $('select', self.$form).on('change', function() {
-        self.onchange();
-    });
-
-    // On title changed
-    $('input', self.$form).on('keydown', function() {
+    // On changed
+    $('input, select', self.$form).on('keydown change', function() {
         self.onchange();
     });
 

@@ -26,7 +26,8 @@ function appStaffNewsEdit() {
                 id:      $('[name=id]', self.$form).val(),
                 lang:    $('[name=lang]', self.$form).val(),
                 title:   $('[name=title]', self.$form).val(),
-                content: self.editor.getData()
+                content: self.editor.getData(),
+                geo:     $('[name=filter-geo]:checked', self.$form).val()
             },
             success: function(response) {
                 appShowErrors(response.errors, self.$form);

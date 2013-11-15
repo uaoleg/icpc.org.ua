@@ -4,6 +4,11 @@ namespace common\models;
 
 /**
  * School (university, academy, institute)
+ *
+ * @property-read string $country
+ * @property-read string $countryLabel
+ * @property-read string $regionLabel
+ * @property-read string $stateLabel
  */
 class School extends \common\ext\MongoDb\Document
 {
@@ -43,6 +48,46 @@ class School extends \common\ext\MongoDb\Document
      * @var string
      */
     public $region;
+
+    /**
+     * Returns country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return 'ukraine';
+    }
+
+    /**
+     * Returns country label
+     *
+     * @return string
+     */
+    public function getCountryLabel()
+    {
+        return \yii::t('app', 'Ukraine');
+    }
+
+    /**
+     * Returns region label
+     *
+     * @return string
+     */
+    public function getRegionLabel()
+    {
+        return Geo\Region::model()->getAttributeLabel($this->region);
+    }
+
+    /**
+     * Returns state label
+     *
+     * @return string
+     */
+    public function getStateLabel()
+    {
+        return Geo\State::model()->getAttributeLabel($this->state);
+    }
 
     /**
      * Returns the attribute labels.

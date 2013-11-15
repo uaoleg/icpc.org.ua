@@ -36,6 +36,12 @@ class News extends \common\ext\MongoDb\Document
     public $isPublished = false;
 
     /**
+     * Geo
+     * @var string
+     */
+    public $geo;
+
+    /**
      * Year created
      * @see beforeValidate()
      * @var int
@@ -65,6 +71,7 @@ class News extends \common\ext\MongoDb\Document
             'title'         => \yii::t('app', 'Title'),
             'content'       => \yii::t('app', 'Content'),
             'isPublished'   => \yii::t('app', 'Is published'),
+            'geo'           => \yii::t('app', 'Geo'),
             'yearCreated'   => \yii::t('app', 'Year date'),
             'dateCreated'   => \yii::t('app', 'Date date'),
         ));
@@ -78,7 +85,7 @@ class News extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, title, content, yearCreated, dateCreated', 'required'),
+            array('lang, title, content, geo, yearCreated, dateCreated', 'required'),
             array('title', 'length', 'max' => 300),
             array('content', 'length', 'max' => 5000),
         ));

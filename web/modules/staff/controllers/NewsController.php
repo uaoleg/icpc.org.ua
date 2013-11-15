@@ -17,6 +17,7 @@ class NewsController extends \web\modules\staff\ext\Controller
         $lang       = $this->request->getParam('lang', \yii::app()->language);
         $title      = $this->request->getPost('title', '');
         $content    = $this->request->getPost('content', '');
+        $geo        = $this->request->getPost('geo');
 
         // Get news
         $news = News::model()->findByAttributes(array(
@@ -27,10 +28,12 @@ class NewsController extends \web\modules\staff\ext\Controller
             if ((!empty($id)) && (News::model()->countByAttributes(array('commonId' => $id)) === 0)) {
                 return $this->httpException(404);
             } else {
+                $relatedNews = News::model()->findByAttributes(array('commonId' => $id));
                 $news = new News();
                 $news->setAttributes(array(
                     'commonId'  => $id,
                     'lang'      => $lang,
+                    'geo'       => $relatedNews ? $relatedNews->geo : '',
                 ), false);
             }
         }
@@ -42,8 +45,18 @@ class NewsController extends \web\modules\staff\ext\Controller
                 'lang'      => $lang,
                 'title'     => $title,
                 'content'   => $content,
+                'geo'       => $geo,
             ), false);
             $news->save();
+
+            // Set geo attribute for all related news
+            $modifier = new \EMongoModifier();
+            $modifier->addModifier('geo', 'set', $geo);
+            $criteria = new \EMongoCriteria();
+            $criteria->addCond('commonId', '==', $id);
+            News::model()->updateAll($modifier, $criteria);
+
+            // Render json
             $this->renderJson(array(
                 'isNew'     => $isNew,
                 'errors'    => $news->hasErrors() ? $news->getErrors() : false,
