@@ -20,7 +20,7 @@
 
 <script type="text/javascript">
     <?php if ($this->checked): ?>
-            $('input[name=filter-geo][value=<?=$this->checked?>]:radio:not([disabled])').click();
+        $('input[name=filter-geo][value=<?=$this->checked?>]:radio:not([disabled])').click();
     <?php else: ?>
         $('input[name=filter-geo]:radio:not([disabled]):first').click();
     <?php endif; ?>
