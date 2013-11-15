@@ -25,21 +25,21 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="text" class="form-control" id="shortNameUk" name="shortNameUk"
+                    <input type="text" class="form-control" name="schoolShortNameUk"
                            placeholder="<?=\yii::t('app', 'Short name of university (ukrainian)')?>"
                            value="<?=\CHtml::encode($school->shortNameUk)?>"
                            <?=(!empty($school->shortNameUk)) ? ' disabled' : ''?>>
                 </div>
 
                 <div class="form-group">
-                    <input type="text" class="form-control" id="fullNameEn" name="fullNameEn"
+                    <input type="text" class="form-control" name="schoolFullNameEn"
                            placeholder="<?=\yii::t('app', 'Full name of university (english)')?>"
                            value="<?=\CHtml::encode($school->fullNameEn)?>"
                            <?=(!empty($school->fullNameEn)) ? ' disabled' : ''?>>
                 </div>
 
                 <div class="form-group">
-                    <input type="text" class="form-control" id="shortNameEn" name="shortNameEn"
+                    <input type="text" class="form-control" name="schoolShortNameEn"
                            placeholder="<?=\yii::t('app', 'Short name of university (english)')?>"
                            value="<?=\CHtml::encode($school->shortNameEn)?>"
                            <?=(!empty($school->shortNameEn)) ? ' disabled' : ''?>>
@@ -63,8 +63,8 @@
 
 
                 <div class="form-group">
-                    <label for="members"><?=\yii::t('app', 'Members')?></label>
-                    <select name="members" id="members" class="form-control" multiple>
+                    <label for="memberIds"><?=\yii::t('app', 'Members')?></label>
+                    <select name="memberIds" id="memberIds" class="form-control" multiple>
                         <?php foreach($users as $user): ?>
                             <option value="<?=$user->_id?>" <?=(in_array((string)$user->_id, $team->memberIds)) ? 'selected' : ''?>>
                                 <?=\CHtml::encode($user->firstName)?>&nbsp;

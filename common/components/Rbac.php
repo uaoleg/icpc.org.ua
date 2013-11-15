@@ -98,4 +98,15 @@ class Rbac extends \CApplicationComponent
         return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
     }
 
+    /**
+     * Biz rule for edit team
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleTeamUpdate(array $params)
+    {
+        return $this->checkAccess(User::ROLE_COACH);
+    }
+
 }
