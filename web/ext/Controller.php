@@ -101,6 +101,40 @@ class Controller extends \CController
     }
 
     /**
+     * Returns geo (News, Results, etc.)
+     *
+     * @return string
+     */
+    public function getGeo()
+    {
+        // Get saved year
+        if (\yii::app()->user->isGuest) {
+            $defaultGeo = \yii::app()->user->getState('geo');
+        } else {
+            $defaultGeo = \yii::app()->user->getInstance()->settings->geo;
+        }
+
+        // Get params
+        $geo = $this->request->getParam('geo', $defaultGeo);
+
+        // Get default value
+        if (empty($geo)) {
+            $geo = \common\models\School::model()->country;
+        }
+
+        // Save the geo to the user's settings
+        if (\yii::app()->user->isGuest) {
+            \yii::app()->user->setState('geo', $geo);
+        } else {
+            $settings = \yii::app()->user->getInstance()->settings;
+            $settings->geo = $geo;
+            $settings->save();
+        }
+
+        return $geo;
+    }
+
+    /**
      * Returns year (News, Results, etc.)
      *
      * @return int
@@ -129,7 +163,7 @@ class Controller extends \CController
                 // Find latest year with news
                 case 'news':
                     $publishedOnly = !\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_UPDATE);
-                    while (News::model()->scopeByLatest($year, $publishedOnly)->count() === 0) {
+                    while (News::model()->scopeByLatest($this->getGeo(), $year, $publishedOnly)->count() === 0) {
                         $year--;
                         if ($year <= \yii::app()->params['yearFirst']) {
                             break;

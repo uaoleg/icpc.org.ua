@@ -170,17 +170,19 @@ class News extends \common\ext\MongoDb\Document
     /**
      * Scope for latest page
      *
-     * @param int  $year
-     * @param bool $publishedOnly
-     * @param int  $page
-     * @paran int  $perPage
+     * @param string $geo
+     * @param int   $year
+     * @param bool  $publishedOnly
+     * @param int   $page
+     * @paran int   $perPage
      * @return News
      */
-    public function scopeByLatest($year, $publishedOnly, $page = 1, $perPage = 10)
+    public function scopeByLatest($geo, $year, $publishedOnly, $page = 1, $perPage = 10)
     {
         $criteria = $this->getDbCriteria();
         $criteria
             ->addCond('lang', '==', \yii::app()->language)
+            ->addCond('geo', '==', $geo)
             ->addCond('yearCreated', '==', $year)
             ->sort('dateCreated', \EMongoCriteria::SORT_DESC)
             ->offset(($page - 1) * $perPage)

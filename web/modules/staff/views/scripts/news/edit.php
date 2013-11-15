@@ -40,7 +40,7 @@
         </a></small>
     </div>
     <div class="form-group">
-        <?php \web\widgets\filter\Geo::create(array('checked' => $news->geo)); ?>
+        <?php \web\widgets\user\GeoFilter::create(array('checked' => $news->geo)); ?>
     </div>
     <div class="form-group">
         <input type="text" class="form-control" name="title" value="<?=\CHtml::encode($news->title)?>" placeholder="<?=\yii::t('app', 'Title')?>">

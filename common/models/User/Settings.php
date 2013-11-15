@@ -21,6 +21,12 @@ class Settings extends \common\ext\MongoDb\Document
     public $year;
 
     /**
+     * News, Results, etc.
+     * @var string
+     */
+    public $geo;
+
+    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -33,6 +39,7 @@ class Settings extends \common\ext\MongoDb\Document
         return array_merge(parent::attributeLabels(), array(
             'userId'    => \yii::t('app', 'User ID'),
             'year'      => \yii::t('app', 'Year'),
+            'geo'       => \yii::t('app', 'Geo'),
         ));
     }
 

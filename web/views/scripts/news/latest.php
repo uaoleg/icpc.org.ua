@@ -1,26 +1,8 @@
-<div class="btn-group pull-right">
-    <?php if (\yii::app()->params['yearFirst'] < date('Y')): ?>
-        <button class="btn btn-default active dropdown-toggle" data-toggle="dropdown">
-            <?=\yii::t('app', '{year} year', array(
-                '{year}' => $year,
-            ))?>
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-            <?php foreach (range(date('Y'), \yii::app()->params['yearFirst']) as $_year): ?>
-                <?php if ($year === $_year) continue; ?>
-                <li><a href="<?=$this->createUrl('', array('year' => $_year))?>"><?=\yii::t('app', '{year} year', array(
-                    '{year}' => $_year,
-                ))?></a></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php else: ?>
-        <button class="btn btn-default active" data-toggle="dropdown">
-            <?=\yii::t('app', '{year} year', array(
-                '{year}' => date('Y'),
-            ))?>
-        </button>
-    <?php endif; ?>
+<div class="pull-right" style="margin-left: 20px;">
+    <?php \web\widgets\filter\Year::create(array('checked' => $year)); ?>
+</div>
+<div class="pull-right">
+    <?php \web\widgets\filter\Geo::create(array('checked' => $geo)); ?>
 </div>
 
 <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_CREATE)): ?>

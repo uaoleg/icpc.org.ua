@@ -27,9 +27,11 @@ class NewsController extends \web\ext\Controller
     public function actionLatest()
     {
         // Get params
+        $geo        = $this->getGeo();
         $year       = $this->getYear();
         $page       = (int)$this->request->getParam('page', 1);
         $perPage    = 5;
+        $publishedOnly = !\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_UPDATE);
 
         // Page range
         if ($page < 1) {
@@ -38,7 +40,7 @@ class NewsController extends \web\ext\Controller
 
         // Get list of news
         $newsList = News::model()
-            ->scopeByLatest($year, !\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_UPDATE), $page, $perPage)
+            ->scopeByLatest($geo, $year, $publishedOnly, $page, $perPage)
             ->findAll();
         $newsCount  = $newsList->count(true);
         $totalCount = $newsList->count(false);
@@ -50,6 +52,7 @@ class NewsController extends \web\ext\Controller
         // Render view
         $this->render('latest', array(
             'newsList'      => $newsList,
+            'geo'           => $geo,
             'year'          => $year,
             'page'          => $page,
             'newsCount'     => $newsCount,
