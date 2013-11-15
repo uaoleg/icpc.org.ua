@@ -29,11 +29,9 @@ class RbacCommand extends \console\ext\ConsoleCommand
     public function actionInit()
     {
         /**
-         * Delete operations and tasks
+         * Delete all auth items
          */
-        $criteria = new \EMongoCriteria();
-        $criteria->addCond('type', 'in', array(\CAuthItem::TYPE_OPERATION, \CAuthItem::TYPE_TASK));
-        Auth\Item::model()->deleteAll($criteria);
+        Auth\Item::model()->deleteAll();
         $this->auth->init();
 
         /**
@@ -46,109 +44,79 @@ class RbacCommand extends \console\ext\ConsoleCommand
         /**
          * Guest role
          */
-        $guest = $this->auth->getAuthItem(User::ROLE_GUEST);
-        if (!$guest) {
-            $guest = $this->auth->createRole(User::ROLE_GUEST);
-        }
-        $guestOperationList = array(
+        $this->_createRole(User::ROLE_GUEST, array(
             Rbac::OP_DOCUMENT_READ,
             Rbac::OP_NEWS_READ,
             Rbac::OP_TEAM_READ,
-        );
-        $this->_assignOperations($guest, $guestOperationList);
+        ));
 
         /**
          * User role
          */
-        $user = $this->auth->getAuthItem(User::ROLE_USER);
-        if (!$user) {
-            $user = $this->auth->createRole(User::ROLE_USER);
-        }
-        $userOperationList = array(
+        $this->_createRole(User::ROLE_USER, array(
             User::ROLE_GUEST,
-        );
-        $this->_assignOperations($user, $userOperationList);
+        ));
 
         /**
          * Student role
          */
-        $student = $this->auth->getAuthItem(User::ROLE_STUDENT);
-        if (!$student) {
-            $student = $this->auth->createRole(User::ROLE_STUDENT);
-        }
-        $studentOperationList = array(
+        $this->_createRole(User::ROLE_STUDENT, array(
             User::ROLE_USER,
-        );
-        $this->_assignOperations($student, $studentOperationList);
+        ));
 
         /**
          * Coach role
          */
-        $coach = $this->auth->getAuthItem(User::ROLE_COACH);
-        if (!$coach) {
-            $coach = $this->auth->createRole(User::ROLE_COACH);
-        }
-        $coachOperationList = array(
-            User::ROLE_STUDENT,
+        $this->_createRole(User::ROLE_COACH, array(
+            User::ROLE_USER,
             Rbac::OP_TEAM_CREATE,
             Rbac::OP_TEAM_UPDATE,
-        );
-        $this->_assignOperations($coach, $coachOperationList);
+        ));
 
         /**
          * Coordinator of State role
          */
-        $coordinatorState = $this->auth->getAuthItem(User::ROLE_COORDINATOR_STATE);
-        if (!$coordinatorState) {
-            $coordinatorState = $this->auth->createRole(User::ROLE_COORDINATOR_STATE);
-        }
-        $coordinatorStateOperationList = array(
-            User::ROLE_COACH,
+        $this->_createRole(User::ROLE_COORDINATOR_STATE, array(
+            User::ROLE_USER,
             Rbac::OP_DOCUMENT_CREATE,
             Rbac::OP_DOCUMENT_UPDATE,
             Rbac::OP_DOCUMENT_DELETE,
             Rbac::OP_NEWS_CREATE,
             Rbac::OP_NEWS_UPDATE,
-        );
-        $this->_assignOperations($coordinatorState, $coordinatorStateOperationList);
+        ));
 
         /**
          * Coordinator of Region role
          */
-        $coordinatorRegion = $this->auth->getAuthItem(User::ROLE_COORDINATOR_REGION);
-        if (!$coordinatorRegion) {
-            $coordinatorRegion = $this->auth->createRole(User::ROLE_COORDINATOR_REGION);
-        }
-        $coordinatorRegionOperationList = array(
+        $this->_createRole(User::ROLE_COORDINATOR_REGION, array(
             User::ROLE_COORDINATOR_STATE,
-        );
-        $this->_assignOperations($coordinatorRegion, $coordinatorRegionOperationList);
+        ));
 
         /**
          * Coordinator of Ukraine role
          */
-        $coordinatorUkraine = $this->auth->getAuthItem(User::ROLE_COORDINATOR_UKRAINE);
-        if (!$coordinatorUkraine) {
-            $coordinatorUkraine = $this->auth->createRole(User::ROLE_COORDINATOR_UKRAINE);
-        }
-        $coordinatorUkraineOperationList = array(
+        $this->_createRole(User::ROLE_COORDINATOR_UKRAINE, array(
             User::ROLE_COORDINATOR_REGION,
-        );
-        $this->_assignOperations($coordinatorUkraine, $coordinatorUkraineOperationList);
+        ));
 
         /**
          * Admin role
          */
-        $admin = $this->auth->getAuthItem(User::ROLE_ADMIN);
-        if (!$admin) {
-            $admin = $this->auth->createRole(User::ROLE_ADMIN);
-        }
-        $adminOperationList = array(
+        $this->_createRole(User::ROLE_ADMIN, array(
             User::ROLE_COORDINATOR_UKRAINE,
-        );
-        $this->_assignOperations($admin, $adminOperationList);
+        ));
 
         echo "RBAC inited succesfully.";
+    }
+
+    protected function _createRole($roleName, array $children)
+    {
+        $role = $this->auth->createRole($roleName);
+        foreach ($children as $child) {
+            if (!$role->hasChild($child)) {
+                $role->addChild($child);
+            }
+        }
     }
 
     /**
