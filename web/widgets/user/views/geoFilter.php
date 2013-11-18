@@ -2,19 +2,19 @@
 
 <div class="btn-group" data-toggle="buttons">
     <label class="btn btn-default">
-        <input type="radio" name="filter-geo" value="<?=$user->school->country?>"
+        <input type="radio" name="filter-geo" value="<?=$school->country?>"
                <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE) ? '' : 'disabled'?> />
-        <?=$user->school->countryLabel?>
+        <?=$school->countryLabel?>
     </label>
     <label class="btn btn-default">
-        <input type="radio" name="filter-geo" value="<?=$user->school->region?>"
+        <input type="radio" name="filter-geo" value="<?=$school->region?>"
                <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION) ? '' : 'disabled'?> />
-        <?=$user->school->regionLabel?>
+        <?=$school->regionLabel?>
     </label>
     <label class="btn btn-default">
-        <input type="radio" name="filter-geo" value="<?=$user->school->state?>"
+        <input type="radio" name="filter-geo" value="<?=$school->state?>"
                <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE) ? '' : 'disabled'?> />
-        <?=$user->school->stateLabel?>
+        <?=$school->stateLabel?>
     </label>
 </div>
 

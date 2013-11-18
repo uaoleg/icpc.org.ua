@@ -19,10 +19,17 @@ class GeoFilter extends \web\ext\Widget
      */
     public function run()
     {
+        // Get school
+        $school = \yii::app()->user->getInstance()->school;
+
         // Render view
-        $this->render('geoFilter', array(
-            'user' => \yii::app()->user->getInstance(),
-        ));
+        if ($school !== null) {
+            $this->render('geoFilter', array(
+                'school' => $school,
+            ));
+        } else {
+            $this->render('geoFilterWithoutSchool');
+        }
     }
 
 }

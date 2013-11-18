@@ -3,6 +3,7 @@
     Button group
     Checkbox
     Dropdown
+    Labels
     Navbar
     Panel
 
@@ -89,6 +90,13 @@
     border-radius: 6px 0 6px 6px;
     left: -100%;
     margin-left: 10px;
+}
+
+/* Labels
+----------------------------------------------------------------------------- */
+
+.label-danger a {
+    color: #63c2fe;
 }
 
 /* Navbar
