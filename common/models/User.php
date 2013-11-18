@@ -283,8 +283,8 @@ class User extends \common\ext\MongoDb\Document
     {
         return array_merge(parent::attributeLabels(), array(
             'firstName'      => \yii::t('app', 'First name'),
-            'middleName'     => \yii::t('app', 'First name'),
-            'lastName'       => \yii::t('app', 'First name'),
+            'middleName'     => \yii::t('app', 'Middle name'),
+            'lastName'       => \yii::t('app', 'Last name'),
             'firstNameUk'    => \yii::t('app', 'First name in Ukrainian'),
             'middleNameUk'   => \yii::t('app', 'Middle name in Ukranian'),
             'lastNameUk'     => \yii::t('app', 'Last name in Ukrainian'),
