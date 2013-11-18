@@ -12,7 +12,7 @@
         <?=\CHtml::encode($coach->firstName)?> <?=\CHtml::encode($coach->lastName)?>
         <br />
         <strong><?=\yii::t('app', 'School')?></strong>:
-        <?=\CHtml::encode($school->fullNameUk)?>
+        <?=\CHtml::encode($team->school->fullNameUk)?>
         <br />
         <strong><?=\yii::t('app', 'Participants')?></strong>:
         <ul>

@@ -209,6 +209,9 @@ class User extends \common\ext\MongoDb\Document
     {
         if ($this->_school === null) {
             $this->_school = School::model()->findByPk(new \MongoId($this->schoolId));
+            if ($this->_school === null) {
+                return new School();
+            }
         }
         return $this->_school;
     }

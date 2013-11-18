@@ -2,6 +2,7 @@
 
 namespace web\modules\staff\controllers;
 
+use \common\components\Rbac;
 use \common\models\User;
 
 class CoordinatorsController extends \web\modules\staff\ext\Controller
@@ -52,7 +53,7 @@ class CoordinatorsController extends \web\modules\staff\ext\Controller
         }
 
         // Check access
-        if (!\yii::app()->user->checkAccess(\common\components\Rbac::OP_COORDINATOR_SET_STATUS, array('user' => $user))) {
+        if (!\yii::app()->user->checkAccess(Rbac::OP_COORDINATOR_SET_STATUS, array('user' => $user))) {
             return $this->httpException(403);
         }
 

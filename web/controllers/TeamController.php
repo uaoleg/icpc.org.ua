@@ -62,7 +62,6 @@ class TeamController extends \web\ext\Controller
         // Render view
         $this->render('view', array(
             'team'    => $team,
-            'school'  => $team->school,
             'coach'   => $team->coach,
             'members' => $team->members
         ));

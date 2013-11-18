@@ -1,3 +1,8 @@
+<?php
+    use \common\components\Rbac;
+    use \common\models\User;
+?>
+
 <script type="text/javascript">
     $(document).ready(function() {
         new appStaffCoachesIndex();
@@ -23,12 +28,12 @@
                 <td><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
                 <td style="width: 200px;">
                     <button class="btn btn-success coach-state <?=$user->isApprovedCoach ? 'hide' : ''?>"
-                            <?=((string)$user->_id === \yii::app()->user->getId()) ? 'disabled' : ''?>
+                            <?=(\yii::app()->user->checkAccess(Rbac::OP_COACH_SET_STATUS, array('user' => $user))) ? '' : 'disabled'?>
                             data-state="1">
                         <?=\yii::t('app', 'Activate')?>
                     </button>
                     <button class="btn btn-danger coach-state <?=$user->isApprovedCoach ? '' : 'hide'?>"
-                            <?=((string)$user->_id === \yii::app()->user->getId()) ? 'disabled' : ''?>
+                            <?=(\yii::app()->user->checkAccess(Rbac::OP_COACH_SET_STATUS, array('user' => $user))) ? '' : 'disabled'?>
                             data-state="0">
                         <?=\yii::t('app', 'Suspend')?>
                     </button>

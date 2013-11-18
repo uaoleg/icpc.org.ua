@@ -2,6 +2,7 @@
 
 namespace web\modules\staff\controllers;
 
+use \common\components\Rbac;
 use \common\models\User;
 
 class CoachesController extends \web\modules\staff\ext\Controller
@@ -45,9 +46,15 @@ class CoachesController extends \web\modules\staff\ext\Controller
         $userId = $this->request->getPost('userId');
         $state  = (bool)$this->request->getPost('state', 0);
 
-        // Can't set state for oneself
-        if ($userId === \yii::app()->user->getId()) {
-            return $this->httpException(403, \yii::t('app', 'Can not set state for oneself.'));
+        // Get user
+        $user = User::model()->findByPk(new \MongoId($userId));
+        if ($user === null) {
+            return $this->httpException(404);
+        }
+
+        // Check access
+        if (!\yii::app()->user->checkAccess(Rbac::OP_COACH_SET_STATUS, array('user' => $user))) {
+            return $this->httpException(403);
         }
 
         // Assign coach role to the user

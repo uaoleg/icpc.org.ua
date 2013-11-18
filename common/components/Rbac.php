@@ -15,6 +15,7 @@ class Rbac extends \CApplicationComponent
     /**
      * List of available operations
      */
+    const OP_COACH_SET_STATUS       = 'coachSetStatus';
     const OP_COORDINATOR_SET_STATUS = 'coordinatorSetStatus';
     const OP_DOCUMENT_CREATE        = 'documentCreate';
     const OP_DOCUMENT_READ          = 'documentRead';
@@ -70,6 +71,26 @@ class Rbac extends \CApplicationComponent
     public function checkAccess($operation, array $params = array())
     {
         return \yii::app()->authManager->checkAccess($operation, (string)$this->user->_id, $params);
+    }
+
+    /**
+     * Biz rule for activating/suspending of coach
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleCoachSetStatus(array $params)
+    {
+        $user = $params['user'];
+        if ($this->checkAccess(User::ROLE_COORDINATOR_UKRAINE)) {
+            return true;
+        } elseif ($this->checkAccess(User::ROLE_COORDINATOR_REGION)) {
+            return $this->_user->school->region === $user->school->region;
+        } elseif ($this->checkAccess(User::ROLE_COORDINATOR_STATE)) {
+            return $this->_user->school->state === $user->school->state;
+        } else {
+            return false;
+        }
     }
 
     /**

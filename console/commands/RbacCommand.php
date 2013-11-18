@@ -37,6 +37,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         /**
          * Create operations
          */
+        $this->_operationsCoach();
         $this->_operationsCoordinator();
         $this->_operationsDocument();
         $this->_operationsNews();
@@ -79,6 +80,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
          */
         $this->_createRole(User::ROLE_COORDINATOR_STATE, array(
             User::ROLE_USER,
+            Rbac::OP_COACH_SET_STATUS,
             Rbac::OP_COORDINATOR_SET_STATUS,
             Rbac::OP_DOCUMENT_CREATE,
             Rbac::OP_DOCUMENT_UPDATE,
@@ -134,6 +136,16 @@ class RbacCommand extends \console\ext\ConsoleCommand
                 $authItem->addChild($operation);
             }
         }
+    }
+
+    /**
+     * Coach operations
+     */
+    protected function _operationsCoach()
+    {
+        $bizRuleSetStatus = 'return \yii::app()->rbac->bizRuleCoachSetStatus($params);';
+
+        $this->auth->createOperation(Rbac::OP_COACH_SET_STATUS, 'Activate (or suspend) coach', $bizRuleSetStatus);
     }
 
     /**
