@@ -27,17 +27,21 @@ class TeamController extends \web\ext\Controller
      */
     public function actionList()
     {
+        // Get params
+        $year = $this->getYear();
+
         // Get list of teams
         $criteria = new \EMongoCriteria();
         $criteria
-            ->sort('name', \EMongoCriteria::SORT_ASC)
-            ->sort('year', \EMongoCriteria::SORT_DESC);
+            ->addCond('year', '==', $year)
+            ->sort('name', \EMongoCriteria::SORT_ASC);
         $teams = Team::model()->findAll($criteria);
 
         // Render view
         $this->render('list', array(
             'user'  => \yii::app()->user->getInstance(),
-            'teams' => $teams
+            'teams' => $teams,
+            'year'  => $year,
         ));
     }
 

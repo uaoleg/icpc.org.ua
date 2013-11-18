@@ -1,3 +1,7 @@
+<div class="pull-right">
+    <?php \web\widgets\filter\Year::create(array('checked' => $year)); ?>
+</div>
+
 <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_CREATE)): ?>
     <a class="btn btn-success btn-lg" href="<?=$this->createUrl('/staff/team/manage')?>"><?=\yii::t('app', 'Create a new team')?></a>
     <hr>
@@ -31,5 +35,5 @@
     <div class="alert alert-info">
         <?=\yii::t('app', 'There are no teams.')?>
     </div>
-    
+
 <?php endif; ?>
