@@ -45,21 +45,19 @@ class CoordinatorsController extends \web\modules\staff\ext\Controller
         $userId = $this->request->getPost('userId');
         $state  = (bool)$this->request->getPost('state', 0);
 
-        // Can't set state for oneself
-        if ($userId === \yii::app()->user->getId()) {
-            return $this->httpException(403, \yii::t('app', 'Can not set state for oneself.'));
+        // Get user
+        $user = User::model()->findByPk(new \MongoId($userId));
+        if ($user === null) {
+            return $this->httpException(404);
+        }
+
+        // Check access
+        if (!\yii::app()->user->checkAccess(\common\components\Rbac::OP_COORDINATOR_SET_STATUS, array('user' => $user))) {
+            return $this->httpException(403);
         }
 
         // Assign coordination role to the user
         if ($state) {
-
-            // Get user
-            $user = User::model()->findByPk(new \MongoId($userId));
-            if ($user === null) {
-                return $this->httpException(404);
-            }
-
-            // Assign role
             \yii::app()->authManager->assign($user->coordinator, $userId);
         }
 

@@ -10,7 +10,31 @@ class Controller extends \web\ext\Controller
     /*
      * Search operation name for daterange field type
      */
-    const  JQGRID_OPERATION_DATERANGE = 'dr';
+    const JQGRID_OPERATION_DATERANGE = 'dr';
+
+    /**
+     * Returns the access rules for this controller
+     *
+     * @return array
+     */
+    public function accessRules()
+    {
+        return array_merge(parent::accessRules(), array(
+            array(
+                'allow',
+                'controllers'   => array('staff/coaches', 'staff/coordinators', 'staff/news'),
+                'roles'         => array(User::ROLE_COORDINATOR_STATE),
+            ),
+            array(
+                'allow',
+                'controllers'   => array('staff/lang'),
+                'roles'         => array(User::ROLE_ADMIN),
+            ),
+            array(
+                'deny',
+            ),
+        ));
+    }
 
     /**
      * Get jqGrid params
@@ -72,35 +96,6 @@ class Controller extends \web\ext\Controller
             'itemList'  => $itemList,
             'totalCount'=> $totalCount,
         );
-    }
-
-    /**
-     * Returns the access rules for this controller
-     *
-     * @return array
-     */
-    public function accessRules()
-    {
-        return array_merge(parent::accessRules(), array(
-            array(
-                'allow',
-                'controllers'   => array('staff/coaches', 'staff/news'),
-                'roles'         => array(User::ROLE_COORDINATOR_STATE),
-            ),
-            array(
-                'allow',
-                'controllers'   => array('staff/coordinators'),
-                'roles'         => array(User::ROLE_COORDINATOR_UKRAINE),
-            ),
-            array(
-                'allow',
-                'controllers'   => array('staff/lang'),
-                'roles'         => array(User::ROLE_ADMIN),
-            ),
-            array(
-                'deny',
-            ),
-        ));
     }
 
 }

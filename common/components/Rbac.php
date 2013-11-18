@@ -15,16 +15,17 @@ class Rbac extends \CApplicationComponent
     /**
      * List of available operations
      */
-    const OP_DOCUMENT_CREATE    = 'documentCreate';
-    const OP_DOCUMENT_READ      = 'documentRead';
-    const OP_DOCUMENT_UPDATE    = 'documentUpdate';
-    const OP_DOCUMENT_DELETE    = 'documentDelete';
-    const OP_NEWS_CREATE        = 'newsCreate';
-    const OP_NEWS_READ          = 'newsRead';
-    const OP_NEWS_UPDATE        = 'newsUpdate';
-    const OP_TEAM_CREATE        = 'teamCreate';
-    const OP_TEAM_READ          = 'teamRead';
-    const OP_TEAM_UPDATE        = 'teamUpdate';
+    const OP_COORDINATOR_SET_STATUS = 'coordinatorSetStatus';
+    const OP_DOCUMENT_CREATE        = 'documentCreate';
+    const OP_DOCUMENT_READ          = 'documentRead';
+    const OP_DOCUMENT_UPDATE        = 'documentUpdate';
+    const OP_DOCUMENT_DELETE        = 'documentDelete';
+    const OP_NEWS_CREATE            = 'newsCreate';
+    const OP_NEWS_READ              = 'newsRead';
+    const OP_NEWS_UPDATE            = 'newsUpdate';
+    const OP_TEAM_CREATE            = 'teamCreate';
+    const OP_TEAM_READ              = 'teamRead';
+    const OP_TEAM_UPDATE            = 'teamUpdate';
 
     /**
      * Current user
@@ -69,6 +70,28 @@ class Rbac extends \CApplicationComponent
     public function checkAccess($operation, array $params = array())
     {
         return \yii::app()->authManager->checkAccess($operation, (string)$this->user->_id, $params);
+    }
+
+    /**
+     * Biz rule for activating/suspending of coordinators
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleCoordinatorSetStatus(array $params)
+    {
+        $user = $params['user'];
+        if ((string)$this->user->_id === (string)$user->_id) {
+            return false;
+        } elseif ($user->coordinator === User::ROLE_COORDINATOR_UKRAINE) {
+            return $this->checkAccess(User::ROLE_COORDINATOR_UKRAINE);
+        } elseif ($user->coordinator === User::ROLE_COORDINATOR_REGION) {
+            return $this->checkAccess(User::ROLE_COORDINATOR_UKRAINE);
+        } elseif ($user->coordinator === User::ROLE_COORDINATOR_STATE) {
+            return $this->checkAccess(User::ROLE_COORDINATOR_REGION);
+        } else {
+            return false;
+        }
     }
 
     /**

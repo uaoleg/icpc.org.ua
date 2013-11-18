@@ -95,7 +95,7 @@
                             'users' => array(
                                 'href'      => '#',
                                 'caption'   => \yii::t('app', 'Users'),
-                                'rbac'      => \common\models\User::ROLE_COORDINATOR_UKRAINE,
+                                'rbac'      => \common\models\User::ROLE_COORDINATOR_STATE,
                                 'itemList'  => array(
                                     'users-coordinators' => array(
                                         'href'      => $this->createUrl('/staff/coordinators'),
