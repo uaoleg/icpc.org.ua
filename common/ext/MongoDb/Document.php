@@ -6,6 +6,11 @@ namespace common\ext\MongoDb;
     'unique' => '\common\ext\MongoDb\UniqueValidator',
 ));
 
+/**
+ * Abstract document
+ *
+ * @property boolean $isNewRecord 
+ */
 abstract class Document extends \EMongoDocument
 {
 
