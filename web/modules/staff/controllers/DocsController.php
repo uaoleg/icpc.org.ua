@@ -85,7 +85,7 @@ class DocsController extends \web\modules\staff\ext\Controller
 
         // Save document
         if ($this->request->isPostRequest) {
-            $isNew = $document->getIsNewRecord();
+            $isNew = $document->isNewRecord;
             $document->setAttributes(array(
                 'title' => $title,
                 'desc'  => $desc,

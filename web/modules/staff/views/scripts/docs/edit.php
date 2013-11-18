@@ -13,7 +13,7 @@
     <h1>
         <?=\yii::t('app', 'Document')?>
     </h1>
-    <?php if (!$document->getIsNewRecord()): ?>
+    <?php if (!$document->isNewRecord): ?>
         <small><a href="<?=$this->createUrl('/docs/view', array('id' => $document->_id))?>" target="_blank">
             <?=$this->createAbsoluteUrl('/docs/view', array('id' => $document->_id))?>
         </a></small>
@@ -22,7 +22,7 @@
 <div class="form-horizontal clearfix">
     <input type="hidden" name="id" value="<?=$document->_id?>" />
     <div class="form-group">
-        <?php if ($document->getIsNewRecord()): ?>
+        <?php if ($document->isNewRecord): ?>
             <div id="container" style="position: relative;">
                 <button class="btn btn-primary" id="pickfiles">
                     <?=\yii::t('app', 'Upload')?>
@@ -55,7 +55,7 @@
         <button class="btn btn-primary save-document btn-lg pull-left" disabled="">
             <?=\yii::t('app', 'Save Document')?>
         </button>
-        <?php if (!$document->getIsNewRecord()): ?>
+        <?php if (!$document->isNewRecord): ?>
             <div class="pull-right">
 
             </div>

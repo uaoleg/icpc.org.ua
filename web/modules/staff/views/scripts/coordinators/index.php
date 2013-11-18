@@ -28,7 +28,7 @@
                 <td><?=$user->email?></td>
                 <td><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
                 <td><strong>
-                    <?php if ($user->school === null): ?>
+                    <?php if ($user->school->isNewRecord): ?>
                         <?=$user->getAttributeLabel($user->coordinator, 'coord')?>
                     <?php else: ?>
                         <?php switch ($user->coordinator) {

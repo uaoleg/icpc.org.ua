@@ -23,7 +23,7 @@ class GeoFilter extends \web\ext\Widget
         $school = \yii::app()->user->getInstance()->school;
 
         // Render view
-        if ($school !== null) {
+        if (!$school->isNewRecord) {
             $this->render('geoFilter', array(
                 'school' => $school,
             ));
