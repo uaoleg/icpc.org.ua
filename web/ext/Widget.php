@@ -10,10 +10,11 @@ class Widget extends \CWidget
      *
      * @param array $properties
      * @param type $captureOutput
+     * @return mixed the widget instance when $captureOutput is false, or the widget output when $captureOutput is true
      */
     public static function create(array $properties = array(), $captureOutput = false)
     {
-        \yii::app()->controller->widget(get_called_class(), $properties, $captureOutput);
+        return \yii::app()->controller->widget(get_called_class(), $properties, $captureOutput);
     }
 
     /**
