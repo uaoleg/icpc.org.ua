@@ -3,6 +3,7 @@
 namespace web\ext;
 
 use \common\models\News;
+use \common\models\Team;
 
 /**
  * Base controller
@@ -164,6 +165,15 @@ class Controller extends \CController
                 case 'news':
                     $publishedOnly = !\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_UPDATE);
                     while (News::model()->scopeByLatest($this->getGeo(), $year, $publishedOnly)->count() === 0) {
+                        $year--;
+                        if ($year <= \yii::app()->params['yearFirst']) {
+                            break;
+                        }
+                    };
+                    break;
+                // Find latest year with teams
+                case 'team':
+                    while (Team::model()->countByAttributes(array('year' => $year)) === 0) {
                         $year--;
                         if ($year <= \yii::app()->params['yearFirst']) {
                             break;
