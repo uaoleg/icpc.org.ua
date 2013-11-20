@@ -2,8 +2,10 @@
 
 namespace web\controllers;
 
-use \common\models\Document,
-    \common\models\UploadedFile;
+use \common\models\Document;
+use common\models\Team;
+use \common\models\UploadedFile;
+use \common\models\Result;
 
 class UploadController extends \web\ext\Controller
 {
@@ -219,6 +221,88 @@ class UploadController extends \web\ext\Controller
             'html'      => $html,
             'errors'    => $document->getErrors(),
         ));
+    }
+
+    /**
+     * Upload results
+     */
+    public function actionResults()
+    {
+        // Process file
+        $uploadedFile = $this->_processFile(true);
+        if (!$uploadedFile) {
+            return;
+        }
+        $phase  = $this->request->getParam('phase');
+        $this->_parseResults($uploadedFile, $phase);
+        $uploadedFile->delete();
+    }
+
+    /**
+     * Method which parses downloaded results html file
+     * @param UploadedFile $file
+     * @param int          $phase
+     */
+    protected function _parseResults(UploadedFile $file, $phase)
+    {
+        $v = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        // Import HTML DOM Parser
+        \yii::import('common.lib.HtmlDomParser.*');
+        require_once('HtmlDomParser.php');
+
+        // Create parser object
+        $parser = new \Sunra\PhpSimple\HtmlDomParser();
+        $html = $parser->str_get_html($file->getBytes());
+
+        $isFirstLine = true;
+        foreach ($html->find('tr') as $tr) {
+            if ($isFirstLine) {
+                // headings of table
+                $isFirstLine = false;
+            } else {
+                // all the standings
+                $teamName = $tr->find('.st_team', 0)->plaintext;
+                $team     = Team::model()->findByAttributes(array(
+                    'name' => $teamName
+                ));
+                if (isset($team)) {
+                    $result = new Result();
+
+                    $result->place  = $tr->find('.st_place', 0)->plaintext;
+                    $result->teamId = (string)$team->_id;
+                    $result->phase  = $phase;
+
+                    $i = 0;
+                    foreach ($tr->find('.st_prob') as $prob) {
+                        $tmp = $output = preg_replace('!\s+!', ' ', trim($prob->plaintext));
+
+                        if ($tmp[0] === '-') {
+                            $result->tasksTries[$v[$i]] = (int)$tmp;
+                            $result->tasksTime[$v[$i]]  = null;
+                        } elseif ($tmp[0] === '+') {
+                            $res = explode(' ', $tmp);
+
+                            $tries = substr($res[0], 1);
+                            $tries = (isset($tries)) ? ((int)$tries + 1) : 1;
+                            $result->tasksTries[$v[$i]] = $tries;
+
+                            $time = preg_replace('/[()]/', '', $res[1]);
+                            $time = explode(':', $time);
+                            $result->tasksTime[$v[$i]]  = $time[0] * SECONDS_IN_HOUR + $time[1] * SECONDS_IN_MINUTE;
+                        } else {
+                            $result->tasksTries[$v[$i]] = null;
+                            $result->tasksTime[$v[$i]]  = null;
+                        }
+                        $i++;
+                    }
+
+                    $result->total   = $tr->find('.st_total', 0)->plaintext;
+                    $result->penalty = $tr->find('.st_pen', 0)->plaintext;
+
+                    $result->save();
+                }
+            }
+        }
     }
 
 }
