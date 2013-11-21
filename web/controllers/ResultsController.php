@@ -31,7 +31,8 @@ class ResultsController extends \web\ext\Controller
         // Render view
         $this->render('latest', array(
             'states'  => Geo\State::model()->getConstantList('NAME_'),
-            'regions' => Geo\Region::model()->getConstantList('NAME_')
+            'regions' => Geo\Region::model()->getConstantList('NAME_'),
+            'school'  => \yii::app()->user->getInstance()->school
         ));
     }
 
