@@ -121,7 +121,7 @@ class TeamController extends \web\ext\Controller
                 }
 
                 // Get team members
-                $users = User::model()->findAll(array(
+                $users = User::model()->findAllByAttributes(array(
                     'schoolId' => (string)$school->_id,
                     'type'     => User::ROLE_STUDENT
                 ));
