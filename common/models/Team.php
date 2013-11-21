@@ -57,7 +57,7 @@ class Team extends \common\ext\MongoDb\Document
 
     /**
      * Team's school
-     * @var Team
+     * @var School
      */
     protected $_school;
 
@@ -88,9 +88,9 @@ class Team extends \common\ext\MongoDb\Document
     public function getCoach()
     {
         if ($this->_coach === null) {
-            $this->_school = User::model()->findByPk(new \MongoId($this->coachId));
+            $this->_coach = User::model()->findByPk(new \MongoId($this->coachId));
         }
-        return $this->_school;
+        return $this->_coach;
     }
 
     /**
