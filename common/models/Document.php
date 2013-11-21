@@ -13,11 +13,8 @@ class Document extends \common\ext\MongoDb\Document
     /**
      * Available doc types
      */
-    const TYPE_GUIDANCE         = 'guidance';
-    const TYPE_REGULATIONS      = 'regulations';
-    const TYPE_RESULTS_PHASE_1  = 'resultsPhase1';
-    const TYPE_RESULTS_PHASE_2  = 'resultsPhase2';
-    const TYPE_RESULTS_PHASE_3  = 'resultsPhase3';
+    const TYPE_GUIDANCE     = 'guidance';
+    const TYPE_REGULATIONS  = 'regulations';
 
     /**
      * Title
