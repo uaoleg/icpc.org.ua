@@ -40,11 +40,11 @@ class UserIdentity extends \CUserIdentity
 
         // If there is no user with given name
         if ($user == null) {
-            $this->_setError(static::ERROR_USERNAME_INVALID);
+            $this->_setError(static::ERROR_UNKNOWN_IDENTITY);
 
         // If password is invalid
         } elseif (!$user->checkPassword($this->password)) {
-            $this->_setError(static::ERROR_PASSWORD_INVALID);
+            $this->_setError(static::ERROR_UNKNOWN_IDENTITY);
 
         // If success
         } else {
@@ -64,7 +64,7 @@ class UserIdentity extends \CUserIdentity
         switch ($this->errorCode) {
             default:
             case static::ERROR_UNKNOWN_IDENTITY:
-                $this->errorMessage = \yii::t('app', 'Unknown identity');
+                $this->errorMessage = \yii::t('app', 'Email or password is invalid');
                 break;
             case static::ERROR_NONE:
                 $this->errorMessage = '';
