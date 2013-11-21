@@ -1,14 +1,15 @@
-function appResults() {
+function appResultsLatest() {
     var self = this;
 
     // Init uploader
     self.initUploader();
 
+    // Upload results
     $('#uploadResults').on('click', function(){
         if ($('[name=phase]:checked').length !== 1) {
             $('[name=phase]').closest('.form-group').addClass('has-error');
         } else {
-            $(this).add('#pickfiles, [name=phase]').prop('disabled', true);
+            $(this).add('#uploadPickfiles, [name=phase]').prop('disabled', true);
             self.uploader.start();
         }
     });
@@ -22,15 +23,15 @@ appResults.prototype.initUploader = function () {
     var self = this;
 
     self.uploader = new plupload.Uploader(pluploadHelpersSettings({
-        browse_button:    'pickfiles',
-        container:        'upload_container',
+        browse_button:    'uploadPickfiles',
+        container:        'uploadContainer',
         url:              app.baseUrl + '/upload/results'
     }));
 
     self.uploader.init();
 
     self.uploader.bind('FilesAdded', function(up, files) {
-        $('#pickfiles').closest('.form-group')
+        $('#uploadPickfiles').closest('.form-group')
             .removeClass('has-error')
             .find('.help-block').text('');
         $.each(files, function(i, file) {
@@ -52,7 +53,7 @@ appResults.prototype.initUploader = function () {
     });
 
     self.uploader.bind('Error', function(up, err) {
-        $('#pickfiles').closest('.form-group')
+        $('#uploadPickfiles').closest('.form-group')
             .addClass('has-error')
             .find('.help-block').text(err.message);
 

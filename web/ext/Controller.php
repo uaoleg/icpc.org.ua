@@ -12,7 +12,6 @@ use \common\models\Team;
  */
 class Controller extends \CController
 {
-    const HELPERS_NAMESPACE = '\web\helpers\\';
 
     /**
      * Nav active items

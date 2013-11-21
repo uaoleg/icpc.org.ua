@@ -11,6 +11,164 @@ class UploadController extends \web\ext\Controller
 {
 
     /**
+     * Returns the access rules for this controller
+     *
+     * @return array
+     */
+    public function accessRules()
+    {
+        // Return rules
+        return array(
+            array(
+                'allow',
+                'actions'   => array('results'),
+                'roles'     => array(\common\components\Rbac::OP_RESULT_CREATE),
+            ),
+            array(
+                'deny',
+                'actions'   => array('results'),
+            ),
+            array(
+                'allow',
+            ),
+        );
+    }
+
+    /**
+     * Upload document
+     */
+    public function actionDocument()
+    {
+        // Process file
+        $uploadedFile = $this->_processFile(true);
+        if (!$uploadedFile) {
+            return;
+        }
+
+        // Get params
+        $title = $this->request->getParam('title');
+        $desc  = $this->request->getParam('desc');
+        $type  = $this->request->getParam('type');
+        if (empty($title)) {
+            $title = $this->request->getParam('name');
+        }
+
+        // Define file type
+        $fileExt = mb_strtolower(mb_substr($uploadedFile->filename, strrpos($uploadedFile->filename, '.') + 1));
+
+        // Create document
+        $document = new Document();
+        $document->setAttributes(array(
+            'title'     => $title,
+            'desc'      => $desc,
+            'type'      => $type,
+            'fileExt'   => $fileExt,
+        ), false);
+        $document->save();
+        $this->_linkUploadedFile($document, $uploadedFile);
+
+        // Render item HTML
+        $html = '';
+
+        // Render json
+        $this->renderJson(array(
+            'html'      => $html,
+            'errors'    => $document->getErrors(),
+        ));
+    }
+
+    /**
+     * Upload results
+     */
+    public function actionResults()
+    {
+        // Process file
+        $uploadedFile = $this->_processFile(true);
+        if (!$uploadedFile) {
+            return;
+        }
+
+        // Get params
+        $phase = (int)$this->request->getParam('phase');
+
+        // Import HTML DOM Parser
+        \yii::import('common.lib.HtmlDomParser.*');
+        require_once('HtmlDomParser.php');
+
+        // Create parser object
+        $parser = new \Sunra\PhpSimple\HtmlDomParser();
+        $html = $parser->str_get_html($uploadedFile->getBytes());
+        $uploadedFile->delete();
+
+        // Define geo
+        $school = \yii::app()->user->getInstance()->school;
+        switch ($phase) {
+            case static::PHASE_1:
+                $geo = $school->state;
+                break;
+            case static::PHASE_2:
+                $geo = $school->region;
+                break;
+            case static::PHASE_3:
+                $geo = $school->country;
+                break;
+        }
+
+        // Parse each row
+        $letters = Result::TASKS_LETTERS;
+        foreach ($html->find('tr') as $row => $tr) {
+
+            // Skip first line
+            if ($row === 0) {
+                continue;
+            }
+
+            // Get team
+            $teamName = $tr->find('.st_team', 0)->plaintext;
+            $team = Team::model()->findByAttributes(array(
+                'name' => $teamName,
+            ));
+            if ($team === null) {
+                continue;
+            }
+
+            // Parse tasks tries and time
+            $tasksTries = $tasksTime = array();
+            foreach ($tr->find('.st_prob') as $i => $prob) {
+                $tmp = $output = preg_replace('!\s+!', ' ', trim($prob->plaintext));
+                if ($tmp[0] === '-') {
+                    $tasksTries[$letters[$i]] = (int)$tmp; // '-1' => -1, '-2' => -2, ...
+                    $tasksTime[$letters[$i]]  = null;
+                } elseif ($tmp[0] === '+') {
+                    $res = explode(' ', $tmp);
+                    $tasksTries[$letters[$i]] = $res[0] + 1; // '+' => 1, '+1' => 2, ...
+                    $time = preg_replace('/[()]/', '', $res[1]);
+                    list($timeHours, $timeMins) = explode(':', $time);
+                    $tasksTime[$letters[$i]]  = $timeHours * SECONDS_IN_HOUR + $timeMins * SECONDS_IN_MINUTE;
+                } else {
+                    $tasksTries[$letters[$i]] = null;
+                    $tasksTime[$letters[$i]]  = null;
+                }
+            }
+
+            // Create result
+            $result = new Result();
+            $result->setAttributes(array(
+                'year'      => date('Y'),
+                'phase'     => $phase,
+                'geo'       => $geo,
+                'place'     => $tr->find('.st_place', 0)->plaintext,
+                'teamId'    => $team->_id,
+                'tasksTries'=> $tasksTries,
+                'tasksTime' => $tasksTime,
+                'total'     => $tr->find('.st_total', 0)->plaintext,
+                'penalty'   => $tr->find('.st_pen', 0)->plaintext,
+            ), false);
+            $result->save();
+        }
+    }
+
+    /**
      * Get upload dir
      *
      * @return string
@@ -177,131 +335,6 @@ class UploadController extends \web\ext\Controller
 
         } else {
             return null;
-        }
-    }
-
-    /**
-     * Upload document
-     */
-    public function actionDocument()
-    {
-        // Process file
-        $uploadedFile = $this->_processFile(true);
-        if (!$uploadedFile) {
-            return;
-        }
-
-        // Get params
-        $title = $this->request->getParam('title');
-        $desc  = $this->request->getParam('desc');
-        $type  = $this->request->getParam('type');
-        if (empty($title)) {
-            $title = $this->request->getParam('name');
-        }
-
-        // Define file type
-        $fileExt = mb_strtolower(mb_substr($uploadedFile->filename, strrpos($uploadedFile->filename, '.') + 1));
-
-        // Create document
-        $document = new Document();
-        $document->setAttributes(array(
-            'title'     => $title,
-            'desc'      => $desc,
-            'type'      => $type,
-            'fileExt'   => $fileExt,
-        ), false);
-        $document->save();
-        $this->_linkUploadedFile($document, $uploadedFile);
-
-        // Render item HTML
-        $html = '';
-
-        // Render json
-        $this->renderJson(array(
-            'html'      => $html,
-            'errors'    => $document->getErrors(),
-        ));
-    }
-
-    /**
-     * Upload results
-     */
-    public function actionResults()
-    {
-        // Process file
-        $uploadedFile = $this->_processFile(true);
-        if (!$uploadedFile) {
-            return;
-        }
-        $phase  = $this->request->getParam('phase');
-        $this->_parseResults($uploadedFile, $phase);
-        $uploadedFile->delete();
-    }
-
-    /**
-     * Method which parses downloaded results html file
-     * @param UploadedFile $file
-     * @param int          $phase
-     */
-    protected function _parseResults(UploadedFile $file, $phase)
-    {
-        $v = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        // Import HTML DOM Parser
-        \yii::import('common.lib.HtmlDomParser.*');
-        require_once('HtmlDomParser.php');
-
-        // Create parser object
-        $parser = new \Sunra\PhpSimple\HtmlDomParser();
-        $html = $parser->str_get_html($file->getBytes());
-
-        $isFirstLine = true;
-        foreach ($html->find('tr') as $tr) {
-            if ($isFirstLine) {
-                // headings of table
-                $isFirstLine = false;
-            } else {
-                // all the standings
-                $teamName = $tr->find('.st_team', 0)->plaintext;
-                $team     = Team::model()->findByAttributes(array(
-                    'name' => $teamName
-                ));
-                if (isset($team)) {
-                    $result = new Result();
-
-                    $result->place  = $tr->find('.st_place', 0)->plaintext;
-                    $result->teamId = (string)$team->_id;
-                    $result->phase  = $phase;
-
-                    $i = 0;
-                    foreach ($tr->find('.st_prob') as $prob) {
-                        $tmp = $output = preg_replace('!\s+!', ' ', trim($prob->plaintext));
-
-                        if ($tmp[0] === '-') {
-                            $result->tasksTries[$v[$i]] = (int)$tmp;
-                            $result->tasksTime[$v[$i]]  = null;
-                        } elseif ($tmp[0] === '+') {
-                            $res = explode(' ', $tmp);
-
-                            $tries = substr($res[0], 1);
-                            $tries = (isset($tries)) ? ((int)$tries + 1) : 1;
-                            $result->tasksTries[$v[$i]] = $tries;
-
-                            $time = preg_replace('/[()]/', '', $res[1]);
-                            $time = explode(':', $time);
-                            $result->tasksTime[$v[$i]]  = $time[0] * SECONDS_IN_HOUR + $time[1] * SECONDS_IN_MINUTE;
-                        } else {
-                            $result->tasksTries[$v[$i]] = null;
-                            $result->tasksTime[$v[$i]]  = null;
-                        }
-                        $i++;
-                    }
-
-                    $result->total   = $tr->find('.st_total', 0)->plaintext;
-                    $result->penalty = $tr->find('.st_pen', 0)->plaintext;
-
-                    $result->save();
-                }
-            }
         }
     }
 

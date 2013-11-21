@@ -1,23 +1,16 @@
-<?php
-    \yii::app()->getClientScript()->registerCoreScript('plupload');
-?>
+<?php \yii::app()->getClientScript()->registerCoreScript('plupload'); ?>
 
 <script type="text/javascript">
     $(document).ready(function() {
-        new appDocsItem();
-        new appResults();
+        new appResultsLatest();
     });
 </script>
 
 
-<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_CREATE)): ?>
-    <div class="row">
-        <div class="col-lg-12" id="upload_container2">
-            <button class="btn btn-lg btn-primary" id="pickfiles-modal" data-toggle="modal" data-target="#uploadModal">
-                <?=\yii::t('app', 'Upload results')?>
-            </button>
-        </div>
-    </div>
+<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_RESULT_CREATE)): ?>
+    <button class="btn btn-lg btn-primary" id="pickfiles-modal" data-toggle="modal" data-target="#uploadModal">
+        <?=\yii::t('app', 'Upload results')?>
+    </button>
 <?php endif; ?>
 
 <div class="page-header">
@@ -57,22 +50,21 @@
     </li>
 </ul>
 
-<!-- Upload modal -->
-<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel">
+<div class="modal" id="uploadModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel"><?=\yii::t('app', 'Upload results')?></h4>
+                <h4 class="modal-title"><?=\yii::t('app', 'Upload results')?></h4>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12" id="upload_container">
+                <div class="col-lg-12" id="uploadContainer">
                     <div class="form-group">
                         <p class="form-control-static"><b><?=date('Y')?></b>&nbsp;<?=\yii::t('app', 'year')?></p>
                     </div>
 
                     <div class="form-group">
-                        <button class="btn btn-lg2 btn-info" id="pickfiles">
+                        <button class="btn btn-lg2 btn-info" id="uploadPickfiles">
                             <?=\yii::t('app', 'Choose file')?>
                         </button>
                         <span class="document-origin-filename"></span>
@@ -82,17 +74,17 @@
                     <div class="form-group">
                         <div class="radio">
                             <label class="control-label">
-                                <input type="radio" name="phase" id="phase1" value="1"> <?=\yii::t('app', '1st phase')?>
+                                <input type="radio" name="phase" value="1"> <?=\yii::t('app', '1st phase')?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
-                                <input type="radio" name="phase" id="phase2" value="2"> <?=\yii::t('app', '2nd phase')?>
+                                <input type="radio" name="phase" value="2"> <?=\yii::t('app', '2nd phase')?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
-                                <input type="radio" name="phase" id="phase3" value="3"> <?=\yii::t('app', '3rd phase')?>
+                                <input type="radio" name="phase" value="3"> <?=\yii::t('app', '3rd phase')?>
                             </label>
                         </div>
                     </div>
@@ -102,6 +94,6 @@
                     </button>
                 </div>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+    </div>
+</div>

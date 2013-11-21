@@ -2,15 +2,28 @@
 
 namespace common\models;
 
-use CModelEvent;
 use \common\models\Team;
 
 /**
- * Class Result
+ * Team Result
+ *
  * @property-read Team $team
  */
 class Result extends \common\ext\MongoDb\Document
 {
+
+    /**
+     * List of available phases
+     */
+    const PHASE_1 = 1;
+    const PHASE_2 = 2;
+    const PHASE_3 = 3;
+
+    /**
+     * Letters for tasks
+     */
+    const TASKS_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
     /**
      * Year of the result
      * @var integer
@@ -18,13 +31,13 @@ class Result extends \common\ext\MongoDb\Document
     public $year;
 
     /**
-     * Phase number (1|2|3)
+     * Phase number
      * @var integer
      */
     public $phase;
 
     /**
-     *
+     * Name of the state, region or country (phase-related)
      * @var string
      */
     public $geo;
@@ -40,12 +53,6 @@ class Result extends \common\ext\MongoDb\Document
      * @var string
      */
     public $teamId;
-
-    /**
-     * Team object
-     * @var Team
-     */
-    protected $_team;
 
     /**
      * Array of tasks => number of tries
@@ -72,12 +79,18 @@ class Result extends \common\ext\MongoDb\Document
     public $penalty;
 
     /**
+     * Team object
+     * @var Team
+     */
+    protected $_team;
+
+    /**
      * Returns the object of the team
      * @return Team
      */
     public function getTeam()
     {
-        if (!isset($this->_team)) {
+        if ($this->_team === null) {
             $this->_team = Team::model()->findByPk(new \MongoId($this->teamId));
         }
         return $this->_team;
@@ -114,7 +127,7 @@ class Result extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('year, phase, geo, place, teamId, tasksTries, tasksTime, total, penalty', 'required'),
+            array('year, phase, geo, place, teamId, tasksTries, tasksTime', 'required'),
         ));
     }
 
@@ -130,6 +143,7 @@ class Result extends \common\ext\MongoDb\Document
 
     /**
      * List of collection indexes
+     *
      * @return array
      */
     public function indexes()
@@ -148,6 +162,7 @@ class Result extends \common\ext\MongoDb\Document
 
     /**
      * Before validate action
+     *
      * @return bool
      */
     protected function beforeValidate()
@@ -156,25 +171,22 @@ class Result extends \common\ext\MongoDb\Document
             return false;
         }
 
-        $this->setAttributes(array(
-            'year'    => (int)date('Y'),
-            'place'   => (int)$this->place,
-            'phase'   => (int)$this->phase,
-            'total'   => (int)$this->total,
-            'penalty' => (int)$this->penalty,
-        ), false);
-        $school = \yii::app()->user->getInstance()->school;
-        switch ($this->phase) {
-            case 1:
-                $this->geo = $school->state;
-                break;
-            case 2:
-                $this->geo = $school->region;
-                break;
-            case 3:
-                $this->geo = $school->country;
-                break;
+        // Set year
+        if (empty($this->year)) {
+            $this->year = (int)date('Y');
         }
+
+        // Convert to string
+        $this->teamId = (string)$this->teamId;
+
+        // Convert to integer
+        $this->setAttributes(array(
+            'year'      => (int)$this->year,
+            'place'     => (int)$this->place,
+            'phase'     => (int)$this->phase,
+            'total'     => (int)$this->total,
+            'penalty'   => (int)$this->penalty,
+        ), false);
 
         return true;
     }

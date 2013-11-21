@@ -2,11 +2,9 @@
 
 namespace web\controllers;
 
-use \common\models\Document;
-use common\models\Geo\Region;
-use \common\models\Geo\State;
-use common\models\Result;
-use common\models\School;
+use \common\models\Geo;
+use \common\models\Result;
+use \common\models\School;
 
 class ResultsController extends \web\ext\Controller
 {
@@ -30,27 +28,10 @@ class ResultsController extends \web\ext\Controller
      */
     public function actionLatest()
     {
-        // Get list of results
-        $criteria1 = new \EMongoCriteria();
-        $criteria1
-            ->addCond('type', '==', Document::TYPE_RESULTS_PHASE_1)
-            ->sort('dateCreated', \EMongoCriteria::SORT_DESC);
-        $phase1 = Document::model()->findAll($criteria1);
-        $criteria2 = new \EMongoCriteria();
-        $criteria2
-            ->addCond('type', '==', Document::TYPE_RESULTS_PHASE_2)
-            ->sort('dateCreated', \EMongoCriteria::SORT_DESC);
-        $phase2 = Document::model()->findAll($criteria2);
-        $criteria3 = new \EMongoCriteria();
-        $criteria3
-            ->addCond('type', '==', Document::TYPE_RESULTS_PHASE_3)
-            ->sort('dateCreated', \EMongoCriteria::SORT_DESC);
-        $phase3 = Document::model()->findAll($criteria3);
-
         // Render view
         $this->render('latest', array(
-            'states'  => State::model()->getConstantList('NAME_'),
-            'regions' => Region::model()->getConstantList('NAME_')
+            'states'  => Geo\State::model()->getConstantList('NAME_'),
+            'regions' => Geo\Region::model()->getConstantList('NAME_')
         ));
     }
 
@@ -59,22 +40,23 @@ class ResultsController extends \web\ext\Controller
      */
     public function actionView()
     {
+        // Get params
         $year  = (int)$this->request->getParam('year');
         $phase = (int)$this->request->getParam('phase');
         if (($year === 0) || $phase === 0) {
             $this->httpException(404);
         }
         switch ($phase) {
-            case 1:
+            case Result::PHASE_1:
                 $geo    = $this->request->getParam('state');
-                $header = State::model()->getAttributeLabel($geo, 'name');
+                $header = Geo\State::model()->getAttributeLabel($geo, 'name');
                 break;
-            case 2:
-                $geo = $this->request->getParam('region');
-                $header = Region::model()->getAttributeLabel($geo, 'name');
+            case Result::PHASE_2:
+                $geo    = $this->request->getParam('region');
+                $header = Geo\Region::model()->getAttributeLabel($geo, 'name');
                 break;
-            case 3:
-                $geo = $this->request->getParam('country');
+            case Result::PHASE_3:
+                $geo    = $this->request->getParam('country');
                 $header = School::getCountryLabel();
                 break;
             default:
@@ -82,24 +64,25 @@ class ResultsController extends \web\ext\Controller
                 break;
         }
 
+        // Get the list of results
         $criteria = new \EMongoCriteria();
         $criteria
             ->addCond('year',  '==', $year)
             ->addCond('phase', '==', $phase)
             ->addCond('geo',   '==', $geo)
             ->sort('place', \EMongoCriteria::SORT_ASC);
-
-
         $results    = Result::model()->findAll($criteria);
         $result     = Result::model()->find($criteria);
-        $tasksCount = (isset($result)) ? count($result->tasksTries) : 0;
+        $tasksCount = ($result !== null) ? count($result->tasksTries) : 0;
 
+        // Render view
         $this->render('view', array(
-            'header'     => $header,
-            'year'       => $year,
-            'phase'      => $phase,
-            'results'    => $results,
-            'tasksCount' => $tasksCount
+            'header'    => $header,
+            'year'      => $year,
+            'phase'     => $phase,
+            'results'   => $results,
+            'tasksCount'=> $tasksCount,
+            'letters'   => Result::TASKS_LETTERS,
         ));
     }
 
