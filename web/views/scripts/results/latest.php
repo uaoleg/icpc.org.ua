@@ -1,64 +1,99 @@
+<?php \yii::app()->getClientScript()->registerCoreScript('plupload'); ?>
+
 <script type="text/javascript">
     $(document).ready(function() {
-        new appDocsItem();
+        new appResultsLatest();
     });
 </script>
+
+
+<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_RESULT_CREATE)): ?>
+    <button class="btn btn-lg btn-primary" id="pickfiles-modal" data-toggle="modal" data-target="#uploadModal">
+        <?=\yii::t('app', 'Upload results')?>
+    </button>
+<?php endif; ?>
 
 <div class="page-header">
     <h1><?=\yii::t('app', '1st Phase Results')?></h1>
 </div>
-
-<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_CREATE)): ?>
-    <a href="<?=$this->createUrl('/staff/docs/create', array('type' => \common\models\Document::TYPE_RESULTS_PHASE_1))?>" class="btn btn-success btn-lg">
-        <?=\yii::t('app', 'Upload Results')?>
-    </a>
-    <hr />
-<?php endif; ?>
-
-<?php if (count($phase1) > 0): ?>
-    <?php foreach ($phase1 as $result): ?>
-        <?php \web\widgets\document\Row::create(array('document' => $result)); ?>
+<ul>
+    <?php foreach($states as $state): ?>
+        <li>
+            <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 1, 'state' => $state))?>">
+                <?=\common\models\Geo\State::model()->getAttributeLabel($state, 'name')?>
+            </a>
+        </li>
     <?php endforeach; ?>
-<?php else: ?>
-    <div class="alert alert-info">
-        <?=\yii::t('app', 'No results.')?>
-    </div>
-<?php endif; ?>
+</ul>
 
 <div class="page-header">
     <h1><?=\yii::t('app', '2nd Phase Results')?></h1>
 </div>
-<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_CREATE)): ?>
-    <a href="<?=$this->createUrl('/staff/docs/create', array('type' => \common\models\Document::TYPE_RESULTS_PHASE_2))?>" class="btn btn-success btn-lg">
-        <?=\yii::t('app', 'Upload Results')?>
-    </a>
-    <hr />
-<?php endif; ?>
-<?php if (count($phase2) > 0): ?>
-    <?php foreach ($phase2 as $result): ?>
-        <?php \web\widgets\document\Row::create(array('document' => $result)); ?>
+<ul>
+    <?php foreach($regions as $region): ?>
+        <li>
+            <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 2, 'region' => $region))?>">
+                <?=\common\models\Geo\Region::model()->getAttributeLabel($region, 'name')?>
+            </a>
+        </li>
     <?php endforeach; ?>
-<?php else: ?>
-    <div class="alert alert-info">
-        <?=\yii::t('app', 'No results.')?>
-    </div>
-<?php endif; ?>
+</ul>
 
 <div class="page-header">
-    <h1><?=\yii::t('app', '3d Phase Results')?></h1>
+    <h1><?=\yii::t('app', '3rd Phase Results')?></h1>
 </div>
-<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_CREATE)): ?>
-    <a href="<?=$this->createUrl('/staff/docs/create', array('type' => \common\models\Document::TYPE_RESULTS_PHASE_3))?>" class="btn btn-success btn-lg">
-        <?=\yii::t('app', 'Upload Results')?>
-    </a>
-    <hr />
-<?php endif; ?>
-<?php if (count($phase3) > 0): ?>
-    <?php foreach ($phase3 as $result): ?>
-        <?php \web\widgets\document\Row::create(array('document' => $result)); ?>
-    <?php endforeach; ?>
-<?php else: ?>
-    <div class="alert alert-info">
-        <?=\yii::t('app', 'No results.')?>
+<ul>
+    <li>
+        <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 3, 'country' => \common\models\School::getCountry()))?>">
+            <?=\common\models\School::getCountryLabel()?>
+        </a>
+    </li>
+</ul>
+
+<div class="modal" id="uploadModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?=\yii::t('app', 'Upload results')?></h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12" id="uploadContainer">
+                    <div class="form-group">
+                        <p class="form-control-static"><b><?=date('Y')?></b>&nbsp;<?=\yii::t('app', 'year')?></p>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-lg2 btn-info" id="uploadPickfiles">
+                            <?=\yii::t('app', 'Choose file')?>
+                        </button>
+                        <span class="document-origin-filename"></span>
+                        <div class="help-block"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="radio">
+                            <label class="control-label">
+                                <input type="radio" name="phase" value="1"> <?=\yii::t('app', '1st phase')?>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label class="control-label">
+                                <input type="radio" name="phase" value="2"> <?=\yii::t('app', '2nd phase')?>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label class="control-label">
+                                <input type="radio" name="phase" value="3"> <?=\yii::t('app', '3rd phase')?>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="uploadResults" disabled>
+                        <?=\yii::t('app', 'Upload')?>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-<?php endif; ?>
+</div>

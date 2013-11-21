@@ -41,6 +41,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->_operationsCoordinator();
         $this->_operationsDocument();
         $this->_operationsNews();
+        $this->_operationsResult();
         $this->_operationsTeam();
 
         /**
@@ -87,6 +88,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_DOCUMENT_DELETE,
             Rbac::OP_NEWS_CREATE,
             Rbac::OP_NEWS_UPDATE,
+            Rbac::OP_RESULT_CREATE,
         ));
 
         /**
@@ -180,6 +182,14 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->auth->createOperation(Rbac::OP_NEWS_CREATE, 'Create news');
         $this->auth->createOperation(Rbac::OP_NEWS_READ, 'Read news', $bizRuleRead);
         $this->auth->createOperation(Rbac::OP_NEWS_UPDATE, 'Edit news', $bizRuleUpdate);
+    }
+
+    /**
+     * Result operations
+     */
+    protected function _operationsResult()
+    {
+        $this->auth->createOperation(Rbac::OP_RESULT_CREATE, 'Create result');
     }
 
     /**
