@@ -1,4 +1,7 @@
-<div class="clearfix document" style="margin-bottom: 20px;" data-id="<?=$this->document->_id?>">
+<div class="clearfix document"
+     style="margin-bottom: 20px;"
+     data-id="<?=$this->document->_id?>"
+     data-after-delete-redirect="<?=$this->afterDeleteRedirect?>">
     <div class="pull-left">
         <?php \web\widgets\document\Icon::create(array('document' => $this->document)); ?>
     </div>
