@@ -1,4 +1,7 @@
-<?php \yii::app()->getClientScript()->registerCoreScript('plupload'); ?>
+<?php
+    use \common\models\User;
+    \yii::app()->getClientScript()->registerCoreScript('plupload');
+?>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -50,6 +53,7 @@
     </li>
 </ul>
 
+<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_RESULT_CREATE)): ?>
 <div class="modal" id="uploadModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -74,17 +78,26 @@
                     <div class="form-group">
                         <div class="radio">
                             <label class="control-label">
-                                <input type="radio" name="phase" value="1"> <?=\yii::t('app', '1st phase')?>
+                                <input type="radio" name="phase" value="1"
+                                       <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE) ? '' : 'disabled'?>
+                                />
+                                <?=\yii::t('app', '1st phase')?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
-                                <input type="radio" name="phase" value="2"> <?=\yii::t('app', '2nd phase')?>
+                                <input type="radio" name="phase" value="2"
+                                       <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION) ? '' : 'disabled'?>
+                                />
+                                <?=\yii::t('app', '2nd phase')?>
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
-                                <input type="radio" name="phase" value="3"> <?=\yii::t('app', '3rd phase')?>
+                                <input type="radio" name="phase" value="3"
+                                       <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE) ? '' : 'disabled'?>
+                                />
+                                <?=\yii::t('app', '3rd phase')?>
                             </label>
                         </div>
                     </div>
@@ -97,3 +110,4 @@
         </div>
     </div>
 </div>
+<?php endif; ?>

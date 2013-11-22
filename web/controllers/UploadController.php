@@ -6,6 +6,7 @@ use \common\models\Document;
 use common\models\Team;
 use \common\models\UploadedFile;
 use \common\models\Result;
+use \common\models\User;
 
 class UploadController extends \web\ext\Controller
 {
@@ -100,16 +101,25 @@ class UploadController extends \web\ext\Controller
         $html = $parser->str_get_html($uploadedFile->getBytes());
         $uploadedFile->delete();
 
-        // Define geo
+        // Check access and define geo
         $school = \yii::app()->user->getInstance()->school;
         switch ($phase) {
             case static::PHASE_1:
+                if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE)) {
+                    $this->httpException(403);
+                }
                 $geo = $school->state;
                 break;
             case static::PHASE_2:
+                if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION)) {
+                    $this->httpException(403);
+                }
                 $geo = $school->region;
                 break;
             case static::PHASE_3:
+                if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE)) {
+                    $this->httpException(403);
+                }
                 $geo = $school->country;
                 break;
         }
