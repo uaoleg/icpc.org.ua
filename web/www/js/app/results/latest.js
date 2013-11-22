@@ -18,7 +18,7 @@ function appResultsLatest() {
 /**
  * Init uploader
  */
-appResults.prototype.initUploader = function () {
+appResultsLatest.prototype.initUploader = function () {
 
     var self = this;
 
@@ -65,6 +65,6 @@ appResults.prototype.initUploader = function () {
     });
 }
 
-appResults.prototype.onchange = function() {
+appResultsLatest.prototype.onchange = function() {
     $('#uploadResults').prop('disabled', false);
 }
