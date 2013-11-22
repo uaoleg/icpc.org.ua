@@ -19,6 +19,7 @@
 <div class="page-header">
     <h1><?=\yii::t('app', '1st Phase Results')?></h1>
 </div>
+<?php if (count($states) > 0): ?>
 <ul>
     <?php foreach($states as $state): ?>
         <li>
@@ -28,10 +29,16 @@
         </li>
     <?php endforeach; ?>
 </ul>
+<?php else: ?>
+<div class="alert alert-info">
+    <?=\yii::t('app', 'There are no results at the moment')?>
+</div>
+<?php endif; ?>
 
 <div class="page-header">
     <h1><?=\yii::t('app', '2nd Phase Results')?></h1>
 </div>
+<?php if (count($regions) > 0): ?>
 <ul>
     <?php foreach($regions as $region): ?>
         <li>
@@ -41,10 +48,16 @@
         </li>
     <?php endforeach; ?>
 </ul>
+<?php else: ?>
+<div class="alert alert-info">
+    <?=\yii::t('app', 'There are no results at the moment')?>
+</div>
+<?php endif; ?>
 
 <div class="page-header">
     <h1><?=\yii::t('app', '3rd Phase Results')?></h1>
 </div>
+<?php if ($hasUkraineResults): ?>
 <ul>
     <li>
         <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 3, 'country' => \common\models\School::getCountry()))?>">
@@ -52,6 +65,11 @@
         </a>
     </li>
 </ul>
+<?php else: ?>
+<div class="alert alert-info">
+    <?=\yii::t('app', 'There are no results at the moment')?>
+</div>
+<?php endif; ?>
 
 <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_RESULT_CREATE)): ?>
 <div class="modal" id="uploadModal">
