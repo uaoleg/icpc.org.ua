@@ -28,11 +28,33 @@ class ResultsController extends \web\ext\Controller
      */
     public function actionLatest()
     {
+        // Select states for which there are results
+        $states = Result::model()->getCollection()->distinct('geo',  array(
+            'year'  => (int)date('Y'),
+            'geo'   => array('$in' => Geo\State::model()->getConstantList('NAME_'))
+        ));
+
+        // Select regions for which there are results
+        $regions = Result::model()->getCollection()->distinct('geo', array(
+            'year' => (int)date('Y'),
+            'geo'  => array('$in' => Geo\Region::model()->getConstantList('NAME_'))
+        ));
+
+        // Check if there are results for 3rd phase
+        $hasUkraineResults = false;
+        if (count(Result::model()->findAllByAttributes(array(
+                'year' => (int)date('Y'),
+                'geo'  => \yii::app()->user->getInstance()->school->getCountry()
+            ))) > 0) {
+            $hasUkraineResults = true;
+        }
+
         // Render view
         $this->render('latest', array(
-            'states'  => Geo\State::model()->getConstantList('NAME_'),
-            'regions' => Geo\Region::model()->getConstantList('NAME_'),
-            'school'  => \yii::app()->user->getInstance()->school
+            'states'            => $states,
+            'regions'           => $regions,
+            'hasUkraineResults' => $hasUkraineResults,
+            'school'            => \yii::app()->user->getInstance()->school
         ));
     }
 
