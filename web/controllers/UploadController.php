@@ -129,8 +129,7 @@ class UploadController extends \web\ext\Controller
         $criteria
             ->addCond('year', '==', (int)date('Y'))
             ->addCond('geo', '==', $geo);
-        $resultsToDelete = Result::model()->find($criteria);
-        $resultsToDelete->delete();
+        Result::model()->deleteAll($criteria);
 
         // Parse each row
         $letters = Result::TASKS_LETTERS;
