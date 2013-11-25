@@ -135,9 +135,11 @@ class UploadController extends \web\ext\Controller
 
             // Get team
             $teamName = $tr->find('.st_team', 0)->plaintext;
-            $team = Team::model()->findByAttributes(array(
-                'name' => $teamName,
-            ));
+
+            $criteria = new \EMongoCriteria();
+            $criteria
+                ->addCond('name', '==', new \MongoRegex('/^' . $teamName . '$/i'));
+            $team = Team::model()->find($criteria);
             if ($team === null) {
                 continue;
             }
