@@ -55,6 +55,12 @@ class Result extends \common\ext\MongoDb\Document
     public $teamId;
 
     /**
+     * Name of a team
+     * @var string
+     */
+    public $teamName;
+
+    /**
      * Array of tasks => number of tries
      * @var array
      */
@@ -112,6 +118,7 @@ class Result extends \common\ext\MongoDb\Document
             'geo'        => 'Geographical position',
             'place'      => 'Place of the team',
             'teamId'     => 'ID of the team',
+            'teamName'   => 'Name of the team',
             'tasksTries' => 'Array of tasks => tries made',
             'tasksTime'  => 'Array of tasks => time spent',
             'total'      => 'Total points',
@@ -127,7 +134,8 @@ class Result extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('year, phase, geo, place, teamId, tasksTries, tasksTime', 'required'),
+            array('year, phase, geo, place, tasksTries, tasksTime', 'required'),
+            array('place', 'numerical', 'min' => 1)
         ));
     }
 
@@ -151,9 +159,9 @@ class Result extends \common\ext\MongoDb\Document
         return array_merge(parent::indexes(), array(
             'year_phase_teamId' => array(
                 'key' => array(
-                    'year'   => \EMongoCriteria::SORT_ASC,
-                    'phase'  => \EMongoCriteria::SORT_ASC,
-                    'teamId' => \EMongoCriteria::SORT_ASC,
+                    'year'     => \EMongoCriteria::SORT_ASC,
+                    'phase'    => \EMongoCriteria::SORT_ASC,
+                    'teamName' => \EMongoCriteria::SORT_ASC,
                 ),
                 'unique' => true,
             ),
@@ -177,7 +185,7 @@ class Result extends \common\ext\MongoDb\Document
         }
 
         // Convert to string
-        $this->teamId = (string)$this->teamId;
+        $this->teamId = (isset($this->teamId)) ? (string)$this->teamId : null;
 
         // Convert to integer
         $this->setAttributes(array(

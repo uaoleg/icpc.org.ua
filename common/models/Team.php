@@ -206,5 +206,22 @@ class Team extends \common\ext\MongoDb\Document
         return true;
     }
 
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
+        // If team name is changed then teamName attribute in Results needs to be changed
+        if ($this->attributeHasChanged('name')) {
+            $modifier = new \EMongoModifier();
+            $modifier->addModifier('teamName', 'set', $this->name);
+            $criteria = new \EMongoCriteria();
+            $criteria->addCond('teamId', '==', (string)$this->_id);
+            Result::model()->updateAll($modifier, $criteria);
+        }
+
+        parent::afterSave();
+    }
+
 
 }

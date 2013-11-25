@@ -20,9 +20,13 @@
                 <tr>
                     <td><?=\CHtml::encode($result->place)?></td>
                     <td>
+                        <?php if (isset($result->team)): ?>
                         <a href="<?=$this->createUrl('/team/view', array('id' => $result->team->_id))?>">
                             <?=\CHtml::encode($result->team->name)?>
                         </a>
+                        <?php else: ?>
+                            <?=\CHtml::encode($result->teamName)?>
+                        <?php endif; ?>
                     </td>
                     <?php foreach ($result->tasksTries as $try): ?>
                         <td><?=\CHtml::encode($try)?></td>
