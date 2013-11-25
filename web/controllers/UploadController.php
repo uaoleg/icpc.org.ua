@@ -146,9 +146,6 @@ class UploadController extends \web\ext\Controller
             $team = Team::model()->findByAttributes(array(
                 'name' => new \MongoRegex('/^' . preg_quote($teamName) . '$/i'),
             ));
-            if ($team === null) {
-                continue;
-            }
 
             // Parse tasks tries and time
             $tasksTries = $tasksTime = array();
@@ -176,7 +173,8 @@ class UploadController extends \web\ext\Controller
                 'phase'     => $phase,
                 'geo'       => $geo,
                 'place'     => $tr->find('.st_place', 0)->plaintext,
-                'teamId'    => $team->_id,
+                'teamId'    => (isset($team)) ? $team->_id : null,
+                'teamName'  => $teamName,
                 'tasksTries'=> $tasksTries,
                 'tasksTime' => $tasksTime,
                 'total'     => $tr->find('.st_total', 0)->plaintext,
