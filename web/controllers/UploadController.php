@@ -104,19 +104,19 @@ class UploadController extends \web\ext\Controller
         // Check access and define geo
         $school = \yii::app()->user->getInstance()->school;
         switch ($phase) {
-            case static::PHASE_1:
+            case Result::PHASE_1:
                 if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE)) {
                     $this->httpException(403);
                 }
                 $geo = $school->state;
                 break;
-            case static::PHASE_2:
+            case Result::PHASE_2:
                 if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION)) {
                     $this->httpException(403);
                 }
                 $geo = $school->region;
                 break;
-            case static::PHASE_3:
+            case Result::PHASE_3:
                 if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE)) {
                     $this->httpException(403);
                 }
