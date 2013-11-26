@@ -3,6 +3,7 @@
 namespace web\modules\staff\controllers;
 
 use \common\components\Rbac;
+use common\models\School;
 use \common\models\Team;
 use \common\models\User;
 
@@ -61,7 +62,7 @@ class TeamController extends \web\ext\Controller
             $memberIds      = $this->request->getPost('memberIds');
 
             // Update school
-            $school->scenario = 'assignSchoolToTeam';
+            $school->scenario = School::SC_ASSIGN_TO_TEAM;
             $school->setAttributes(array(
                 'shortNameUk'  => $shortNameUk,
                 'fullNameEn'   => $fullNameEn,

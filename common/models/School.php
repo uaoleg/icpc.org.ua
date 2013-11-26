@@ -12,6 +12,8 @@ namespace common\models;
  */
 class School extends \common\ext\MongoDb\Document
 {
+    // Scenarios
+    const SC_ASSIGN_TO_TEAM = 'assignSchoolToTeam';
 
     /**
      * Full university name in ukranian
@@ -120,7 +122,7 @@ class School extends \common\ext\MongoDb\Document
         return array_merge(parent::rules(), array(
             array('fullNameUk, state, region', 'required'),
             array('fullNameUk, fullNameEn, shortNameUk, shortNameEn', 'unique'),
-            array('shortNameUk, fullNameEn, shortNameEn', 'required', 'on' => 'assignSchoolToTeam')
+            array('shortNameUk, fullNameEn, shortNameEn', 'required', 'on' => static::SC_ASSIGN_TO_TEAM)
         ));
     }
 
