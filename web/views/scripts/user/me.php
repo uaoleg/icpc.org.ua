@@ -107,11 +107,11 @@
                                 <span class="coach-state label col-md-4 col-md-offset-4
                                     <?=($type === \common\models\User::ROLE_COACH) ? '' : ' invisible '?>
                                     <?=($isApprovedCoach) ? ' label-success ' : ' label-warning '?>
-                                    "><?=\yii::t('app', $coachStatusLabel)?></span>
+                                    "><?=($isApprovedCoach ? \yii::t('app', 'Approved') : \yii::t('app', 'Unpproved') );?></span>
                                 <span class="coordinator-state label col-md-4
                                     <?=(!empty($coordinator))  ? '' : ' invisible '?>
                                     <?=($isApprovedCoordinator) ? ' label-success ' : ' label-warning '?>
-                                    "><?=\yii::t('app', $coordinatorStatusLabel)?></span>
+                                    "><?=($isApprovedCoordinator ? \yii::t('app', 'Approved') : \yii::t('app', 'Unpproved') );?></span>
                             </div>
                         </div>
                     </div>

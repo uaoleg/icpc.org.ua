@@ -116,9 +116,6 @@ class UserController extends \web\ext\Controller
                     break;
             }
 
-//            $isApprovedCoach        = $user->isApprovedCoach;
-//            $isApprovedCoordinator  = \yii::app()->user->checkAccess(Rbac::OP_COORDINATOR_SET_STATUS,array('user' => $user ));
-//            var_dump( $user->getIsApprovedCoach(), $user->getIsApprovedCoordinator() ); die();
             // Render view
             $this->render('me', array(
                 'firstNameUk'               => $user->firstNameUk,
@@ -133,10 +130,8 @@ class UserController extends \web\ext\Controller
                 'coordinator'               => $user->coordinator,
                 'coordinatorLabel'          => $coordinatorLabel,
                 'schools'                   => $schools,
-                'isApprovedCoach'           => $user->getIsApprovedCoach(),
-                'coachStatusLabel'          => ( $user->getIsApprovedCoach() ? 'Approved' : 'Unapproved'),
-                'isApprovedCoordinator'     => $user->getIsApprovedCoordinator(),
-                'coordinatorStatusLabel'    => ( $user->getIsApprovedCoordinator() ? 'Approved' : 'Unapproved'),
+                'isApprovedCoach'           => $user->isApprovedCoach,
+                'isApprovedCoordinator'     => $user->isApprovedCoordinator,
             ));
         }
     }
