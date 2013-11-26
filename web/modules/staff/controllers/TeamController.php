@@ -88,9 +88,12 @@ class TeamController extends \web\ext\Controller
             ), false);
             $team->save();
 
+            // Get errors
+            $errors = array_merge($team->getErrors(), $school->getErrors());
+
             // Render json
             $this->renderJson(array(
-                'errors' => $team->hasErrors() ? $team->getErrors() : false
+                'errors' => (!empty($errors)) ? $errors : false
             ));
 
 

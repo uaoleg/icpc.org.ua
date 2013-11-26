@@ -120,7 +120,7 @@ class School extends \common\ext\MongoDb\Document
         return array_merge(parent::rules(), array(
             array('fullNameUk, state, region', 'required'),
             array('fullNameUk, fullNameEn, shortNameUk, shortNameEn', 'unique'),
-            array('shortNameUk, fullNameUk, fullNameEn', 'required', 'on' => 'assignSchoolToTeam')
+            array('shortNameUk, fullNameEn, shortNameEn', 'required', 'on' => 'assignSchoolToTeam')
         ));
     }
 

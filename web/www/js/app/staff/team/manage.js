@@ -18,9 +18,9 @@ function appStaffTeamManage(options)
             url: app.baseUrl + '/staff/team/manage',
             data: {
                 teamId:         options.teamId,
-                shortNameUk:    $('[name=schoolShortNameUk]').val(),
-                fullNameEn:     $('[name=schoolFullNameEn]').val(),
-                shortNameEn:    $('[name=schoolShortNameEn]').val(),
+                shortNameUk:    $('[name=shortNameUk]').val(),
+                fullNameEn:     $('[name=fullNameEn]').val(),
+                shortNameEn:    $('[name=shortNameEn]').val(),
                 teamNamePrefix: $('[name=teamNamePrefix]').val(),
                 memberIds:      $('[name=memberIds]').val()
             },
@@ -43,8 +43,8 @@ function appStaffTeamManage(options)
     /**
      * onChange team name handler to show what will the name with prefix be
      */
-    $('[name=schoolShortNameEn], [name=name]').on('keyup', function() {
-        $('#teamNamePrefix').val($('[name=schoolShortNameEn]').val() + $('[name=name]').val());
+    $('[name=shortNameEn], [name=name]').on('keyup', function() {
+        $('#teamNamePrefix').val($('[name=shortNameEn]').val() + $('[name=name]').val());
     }).trigger('keyup');
 
 

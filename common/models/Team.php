@@ -196,23 +196,6 @@ class Team extends \common\ext\MongoDb\Document
             $this->addError('memberIds', \yii::t('app', 'The number of members should be less or equal then 4.'));
         }
 
-        // Check school names to be not empty
-        if (empty($this->school->shortNameUk)) {
-            $this->addError('schoolShortNameUk', \yii::t('app', '{attr} cannot be empty', array(
-                '{attr}' => $this->school->getAttributeLabel('shortNameUk')
-            )));
-        }
-        if (empty($this->school->fullNameEn)) {
-            $this->addError('schoolFullNameEn', \yii::t('app', '{attr} cannot be empty', array(
-                '{attr}' => $this->school->getAttributeLabel('fullNameEn')
-            )));
-        }
-        if (empty($this->school->shortNameEn)) {
-            $this->addError('schoolShortNameEn', \yii::t('app', '{attr} cannot be empty', array(
-                '{attr}' => $this->school->getAttributeLabel('shortNameEn')
-            )));
-        }
-
         return true;
     }
 
