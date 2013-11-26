@@ -22,7 +22,7 @@ appStaffNewsManage.prototype.init = function() {
         self.onchange();
     });
 
-    // on Ctrl + S
+    // On Ctrl + S
     $(document).onCtrlS(function(){
         self.save();
     }, self.editor);
