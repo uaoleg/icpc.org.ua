@@ -61,6 +61,7 @@ class TeamController extends \web\ext\Controller
             $memberIds      = $this->request->getPost('memberIds');
 
             // Update school
+            $school->scenario = 'assignSchoolToTeam';
             $school->setAttributes(array(
                 'shortNameUk'  => $shortNameUk,
                 'fullNameEn'   => $fullNameEn,
