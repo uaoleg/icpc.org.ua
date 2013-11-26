@@ -103,6 +103,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="role-statuses clearfix">
+                                <span class="coach-state label col-md-4 col-md-offset-4
+                                    <?=($type === \common\models\User::ROLE_COACH) ? '' : ' invisible '?>
+                                    <?=($isApprovedCoach) ? ' label-success ' : ' label-warning '?>
+                                    "><?=\yii::t('app', $coachStatusLabel)?></span>
+                                <span class="coordinator-state label col-md-4
+                                    <?=(!empty($coordinator))  ? '' : ' invisible '?>
+                                    <?=($isApprovedCoordinator) ? ' label-success ' : ' label-warning '?>
+                                    "><?=\yii::t('app', $coordinatorStatusLabel)?></span>
+                            </div>
                         </div>
                     </div>
 

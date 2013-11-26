@@ -4,6 +4,7 @@ namespace web\controllers;
 
 use \common\models\School;
 use \common\models\User;
+use \common\components\Rbac;
 
 class UserController extends \web\ext\Controller
 {
@@ -115,20 +116,27 @@ class UserController extends \web\ext\Controller
                     break;
             }
 
+//            $isApprovedCoach        = $user->isApprovedCoach;
+//            $isApprovedCoordinator  = \yii::app()->user->checkAccess(Rbac::OP_COORDINATOR_SET_STATUS,array('user' => $user ));
+//            var_dump( $user->getIsApprovedCoach(), $user->getIsApprovedCoordinator() ); die();
             // Render view
             $this->render('me', array(
-                'firstNameUk'       => $user->firstNameUk,
-                'middleNameUk'      => $user->middleNameUk,
-                'lastNameUk'        => $user->lastNameUk,
-                'firstNameEn'       => $user->firstNameEn,
-                'middleNameEn'      => $user->middleNameEn,
-                'lastNameEn'        => $user->lastNameEn,
-                'email'             => $user->email,
-                'schoolId'          => $user->schoolId,
-                'type'              => $user->type,
-                'coordinator'       => $user->coordinator,
-                'coordinatorLabel'  => $coordinatorLabel,
-                'schools'           => $schools
+                'firstNameUk'               => $user->firstNameUk,
+                'middleNameUk'              => $user->middleNameUk,
+                'lastNameUk'                => $user->lastNameUk,
+                'firstNameEn'               => $user->firstNameEn,
+                'middleNameEn'              => $user->middleNameEn,
+                'lastNameEn'                => $user->lastNameEn,
+                'email'                     => $user->email,
+                'schoolId'                  => $user->schoolId,
+                'type'                      => $user->type,
+                'coordinator'               => $user->coordinator,
+                'coordinatorLabel'          => $coordinatorLabel,
+                'schools'                   => $schools,
+                'isApprovedCoach'           => $user->getIsApprovedCoach(),
+                'coachStatusLabel'          => ( $user->getIsApprovedCoach() ? 'Approved' : 'Unapproved'),
+                'isApprovedCoordinator'     => $user->getIsApprovedCoordinator(),
+                'coordinatorStatusLabel'    => ( $user->getIsApprovedCoordinator() ? 'Approved' : 'Unapproved'),
             ));
         }
     }
