@@ -9,6 +9,9 @@
     });
 </script>
 
+<div class="pull-right" style="margin-left: 20px;">
+    <?php \web\widgets\filter\Year::create(array('checked' => $year)); ?>
+</div>
 
 <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_RESULT_CREATE)): ?>
     <button class="btn btn-lg btn-primary" id="pickfiles-modal" data-toggle="modal" data-target="#uploadModal">
