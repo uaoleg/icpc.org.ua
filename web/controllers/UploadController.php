@@ -135,8 +135,9 @@ class UploadController extends \web\ext\Controller
 
             // Get team
             $teamName = $tr->find('.st_team', 0)->plaintext;
+
             $team = Team::model()->findByAttributes(array(
-                'name' => $teamName,
+                'name' => new \MongoRegex('/^' . preg_quote($teamName) . '$/i'),
             ));
             if ($team === null) {
                 continue;
