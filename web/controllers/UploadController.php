@@ -124,6 +124,13 @@ class UploadController extends \web\ext\Controller
                 break;
         }
 
+        // Delete old version of results
+        $criteria = new \EMongoCriteria();
+        $criteria
+            ->addCond('year', '==', (int)date('Y'))
+            ->addCond('geo', '==', $geo);
+        Result::model()->deleteAll($criteria);
+
         // Parse each row
         $letters = Result::TASKS_LETTERS;
         foreach ($html->find('tr') as $row => $tr) {
