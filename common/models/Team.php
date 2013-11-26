@@ -196,10 +196,11 @@ class Team extends \common\ext\MongoDb\Document
             $this->addError('memberIds', \yii::t('app', 'The number of members should be less or equal then 4.'));
         }
 
+        // Validate assigned school
         $this->school->scenario = School::SC_ASSIGN_TO_TEAM;
         $this->school->validate();
         if ($this->school->hasErrors()) {
-            $this->addError('schoolId', \yii::t('app', 'School is invalid'));
+            $this->addError('schoolId', \yii::t('app', 'Assigned school is invalid.'));
         }
 
         return true;

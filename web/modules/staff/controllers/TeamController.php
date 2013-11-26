@@ -3,7 +3,7 @@
 namespace web\modules\staff\controllers;
 
 use \common\components\Rbac;
-use common\models\School;
+use \common\models\School;
 use \common\models\Team;
 use \common\models\User;
 
@@ -48,7 +48,7 @@ class TeamController extends \web\ext\Controller
     public function actionManage()
     {
         // Get user's school
-        $school = \yii::app()->user->getInstance()->getSchool();
+        $school = \yii::app()->user->getInstance()->school;
 
         // Update team
         if ($this->request->isPostRequest) {

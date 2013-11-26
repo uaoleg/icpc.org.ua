@@ -3,7 +3,6 @@
 namespace web\controllers;
 
 use \common\models\Team;
-use \common\models\User;
 
 class TeamController extends \web\ext\Controller
 {

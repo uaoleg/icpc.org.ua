@@ -12,8 +12,9 @@ namespace common\models;
  */
 class School extends \common\ext\MongoDb\Document
 {
+
     // Scenarios
-    const SC_ASSIGN_TO_TEAM = 'assignSchoolToTeam';
+    const SC_ASSIGN_TO_TEAM = 'assignToTeam';
 
     /**
      * Full university name in ukranian
