@@ -15,6 +15,12 @@ class Row extends \web\ext\Widget
     public $document;
 
     /**
+     * Redirect after document deleted
+     * @var string
+     */
+    public $afterDeleteRedirect = '';
+
+    /**
      * Run widget
      */
     public function run()

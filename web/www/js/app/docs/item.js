@@ -5,7 +5,8 @@ function appDocsItem() {
      */
     $('.document .document-delete').on('confirmed', function() {
         var $this = $(this),
-            $document = $this.closest('.document');
+            $document = $this.closest('.document'),
+            redirectUrl = $document.data('after-delete-redirect');
         $this.prop('disabled', true);
         $document.css('opacity', OPACITY_DISABLED);
         $.ajax({
@@ -14,7 +15,11 @@ function appDocsItem() {
                 id: $document.data('id')
             },
             success: function() {
-                $document.remove();
+                if (redirectUrl) {
+                    location.href = redirectUrl;
+                } else {
+                    $document.remove();
+                }
             }
         });
     });

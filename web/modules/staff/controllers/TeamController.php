@@ -3,6 +3,7 @@
 namespace web\modules\staff\controllers;
 
 use \common\components\Rbac;
+use \common\models\School;
 use \common\models\Team;
 use \common\models\User;
 
@@ -47,7 +48,7 @@ class TeamController extends \web\ext\Controller
     public function actionManage()
     {
         // Get user's school
-        $school = \yii::app()->user->getInstance()->getSchool();
+        $school = \yii::app()->user->getInstance()->school;
 
         // Update team
         if ($this->request->isPostRequest) {
@@ -61,6 +62,7 @@ class TeamController extends \web\ext\Controller
             $memberIds      = $this->request->getPost('memberIds');
 
             // Update school
+            $school->scenario = School::SC_ASSIGN_TO_TEAM;
             $school->setAttributes(array(
                 'shortNameUk'  => $shortNameUk,
                 'fullNameEn'   => $fullNameEn,
@@ -87,9 +89,12 @@ class TeamController extends \web\ext\Controller
             ), false);
             $team->save();
 
+            // Get errors
+            $errors = array_merge($team->getErrors(), $school->getErrors());
+
             // Render json
             $this->renderJson(array(
-                'errors' => $team->hasErrors() ? $team->getErrors() : false
+                'errors' => (!empty($errors)) ? $errors : false
             ));
 
 
@@ -121,7 +126,7 @@ class TeamController extends \web\ext\Controller
                 }
 
                 // Get team members
-                $users = User::model()->findAll(array(
+                $users = User::model()->findAllByAttributes(array(
                     'schoolId' => (string)$school->_id,
                     'type'     => User::ROLE_STUDENT
                 ));

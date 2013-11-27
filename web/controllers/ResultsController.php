@@ -2,7 +2,9 @@
 
 namespace web\controllers;
 
-use \common\models\Document;
+use \common\models\Geo;
+use \common\models\Result;
+use \common\models\School;
 
 class ResultsController extends \web\ext\Controller
 {
@@ -26,28 +28,61 @@ class ResultsController extends \web\ext\Controller
      */
     public function actionLatest()
     {
-        // Get list of results
-        $criteria1 = new \EMongoCriteria();
-        $criteria1
-            ->addCond('type', '==', Document::TYPE_RESULTS_PHASE_1)
-            ->sort('dateCreated', \EMongoCriteria::SORT_DESC);
-        $phase1 = Document::model()->findAll($criteria1);
-        $criteria2 = new \EMongoCriteria();
-        $criteria2
-            ->addCond('type', '==', Document::TYPE_RESULTS_PHASE_2)
-            ->sort('dateCreated', \EMongoCriteria::SORT_DESC);
-        $phase2 = Document::model()->findAll($criteria2);
-        $criteria3 = new \EMongoCriteria();
-        $criteria3
-            ->addCond('type', '==', Document::TYPE_RESULTS_PHASE_3)
-            ->sort('dateCreated', \EMongoCriteria::SORT_DESC);
-        $phase3 = Document::model()->findAll($criteria3);
-
         // Render view
         $this->render('latest', array(
-            'phase1' => $phase1,
-            'phase2' => $phase2,
-            'phase3' => $phase3,
+            'states'  => Geo\State::model()->getConstantList('NAME_'),
+            'regions' => Geo\Region::model()->getConstantList('NAME_')
+        ));
+    }
+
+    /**
+     * View results of some phase and state/region/country
+     */
+    public function actionView()
+    {
+        // Get params
+        $year  = (int)$this->request->getParam('year');
+        $phase = (int)$this->request->getParam('phase');
+        if (($year === 0) || $phase === 0) {
+            $this->httpException(404);
+        }
+        switch ($phase) {
+            case Result::PHASE_1:
+                $geo    = $this->request->getParam('state');
+                $header = Geo\State::model()->getAttributeLabel($geo, 'name');
+                break;
+            case Result::PHASE_2:
+                $geo    = $this->request->getParam('region');
+                $header = Geo\Region::model()->getAttributeLabel($geo, 'name');
+                break;
+            case Result::PHASE_3:
+                $geo    = $this->request->getParam('country');
+                $header = School::getCountryLabel();
+                break;
+            default:
+                $this->httpException(404);
+                break;
+        }
+
+        // Get the list of results
+        $criteria = new \EMongoCriteria();
+        $criteria
+            ->addCond('year',  '==', $year)
+            ->addCond('phase', '==', $phase)
+            ->addCond('geo',   '==', $geo)
+            ->sort('place', \EMongoCriteria::SORT_ASC);
+        $results    = Result::model()->findAll($criteria);
+        $result     = Result::model()->find($criteria);
+        $tasksCount = ($result !== null) ? count($result->tasksTries) : 0;
+
+        // Render view
+        $this->render('view', array(
+            'header'    => $header,
+            'year'      => $year,
+            'phase'     => $phase,
+            'results'   => $results,
+            'tasksCount'=> $tasksCount,
+            'letters'   => Result::TASKS_LETTERS,
         ));
     }
 

@@ -13,11 +13,8 @@ class Document extends \common\ext\MongoDb\Document
     /**
      * Available doc types
      */
-    const TYPE_GUIDANCE         = 'guidance';
-    const TYPE_REGULATIONS      = 'regulations';
-    const TYPE_RESULTS_PHASE_1  = 'resultsPhase1';
-    const TYPE_RESULTS_PHASE_2  = 'resultsPhase2';
-    const TYPE_RESULTS_PHASE_3  = 'resultsPhase3';
+    const TYPE_GUIDANCE     = 'guidance';
+    const TYPE_REGULATIONS  = 'regulations';
 
     /**
      * Title
@@ -96,9 +93,6 @@ class Document extends \common\ext\MongoDb\Document
             'const.type' => array(
                 static::TYPE_GUIDANCE           => \yii::t('app', 'Guidance'),
                 static::TYPE_REGULATIONS        => \yii::t('app', 'Regulations'),
-                static::TYPE_RESULTS_PHASE_1    => \yii::t('app', '1st Phase Results'),
-                static::TYPE_RESULTS_PHASE_2    => \yii::t('app', '2nd Phase Results'),
-                static::TYPE_RESULTS_PHASE_3    => \yii::t('app', '3d Phase Results'),
             ),
         ));
     }

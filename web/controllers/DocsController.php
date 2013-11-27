@@ -111,9 +111,23 @@ class DocsController extends \web\ext\Controller
             $this->httpException(404);
         }
 
+        // Define redirect URL
+        switch ($document->type) {
+            case Document::TYPE_GUIDANCE:
+                $afterDeleteRedirect = $this->createUrl('/docs/guidance');
+                break;
+            case Document::TYPE_REGULATIONS:
+                $afterDeleteRedirect = $this->createUrl('/docs/regulations');
+                break;
+            default:
+                $afterDeleteRedirect = $this->createUrl('/docs');
+                break;
+        }
+
         // Render view
         $this->render('view', array(
-            'document' => $document,
+            'document'              => $document,
+            'afterDeleteRedirect'   => $afterDeleteRedirect,
         ));
     }
 

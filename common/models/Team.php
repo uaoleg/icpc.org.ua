@@ -57,7 +57,7 @@ class Team extends \common\ext\MongoDb\Document
 
     /**
      * Team's school
-     * @var Team
+     * @var School
      */
     protected $_school;
 
@@ -88,9 +88,9 @@ class Team extends \common\ext\MongoDb\Document
     public function getCoach()
     {
         if ($this->_coach === null) {
-            $this->_school = User::model()->findByPk(new \MongoId($this->coachId));
+            $this->_coach = User::model()->findByPk(new \MongoId($this->coachId));
         }
-        return $this->_school;
+        return $this->_coach;
     }
 
     /**
@@ -196,21 +196,11 @@ class Team extends \common\ext\MongoDb\Document
             $this->addError('memberIds', \yii::t('app', 'The number of members should be less or equal then 4.'));
         }
 
-        // Check school names to be not empty
-        if (empty($this->school->shortNameUk)) {
-            $this->addError('schoolShortNameUk', \yii::t('app', '{attr} cannot be empty', array(
-                '{attr}' => $this->school->getAttributeLabel('shortNameUk')
-            )));
-        }
-        if (empty($this->school->fullNameEn)) {
-            $this->addError('schoolFullNameEn', \yii::t('app', '{attr} cannot be empty', array(
-                '{attr}' => $this->school->getAttributeLabel('fullNameEn')
-            )));
-        }
-        if (empty($this->school->shortNameEn)) {
-            $this->addError('schoolShortNameEn', \yii::t('app', '{attr} cannot be empty', array(
-                '{attr}' => $this->school->getAttributeLabel('shortNameEn')
-            )));
+        // Validate assigned school
+        $this->school->scenario = School::SC_ASSIGN_TO_TEAM;
+        $this->school->validate();
+        if ($this->school->hasErrors()) {
+            $this->addError('schoolId', \yii::t('app', 'Assigned school is invalid.'));
         }
 
         return true;

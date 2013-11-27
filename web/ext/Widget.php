@@ -18,6 +18,28 @@ class Widget extends \CWidget
     }
 
     /**
+     * Creates a widget and executes it
+     *
+     * @param array $properties
+     * @return \CWidget
+     */
+    public static function begin(array $properties = array())
+    {
+        return \yii::app()->controller->beginWidget(get_called_class(), $properties);
+    }
+
+    /**
+     * Ends the execution of the named widget
+     *
+     * @param string $id
+     * @return \CWidget
+     */
+    public static function end($id = '')
+    {
+        return \yii::app()->controller->endWidget($id);
+    }
+
+    /**
      * Create URL
      *
      * @param string $route

@@ -9,7 +9,7 @@
          */
         onCtrlS: function(callback, editor) {
             $(this).on('keydown', function(e) {
-                if (e.ctrlKey && e.keyCode === 83) {
+                if ((e.ctrlKey) && (e.keyCode === KEY_S)) {
                     callback();
                     e.preventDefault();
                 }
