@@ -134,7 +134,7 @@ class Result extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('year, phase, geo, place, tasksTries, tasksTime', 'required'),
+            array('year, phase, geo, place, teamName, tasksTries, tasksTime', 'required'),
             array('place', 'numerical', 'min' => 1)
         ));
     }
@@ -157,7 +157,7 @@ class Result extends \common\ext\MongoDb\Document
     public function indexes()
     {
         return array_merge(parent::indexes(), array(
-            'year_phase_teamId' => array(
+            'year_phase_teamName' => array(
                 'key' => array(
                     'year'     => \EMongoCriteria::SORT_ASC,
                     'phase'    => \EMongoCriteria::SORT_ASC,
@@ -165,6 +165,11 @@ class Result extends \common\ext\MongoDb\Document
                 ),
                 'unique' => true,
             ),
+            'teamId' => array(
+                'key' => array(
+                    'teamId' => \EMongoCriteria::SORT_ASC
+                )
+            )
         ));
     }
 
