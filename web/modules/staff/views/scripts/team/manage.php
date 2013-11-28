@@ -67,8 +67,7 @@
                     <select name="memberIds" id="memberIds" class="form-control" multiple>
                         <?php foreach($users as $user): ?>
                             <option value="<?=$user->_id?>" <?=(in_array((string)$user->_id, $team->memberIds)) ? 'selected' : ''?>>
-                                <?=\CHtml::encode($user->firstName)?>&nbsp;
-                                <?=\CHtml::encode($user->lastName)?>&nbsp;
+                                <?php \web\widgets\user\Name::create(array('user' => $user)); ?>
                                 <?=\CHtml::encode($user->email)?>
                             </option>
                         <?php endforeach; ?>

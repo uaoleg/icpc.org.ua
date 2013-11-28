@@ -23,7 +23,7 @@
     <tbody>
         <?php foreach ($userList as $user): ?>
             <tr data-id="<?=$user->_id?>">
-                <td><?=$user->lastName?> <?=$user->firstName?></td>
+                <td><?php \web\widgets\user\Name::create(array('user' => $user)); ?></td>
                 <td><?=$user->email?></td>
                 <td><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
                 <td style="width: 200px;">

@@ -9,7 +9,7 @@
         </h1>
         <h3><?=$team->year?></h3>
         <strong><?=\yii::t('app', 'Coach')?></strong>:
-        <?=\CHtml::encode($coach->firstName)?> <?=\CHtml::encode($coach->lastName)?>
+        <?php \web\widgets\user\Name::create(array('user' => $coach)); ?>
         <br />
         <strong><?=\yii::t('app', 'School')?></strong>:
         <?=\CHtml::encode($team->school->fullNameUk)?>
@@ -17,9 +17,7 @@
         <strong><?=\yii::t('app', 'Participants')?></strong>:
         <ul>
             <?php foreach ($members as $member): ?>
-            <li><?=\CHtml::encode($member->firstName)?>&nbsp;
-                <?=\CHtml::encode($member->middleName)?>&nbsp;
-                <?=\CHtml::encode($member->lastName)?></li>
+            <li><?php \web\widgets\user\Name::create(array('user' => $member)); ?></li>
             <?php endforeach; ?>
         </ul>
 
