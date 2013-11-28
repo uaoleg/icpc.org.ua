@@ -4,7 +4,6 @@ namespace web\controllers;
 
 use \common\models\School;
 use \common\models\User;
-use \common\components\Rbac;
 
 class UserController extends \web\ext\Controller
 {
@@ -118,20 +117,9 @@ class UserController extends \web\ext\Controller
 
             // Render view
             $this->render('me', array(
-                'firstNameUk'               => $user->firstNameUk,
-                'middleNameUk'              => $user->middleNameUk,
-                'lastNameUk'                => $user->lastNameUk,
-                'firstNameEn'               => $user->firstNameEn,
-                'middleNameEn'              => $user->middleNameEn,
-                'lastNameEn'                => $user->lastNameEn,
-                'email'                     => $user->email,
-                'schoolId'                  => $user->schoolId,
-                'type'                      => $user->type,
-                'coordinator'               => $user->coordinator,
-                'coordinatorLabel'          => $coordinatorLabel,
-                'schools'                   => $schools,
-                'isApprovedCoach'           => $user->isApprovedCoach,
-                'isApprovedCoordinator'     => $user->isApprovedCoordinator,
+                'user'              => $user,
+                'coordinatorLabel'  => $coordinatorLabel,
+                'schools'           => $schools,
             ));
         }
     }
