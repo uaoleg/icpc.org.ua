@@ -102,7 +102,7 @@
                                 <input type="radio" name="phase" value="1"
                                        <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE) ? '' : 'disabled'?>
                                 />
-                                <?=\yii::t('app', '1st phase')?>
+                                <?=\common\models\Geo\State::model()->getAttributeLabel($school->state, 'name')?>
                             </label>
                         </div>
                         <div class="radio">
@@ -110,7 +110,7 @@
                                 <input type="radio" name="phase" value="2"
                                        <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION) ? '' : 'disabled'?>
                                 />
-                                <?=\yii::t('app', '2nd phase')?>
+                                <?=\common\models\Geo\Region::model()->getAttributeLabel($school->region, 'name')?>
                             </label>
                         </div>
                         <div class="radio">
@@ -118,7 +118,7 @@
                                 <input type="radio" name="phase" value="3"
                                        <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE) ? '' : 'disabled'?>
                                 />
-                                <?=\yii::t('app', '3rd phase')?>
+                                <?=\common\models\School::getCountryLabel()?>
                             </label>
                         </div>
                     </div>
