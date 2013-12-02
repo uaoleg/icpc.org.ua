@@ -396,6 +396,27 @@ class User extends \common\ext\MongoDb\Document
             \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_UKRAINE, $this->_id);
         }
 
+        // If user changed any name, info in team model should be updated
+        if ($this->attributeHasChanged('firstNameUk') ||
+            $this->attributeHasChanged('middleNameUk') ||
+            $this->attributeHasChanged('lastNameUk')) {
+                $modifier = new \EMongoModifier();
+                $modifier->addModifier('coachNameUk', 'set', \web\widgets\user\Name::create(array('user' => $this, 'lang' => 'uk'), true));
+                $criteria = new \EMongoCriteria();
+                $criteria->addCond('coachId', '==', (string)$this->_id);
+                Team::model()->updateAll($modifier, $criteria);
+        }
+
+        if ($this->attributeHasChanged('firstNameEn') ||
+            $this->attributeHasChanged('middleNameEn') ||
+            $this->attributeHasChanged('lastNameEn')) {
+            $modifier = new \EMongoModifier();
+            $modifier->addModifier('coachNameEn', 'set', \web\widgets\user\Name::create(array('user' => $this, 'lang' => 'en'), true));
+            $criteria = new \EMongoCriteria();
+            $criteria->addCond('coachId', '==', (string)$this->_id);
+            Team::model()->updateAll($modifier, $criteria);
+        }
+
         parent::afterSave();
     }
 

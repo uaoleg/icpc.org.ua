@@ -45,7 +45,7 @@ class TeamController extends \web\ext\Controller
     }
 
     /**
-     * Method which shows the information about
+     * Method which shows the information about team
      */
     public function actionView()
     {
@@ -63,6 +63,43 @@ class TeamController extends \web\ext\Controller
             'team'    => $team,
             'coach'   => $team->coach,
             'members' => $team->members
+        ));
+    }
+
+    /**
+     * Method for jqGrid which returns all the items to be shown
+     */
+    public function actionGetTeamListJson()
+    {
+        $lang = \yii::app()->language;
+        // Get jqGrid params
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('year', '==', (int)$this->getYear());
+        $jqgrid = $this->_getJqgridParams(Team::model(), $criteria);
+
+        // Fill rows
+        $rows = array();
+        foreach ($jqgrid['itemList'] as $team) {
+            $members = $team->members;
+            $members_arr = array();
+            foreach ($members as $member) {
+                $members_arr[] = \web\widgets\user\Name::create(array('user' => $member), true);
+            }
+            $members_str = implode(', ', $members_arr);
+            $rows[] = array(
+                'id'                            => (string)$team->_id,
+                'name'                          => $team->name,
+                'schoolName'.ucfirst($lang)     => $team->schoolName,
+                'coachName'.ucfirst($lang)      => $team->coachName,
+                'members'                       => $members_str,
+                'year'                          => $team->year
+            );
+        }
+        $this->renderJson(array(
+            'page'      => $jqgrid['page'],
+            'total'     => ceil($jqgrid['totalCount'] / $jqgrid['perPage']),
+            'records'   => count($jqgrid['itemList']),
+            'rows'      => $rows,
         ));
     }
 

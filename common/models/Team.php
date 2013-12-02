@@ -8,6 +8,8 @@ use \common\models\School;
  *
  * @property-read User          $coach
  * @property-read School        $school
+ * @property-read string        $schoolName
+ * @property-read string        $coachName
  * @property-read \EMongoCursor $members
  */
 class Team extends \common\ext\MongoDb\Document
@@ -32,10 +34,34 @@ class Team extends \common\ext\MongoDb\Document
     public $coachId;
 
     /**
+     * Name of a coach in ukrainian
+     * @var string
+     */
+    public $coachNameUk;
+
+    /**
+     * Name of a coach in english
+     * @var string
+     */
+    public $coachNameEn;
+
+    /**
      * ID of team's school
      * @var string
      */
     public $schoolId;
+
+    /**
+     * Name of a school in ukrainian
+     * @var string
+     */
+    public $schoolNameUk;
+
+    /**
+     * Name of a school in english
+     * @var string
+     */
+    public $schoolNameEn;
 
     /**
      * List of members IDs
@@ -107,6 +133,44 @@ class Team extends \common\ext\MongoDb\Document
     }
 
     /**
+     * Returns school name in appropriate language
+     * @param string $lang
+     * @return string
+     */
+    public function getSchoolName($lang = null)
+    {
+        $lang = isset($lang) ? $lang : \yii::app()->language;
+        switch ($lang) {
+            default:
+            case 'uk':
+                return $this->schoolNameUk;
+                break;
+            case 'en':
+                return (!empty($this->schoolNameEn)) ? $this->schoolNameEn : $this->schoolNameUk;
+                break;
+        }
+    }
+
+    /**
+     * Returns coach name in appropriate language
+     * @param string $lang
+     * @return string
+     */
+    public function getCoachName($lang = null)
+    {
+        $lang = isset($lang) ? $lang : \yii::app()->language;
+        switch ($lang) {
+            default:
+            case 'uk':
+                return $this->coachNameUk;
+                break;
+            case 'en':
+                return (!empty($this->coachNameEn)) ? $this->coachNameEn : $this->coachNameUk;
+                break;
+        }
+    }
+
+    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -117,11 +181,15 @@ class Team extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'name'      => \yii::t('app', 'Name of a team'),
-            'year'      => \yii::t('app', 'Year in which team participated'),
-            'coachId'   => \yii::t('app', 'Related coach ID'),
-            'schoolId'  => \yii::t('app', 'Related school ID'),
-            'memberIds' => \yii::t('app', 'List of members')
+            'name'         => \yii::t('app', 'Name of a team'),
+            'year'         => \yii::t('app', 'Year in which team participated'),
+            'coachId'      => \yii::t('app', 'Related coach ID'),
+            'coachNameUk'  => \yii::t('app', 'Name of the coach in ukrainian'),
+            'coachNameEn'  => \yii::t('app', 'Name of the coach in english'),
+            'schoolId'     => \yii::t('app', 'Related school ID'),
+            'schoolNameUk' => \yii::t('app', 'Full name of school in ukrainian'),
+            'schoolNameEn' => \yii::t('app', 'Full name of school in english'),
+            'memberIds'    => \yii::t('app', 'List of members')
         ));
     }
 
@@ -133,7 +201,7 @@ class Team extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('name, year, coachId, schoolId, memberIds', 'required'),
+            array('name, year, coachId, coachNameUk, coachNameEn, schoolId, schoolNameUk, schoolNameEn, memberIds', 'required'),
             array('year', 'numerical',
                 'integerOnly'   => true,
                 'min'           => (int)\yii::app()->params['yearFirst'],
@@ -182,6 +250,12 @@ class Team extends \common\ext\MongoDb\Document
         // Convert MongoId to String
         $this->coachId = (string)$this->coachId;
         $this->schoolId = (string)$this->schoolId;
+
+        // Edit coachName and schoolName properties
+        $this->coachNameUk  = $this->coach->lastNameUk . ' ' . $this->coach->firstNameUk . ' ' . $this->coach->middleNameUk;
+        $this->coachNameEn  = $this->coach->getLastName('en') . ' ' . $this->coach->getFirstName('en') . ' ' . $this->coach->getMiddleName('en');
+        $this->schoolNameUk = $this->school->fullNameUk;
+        $this->schoolNameEn = $this->school->getSchoolName('en');
 
         // Year
         if (empty($this->year)) {

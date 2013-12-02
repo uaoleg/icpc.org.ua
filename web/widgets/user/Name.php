@@ -31,7 +31,7 @@ class Name extends \web\ext\Widget
 
     /**
      * Language in which name is needed
-     * @var string
+     * @var
      */
     public $lang;
 
