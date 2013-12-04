@@ -191,4 +191,41 @@ class School extends \common\ext\MongoDb\Document
         return true;
     }
 
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
+        // If  full name is changed, info in result model should be updated
+        if ($this->attributeHasChanged('fullNameUk')) {
+            $teamIds = Team::model()->getCollection()->distinct('_id', array(
+                'schoolId' => (string)$this->_id
+            ));
+            $teamIds = array_map(function($id) {
+                return (string)$id;
+            }, $teamIds);
+            $modifier = new \EMongoModifier();
+            $modifier->addModifier('schoolNameUk', 'set', $this->fullNameUk);
+            $criteria = new \EMongoCriteria();
+            $criteria->addCond('teamId', 'in', $teamIds);
+            Result::model()->updateAll($modifier, $criteria);
+        }
+        if ($this->attributeHasChanged('fullNameEn')) {
+            $teamIds = Team::model()->getCollection()->distinct('_id', array(
+                'schoolId' => (string)$this->_id
+            ));
+            $teamIds = array_map(function($id) {
+                return (string)$id;
+            }, $teamIds);
+            $modifier = new \EMongoModifier();
+            $modifier->addModifier('schoolNameEn', 'set', $this->fullNameEn);
+            $criteria = new \EMongoCriteria();
+            $criteria->addCond('teamId', 'in', $teamIds);
+            Result::model()->updateAll($modifier, $criteria);
+        }
+
+        parent::afterSave();
+    }
+
+
 }

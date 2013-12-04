@@ -396,6 +396,38 @@ class User extends \common\ext\MongoDb\Document
             \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_UKRAINE, $this->_id);
         }
 
+        // If user changed any name, info in result model should be updated
+        if ($this->attributeHasChanged('firstNameUk') ||
+            $this->attributeHasChanged('middleNameUk') ||
+            $this->attributeHasChanged('lastNameUk')) {
+                $teamIds = Team::model()->getCollection()->distinct('_id', array(
+                    'coachId' => (string)$this->_id
+                ));
+                $teamIds = array_map(function($id) {
+                    return (string)$id;
+                }, $teamIds);
+                $modifier = new \EMongoModifier();
+                $modifier->addModifier('coachNameUk', 'set', \web\widgets\user\Name::create(array('user' => $this, 'lang' => 'uk'), true));
+                $criteria = new \EMongoCriteria();
+                $criteria->addCond('teamId', 'in', $teamIds);
+                Result::model()->updateAll($modifier, $criteria);
+        }
+        if ($this->attributeHasChanged('firstNameEn') ||
+            $this->attributeHasChanged('middleNameEn') ||
+            $this->attributeHasChanged('lastNameEn')) {
+                $teamIds = Team::model()->getCollection()->distinct('_id', array(
+                    'coachId' => (string)$this->_id
+                ));
+                $teamIds = array_map(function($id) {
+                    return (string)$id;
+                }, $teamIds);
+                $modifier = new \EMongoModifier();
+                $modifier->addModifier('coachNameEn', 'set', \web\widgets\user\Name::create(array('user' => $this, 'lang' => 'en'), true));
+                $criteria = new \EMongoCriteria();
+                $criteria->addCond('teamId', 'in', $teamIds);
+                Result::model()->updateAll($modifier, $criteria);
+        }
+
         parent::afterSave();
     }
 

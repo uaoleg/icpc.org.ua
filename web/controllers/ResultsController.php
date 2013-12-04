@@ -90,6 +90,9 @@ class ResultsController extends \web\ext\Controller
                 $this->httpException(404);
                 break;
         }
+        if (empty($header)) {
+            $this->httpException(404);
+        }
 
         // Get the list of results
         $criteria = new \EMongoCriteria();
@@ -104,12 +107,51 @@ class ResultsController extends \web\ext\Controller
 
         // Render view
         $this->render('view', array(
+            'geo'       => $geo,
             'header'    => $header,
             'year'      => $year,
             'phase'     => $phase,
             'results'   => $results,
             'tasksCount'=> $tasksCount,
             'letters'   => Result::TASKS_LETTERS,
+        ));
+    }
+
+    /**
+     * Method for jqGrid which returns all the results to be shown
+     */
+    public function actionGetResultsListJson()
+    {
+        $lang = \yii::app()->language;
+
+        // Get jqGrid params
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('year', '==', (int)$this->getYear());
+        $criteria->addCond('geo', '==', $this->request->getParam('geo'));
+        $jqgrid = $this->_getJqgridParams(Result::model(), $criteria);
+
+        // Fill rows
+        $rows = array();
+        foreach ($jqgrid['itemList'] as $result) {
+            $arrayToAdd = array(
+                'id'                        => $result->teamId,
+                'place'                     => $result->place,
+                'teamName'                  => $result->teamName,
+                'schoolName'.ucfirst($lang) => $result->schoolName,
+                'coachName'.ucfirst($lang)  => $result->coachName,
+                'total'                     => $result->total,
+                'penalty'                   => $result->penalty
+            );
+            foreach ($result->tasksTries as $letter => $tries) {
+                $arrayToAdd[$letter] = $tries . '&nbsp;(' . gmdate("H:i", $result->tasksTime[$letter]) . ')';
+            }
+            $rows[] = $arrayToAdd;
+        }
+        $this->renderJson(array(
+            'page'      => $jqgrid['page'],
+            'total'     => ceil($jqgrid['totalCount'] / $jqgrid['perPage']),
+            'records'   => count($jqgrid['itemList']),
+            'rows'      => $rows,
         ));
     }
 

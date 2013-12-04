@@ -7,7 +7,9 @@ use \common\models\Team;
 /**
  * Team Result
  *
- * @property-read Team $team
+ * @property-read string $schoolName
+ * @property-read string $coachName
+ * @property-read Team   $team
  */
 class Result extends \common\ext\MongoDb\Document
 {
@@ -53,6 +55,30 @@ class Result extends \common\ext\MongoDb\Document
      * @var string
      */
     public $teamId;
+
+    /**
+     * School name of the result's team in ukrainian
+     * @var string
+     */
+    public $schoolNameUk;
+
+    /**
+     * School name of the result's team in english
+     * @var string
+     */
+    public $schoolNameEn;
+
+    /**
+     * Coach name of the result's team in ukrainian
+     * @var string
+     */
+    public $coachNameUk;
+
+    /**
+     * Coach name of the result's team in english
+     * @var string
+     */
+    public $coachNameEn;
 
     /**
      * Name of a team
@@ -103,6 +129,42 @@ class Result extends \common\ext\MongoDb\Document
     }
 
     /**
+     * Returns school name in appropriate language
+     * @param  string $lang
+     * @return string
+     */
+    public function getSchoolName($lang = null) {
+        $lang = isset($lang) ? $lang : \yii::app()->language;
+        switch ($lang) {
+            default:
+            case 'uk':
+                return $this->schoolNameUk;
+                break;
+            case 'en':
+                return (!empty($this->schoolNameEn)) ? $this->schoolNameEn : $this->schoolNameUk;
+                break;
+        }
+    }
+
+    /**
+     * Returns coach name in appropriate language
+     * @param  string $lang
+     * @return string
+     */
+    public function getCoachName($lang = null) {
+        $lang = isset($lang) ? $lang : \yii::app()->language;
+        switch ($lang) {
+            default:
+            case 'uk':
+                return $this->coachNameUk;
+                break;
+            case 'en':
+                return (!empty($this->schoolNameEn)) ? $this->coachNameEn : $this->coachNameUk;
+                break;
+        }
+    }
+
+    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -113,16 +175,20 @@ class Result extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'year'       => 'Year of the result',
-            'phase'      => 'Number of phase',
-            'geo'        => 'Geographical position',
-            'place'      => 'Place of the team',
-            'teamId'     => 'ID of the team',
-            'teamName'   => 'Name of the team',
-            'tasksTries' => 'Array of tasks => tries made',
-            'tasksTime'  => 'Array of tasks => time spent',
-            'total'      => 'Total points',
-            'penalty'    => 'Penalty points',
+            'year'         => 'Year of the result',
+            'phase'        => 'Number of phase',
+            'geo'          => 'Geographical position',
+            'place'        => 'Place of the team',
+            'teamId'       => 'ID of the team',
+            'schoolNameUk' => 'School name in ukrainian',
+            'schoolNameEn' => 'School name in english',
+            'coachNameUk'  => 'Coach name in ukrainian',
+            'coachNameEn'  => 'Coach name in english',
+            'teamName'     => 'Name of the team',
+            'tasksTries'   => 'Array of tasks => tries made',
+            'tasksTime'    => 'Array of tasks => time spent',
+            'total'        => 'Total points',
+            'penalty'      => 'Penalty points',
         ));
     }
 
@@ -189,8 +255,24 @@ class Result extends \common\ext\MongoDb\Document
             $this->year = (int)date('Y');
         }
 
-        // Convert to string
-        $this->teamId = (isset($this->teamId)) ? (string)$this->teamId : null;
+        // Save school and coach info if team exists
+        if (isset($this->teamId)) {
+            $this->setAttributes(array(
+                'teamId'        => (string)$this->teamId,
+                'schoolNameUk'  => $this->team->school->fullNameUk,
+                'schoolNameEn'  => $this->team->school->fullNameEn,
+                'coachNameUk'   => \web\widgets\user\Name::create(array('user' => $this->team->coach, 'lang' => 'uk'), true),
+                'coachNameEn'   => \web\widgets\user\Name::create(array('user' => $this->team->coach, 'lang' => 'en'), true),
+            ), false);
+        } else {
+            $this->setAttributes(array(
+                'teamId'        => null,
+                'schoolNameUk'  => null,
+                'schoolNameEn'  => null,
+                'coachNameUk'   => null,
+                'coachNameEn'   => null,
+            ), false);
+        }
 
         // Convert to integer
         $this->setAttributes(array(
@@ -203,6 +285,5 @@ class Result extends \common\ext\MongoDb\Document
 
         return true;
     }
-
 
 }
