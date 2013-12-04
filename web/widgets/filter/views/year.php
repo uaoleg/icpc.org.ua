@@ -1,6 +1,6 @@
 <div class="btn-group">
     <?php if (\yii::app()->params['yearFirst'] < date('Y')): ?>
-        <button class="btn btn-default active dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="btn btn-default active dropdown-toggle" data-toggle="dropdown">
             <?=\yii::t('app', '{year} year', array(
                 '{year}' => $this->checked,
             ))?>
@@ -15,7 +15,7 @@
             <?php endforeach; ?>
         </ul>
     <?php else: ?>
-        <button class="btn btn-default active" data-toggle="dropdown">
+        <button type="button" class="btn btn-default active" data-toggle="dropdown">
             <?=\yii::t('app', '{year} year', array(
                 '{year}' => date('Y'),
             ))?>
