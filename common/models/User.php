@@ -414,12 +414,12 @@ class User extends \common\ext\MongoDb\Document
             if ($isAnyChanged) {
                 $lang = substr($attrs[0], -2);
                 $modifier = new \EMongoModifier();
-                $modifier->addModifier('coachName'.$lang, 'set', \web\widgets\user\Name::create(
-                        array('user' => $this, 'lang' => strtolower($lang)), true)
+                $modifier->addModifier('coachName' . $lang, 'set', \web\widgets\user\Name::create(
+                        array('user' => $this, 'lang' => mb_strtolower($lang)), true)
                 );
                 $criteria = new \EMongoCriteria();
-                $criteria->addCond('coachName'.$lang, '==', \web\widgets\user\Name::create(
-                        array('user' => $initialUser, 'lang' => strtolower($lang)), true)
+                $criteria->addCond('coachName' . $lang, '==', \web\widgets\user\Name::create(
+                        array('user' => $initialUser, 'lang' => mb_strtolower($lang)), true)
                 );
                 Result::model()->updateAll($modifier, $criteria);
             }
