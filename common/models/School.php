@@ -9,6 +9,7 @@ namespace common\models;
  * @property-read string $countryLabel
  * @property-read string $regionLabel
  * @property-read string $stateLabel
+ * @property-read string $schoolName
  */
 class School extends \common\ext\MongoDb\Document
 {

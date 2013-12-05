@@ -252,8 +252,8 @@ class Team extends \common\ext\MongoDb\Document
         $this->schoolId = (string)$this->schoolId;
 
         // Edit coachName and schoolName properties
-        $this->coachNameUk  = $this->coach->lastNameUk . ' ' . $this->coach->firstNameUk . ' ' . $this->coach->middleNameUk;
-        $this->coachNameEn  = $this->coach->getLastName('en') . ' ' . $this->coach->getFirstName('en') . ' ' . $this->coach->getMiddleName('en');
+        $this->coachNameUk  = \web\widgets\user\Name::create(array('user' => $this->coach, 'lang' => 'uk'));
+        $this->coachNameEn  = \web\widgets\user\Name::create(array('user' => $this->coach, 'lang' => 'en'));
         $this->schoolNameUk = $this->school->fullNameUk;
         $this->schoolNameEn = $this->school->getSchoolName('en');
 
