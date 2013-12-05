@@ -196,32 +196,16 @@ class School extends \common\ext\MongoDb\Document
      */
     protected function afterSave()
     {
-        // If  full name is changed, info in result model should be updated
-        if ($this->attributeHasChanged('fullNameUk')) {
-            $teamIds = Team::model()->getCollection()->distinct('_id', array(
-                'schoolId' => (string)$this->_id
-            ));
-            $teamIds = array_map(function($id) {
-                return (string)$id;
-            }, $teamIds);
-            $modifier = new \EMongoModifier();
-            $modifier->addModifier('schoolNameUk', 'set', $this->fullNameUk);
-            $criteria = new \EMongoCriteria();
-            $criteria->addCond('teamId', 'in', $teamIds);
-            Result::model()->updateAll($modifier, $criteria);
-        }
-        if ($this->attributeHasChanged('fullNameEn')) {
-            $teamIds = Team::model()->getCollection()->distinct('_id', array(
-                'schoolId' => (string)$this->_id
-            ));
-            $teamIds = array_map(function($id) {
-                return (string)$id;
-            }, $teamIds);
-            $modifier = new \EMongoModifier();
-            $modifier->addModifier('schoolNameEn', 'set', $this->fullNameEn);
-            $criteria = new \EMongoCriteria();
-            $criteria->addCond('teamId', 'in', $teamIds);
-            Result::model()->updateAll($modifier, $criteria);
+        // If any name is changed, info in result model should be updated
+        foreach (array('fullNameUk', 'fullNameEn') as $attr) {
+            if ($this->attributeHasChanged($attr)) {
+                $lang = substr($attr, -2);
+                $modifier = new \EMongoModifier();
+                $modifier->addModifier('schoolName'.$lang, 'set', $this->$attr);
+                $criteria = new \EMongoCriteria();
+                $criteria->addCond('schoolName'.$lang, '==', $this->_initialAttributes['schoolName'.$lang]);
+                Result::model()->updateAll($modifier, $criteria);
+            }
         }
 
         parent::afterSave();
