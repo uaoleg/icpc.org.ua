@@ -396,24 +396,30 @@ class User extends \common\ext\MongoDb\Document
             \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_UKRAINE, $this->_id);
         }
 
-        // If user changed any name, info in team model should be updated
-        if ($this->attributeHasChanged('firstNameUk') ||
-            $this->attributeHasChanged('middleNameUk') ||
-            $this->attributeHasChanged('lastNameUk')) {
-                $modifier = new \EMongoModifier();
-                $modifier->addModifier('coachNameUk', 'set', \web\widgets\user\Name::create(array('user' => $this, 'lang' => 'uk'), true));
-                $criteria = new \EMongoCriteria();
-                $criteria->addCond('coachId', '==', (string)$this->_id);
-                Team::model()->updateAll($modifier, $criteria);
-        }
+        // If user changed any name, info in results and teams models should be updated
+        $initialUser = new static();
+        $initialUser->setAttributes($this->_initialAttributes, false);
+        foreach (array('uk', 'en') as $lang) {
 
-        if ($this->attributeHasChanged('firstNameEn') ||
-            $this->attributeHasChanged('middleNameEn') ||
-            $this->attributeHasChanged('lastNameEn')) {
+            // Check if name changed
+            $initialName = \web\widgets\user\Name::create(array(
+                'user' => $initialUser,
+                'lang' => $lang,
+            ), true);
+            $currentName = \web\widgets\user\Name::create(array(
+                'user' => $this,
+                'lang' => $lang,
+            ), true);
+            if ($initialName === $currentName) {
+                continue;
+            }
+
+            // Update results and teams
             $modifier = new \EMongoModifier();
-            $modifier->addModifier('coachNameEn', 'set', \web\widgets\user\Name::create(array('user' => $this, 'lang' => 'en'), true));
+            $modifier->addModifier('coachName' . ucfirst($lang), 'set', $currentName);
             $criteria = new \EMongoCriteria();
             $criteria->addCond('coachId', '==', (string)$this->_id);
+            Result::model()->updateAll($modifier, $criteria);
             Team::model()->updateAll($modifier, $criteria);
         }
 

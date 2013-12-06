@@ -211,4 +211,25 @@ class School extends \common\ext\MongoDb\Document
         return true;
     }
 
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
+        // If any name is changed, info in result model should be updated
+        foreach (array('fullNameUk', 'fullNameEn') as $attr) {
+            if ($this->attributeHasChanged($attr)) {
+                $lang = substr($attr, -2);
+                $modifier = new \EMongoModifier();
+                $modifier->addModifier('schoolName' . $lang, 'set', $this->$attr);
+                $criteria = new \EMongoCriteria();
+                $criteria->addCond('schoolId', '==', (string)$this->_id);
+                Result::model()->updateAll($modifier, $criteria);
+            }
+        }
+
+        parent::afterSave();
+    }
+
+
 }
