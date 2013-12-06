@@ -253,10 +253,10 @@ class Team extends \common\ext\MongoDb\Document
 
         // Set coach name and school name properties
         if (empty($this->coachNameUk)) {
-            $this->coachNameUk = \web\widgets\user\Name::create(array('user' => $this->coach, 'lang' => 'uk'));
+            $this->coachNameUk = \web\widgets\user\Name::create(array('user' => $this->coach, 'lang' => 'uk'), true);
         }
         if (empty($this->coachNameEn)) {
-            $this->coachNameEn = \web\widgets\user\Name::create(array('user' => $this->coach, 'lang' => 'en'));
+            $this->coachNameEn = \web\widgets\user\Name::create(array('user' => $this->coach, 'lang' => 'en'), true);
         }
         if (empty($this->schoolNameUk)) {
             $this->schoolNameUk = $this->school->fullNameUk;
