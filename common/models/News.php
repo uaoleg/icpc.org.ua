@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\models\News\Revision;
+
 class News extends \common\ext\MongoDb\Document
 {
 
@@ -164,6 +166,18 @@ class News extends \common\ext\MongoDb\Document
             $this->save();
         }
 
+        // If title or content are changed need to add entry to news revisions
+        if ($this->attributeHasChanged('title') || $this->attributeHasChanged('content')) {
+            $revision = new Revision();
+            $revision->setAttributes(array(
+                'newsId'         => (string)$this->_id,
+                'userId'         => (string)\yii::app()->user->getInstance()->_id,
+                'newsAttributes' => $this->getAttributes(),
+                'timestamp'      => (int)time()
+            ), false);
+            $revision->save();
+        }
+
         parent::afterSave();
     }
 
@@ -171,10 +185,10 @@ class News extends \common\ext\MongoDb\Document
      * Scope for latest page
      *
      * @param string $geo
-     * @param int   $year
-     * @param bool  $publishedOnly
-     * @param int   $page
-     * @paran int   $perPage
+     * @param int    $year
+     * @param bool   $publishedOnly
+     * @param int    $page
+     * @param int    $perPage
      * @return News
      */
     public function scopeByLatest($geo, $year, $publishedOnly, $page = 1, $perPage = 10)
