@@ -2,7 +2,7 @@
 
 namespace common\components;
 
-use common\models\Geo;
+use \common\models\Geo;
 use \common\models\User;
 
 /**
@@ -141,22 +141,29 @@ class Rbac extends \CApplicationComponent
      */
     public function bizRuleNewsUpdate(array $params)
     {
-        $geo = $params['news']['geo'];
-        $user = \yii::app()->user->getInstance();
+        $geo = $params['news']->geo;
 
+        // Any news
         if ($this->checkAccess(User::ROLE_COORDINATOR_UKRAINE)) {
             return true;
         }
-        switch (true) {
-            case (in_array($geo, Geo\Region::model()->getConstantList('NAME_'))):
-                return ($geo === $user->school->region && $this->checkAccess(User::ROLE_COORDINATOR_REGION));
-                break;
-            case (in_array($geo, Geo\State::model()->getConstantList('NAME_'))):
-                return ($geo === $user->school->state && $this->checkAccess(User::ROLE_COORDINATOR_STATE));
-                break;
-            default:
-                return false;
-                break;
+
+        // Region news
+        elseif (in_array($geo, Geo\Region::model()->getConstantList('NAME_'))) {
+            return (($geo === $this->user->school->region) && ($this->checkAccess(User::ROLE_COORDINATOR_REGION)));
+        }
+
+        // State news
+        elseif (in_array($geo, Geo\State::model()->getConstantList('NAME_'))) {
+            $region = Geo\State::get($geo)->region->name;
+            $stateMatch = (($geo === $this->user->school->state) && ($this->checkAccess(User::ROLE_COORDINATOR_STATE)));
+            $regionMatch = (($region === $this->user->school->region) && ($this->checkAccess(User::ROLE_COORDINATOR_REGION)));
+            return (($stateMatch) || ($regionMatch));
+        }
+
+        // Failed
+        else {
+            return false;
         }
     }
 
