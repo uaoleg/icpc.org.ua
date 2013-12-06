@@ -31,7 +31,7 @@ class NewsController extends \web\ext\Controller
         $year       = $this->getYear();
         $page       = (int)$this->request->getParam('page', 1);
         $perPage    = 5;
-        $publishedOnly = !\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_UPDATE);
+        $publishedOnly = !\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_CREATE);
 
         // Page range
         if ($page < 1) {
