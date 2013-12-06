@@ -1,6 +1,4 @@
-<?php
-    \yii::app()->getClientScript()->registerCoreScript('jquery.jqgrid');
-?>
+<?php \yii::app()->getClientScript()->registerCoreScript('jquery.jqgrid'); ?>
 
 <div class="pull-right">
     <?php \web\widgets\filter\Year::create(array('checked' => $year)); ?>
@@ -15,7 +13,7 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
-        var $table = $('#message');
+        var $table = $('#team-list');
         $table.jqGrid({
             url: '<?=$this->createUrl('/team/GetTeamListJson')?>',
             datatype: 'json',
@@ -51,30 +49,11 @@
     });
 </script>
 
-<table id="message" style="width: 100%;"></table>
 
-<?php if (count($teams) > 0): ?>
 
-    <div class="row">
-        <div class="col-lg-6 col-lg-offset-3">
-            <table class="table table-striped table-hover table-bordered" style="">
-                <thead>
-                    <tr>
-                        <th>
-                            <?=\yii::t('app', 'Team name')?>
-                        </th>
-                    </tr>
-                </thead>
-                <?php foreach ($teams as $team) : ?>
-                    <tr>
-                        <td>
-                            <a href="<?=$this->createUrl('/team/view', array('id' => $team->_id))?>"><?=\CHtml::encode($team->name)?></a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-        </div>
-    </div>
+<?php if ($teamsCount > 0): ?>
+
+    <table id="team-list" style="width: 100%;"></table>
 
 <?php else: ?>
 

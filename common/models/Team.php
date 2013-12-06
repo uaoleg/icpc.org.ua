@@ -251,11 +251,19 @@ class Team extends \common\ext\MongoDb\Document
         $this->coachId = (string)$this->coachId;
         $this->schoolId = (string)$this->schoolId;
 
-        // Edit coachName and schoolName properties
-        $this->coachNameUk  = \web\widgets\user\Name::create(array('user' => $this->coach, 'lang' => 'uk'));
-        $this->coachNameEn  = \web\widgets\user\Name::create(array('user' => $this->coach, 'lang' => 'en'));
-        $this->schoolNameUk = $this->school->fullNameUk;
-        $this->schoolNameEn = $this->school->getSchoolName('en');
+        // Set coach name and school name properties
+        if (empty($this->coachNameUk)) {
+            $this->coachNameUk = \web\widgets\user\Name::create(array('user' => $this->coach, 'lang' => 'uk'));
+        }
+        if (empty($this->coachNameEn)) {
+            $this->coachNameEn = \web\widgets\user\Name::create(array('user' => $this->coach, 'lang' => 'en'));
+        }
+        if (empty($this->schoolNameUk)) {
+            $this->schoolNameUk = $this->school->fullNameUk;
+        }
+        if (empty($this->schoolNameEn)) {
+            $this->schoolNameEn = $this->school->fullNameEn;
+        }
 
         // Year
         if (empty($this->year)) {

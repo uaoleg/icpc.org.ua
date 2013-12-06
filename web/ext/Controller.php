@@ -278,7 +278,7 @@ class Controller extends \CController
      * @param \EMongoCriteria $criteria
      * @return array
      */
-    protected function  _getJqgridParams(\common\ext\MongoDb\Document $model, \EMongoCriteria $criteria = null)
+    protected function _getJqgridParams(\common\ext\MongoDb\Document $model, \EMongoCriteria $criteria = null)
     {
         // Get params
         $page       = (int)$this->request->getParam('page', 1);

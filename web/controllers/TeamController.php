@@ -30,17 +30,15 @@ class TeamController extends \web\ext\Controller
         $year = $this->getYear();
 
         // Get list of teams
-        $criteria = new \EMongoCriteria();
-        $criteria
-            ->addCond('year', '==', $year)
-            ->sort('name', \EMongoCriteria::SORT_ASC);
-        $teams = Team::model()->findAll($criteria);
+        $teamsCount = Team::model()->countByAttributes(array(
+            'year' => $year,
+        ));
 
         // Render view
         $this->render('list', array(
-            'user'  => \yii::app()->user->getInstance(),
-            'teams' => $teams,
-            'year'  => $year,
+            'user'          => \yii::app()->user->getInstance(),
+            'year'          => $year,
+            'teamsCount'    => $teamsCount,
         ));
     }
 
@@ -72,9 +70,10 @@ class TeamController extends \web\ext\Controller
     public function actionGetTeamListJson()
     {
         $lang = \yii::app()->language;
+
         // Get jqGrid params
         $criteria = new \EMongoCriteria();
-        $criteria->addCond('year', '==', (int)$this->getYear());
+        $criteria->addCond('year', '==', $this->getYear());
         $jqgrid = $this->_getJqgridParams(Team::model(), $criteria);
 
         // Fill rows
@@ -89,12 +88,14 @@ class TeamController extends \web\ext\Controller
             $rows[] = array(
                 'id'                            => (string)$team->_id,
                 'name'                          => $team->name,
-                'schoolName'.ucfirst($lang)     => $team->schoolName,
-                'coachName'.ucfirst($lang)      => $team->coachName,
+                'schoolName' . ucfirst($lang)   => $team->schoolName,
+                'coachName' . ucfirst($lang)    => $team->coachName,
                 'members'                       => $members_str,
                 'year'                          => $team->year
             );
         }
+
+        // Render json
         $this->renderJson(array(
             'page'      => $jqgrid['page'],
             'total'     => ceil($jqgrid['totalCount'] / $jqgrid['perPage']),
