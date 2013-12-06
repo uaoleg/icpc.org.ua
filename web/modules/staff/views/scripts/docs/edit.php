@@ -24,14 +24,14 @@
     <div class="form-group">
         <?php if ($document->isNewRecord): ?>
             <div id="container" style="position: relative;">
-                <button class="btn btn-primary" id="pickfiles">
+                <button type="button" class="btn btn-primary" id="pickfiles">
                     <?=\yii::t('app', 'Upload')?>
                 </button>
                 <span class="document-origin-filename"></span>
                 <div class="help-block"></div>
             </div>
         <?php else: ?>
-            <button class="btn btn-primary" disabled="">
+            <button type="button" class="btn btn-primary" disabled="">
                 <?=\yii::t('app', 'Uploaded')?>
             </button>
         <?php endif; ?>
@@ -52,7 +52,7 @@
         </select>
     </div>
     <div class="form-group">
-        <button class="btn btn-primary save-document btn-lg pull-left" disabled="">
+        <button type="submit" class="btn btn-primary save-document btn-lg pull-left" disabled="">
             <?=\yii::t('app', 'Save Document')?>
         </button>
         <?php if (!$document->isNewRecord): ?>

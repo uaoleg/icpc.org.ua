@@ -45,12 +45,12 @@
                     <?php endif; ?>
                 </strong></td>
                 <td style="width: 200px;">
-                    <button class="btn btn-success coordinator-state <?=$user->isApprovedCoordinator ? 'hide' : ''?>"
+                    <button type="button" class="btn btn-success coordinator-state <?=$user->isApprovedCoordinator ? 'hide' : ''?>"
                             <?=(\yii::app()->user->checkAccess(Rbac::OP_COORDINATOR_SET_STATUS, array('user' => $user))) ? '' : 'disabled'?>
                             data-state="1">
                         <?=\yii::t('app', 'Activate')?>
                     </button>
-                    <button class="btn btn-danger coordinator-state <?=$user->isApprovedCoordinator ? '' : 'hide'?>"
+                    <button type="button" class="btn btn-danger coordinator-state <?=$user->isApprovedCoordinator ? '' : 'hide'?>"
                             <?=(\yii::app()->user->checkAccess(Rbac::OP_COORDINATOR_SET_STATUS, array('user' => $user))) ? '' : 'disabled'?>
                             data-state="0">
                         <?=\yii::t('app', 'Suspend')?>

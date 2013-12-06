@@ -22,7 +22,7 @@
                     <input type="password" class="form-control" name="passwordRepeat" value="" placeholder="<?=\yii::t('app', 'Repeat password')?>" />
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-default reset-password"><?=\yii::t('app', 'Set a new password')?></button>
+                    <button type="submit" class="btn btn-default reset-password"><?=\yii::t('app', 'Set a new password')?></button>
                 </div>
             </div>
         </div>

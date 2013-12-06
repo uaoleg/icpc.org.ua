@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-primary btn-lg btn-save">
+                    <button type="submit" class="btn btn-primary btn-lg btn-save">
                         <?=\yii::t('app', 'Save')?>
                     </button>
                 </div>

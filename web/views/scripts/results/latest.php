@@ -14,7 +14,7 @@
 </div>
 
 <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_RESULT_CREATE)): ?>
-    <button class="btn btn-lg btn-primary" id="pickfiles-modal" data-toggle="modal" data-target="#uploadModal">
+    <button type="button" class="btn btn-lg btn-primary" id="pickfiles-modal" data-toggle="modal" data-target="#uploadModal">
         <?=\yii::t('app', 'Upload results')?>
     </button>
 <?php endif; ?>
@@ -89,7 +89,7 @@
                     </div>
 
                     <div class="form-group">
-                        <button class="btn btn-lg2 btn-info" id="uploadPickfiles">
+                        <button type="button" class="btn btn-lg2 btn-info" id="uploadPickfiles">
                             <?=\yii::t('app', 'Choose file')?>
                         </button>
                         <span class="document-origin-filename"></span>
@@ -123,7 +123,7 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-primary" id="uploadResults" disabled>
+                    <button type="submit" class="btn btn-primary" id="uploadResults" disabled>
                         <?=\yii::t('app', 'Upload')?>
                     </button>
                 </div>

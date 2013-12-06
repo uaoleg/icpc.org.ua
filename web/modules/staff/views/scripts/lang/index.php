@@ -40,7 +40,7 @@
 </script>
 
 <div class="staff-translate-form-container clearfix">
-    <button class="btn btn-default pull-left parse" rel="tooltip" title="<?=\yii::t('app', 'Update translation messages')?>">
+    <button type="submit" class="btn btn-default pull-left parse" rel="tooltip" title="<?=\yii::t('app', 'Update translation messages')?>">
         <?=\yii::t('app', 'Update')?>
     </button>
 </div>

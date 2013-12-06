@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-default reset-password"><?=\yii::t('app', 'Reset password')?></button>
+                    <button type="submit" class="btn btn-default reset-password"><?=\yii::t('app', 'Reset password')?></button>
                 </div>
             </div>
         </div>

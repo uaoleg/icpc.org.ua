@@ -10,7 +10,7 @@
         <?=$countryLabel?>
     </a>
     <div class="btn-group">
-        <button class="btn btn-default dropdown-toggle <?=$regionChecked ? 'active' : ''?>" data-toggle="dropdown">
+        <button type="button" class="btn btn-default dropdown-toggle <?=$regionChecked ? 'active' : ''?>" data-toggle="dropdown">
             <?=$regionLabel?> <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
@@ -22,7 +22,7 @@
         </ul>
     </div>
     <div class="btn-group">
-        <button class="btn btn-default dropdown-toggle <?=$stateChecked ? 'active' : ''?>" data-toggle="dropdown">
+        <button type="button" class="btn btn-default dropdown-toggle <?=$stateChecked ? 'active' : ''?>" data-toggle="dropdown">
             <?=$stateLabel?> <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu" data-sort="1">
