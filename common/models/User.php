@@ -397,32 +397,29 @@ class User extends \common\ext\MongoDb\Document
         }
 
         // If user changed any name, info in result model should be updated
-        $attributes = array(
-            array('firstNameUk', 'middleNameUk', 'lastNameUk'),
-            array('firstNameEn', 'middleNameEn', 'lastNameEn')
-        );
-        $initialUser = new User();
+        $initialUser = new static();
         $initialUser->setAttributes($this->_initialAttributes, false);
-        foreach ($attributes as $attrs) {
-            $isAnyChanged = false;
-            foreach ($attrs as $attr) {
-                $isAnyChanged = $this->attributeHasChanged($attr);
-                if ($isAnyChanged) {
-                    break;
-                }
+        foreach (array('uk', 'en') as $lang) {
+
+            // Check if name changed
+            $initialName = \web\widgets\user\Name::create(array(
+                'user' => $initialUser,
+                'lang' => $lang,
+            ), true);
+            $currentName = \web\widgets\user\Name::create(array(
+                'user' => $this,
+                'lang' => $lang,
+            ), true);
+            if ($initialName === $currentName) {
+                continue;
             }
-            if ($isAnyChanged) {
-                $lang = substr($attrs[0], -2);
-                $modifier = new \EMongoModifier();
-                $modifier->addModifier('coachName' . $lang, 'set', \web\widgets\user\Name::create(
-                        array('user' => $this, 'lang' => mb_strtolower($lang)), true)
-                );
-                $criteria = new \EMongoCriteria();
-                $criteria->addCond('coachName' . $lang, '==', \web\widgets\user\Name::create(
-                        array('user' => $initialUser, 'lang' => mb_strtolower($lang)), true)
-                );
-                Result::model()->updateAll($modifier, $criteria);
-            }
+
+            // Update results
+            $modifier = new \EMongoModifier();
+            $modifier->addModifier('coachName' . ucfirst($lang), 'set', $currentName);
+            $criteria = new \EMongoCriteria();
+            $criteria->addCond('coachId', '==', (string)$this->_id);
+            Result::model()->updateAll($modifier, $criteria);
         }
 
         parent::afterSave();

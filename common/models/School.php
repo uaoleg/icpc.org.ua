@@ -201,9 +201,9 @@ class School extends \common\ext\MongoDb\Document
             if ($this->attributeHasChanged($attr)) {
                 $lang = substr($attr, -2);
                 $modifier = new \EMongoModifier();
-                $modifier->addModifier('schoolName'.$lang, 'set', $this->$attr);
+                $modifier->addModifier('schoolName' . $lang, 'set', $this->$attr);
                 $criteria = new \EMongoCriteria();
-                $criteria->addCond('schoolName'.$lang, '==', $this->_initialAttributes['schoolName'.$lang]);
+                $criteria->addCond('schoolId', '==', (string)$this->_id);
                 Result::model()->updateAll($modifier, $criteria);
             }
         }

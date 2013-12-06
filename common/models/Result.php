@@ -57,34 +57,53 @@ class Result extends \common\ext\MongoDb\Document
     public $teamId;
 
     /**
+     * Name of a team
+     * @var string
+     * @see beforeValidate()
+     */
+    public $teamName;
+
+    /**
+     * School ID
+     * @var string
+     * @see beforeValidate()
+     */
+    public $schoolId;
+
+    /**
      * School name of the result's team in ukrainian
      * @var string
+     * @see beforeValidate()
      */
     public $schoolNameUk;
 
     /**
      * School name of the result's team in english
      * @var string
+     * @see beforeValidate()
      */
     public $schoolNameEn;
 
     /**
+     * Coach ID
+     * @var string
+     * @see beforeValidate()
+     */
+    public $coachId;
+
+    /**
      * Coach name of the result's team in ukrainian
      * @var string
+     * @see beforeValidate()
      */
     public $coachNameUk;
 
     /**
      * Coach name of the result's team in english
      * @var string
+     * @see beforeValidate()
      */
     public $coachNameEn;
-
-    /**
-     * Name of a team
-     * @var string
-     */
-    public $teamName;
 
     /**
      * Array of tasks => number of tries
@@ -175,20 +194,22 @@ class Result extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'year'         => 'Year of the result',
-            'phase'        => 'Number of phase',
-            'geo'          => 'Geographical position',
-            'place'        => 'Place of the team',
-            'teamId'       => 'ID of the team',
-            'schoolNameUk' => 'School name in ukrainian',
-            'schoolNameEn' => 'School name in english',
-            'coachNameUk'  => 'Coach name in ukrainian',
-            'coachNameEn'  => 'Coach name in english',
-            'teamName'     => 'Name of the team',
-            'tasksTries'   => 'Array of tasks => tries made',
-            'tasksTime'    => 'Array of tasks => time spent',
-            'total'        => 'Total points',
-            'penalty'      => 'Penalty points',
+            'year'          => \yii::t('app', 'Year of the result'),
+            'phase'         => \yii::t('app', 'Number of phase'),
+            'geo'           => \yii::t('app', 'Geographical position'),
+            'place'         => \yii::t('app', 'Place of the team'),
+            'teamId'        => \yii::t('app', 'ID of the team'),
+            'teamName'      => \yii::t('app', 'Name of the team'),
+            'schoolId'      => \yii::t('app', 'School ID'),
+            'schoolNameUk'  => \yii::t('app', 'School name in ukrainian'),
+            'schoolNameEn'  => \yii::t('app', 'School name in english'),
+            'coachId'       => \yii::t('app', 'Coach ID'),
+            'coachNameUk'   => \yii::t('app', 'Coach name in ukrainian'),
+            'coachNameEn'   => \yii::t('app', 'Coach name in english'),
+            'tasksTries'    => \yii::t('app', 'Array of tasks => tries made'),
+            'tasksTime'     => \yii::t('app', 'Array of tasks => time spent'),
+            'total'         => \yii::t('app', 'Total points'),
+            'penalty'       => \yii::t('app', 'Penalty points'),
         ));
     }
 
@@ -231,11 +252,21 @@ class Result extends \common\ext\MongoDb\Document
                 ),
                 'unique' => true,
             ),
+            'coachId' => array(
+                'key' => array(
+                    'coachId' => \EMongoCriteria::SORT_ASC,
+                )
+            ),
+            'schoolId' => array(
+                'key' => array(
+                    'schoolId' => \EMongoCriteria::SORT_ASC,
+                )
+            ),
             'teamId' => array(
                 'key' => array(
-                    'teamId' => \EMongoCriteria::SORT_ASC
+                    'teamId' => \EMongoCriteria::SORT_ASC,
                 )
-            )
+            ),
         ));
     }
 
@@ -255,22 +286,18 @@ class Result extends \common\ext\MongoDb\Document
             $this->year = (int)date('Y');
         }
 
+        // Convert to string
+        $this->teamId = (isset($this->teamId)) ? (string)$this->teamId : null;
+
         // Save school and coach info if team exists
         if (isset($this->teamId)) {
             $this->setAttributes(array(
-                'teamId'        => (string)$this->teamId,
+                'schoolId'      => (string)$this->team->school->_id,
                 'schoolNameUk'  => $this->team->school->fullNameUk,
                 'schoolNameEn'  => $this->team->school->fullNameEn,
+                'coachId'       => (string)$this->team->coach->_id,
                 'coachNameUk'   => \web\widgets\user\Name::create(array('user' => $this->team->coach, 'lang' => 'uk'), true),
                 'coachNameEn'   => \web\widgets\user\Name::create(array('user' => $this->team->coach, 'lang' => 'en'), true),
-            ), false);
-        } else {
-            $this->setAttributes(array(
-                'teamId'        => null,
-                'schoolNameUk'  => null,
-                'schoolNameEn'  => null,
-                'coachNameUk'   => null,
-                'coachNameEn'   => null,
             ), false);
         }
 
