@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\models\News\Revision;
+use common\models\News\Publish;
 
 class News extends \common\ext\MongoDb\Document
 {
@@ -176,6 +177,28 @@ class News extends \common\ext\MongoDb\Document
                 'timestamp'      => (int)time()
             ), false);
             $revision->save();
+        }
+
+        // Add entry to news publish log
+        if ($this->attributeHasChanged('isPublished')) {
+            $criteria = new \EMongoCriteria();
+            $criteria
+                ->sort('timestamp', \EMongoCriteria::SORT_DESC)
+                ->limit(1);
+            $revisions = Revision::model()->findAll($criteria);
+            foreach ($revisions as $revision) {
+                $revisionToUse = $revision;
+            }
+
+            $publishLogEntry = new Publish();
+            $publishLogEntry->setAttributes(array(
+                'newsId'      => (string)$this->_id,
+                'revisionId'  => (string)$revisionToUse->_id,
+                'userId'      => (string)\yii::app()->user->getInstance()->_id,
+                'status'      => (bool)$this->isPublished,
+                'timestamp'   => (int)time(),
+            ), false);
+            $publishLogEntry->save();
         }
 
         parent::afterSave();
