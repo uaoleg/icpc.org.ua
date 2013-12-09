@@ -174,6 +174,25 @@ class News extends \common\ext\MongoDb\Document
             $revision->save();
         }
 
+        // Add entry to news publish log
+        if ($this->attributeHasChanged('isPublished')) {
+            $criteria = new \EMongoCriteria();
+            $criteria
+                ->sort('timestamp', \EMongoCriteria::SORT_DESC)
+                ->limit(1);
+            $revisions = News\Revision::model()->findAll($criteria);
+            $revisions->next();
+            $revision = $revisions->current();
+            $publishLogEntry = new News\PublishLog();
+            $publishLogEntry->setAttributes(array(
+                'newsId'      => $this->_id,
+                'revisionId'  => $revision->_id,
+                'userId'      => $revision->userId,
+                'isPublished' => $this->isPublished,
+            ), false);
+            $publishLogEntry->save();
+        }
+
         parent::afterSave();
     }
 
