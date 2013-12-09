@@ -11,12 +11,8 @@ class TeamCommand extends \console\ext\ConsoleCommand
      * and results for this team
      * @param string $id
      */
-    public function actionDelete($id = null)
+    public function actionDelete($id)
     {
-        if (!isset($id)) {
-            echo "\nError! Specify id of team to delete\n";
-            exit;
-        }
         $teamToDelete = Team::model()->findByPk(new \MongoId((string)$id));
         if (isset($teamToDelete)) {
             $year = $teamToDelete->year;

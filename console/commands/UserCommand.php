@@ -9,12 +9,8 @@ class UserCommand extends \console\ext\ConsoleCommand
      * Method which deletes user with specified id
      * @param string $id
      */
-    public function actionDelete($id = null)
+    public function actionDelete($id)
     {
-        if (!isset($id)) {
-            echo "\nError! Specify id of user to delete\n";
-            exit;
-        }
         $userToDelete = User::model()->findByPk(new \MongoId((string)$id));
         if (isset($userToDelete)) {
             $userToDelete->delete();

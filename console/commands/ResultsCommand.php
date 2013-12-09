@@ -10,7 +10,7 @@ class ResultsCommand extends \console\ext\ConsoleCommand
      * @param int    $year
      * @param string $geo
      */
-    public function actionDelete($year = null, $geo = null)
+    public function actionDelete($year, $geo)
     {
         if (isset($year) && isset($geo)) {
             $criteria = new \EMongoCriteria();
