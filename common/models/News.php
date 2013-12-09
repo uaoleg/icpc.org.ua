@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use common\models\News\Revision;
-
 class News extends \common\ext\MongoDb\Document
 {
 
@@ -168,12 +166,10 @@ class News extends \common\ext\MongoDb\Document
 
         // If title or content are changed need to add entry to news revisions
         if ($this->attributeHasChanged('title') || $this->attributeHasChanged('content')) {
-            $revision = new Revision();
+            $revision = new News\Revision();
             $revision->setAttributes(array(
-                'newsId'         => (string)$this->_id,
-                'userId'         => (string)\yii::app()->user->getInstance()->_id,
+                'newsId'         => $this->_id,
                 'newsAttributes' => $this->getAttributes(),
-                'timestamp'      => (int)time()
             ), false);
             $revision->save();
         }

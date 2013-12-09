@@ -30,15 +30,6 @@ class Revision extends \common\ext\MongoDb\Document
     public $timestamp;
 
     /**
-     * This returns the name of the collection for this class
-     * @return string
-     */
-    public function getCollectionName()
-    {
-        return 'news.revisions';
-    }
-
-    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -69,18 +60,57 @@ class Revision extends \common\ext\MongoDb\Document
     }
 
     /**
+     * This returns the name of the collection for this class
+     *
+     * @return string
+     */
+    public function getCollectionName()
+    {
+        return 'news.revision';
+    }
+
+    /**
+     * List of collection indexes
+     *
+     * @return array
+     */
+    public function indexes()
+    {
+        return array_merge(parent::indexes(), array(
+            'newsId_timestamp' => array(
+                'key' => array(
+                    'newsId'    => \EMongoCriteria::SORT_ASC,
+                    'timestamp' => \EMongoCriteria::SORT_DESC,
+                ),
+            ),
+        ));
+    }
+
+    /**
      * Before validate action
+     *
      * @return bool
      */
     protected function beforeValidate()
     {
-        if (!parent::beforeValidate()) return false;
+        if (!parent::beforeValidate()) {
+            return false;
+        }
 
-        // type casting
+        // Set timestamp
+        if (empty($this->timestamp)) {
+            $this->timestamp = time();
+        }
+
+        // Set user ID
+        if ((empty($this->userId)) && (\yii::app()->hasComponent('user'))) {
+           $this->userId = \yii::app()->user->id;
+        }
+
+        // Type casting
         $this->setAttributes(array(
             'newsId'        => (string)$this->newsId,
             'userId'        => (string)$this->userId,
-            'timestamp'     => (int)$this->timestamp
         ), false);
 
         return true;
