@@ -143,7 +143,12 @@ class ResultsController extends \web\ext\Controller
                 'penalty'                   => $result->penalty
             );
             foreach ($result->tasksTries as $letter => $tries) {
-                $arrayToAdd[$letter] = $tries . '&nbsp;(' . gmdate("H:i", $result->tasksTime[$letter]) . ')';
+                if (isset($tries)) {
+                    $arrayToAdd[$letter] = $tries;
+                    if ($tries > 0) {
+                        $arrayToAdd[$letter] .= '&nbsp;(' . gmdate("H:i", $result->tasksTime[$letter]) . ')';
+                    }
+                }
             }
             $rows[] = $arrayToAdd;
         }
