@@ -27,7 +27,7 @@
                 ],
                 colModel: [
                     {name: 'place', index: 'place', width: 60, align: 'center', search: false, frozen: true},
-                    {name: 'teamName', index: 'teamName', width: 150, formatter: 'showlink', formatoptions:{baseLinkUrl:'/team/view'}, frozen: true},
+                    {name: 'teamName', index: 'teamName', width: 150, frozen: true},
                     {name: 'coachName<?=ucfirst(\yii::app()->language)?>', index: 'coachName<?=ucfirst(\yii::app()->language)?>', width: 175, frozen: true},
                     {name: 'schoolName<?=ucfirst(\yii::app()->language)?>', index: 'schoolName<?=ucfirst(\yii::app()->language)?>', width: 250, frozen: true},
                     {name: 'total', index: 'total', width: 35, search: false, align: 'center', frozen: true},

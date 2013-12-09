@@ -133,10 +133,16 @@ class ResultsController extends \web\ext\Controller
         // Fill rows
         $rows = array();
         foreach ($jqgrid['itemList'] as $result) {
+            if (isset($result->teamId)) {
+                $teamName = '<a href="' . $this->createUrl('/team/view', array('id' => $result->teamId)). '">' .
+                    $result->teamName . '</a>';
+            } else {
+                $teamName = $result->teamName;
+            }
             $arrayToAdd = array(
                 'id'                        => $result->teamId,
                 'place'                     => $result->place,
-                'teamName'                  => $result->teamName,
+                'teamName'                  => $teamName,
                 'schoolName'.ucfirst($lang) => $result->schoolName,
                 'coachName'.ucfirst($lang)  => $result->coachName,
                 'total'                     => $result->total,
