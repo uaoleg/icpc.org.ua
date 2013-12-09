@@ -9,12 +9,8 @@ class NewsCommand extends \console\ext\ConsoleCommand
      * Method which deletes news with specified id
      * @param string $id
      */
-    public function actionDelete($id = null)
+    public function actionDelete($id)
     {
-        if (!isset($id)) {
-            echo "\nError! Specify id of news to delete\n";
-            exit;
-        }
         $newsToDelete = News::model()->findByPk(new \MongoId((string)$id));
         if (isset($newsToDelete)) {
             $newsToDelete->delete();
