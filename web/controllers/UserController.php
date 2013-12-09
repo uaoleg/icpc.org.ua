@@ -148,7 +148,7 @@ class UserController extends \web\ext\Controller
         // Render view
         $this->render($view, array(
             'lang' => $lang,
-            'info' => $user->getInfo($lang)
+            'info' => $user->setUseLanguage($lang)->info,
         ));
     }
 
@@ -174,7 +174,7 @@ class UserController extends \web\ext\Controller
         $fax           = $this->request->getPost('fax');
 
         // Save additional info
-        $info = \yii::app()->user->getInstance()->getInfo($lang);
+        $info = \yii::app()->user->getInstance()->setUseLanguage($lang)->info;
         $info->setAttributes(array(
             'lang'                     => $lang,
             'phoneHome'                => $phoneHome,
@@ -224,7 +224,7 @@ class UserController extends \web\ext\Controller
         $document            = $this->request->getPost('document');
 
         // Save additional info
-        $info = \yii::app()->user->getInstance()->getInfo($lang);
+        $info = \yii::app()->user->getInstance()->setUseLanguage($lang)->info;
         $info->setAttributes(array(
             'lang'                     => $lang,
             'phoneHome'                => $phoneHome,

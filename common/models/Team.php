@@ -134,13 +134,12 @@ class Team extends \common\ext\MongoDb\Document
 
     /**
      * Returns school name in appropriate language
-     * @param string $lang
+     *
      * @return string
      */
-    public function getSchoolName($lang = null)
+    public function getSchoolName()
     {
-        $lang = isset($lang) ? $lang : \yii::app()->language;
-        switch ($lang) {
+        switch ($this->useLanguage) {
             default:
             case 'uk':
                 return $this->schoolNameUk;
@@ -153,13 +152,12 @@ class Team extends \common\ext\MongoDb\Document
 
     /**
      * Returns coach name in appropriate language
-     * @param string $lang
+     *
      * @return string
      */
-    public function getCoachName($lang = null)
+    public function getCoachName()
     {
-        $lang = isset($lang) ? $lang : \yii::app()->language;
-        switch ($lang) {
+        switch ($this->useLanguage) {
             default:
             case 'uk':
                 return $this->coachNameUk;
