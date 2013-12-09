@@ -164,6 +164,35 @@ class News extends \common\ext\MongoDb\Document
             $this->save();
         }
 
+        // If title or content are changed need to add entry to news revisions
+        if ($this->attributeHasChanged('title') || $this->attributeHasChanged('content')) {
+            $revision = new News\Revision();
+            $revision->setAttributes(array(
+                'newsId'         => $this->_id,
+                'newsAttributes' => $this->getAttributes(),
+            ), false);
+            $revision->save();
+        }
+
+        // Add entry to news publish log
+        if ($this->attributeHasChanged('isPublished')) {
+            $criteria = new \EMongoCriteria();
+            $criteria
+                ->sort('timestamp', \EMongoCriteria::SORT_DESC)
+                ->limit(1);
+            $revisions = News\Revision::model()->findAll($criteria);
+            $revisions->next();
+            $revision = $revisions->current();
+            $publishLogEntry = new News\PublishLog();
+            $publishLogEntry->setAttributes(array(
+                'newsId'      => $this->_id,
+                'revisionId'  => $revision->_id,
+                'userId'      => $revision->userId,
+                'isPublished' => $this->isPublished,
+            ), false);
+            $publishLogEntry->save();
+        }
+
         parent::afterSave();
     }
 
@@ -171,10 +200,10 @@ class News extends \common\ext\MongoDb\Document
      * Scope for latest page
      *
      * @param string $geo
-     * @param int   $year
-     * @param bool  $publishedOnly
-     * @param int   $page
-     * @paran int   $perPage
+     * @param int    $year
+     * @param bool   $publishedOnly
+     * @param int    $page
+     * @param int    $perPage
      * @return News
      */
     public function scopeByLatest($geo, $year, $publishedOnly, $page = 1, $perPage = 10)
