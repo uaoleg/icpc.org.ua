@@ -27,6 +27,12 @@ class Settings extends \common\ext\MongoDb\Document
     public $geo;
 
     /**
+     * Language for the user
+     * @var string
+     */
+    public $lang;
+
+    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -40,6 +46,7 @@ class Settings extends \common\ext\MongoDb\Document
             'userId'    => \yii::t('app', 'User ID'),
             'year'      => \yii::t('app', 'Year'),
             'geo'       => \yii::t('app', 'Geo'),
+            'lang'      => \yii::t('app', 'Language'),
         ));
     }
 

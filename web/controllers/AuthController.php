@@ -299,6 +299,16 @@ class AuthController extends \web\ext\Controller
             // If no errors, than create and auth user
             if (!$user->hasErrors()) {
                 $user->save();
+
+                $settings = $user->settings;
+                $settings->setAttributes(array(
+                    'userId'    => $user->_id,
+                    'geo'       => $this->getGeo(),
+                    'year'      => $this->getYear(),
+                    'lang'      => (string)$this->request->cookies['language']
+                ), false);
+                $settings->save();
+
                 $identity = new \web\ext\UserIdentity($email, $password);
                 $identity->authenticate();
                 \yii::app()->user->login($identity);
