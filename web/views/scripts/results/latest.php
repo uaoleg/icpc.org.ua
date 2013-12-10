@@ -88,7 +88,7 @@
                         <p class="form-control-static"><b><?=date('Y')?></b>&nbsp;<?=\yii::t('app', 'year')?></p>
                     </div>
 
-                    <?php if (isset(\yii::app()->user->getInstance()->school->fullNameUk)): ?>
+                    <?php if (!\yii::app()->user->getInstance()->school->getIsNewRecord()): ?>
                         <div class="form-group">
                             <button type="button" class="btn btn-lg2 btn-info" id="uploadPickfiles">
                                 <?=\yii::t('app', 'Choose file')?>
