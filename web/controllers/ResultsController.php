@@ -152,7 +152,9 @@ class ResultsController extends \web\ext\Controller
                 if (isset($tries)) {
                     $arrayToAdd[$letter] = $tries;
                     if ($tries > 0) {
-                        $arrayToAdd[$letter] .= '&nbsp;(' . gmdate("H:i", $result->tasksTime[$letter]) . ')';
+                        $datetime = new \DateTime();
+                        $datetime->setTime(0, 0, $result->tasksTime[$letter]);
+                        $arrayToAdd[$letter] .= '&nbsp;(' . $datetime->format('G:i') . ')';
                     }
                 }
             }
