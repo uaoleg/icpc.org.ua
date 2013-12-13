@@ -130,9 +130,26 @@ class TeamController extends \web\ext\Controller
                 }
 
                 // Get team members
-                $users = User::model()->findAllByAttributes(array(
+                $allUsers = User::model()->findAllByAttributes(array(
                     'schoolId' => (string)$school->_id,
                     'type'     => User::ROLE_STUDENT
+                ));
+                $allUsersIds = array();
+                foreach ($allUsers as $user) {
+                    $allUsersIds[] = (string)$user->_id;
+                }
+
+                $usersInTeam = Team::model()->getCollection()->distinct('memberIds', array(
+                    'year'     => (int)$team->year,
+                    'schoolId' => (string)$school->_id
+                ));
+
+                $usersIds = array_diff($allUsersIds, $usersInTeam);
+                $usersMongoIds = array_map(function($id) {
+                    return new \MongoId($id);
+                }, array_merge($usersIds, $team->memberIds));
+                $users = User::model()->findAllByAttributes(array(
+                    '_id' => array('$in' => $usersMongoIds)
                 ));
 
                 // Render view
