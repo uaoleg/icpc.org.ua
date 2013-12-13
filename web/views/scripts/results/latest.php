@@ -24,10 +24,10 @@
 </div>
 <?php if (count($states) > 0): ?>
 <ul>
-    <?php foreach($states as $state): ?>
+    <?php foreach($states as $state => $label): ?>
         <li>
             <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 1, 'state' => $state))?>">
-                <?=\common\models\Geo\State::model()->getAttributeLabel($state, 'name')?>
+                <?=$label?>
             </a>
         </li>
     <?php endforeach; ?>
@@ -43,10 +43,10 @@
 </div>
 <?php if (count($regions) > 0): ?>
 <ul>
-    <?php foreach($regions as $region): ?>
+    <?php foreach($regions as $region => $label): ?>
         <li>
             <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 2, 'region' => $region))?>">
-                <?=\common\models\Geo\Region::model()->getAttributeLabel($region, 'name')?>
+                <?=$label?>
             </a>
         </li>
     <?php endforeach; ?>

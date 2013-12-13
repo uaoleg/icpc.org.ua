@@ -37,11 +37,22 @@ class ResultsController extends \web\ext\Controller
             'geo'   => array('$in' => Geo\State::model()->getConstantList('NAME_'))
         ));
 
+        $statesWithLabels = array();
+        foreach ($states as $state) {
+            $statesWithLabels[$state] = Geo\State::model()->getAttributeLabel($state, 'name');
+        }
+        asort($statesWithLabels);
+
         // Select regions for which there are results
         $regions = Result::model()->getCollection()->distinct('geo', array(
             'year' => $year,
             'geo'  => array('$in' => Geo\Region::model()->getConstantList('NAME_'))
         ));
+
+        $regionsWithLabels = array();
+        foreach ($regions as $region) {
+            $regionsWithLabels[$region] = Geo\Region::model()->getAttributeLabel($region, 'name');
+        }
 
         // Check if there are results for 3rd phase
         $hasUkraineResults = false;
@@ -55,8 +66,8 @@ class ResultsController extends \web\ext\Controller
         // Render view
         $this->render('latest', array(
             'year'              => $year,
-            'states'            => $states,
-            'regions'           => $regions,
+            'states'            => $statesWithLabels,
+            'regions'           => $regionsWithLabels,
             'hasUkraineResults' => $hasUkraineResults,
             'school'            => \yii::app()->user->getInstance()->school
         ));
