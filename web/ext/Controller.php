@@ -51,17 +51,17 @@ class Controller extends \CController
         if (($this->getId() != 'auth') && (!\yii::app()->request->isAjaxRequest)) {
             \yii::app()->user->setState('last-visited-url',  \yii::app()->request->url);
         }
+
         // Restore nav active items
         $this->_navActiveItems = \yii::app()->user->getState('nav-active-items', array());
+
         // Set application language and save it with the help of cookies
         if (!\yii::app()->user->isGuest) {
-            if (isset(\yii::app()->user->getInstance()->settings->lang)) {
-                $this->request->cookies['language'] = new \CHttpCookie(
-                    'language', \yii::app()->user->getInstance()->settings->lang
-                );
+            $settings = \yii::app()->user->getInstance()->settings;
+            if (isset($settings->lang)) {
+                $this->request->cookies['language'] = new \CHttpCookie('language', $settings->lang);
             } else {
-                $settings = \yii::app()->user->getInstance()->settings;
-                $settings->lang = (string)$this->request->cookies['language'];
+                $settings->lang = $this->request->cookies['language']->value;
                 $settings->save();
             }
 
@@ -69,8 +69,8 @@ class Controller extends \CController
         if (!isset($this->request->cookies['language'])) {
             $languageCodes = array_keys(\yii::app()->params['languages']);
             $langCode = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-            $this->request->cookies['language'] =
-                new \CHttpCookie('language', (in_array($langCode, $languageCodes)) ? $langCode : 'uk');
+            $defaultLang = (in_array($langCode, $languageCodes)) ? $langCode : 'uk';
+            $this->request->cookies['language'] = new \CHttpCookie('language', $defaultLang);
         }
         if (isset($this->request->cookies['language'])) {
             \yii::app()->language = $this->request->cookies['language']->value;
