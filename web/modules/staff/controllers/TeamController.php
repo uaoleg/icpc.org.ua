@@ -125,6 +125,10 @@ class TeamController extends \web\ext\Controller
                     $team->year = date('Y');
                 }
 
+                if (!isset($team)) {
+                    $this->httpException(404);
+                }
+
                 // Get team members
                 $users = User::model()->findAllByAttributes(array(
                     'schoolId' => (string)$school->_id,
