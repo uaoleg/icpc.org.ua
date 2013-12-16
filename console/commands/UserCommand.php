@@ -20,5 +20,5 @@ class UserCommand extends \console\ext\ConsoleCommand
             echo "Error! User with id={$id} was not found\n";
         }
     }
-    
+
 }

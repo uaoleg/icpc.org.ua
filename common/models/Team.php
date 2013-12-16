@@ -16,6 +16,9 @@ use \common\models\Team;
 class Team extends \common\ext\MongoDb\Document
 {
 
+    // Scenarios
+    const SC_USER_DELETING = 'userDeleting';
+
     /**
      * Name of a team
      * @var string
@@ -271,10 +274,12 @@ class Team extends \common\ext\MongoDb\Document
         $this->year = (int)$this->year;
 
         // Members
-        if (count($this->memberIds) < 3) {
-            $this->addError('memberIds', \yii::t('app', 'The number of members should be greater or equal then 3.'));
-        } elseif (count($this->memberIds) > 4) {
-            $this->addError('memberIds', \yii::t('app', 'The number of members should be less or equal then 4.'));
+        if ($this->scenario !== static::SC_USER_DELETING) {
+            if (count($this->memberIds) < 3) {
+                $this->addError('memberIds', \yii::t('app', 'The number of members should be greater or equal then 3.'));
+            } elseif (count($this->memberIds) > 4) {
+                $this->addError('memberIds', \yii::t('app', 'The number of members should be less or equal then 4.'));
+            }
         }
 
         // Check if user tries to add user who is already is some other team
@@ -326,7 +331,7 @@ class Team extends \common\ext\MongoDb\Document
     protected function afterDelete()
     {
         // After team is deleted results for it should be removed too
-        $criteria = new EMongoCriteria();
+        $criteria = new \EMongoCriteria();
         $criteria
             ->addCond('teamId', '==', (string)$this->_id)
             ->addCond('year', '==', (int)$this->year);

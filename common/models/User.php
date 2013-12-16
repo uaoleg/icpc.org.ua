@@ -476,4 +476,46 @@ class User extends \common\ext\MongoDb\Document
         return (crypt($password, $this->hash) === $this->hash);
     }
 
+    /**
+     * After delete action
+     */
+    protected function afterDelete()
+    {
+        $userId = (string)$this->_id;
+        // After user is deleted settings for this user should be removed too
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('userId', '==', $userId);
+        User\Settings::model()->deleteAll($criteria);
+
+        // After user is deleted additional info for this user should be removed too
+        switch ($this->type) {
+            case static::ROLE_STUDENT:
+                User\InfoStudent::model()->deleteAll($criteria);
+                break;
+            case static::ROLE_COACH:
+                User\InfoCoach::model()->deleteAll($criteria);
+                break;
+        }
+
+        // After user is deleted teams where this user is coach should be removed too
+        $teamsToDelete = Team::model()->findAllByAttributes(array(
+            'coachId' => $userId,
+        ));
+        foreach ($teamsToDelete as $team) {
+            $team->delete();
+        }
+
+        // After user is deleted his id should be removed from memberIds of teams user is in
+        $teams = Team::model()->findAllByAttributes(array(
+            'memberIds' => $userId,
+        ));
+        foreach ($teams as $team) {
+            $team->scenario = Team::SC_USER_DELETING;
+            $team->memberIds = array_diff($team->memberIds, (array)$userId);
+            $team->save();
+        }
+
+        parent::afterDelete();
+    }
+
 }
