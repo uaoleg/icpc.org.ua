@@ -7,7 +7,7 @@
 </script>
 
 <div class="row">
-    <div class="col-lg-6 col-lg-offset-3">
+    <div class="col-lg-8 col-lg-offset-2">
 
         <?php $this->renderPartial('partial/additionalTabs'); ?>
 
@@ -17,57 +17,62 @@
                 <div class="form-horizontal">
 
                     <div class="form-group">
-                        <label for="firstNameUk" class="col-lg-3 control-label"><?=\yii::t('app', 'First name (ukranian)')?></label>
-                        <div class="col-lg-9">
+                        <label class="col-lg-2 control-label"><?=\yii::t('app', 'First name')?></label>
+                        <div class="col-lg-5">
+                            <div class="input-group">
                             <input type="text" class="form-control" id="firstNameUk" name="firstNameUk"
                                    value="<?=\CHtml::encode($user->firstNameUk)?>" placeholder="Ім'я (українською)">
+                            <span class="input-group-addon"><span class="img-language-uk-16"></span></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="middleNameUk" class="col-lg-3 control-label"><?=\yii::t('app', 'Middle name (ukranian)')?></label>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control" id="middleNameUk" name="middleNameUk"
-                                   value="<?=\CHtml::encode($user->middleNameUk)?>" placeholder="По-батьковi (українською)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastNameUk" class="col-lg-3 control-label"><?=\yii::t('app', 'Last name (ukranian)')?></label>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control" id="lastNameUk" name="lastNameUk"
-                                   value="<?=\CHtml::encode($user->lastNameUk)?>" placeholder="Прізвище (українською)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="firstNameEn" class="col-lg-3 control-label"><?=\yii::t('app', 'First name (english)')?></label>
-                        <div class="col-lg-9">
+                        <div class="col-lg-5 co2l-lg-offset-1">
+                            <div class="input-group">
                             <input type="text" class="form-control" id="firstNameEn" name="firstNameEn"
                                    value="<?=\CHtml::encode($user->firstNameEn)?>" placeholder="First name (english)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="middleNameEn" class="col-lg-3 control-label"><?=\yii::t('app', 'Middle name (english)')?></label>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control" id="middleNameEn" name="middleNameEn"
-                                   value="<?=\CHtml::encode($user->middleNameEn)?>" placeholder="Middle name (english)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastNameEn" class="col-lg-3 control-label"><?=\yii::t('app', 'Last name (english)')?></label>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control" id="lastNameEn" name="lastNameEn"
-                                   value="<?=\CHtml::encode($user->lastNameEn)?>" placeholder="Last name (english)">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label"><?=\yii::t('app', 'Email')?></label>
-                        <div class="col-lg-9">
-                            <p class="form-control-static"><?=$user->email?></p>
+                            <span class="input-group-addon"><span class="img-language-en-16"></span></span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-lg-3 control-label"><?=\yii::t('app', 'School name')?></label>
-                        <div class="col-lg-9">
+                        <label class="col-lg-2 control-label"><?=\yii::t('app', 'Middle name')?></label>
+                        <div class="col-lg-5">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="middleNameUk" name="middleNameUk"
+                                       value="<?=\CHtml::encode($user->middleNameUk)?>" placeholder="По-батьковi (українською)">
+                                <span class="input-group-addon"><span class="img-language-uk-16"></span></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="middleNameEn" name="middleNameEn"
+                                       value="<?=\CHtml::encode($user->middleNameEn)?>" placeholder="Middle name (english)">
+                                <span class="input-group-addon"><span class="img-language-en-16"></span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"><?=\yii::t('app', 'Last name')?></label>
+                        <div class="col-lg-5">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="lastNameUk" name="lastNameUk"
+                                       value="<?=\CHtml::encode($user->lastNameUk)?>" placeholder="Прізвище (українською)">
+                                <span class="input-group-addon"><span class="img-language-uk-16"></span></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="lastNameEn" name="lastNameEn"
+                                       value="<?=\CHtml::encode($user->lastNameEn)?>" placeholder="Last name (english)">
+                                <span class="input-group-addon"><span class="img-language-en-16"></span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"><?=\yii::t('app', 'School name')?></label>
+                        <div class="col-lg-10">
                             <select class="form-control" name="schoolId" id="schoolId" data-placeholder="Оберіть ВНЗ (українською)">
                                 <option value=""></option>
                                 <?php foreach ($schools as $school): ?>
@@ -80,8 +85,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-lg-3 control-label"><?=\yii::t('app', 'Roles')?></label>
-                        <div class="col-lg-9">
+                        <label class="col-lg-2 control-label"><?=\yii::t('app', 'Roles')?></label>
+                        <div class="col-lg-10">
                             <div name="role" class="clearfix" style="margin-bottom: -20px;">
                                 <div class="btn-group btn-group-justified" data-toggle="buttons">
                                     <a class="btn btn-default <?=($user->type === \common\models\User::ROLE_STUDENT) ? 'active' : ''?>">

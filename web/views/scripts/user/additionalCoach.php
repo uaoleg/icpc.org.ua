@@ -7,7 +7,7 @@
 </script>
 
 <div class="row">
-    <div class="col-lg-6 col-lg-offset-3">
+    <div class="col-lg-8 col-lg-offset-2">
 
         <?php $this->renderPartial('partial/additionalTabs'); ?>
 
