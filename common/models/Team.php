@@ -320,5 +320,15 @@ class Team extends \common\ext\MongoDb\Document
         parent::afterSave();
     }
 
+    protected function afterDelete()
+    {
+        $criteria = new EMongoCriteria();
+        $criteria
+            ->addCond('teamId', '==', (string)$this->_id)
+            ->addCond('year', '==', (int)$this->year);
+        Result::model()->deleteAll($criteria);
+        parent::afterDelete();
+    }
+
 
 }
