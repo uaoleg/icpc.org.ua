@@ -129,7 +129,7 @@ class TeamController extends \web\ext\Controller
                     $this->httpException(404);
                 }
 
-                // Get team members
+                // Get students from the school
                 $allUsers = User::model()->findAllByAttributes(array(
                     'schoolId' => (string)$school->_id,
                     'type'     => User::ROLE_STUDENT
@@ -139,11 +139,13 @@ class TeamController extends \web\ext\Controller
                     $allUsersIds[] = (string)$user->_id;
                 }
 
+                // Get all team members for this year and from the school
                 $usersInTeam = Team::model()->getCollection()->distinct('memberIds', array(
                     'year'     => (int)$team->year,
                     'schoolId' => (string)$school->_id
                 ));
 
+                // Get all users from the school and not in the teams
                 $usersIds = array_diff($allUsersIds, $usersInTeam);
                 $usersMongoIds = array_map(function($id) {
                     return new \MongoId($id);
