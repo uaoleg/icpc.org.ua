@@ -6,6 +6,7 @@ use \common\models\User;
 
 class UserIdentity extends \CUserIdentity
 {
+    const ERROR_EMAIL_NOT_CONFIRMED = 200;
 
     /**
      * User ID
@@ -46,6 +47,10 @@ class UserIdentity extends \CUserIdentity
         } elseif (!$user->checkPassword($this->password)) {
             $this->_setError(static::ERROR_UNKNOWN_IDENTITY);
 
+        // Is email confirmed
+        } elseif (!$user->isEmailConfirmed) {
+            $this->_setError(static::ERROR_EMAIL_NOT_CONFIRMED);
+
         // If success
         } else {
             $this->_afterSuccessAuthenticate($user);
@@ -74,6 +79,9 @@ class UserIdentity extends \CUserIdentity
                 break;
             case static::ERROR_PASSWORD_INVALID:
                 $this->errorMessage = \yii::t('app', 'Password is invalid');
+                break;
+            case static::ERROR_EMAIL_NOT_CONFIRMED:
+                $this->errorMessage = \yii::t('app', 'E-mail is not confirmed');
                 break;
         }
     }

@@ -103,6 +103,12 @@ class User extends \common\ext\MongoDb\Document
     public $dateCreated;
 
     /**
+     * Is email confirmed
+     * @var boolean
+     */
+    public $isEmailConfirmed;
+
+    /**
      * User's school
      * @var School
      */
@@ -277,21 +283,22 @@ class User extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'firstName'      => \yii::t('app', 'First name'),
-            'middleName'     => \yii::t('app', 'Middle name'),
-            'lastName'       => \yii::t('app', 'Last name'),
-            'firstNameUk'    => \yii::t('app', 'First name in Ukrainian'),
-            'middleNameUk'   => \yii::t('app', 'Middle name in Ukranian'),
-            'lastNameUk'     => \yii::t('app', 'Last name in Ukrainian'),
-            'firstNameEn'    => \yii::t('app', 'First name in English'),
-            'middleNameEn'   => \yii::t('app', 'Middle name in English'),
-            'lastNameEn'     => \yii::t('app', 'Last name in English'),
-            'email'          => \yii::t('app', 'Email'),
-            'hash'           => \yii::t('app', 'Password hash'),
-            'type'           => \yii::t('app', 'Type'),
-            'coordinator'    => \yii::t('app', 'Coordination type'),
-            'schoolId'       => \yii::t('app', 'School'),
-            'dateCreated'    => \yii::t('app', 'Registration date'),
+            'firstName'         => \yii::t('app', 'First name'),
+            'middleName'        => \yii::t('app', 'Middle name'),
+            'lastName'          => \yii::t('app', 'Last name'),
+            'firstNameUk'       => \yii::t('app', 'First name in Ukrainian'),
+            'middleNameUk'      => \yii::t('app', 'Middle name in Ukrainian'),
+            'lastNameUk'        => \yii::t('app', 'Last name in Ukrainian'),
+            'firstNameEn'       => \yii::t('app', 'First name in English'),
+            'middleNameEn'      => \yii::t('app', 'Middle name in English'),
+            'lastNameEn'        => \yii::t('app', 'Last name in English'),
+            'email'             => \yii::t('app', 'Email'),
+            'hash'              => \yii::t('app', 'Password hash'),
+            'type'              => \yii::t('app', 'Type'),
+            'coordinator'       => \yii::t('app', 'Coordination type'),
+            'schoolId'          => \yii::t('app', 'School'),
+            'dateCreated'       => \yii::t('app', 'Registration date'),
+            'isEmailConfirmed'  => \yii::t('app', 'Is email confirmed'),
         ));
     }
 
@@ -353,6 +360,8 @@ class User extends \common\ext\MongoDb\Document
         if (!in_array($this->type, array(static::ROLE_STUDENT, static::ROLE_COACH))) {
             $this->type = null;
         }
+
+        $this->isEmailConfirmed = (bool)$this->isEmailConfirmed;
 
         // Coordinator
         if (empty($this->coordinator)) {

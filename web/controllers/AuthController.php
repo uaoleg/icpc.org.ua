@@ -248,6 +248,25 @@ class AuthController extends \web\ext\Controller
     }
 
     /**
+     * Confirm email page
+     */
+    public function actionEmailConfirm()
+    {
+        $token = \yii::app()->request->getParam('token');
+        if (isset($token)) {
+            $emailConfirmation = User\EmailConfirmation::model()->findByPk(new \MongoId($token));
+            if (isset($emailConfirmation)) {
+                $user = User::model()->findByPk(new \MongoId($emailConfirmation->userId));
+                $user->isEmailConfirmed = true;
+                $user->save();
+                $emailConfirmation->delete();
+                $this->render('emailConfirm');
+            }
+        }
+        $this->httpException(400);
+    }
+
+    /**
      * Signup page
      */
     public function actionSignup()
@@ -267,13 +286,14 @@ class AuthController extends \web\ext\Controller
         // Set attributes
         $user = new User();
         $user->setAttributes(array(
-            'firstNameUk'   => $firstNameUk,
-            'middleNameUk'  => $middleNameUk,
-            'lastNameUk'    => $lastNameUk,
-            'email'         => $email,
-            'type'          => $type,
-            'coordinator'   => $coordinator,
-            'schoolId'      => $schoolId,
+            'firstNameUk'       => $firstNameUk,
+            'middleNameUk'      => $middleNameUk,
+            'lastNameUk'        => $lastNameUk,
+            'email'             => $email,
+            'type'              => $type,
+            'coordinator'       => $coordinator,
+            'schoolId'          => $schoolId,
+            'isEmailConfirmed'  => false,
         ), false);
 
         // Register a new user
@@ -301,6 +321,24 @@ class AuthController extends \web\ext\Controller
 
                 // Save user
                 $user->save();
+
+                // Create an email confirmation record
+                $emailConfirmation = new User\EmailConfirmation();
+                $emailConfirmation->userId = (string)$user->_id;
+                $emailConfirmation->save();
+
+                // Send email
+                $message = new \common\ext\Mail\MailMessage();
+                $message
+                    ->addTo($user->email)
+                    ->setFrom(\yii::app()->params['emails']['noreply']['address'], \yii::app()->params['emails']['noreply']['name'])
+                    ->setSubject(\yii::t('app', 'icpc.org.ua Email confirmation'))
+                    ->setView('emailConfirmation', array(
+                        'link' => $this->createAbsoluteUrl('/auth/emailConfirm', array(
+                                'token' => (string)$emailConfirmation->_id,
+                            )),
+                    ));
+                \yii::app()->mail->send($message);
 
                 // Save user settings
                 $settings = $user->settings;
