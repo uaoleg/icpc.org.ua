@@ -1,7 +1,7 @@
 <?php
 
-use common\models\Geo\State,
-    \common\models\School;
+use \common\models\Geo\State;
+use \common\models\School;
 
 class SchoolCommand extends \console\ext\ConsoleCommand
 {
