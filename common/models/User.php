@@ -388,6 +388,11 @@ class User extends \common\ext\MongoDb\Document
             \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_UKRAINE, $this->_id);
         }
 
+        // Revoke coach roles if it was changed
+        if ((!$this->_isFirstTimeSaved) && ($this->attributeHasChanged('type'))) {
+            \yii::app()->authManager->revoke(static::ROLE_COACH, $this->_id);
+        }
+
         // If user changed any name, info in results and teams models should be updated
         $initialUser = new static();
         $initialUser->setAttributes($this->_initialAttributes, false);
