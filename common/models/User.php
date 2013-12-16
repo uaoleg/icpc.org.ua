@@ -445,7 +445,7 @@ class User extends \common\ext\MongoDb\Document
 
         // Check passwords to be equal
         if ($password != $passwordRepeat) {
-            $this->addError('password', \yii::t('app', '{attr} is not confirmed.', array(
+            $this->addError('passwordRepeat', \yii::t('app', '{attr} is not confirmed.', array(
                 '{attr}' => $this->getAttributeLabel('password'),
             )));
         }

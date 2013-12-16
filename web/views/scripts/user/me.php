@@ -120,6 +120,12 @@
                                     "><?=$user->isApprovedCoordinator ? \yii::t('app', 'Approved') : \yii::t('app', 'Not approved');?></span>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-9 col-lg-offset-3">
+                                <button type="submit" class="btn btn-lg btn-primary btn-save-info"><?=\yii::t('app', 'Save')?></button>
+                            </div>
+                        </div>
                     </div>
 
                     <hr />
@@ -128,17 +134,16 @@
                         <label for="currentPassword" class="col-lg-3 control-label"><?=\yii::t('app', 'Current password')?></label>
                         <div class="col-lg-9">
                             <input type="password" class="form-control input-sm" id="currentPassword" name="currentPassword">
-                            <div class="help-block">
-                                <?=\yii::t('app', 'Set only if you want to change it')?>
-                            </div>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="password" class="col-lg-3 control-label"><?=\yii::t('app', 'New password')?></label>
                         <div class="col-lg-9">
                             <input type="password" class="form-control input-sm" id="password" name="password">
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="passwordRepeat" class="col-lg-3 control-label"><?=\yii::t('app', 'Repeat new password')?></label>
                         <div class="col-lg-9">
@@ -146,11 +151,11 @@
                         </div>
                     </div>
 
-                    <hr />
-
                     <div class="form-group">
                         <div class="col-lg-9 col-lg-offset-3">
-                            <button type="submit" class="btn btn-lg btn-primary btn-save"><?=\yii::t('app', 'Save')?></button>
+                            <button type="submit" class="btn btn-primary btn-save-password">
+                                <?=\yii::t('app', 'Change password')?>
+                            </button>
                         </div>
                     </div>
                 </div>
