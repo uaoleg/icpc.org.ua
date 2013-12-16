@@ -21,6 +21,7 @@ function appStaffTeamManage(options)
                 shortNameUk:    $('[name=shortNameUk]').val(),
                 fullNameEn:     $('[name=fullNameEn]').val(),
                 shortNameEn:    $('[name=shortNameEn]').val(),
+                name:           $('[name=name]').val(),
                 teamNamePrefix: $('[name=teamNamePrefix]').val(),
                 memberIds:      $('[name=memberIds]').val()
             },
