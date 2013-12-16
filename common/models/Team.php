@@ -320,8 +320,12 @@ class Team extends \common\ext\MongoDb\Document
         parent::afterSave();
     }
 
+    /**
+     * After delete action
+     */
     protected function afterDelete()
     {
+        // After team is deleted results for it should be removed too
         $criteria = new EMongoCriteria();
         $criteria
             ->addCond('teamId', '==', (string)$this->_id)
