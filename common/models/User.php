@@ -8,7 +8,7 @@ namespace common\models;
  * @property-read string            $firstName
  * @property-read string            $middleName
  * @property-read string            $lastName
-  * @property-read bool             $isApprovedCoach
+ * @property-read bool              $isApprovedCoach
  * @property-read bool              $isApprovedCoordinator
  * @property-read School            $school
  * @property-read User\Settings     $settings
