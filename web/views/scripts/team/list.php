@@ -31,7 +31,6 @@
                 {name: 'members', index: 'members', width: 40, search: false},
                 {name: 'year', index: 'year', width: 5, search: false}
             ],
-            caption: '<?=\yii::t('app', 'Team list')?>',
             sortname: 'teamname',
             sortorder: 'asc',
             autowidth: true,

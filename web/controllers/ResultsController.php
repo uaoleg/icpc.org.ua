@@ -144,17 +144,30 @@ class ResultsController extends \web\ext\Controller
         // Fill rows
         $rows = array();
         foreach ($jqgrid['itemList'] as $result) {
+            if (isset($result->teamId)) {
+                $teamName = '<a href="' . $this->createUrl('/team/view', array('id' => $result->teamId)). '">' .
+                    $result->teamName . '</a>';
+            } else {
+                $teamName = $result->teamName;
+            }
             $arrayToAdd = array(
                 'id'                        => $result->teamId,
                 'place'                     => $result->place,
-                'teamName'                  => $result->teamName,
+                'teamName'                  => $teamName,
                 'schoolName'.ucfirst($lang) => $result->schoolName,
                 'coachName'.ucfirst($lang)  => $result->coachName,
                 'total'                     => $result->total,
                 'penalty'                   => $result->penalty
             );
             foreach ($result->tasksTries as $letter => $tries) {
-                $arrayToAdd[$letter] = $tries . '&nbsp;(' . gmdate("H:i", $result->tasksTime[$letter]) . ')';
+                if (isset($tries)) {
+                    $arrayToAdd[$letter] = $tries;
+                    if ($tries > 0) {
+                        $datetime = new \DateTime();
+                        $datetime->setTime(0, 0, $result->tasksTime[$letter]);
+                        $arrayToAdd[$letter] .= '&nbsp;(' . $datetime->format('G:i') . ')';
+                    }
+                }
             }
             $rows[] = $arrayToAdd;
         }
