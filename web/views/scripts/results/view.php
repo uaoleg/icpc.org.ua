@@ -30,8 +30,8 @@
                     {name: 'teamName', index: 'teamName', width: 150, frozen: true},
                     {name: 'coachName<?=ucfirst(\yii::app()->language)?>', index: 'coachName<?=ucfirst(\yii::app()->language)?>', width: 175, frozen: true},
                     {name: 'schoolName<?=ucfirst(\yii::app()->language)?>', index: 'schoolName<?=ucfirst(\yii::app()->language)?>', width: 250, frozen: true},
-                    {name: 'total', index: 'total', width: 35, search: false, align: 'center', frozen: true},
-                    {name: 'penalty', index: 'penalty', width: 45, search: false, align: 'center', frozen: true},
+                    {name: 'total', index: 'total', width: 50, search: false, align: 'center', frozen: true},
+                    {name: 'penalty', index: 'penalty', width: 50, search: false, align: 'center', frozen: true},
                     <?php for ($i = 0; $i < $tasksCount; $i++): ?>
                         {name: '<?=$letters[$i]?>', index: '<?=$letters[$i]?>', width: 60, align: 'center', search: false},
                     <?php endfor; ?>
