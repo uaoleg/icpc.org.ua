@@ -144,7 +144,7 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                 <li>
-                    &copy; 2013 <a href="http://www.dataart.ua" target="_blank" class="inline">DataArt</a>
+                    &copy; <?=date('Y')?> <a href="http://www.dataart.ua" target="_blank" class="inline">DataArt</a>
                 </li>
                 <li>
                     <a href="https://github.com/uaoleg/icpc.org.ua" target="_blank" class="inline">

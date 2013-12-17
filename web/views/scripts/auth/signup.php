@@ -92,7 +92,10 @@
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" name="rulesAgree" <?=$rulesAgree ? 'checked' : ''?> />
-                            <?=\yii::t('app', 'I agree with rules of the service')?>
+                            <?=\yii::t('app', 'I agree with {a}rules of the service{/a}', array(
+                                '{a}'   => '<a href="' . $this->createUrl('/page/agreement') . '" target="_blank">',
+                                '{/a}'  => '</a>',
+                            ))?>
                         </label>
                     </div>
                 </div>
