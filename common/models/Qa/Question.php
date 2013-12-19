@@ -147,6 +147,9 @@ class Question extends \common\ext\MongoDb\Document
         // Convert to string
         $this->userId = (string)$this->userId;
 
+        // Filter tags
+        $this->tagList = array_filter(array_unique($this->tagList));
+
         // Set created date
         if ($this->dateCreated == null) {
             $this->dateCreated = time();

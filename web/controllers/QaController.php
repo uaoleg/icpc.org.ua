@@ -29,126 +29,136 @@ class QaController extends \web\ext\Controller
      */
     public function accessRules()
     {
-        // Return rules
         return array(
             array(
                 'allow',
-                'actions' => array('create'),
-                'roles' => array(Rbac::OP_QA_QUESTION_CREATE),
-            ),
-            array(
-                'allow',
-                'actions' => array('addComment'),
-                'roles' => array(Rbac::OP_QA_COMMENT_CREATE),
-            ),
-            array(
-                'allow',
-                'actions' => array('update'),
-                'roles' => array(Rbac::OP_QA_QUESTION_UPDATE),
-            ),
-            array(
-                'allow',
-                'actions' => array('saveAnswer'),
-                'roles' => array(Rbac::OP_QA_ANSWER_CREATE),
-            ),
-            array(
-                'allow',
-                'actions' => array('latest', 'view', 'tag'),
-                'users' => array('*'),
+                'actions'   => array('create'),
+                'roles'     => array(Rbac::OP_QA_QUESTION_CREATE),
             ),
             array(
                 'deny',
-            )
+                'actions'   => array('create'),
+            ),
+            array(
+                'allow',
+                'actions'   => array('update'),
+                'roles'     => array(Rbac::OP_QA_QUESTION_UPDATE),
+            ),
+            array(
+                'deny',
+                'actions'   => array('update'),
+            ),
+            array(
+                'allow',
+                'actions'   => array('saveAnswer'),
+                'roles'     => array(Rbac::OP_QA_ANSWER_CREATE),
+            ),
+            array(
+                'deny',
+                'actions'   => array('saveAnswer'),
+            ),
         );
     }
 
+    /**
+     * Display latest questions
+     */
     public function actionLatest()
     {
+        // Get list of questions
         $criteria = new \EMongoCriteria;
         $criteria->sort('dateCreated', \EMongoCriteria::SORT_DESC);
-        $pages = new \CPagination(Qa\Question::model()->count());
-        $pages->pageSize = 10;
-        $q = Qa\Question::model()->findAll($criteria);
-        $this->render(
-            'index',
-            array(
-                'q' => $q,
-                'pages' => $pages,
-                'tagMode' => false
-            )
-        );
+        $questions = Qa\Question::model()->findAll($criteria);
+
+        // Render view
+        $this->render('latest', array(
+            'questions' => $questions,
+        ));
     }
 
+    /**
+     * View a given question
+     *
+     * @param string $id
+     */
     public function actionView($id)
     {
+        // Get the question
         $question = Qa\Question::model()->findByPk(new \MongoId($id));
+        if ($question === null) {
+            $this->httpException(404);
+        }
 
-        $criteria = new \EMongoCriteria;
-        $criteria
-            ->addCond('questionId', '==', (string)$question->_id)
-            ->setSort(array(
-                'dateCreated' => \EMongoCriteria::SORT_DESC,
-            ));
-        $answers = Qa\Answer::model()->findAll($criteria);
-
-        $this->render(
-            'view',
-            array(
-                'question' => $question,
-                'answers' => $answers ?: array(),
-            )
-        );
+        // Render view
+        $this->render('view', array(
+            'question' => $question,
+        ));
     }
 
     /**
-     * Create a question
+     * Ask a question
      */
-    public function actionCreate()
+    public function actionAsk()
     {
-        $question = new Qa\Question();
-        if ($this->request->isPostRequest) {
-            $this->applyChanges(
-                $question,
-                array(
-                    'title' => $this->request->getParam('title', ''),
-                    'content' => $this->request->getParam('content', ''),
-                    'tagList' => explode(',', $this->request->getParam('tagList', array())),
-                    'answerCount' => 0,
-                )
-            );
+        // Check user to be loggedin
+        if (\yii::app()->user->isGuest) {
+            $this->redirect('/auth/login');
         }
-        $this->render(
-            'create',
-            array(
-                'question' => $question
-            )
-        );
+
+        // Get params
+        $id = $this->request->getParam('id');
+
+        // Get question
+        if (empty($id)) {
+            $question = new Qa\Question();
+        } else {
+            $question = Qa\Question::model()->findByPk(new \MongoId($id));
+            if ($question === null) {
+                $this->httpException(404);
+            }
+        }
+
+        // Render view
+        $this->render('ask', array(
+            'question' => $question
+        ));
     }
 
     /**
-     * Update a question
-     *
-     * @param string $id mondoDB record key
+     * Save a question
      */
-    public function actionUpdate($id)
+    public function actionSave()
     {
-        $question = Qa\Question::model()->findByPk(new \MongoId($id));
-        if ($this->request->isPostRequest) {
-            $this->applyChanges(
-                $question,
-                array(
-                    'title' => $this->request->getParam('title', ''),
-                    'content' => $this->request->getParam('content', ''),
-                    'tagList' => explode(',', $this->request->getParam('tagList', array())),
-                )
-            );
+        // Get params
+        $id         = $this->request->getParam('id');
+        $title      = $this->request->getParam('title');
+        $content    = $this->request->getParam('content');
+        $tagList    = $this->request->getParam('tagList');
+
+        // Get question
+        if (empty($id)) {
+            $question = new Qa\Question();
+        } else {
+            $question = Qa\Question::model()->findByPk(new \MongoId($id));
+            if ($question === null) {
+                $this->httpException(404);
+            }
         }
-        $this->render(
-            'update',
-            array(
-                'question' => $question,
-            )
-        );
+
+        // Save question
+        $question->setAttributes(array(
+            'userId'    => \yii::app()->user->id,
+            'title'     => $title,
+            'content'   => $content,
+            'tagList'   => explode(',', $tagList),
+        ), false);
+        $question->save();
+
+        // Render json
+        $this->renderJson(array(
+            'errors'    => $question->hasErrors() ? $question->getErrors() : false,
+            'url'       => $this->createUrl('view', array('id' => $question->_id)),
+        ));
     }
 
     /**
@@ -224,45 +234,6 @@ class QaController extends \web\ext\Controller
                 'tags' => $this->simplifyData($tags),
             )
         );
-    }
-
-    public function actionAddComment()
-    {
-        $id = $this->request->getParam('id', '');
-        $entity = $this->request->getParam('entity', 'question');
-        $content = $this->request->getParam('content', '');
-        $className = '\common\models\Qa\\' . \yii::app()->string->mb_ucfirst($entity);
-        $model = $className::model()->findByPk(new \MongoId($id));
-        if ($model && $this->request->isPostRequest) {
-            $comment = new Qa\CommentMapper();
-            $comment->setContent($content);
-            if (!$comment->hasErrors()) {
-                $model->comments[] = $comment->getData();
-            } else {
-                $_['status'] = 'error';
-                $_['errors'] = $comment->getErrors();
-                $this->renderJson($_);
-            }
-            $_['errors'] = array();
-            try {
-                if ($model->save()) {
-                    $_['status'] = 'success';
-                    $_['id'] = (string)$model->_id;
-                } else {
-                    $_['status'] = 'error';
-                    $_['errors'] = $model->getErrors();
-                }
-            } catch (\Exception $e) {
-                $_['status'] = 'error';
-                $_['errors']['common'] = $e->getMessage();
-            }
-            $this->renderJson($_);
-        }
-        $this->renderJson(array(
-            'errors' => array(
-                'common' => \yii::t('app', 'Bad request')
-            )
-        ));
     }
 
     protected function simplifyData($data)
