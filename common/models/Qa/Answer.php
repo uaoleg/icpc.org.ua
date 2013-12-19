@@ -167,11 +167,12 @@ class Answer extends \common\ext\MongoDb\Document
      */
     protected function afterSave()
     {
-        // Increase answer count in the related question
+        // Recount answers for the related question
         if ($this->_isFirstTimeSaved) {
-            $modify = new \EMongoModifier();
-            $modify->addModifier('answerCount', 'inc', 1);
-            $this->question->update(null, $modify);
+            $this->question->answerCount = $this->countByAttributes(array(
+                'questionId' => $this->questionId,
+            ));
+            $this->question->save();
         }
 
         parent::afterSave();

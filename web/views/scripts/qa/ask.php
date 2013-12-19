@@ -10,13 +10,9 @@
 </script>
 
 <?php if ($question->isNewRecord): ?>
-    <h2><?=\yii::t('app', 'Create a new question')?></h2>
+    <h2><?=\yii::t('app', 'Create a new Question')?></h2>
 <?php else: ?>
-    <h2><?=\yii::t('app', 'Edit the question')?></h2>
-    <small>
-        <b><?=\yii::t('app', 'Preview')?>:&nbsp;</b>
-        <a href="<?=$this->createUrl('view', array('id' => $question->_id))?>" target="_blank"></a>
-    </small>
+    <h2><?=\yii::t('app', 'Edit Question')?></h2>
 <?php endif; ?>
 
 <div class="form-horizontal">

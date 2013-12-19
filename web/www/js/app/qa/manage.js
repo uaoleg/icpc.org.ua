@@ -4,6 +4,11 @@ function appQaManage() {
      * Init ckeditor for question contetn
      */
     var editor = CKEDITOR.replace('question-content', {
+        toolbar: [
+            [ 'Bold', 'Italic', 'Underline', 'Strike' ],
+            [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ],
+            [ 'Undo', 'Redo' ],
+        ],
         extraPlugins: 'onchange',
         height: '300px'
     });

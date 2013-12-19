@@ -89,9 +89,17 @@ class QaController extends \web\ext\Controller
             $this->httpException(404);
         }
 
+        // Get answers
+        $criteria = new \EMongoCriteria();
+        $criteria
+            ->addCond('questionId', '==', $id)
+            ->sort('dateCreated', \EMongoCriteria::SORT_ASC);
+        $answers = Qa\Answer::model()->findAll($criteria);
+
         // Render view
         $this->render('view', array(
-            'question' => $question,
+            'question'  => $question,
+            'answers'   => $answers,
         ));
     }
 
@@ -162,37 +170,29 @@ class QaController extends \web\ext\Controller
     }
 
     /**
-     * Create an answer to the question
-     *
-     * @param string $id mondoDB record key
+     * Give an answer to the question
      */
-    public function actionSaveAnswer($id)
+    public function actionAnswer()
     {
-        $content = $this->request->getParam('content', '');
-        $this->applyChanges(
-            new Qa\Answer(),
-            array(
-                'content' => $content,
-                'questionId' => $id,
-            ),
-            function() use ($id) {
-                $question = Qa\Question::model()->findByPk(new \MongoId($id));
-                $question->answerCount = intval($question->answerCount) + 1;
-                try {
-                    if (!$question->save()) {
-                        $this->renderJson(array(
-                            'errors' => $question->getErrors
-                        ));
-                    }
-                } catch (\Exception $e) {
-                    $this->renderJson(array(
-                        'error' => array(
-                            'common' => $e->getMessage()
-                        )
-                    ));
-                }
-            }
-        );
+        // Get params
+        $questionId = $this->request->getParam('questionId');
+        $content    = $this->request->getParam('content');
+
+        // Create answer
+        $answer = new Qa\Answer();
+        $answer->setAttributes(array(
+            'userId'        => \yii::app()->user->id,
+            'questionId'    => $questionId,
+            'content'       => $content,
+        ), false);
+        $answer->save();
+
+        // Render json
+        $this->renderJson(array(
+            'errors'        => $answer->hasErrors() ? $answer->getErrors() : false,
+            'answerHtml'    => $this->renderPartial('partial/answer', array('answer' => $answer), true),
+            'answerCount'   => \yii::t('app', '{n} Answer|{n} Answers', $answer->question->answerCount)
+        ));
     }
 
     public function actionTag($id)
