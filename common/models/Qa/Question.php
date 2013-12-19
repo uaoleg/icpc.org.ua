@@ -2,6 +2,13 @@
 
 namespace common\models\Qa;
 
+use \common\models\User;
+
+/**
+ * Question
+ *
+ * @property-read User $user
+ */
 class Question extends \common\ext\MongoDb\Document
 {
 
@@ -41,6 +48,25 @@ class Question extends \common\ext\MongoDb\Document
      * @var int
      */
     public $dateCreated;
+
+    /**
+     * Answer author
+     * @var User
+     */
+    protected $_user;
+
+    /**
+     * Returns answer author
+     *
+     * @return Question
+     */
+    public function getUser()
+    {
+        if ($this->_user === null) {
+            $this->_user = User::model()->findByPk(new \MongoId($this->userId));
+        }
+        return $this->_user;
+    }
 
     /**
      * Returns the attribute labels.

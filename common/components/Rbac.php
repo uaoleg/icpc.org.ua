@@ -29,7 +29,19 @@ class Rbac extends \CApplicationComponent
     const OP_TEAM_CREATE            = 'teamCreate';
     const OP_TEAM_READ              = 'teamRead';
     const OP_TEAM_UPDATE            = 'teamUpdate';
-
+    const OP_QA_ANSWER_CREATE       = 'qaAnswerCreate';
+    const OP_QA_ANSWER_READ         = 'qaAnswerRead';
+    const OP_QA_ANSWER_UPDATE       = 'qaAnswerUpdate';
+    const OP_QA_ANSWER_DELETE       = 'qaAnswerDelete';
+    const OP_QA_COMMENT_CREATE      = 'qaCommentCreate';
+    const OP_QA_COMMENT_READ        = 'qaCommentRead';
+    const OP_QA_COMMENT_UPDATE      = 'qaCommentUpdate';
+    const OP_QA_COMMENT_DELETE      = 'qaCommentDelete';
+    const OP_QA_QUESTION_CREATE     = 'qaQuestionCreate';
+    const OP_QA_QUESTION_READ       = 'qaQuestionRead';
+    const OP_QA_QUESTION_UPDATE     = 'qaQuestionUpdate';
+    const OP_QA_QUESTION_DELETE     = 'qaQuestionDelete';
+    
     /**
      * Current user
      * @var User
