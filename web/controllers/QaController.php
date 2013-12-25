@@ -65,8 +65,14 @@ class QaController extends \web\ext\Controller
      */
     public function actionLatest()
     {
+        // Get params
+        $tag = $this->request->getParam('tag');
+
         // Get list of questions
         $criteria = new \EMongoCriteria;
+        if (!empty($tag)) {
+            $criteria->addCond('tagList', '==', mb_strtolower($tag));
+        }
         $criteria->sort('dateCreated', \EMongoCriteria::SORT_DESC);
         $questions = Qa\Question::model()->findAll($criteria);
 
@@ -195,60 +201,36 @@ class QaController extends \web\ext\Controller
         ));
     }
 
-    public function actionTag($id)
+    /**
+     * Renders json list of tags
+     */
+    public function actionTagList()
     {
+        // Get params
+        $q      = mb_strtolower($this->request->getParam('q', ''));
+        $limit  = (int)$this->request->getParam('page_limit', 10);
+
+        // Get list of tags
         $criteria = new \EMongoCriteria();
-        $criteria->addCond('tagList', '==', $id);
-        $criteria->setLimit(10);
-        $criteria->setSort(array(
-            'dateCreated' => \EMongoCriteria::SORT_DESC
-        ));
-        $pages = new \CPagination(Qa\Question::model()->count());
-        $pages->pageSize = 10;
-        $q = Qa\Question::model()->findAll($criteria);
-        $this->render(
-            'index',
-            array(
-                'q' => $q,
-                'pages' => $pages,
-                'tagMode' => true,
-                'tagName' => $id,
-            )
-        );
-    }
+        $criteria
+            ->addCond('name', '==', new \MongoRegex('/^' . preg_quote($q) . '/'))
+            ->limit($limit)
+            ->sort('name', \EMongoCriteria::SORT_ASC);
+        $tags = Qa\Tag::model()->findAll($criteria);
 
-    public function actionGetTags()
-    {
-        $q = mb_strtolower($this->request->getParam('q', ''));
-        $page_limit = $this->request->getParam('page_limit', 10);
-        $conditions = new \EMongoCriteria();
-        $conditions->name = new \MongoRegex("/^" . preg_quote($q) . "/");
-        $conditions->setLimit($page_limit);
-        $conditions->setSort(array(
-            'name' => \EMongoCriteria::SORT_ASC,
-            'dateCreated' => \EMongoCriteria::SORT_ASC
-        ));
-        $tags = Qa\Tag::model()->findAll($conditions);
-        $this->renderJson(
-            array(
-                'tags' => $this->simplifyData($tags),
-            )
-        );
-    }
-
-    protected function simplifyData($data)
-    {
-        $res = array();
-        if (!$data) {
-            return array();
-        }
-        foreach ($data as $key => $value) {
-            $res[] = array(
-                //'id' => (string)$value->_id,
-                'id' => $value->name,
-                'text' => $value->name
+        // Prepare tags for json
+        $jsonTags = array();
+        foreach ($tags as $tag) {
+            $jsonTags[] = array(
+                'id'    => $tag->name,
+                'text'  => $tag->name
             );
         }
-        return $res;
+
+        // Render json
+        $this->renderJson(array(
+            'tags' => $jsonTags,
+        ));
     }
+
 }

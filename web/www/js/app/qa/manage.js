@@ -29,7 +29,7 @@ function appQaManage() {
             callback(data);
         },
         ajax: {
-            url: '/qa/getTags',
+            url: app.baseUrl + '/qa/tagList',
             dataType: 'json',
             data: function (term, page) {
                 return {

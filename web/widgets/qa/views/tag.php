@@ -1,5 +1,5 @@
-<span class="label label-default">
-    <a href="<?=$this->createUrl('/qa/tag/' . \CHtml::encode($this->tag)); ?>">
+<a href="<?=$this->createUrl('/qa/latest', array('tag' => $this->tag)); ?>">
+    <span class="label label-default">
         <?=\CHtml::encode($this->tag)?>
-    </a>
-</span>
+    </span>
+</a>
