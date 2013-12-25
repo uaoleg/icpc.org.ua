@@ -4,6 +4,7 @@ namespace common\models\Qa;
 
 /**
  * Question tag
+ * @property-read int $questionCount
  */
 class Tag extends \common\ext\MongoDb\Document
 {
@@ -25,6 +26,16 @@ class Tag extends \common\ext\MongoDb\Document
      * @var int
      */
     public $dateCreated;
+
+    /**
+     * Get number of questions with this tag
+     * @return int
+     */
+    public function getQuestionCount() {
+        return Question::model()->countByAttributes(array(
+            'tagList' => $this->name
+        ));
+    }
 
     /**
      * Returns the attribute labels.
@@ -106,5 +117,21 @@ class Tag extends \common\ext\MongoDb\Document
 
         return true;
     }
+
+    protected function afterDelete()
+    {
+        // After tag is deleted we need to delete it from tagLists of questions
+        $questions = Question::model()->findAllByAttributes(array(
+            'tagList' => mb_strtolower($this->name)
+        ));
+        foreach ($questions as $question) {
+            $question->scenario = Question::SC_AFTER_DELETE_TAG;
+            $question->tagList = array_diff($question->tagList, (array)$this->name);
+            $question->save();
+        }
+
+        parent::afterDelete();
+    }
+
 
 }

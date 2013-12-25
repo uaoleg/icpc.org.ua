@@ -11,6 +11,7 @@ use \common\models\User;
  */
 class Question extends \common\ext\MongoDb\Document
 {
+    const SC_AFTER_DELETE_TAG = 'afterDeleteTag';
 
     /**
      * User ID
@@ -96,7 +97,8 @@ class Question extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('userId, title, content, tagList, dateCreated', 'required'),
+            array('userId, title, content, dateCreated', 'required'),
+            array('tagList', 'required', 'except' => static::SC_AFTER_DELETE_TAG),
             array('title', 'length', 'max' => 300),
             array('content', 'length', 'max' => 5000),
         ));

@@ -86,4 +86,20 @@ class QatagsController extends \web\modules\staff\ext\Controller
         }
     }
 
+    /**
+     * Delete tag
+     */
+    public function actionDelete() {
+        if ($this->request->isPostRequest) {
+            $id = $this->request->getPost('id');
+
+            $tagToDelete = Qa\Tag::model()->findByPk(new \MongoId($id));
+            $tagToDelete->delete();
+
+            $this->renderJson(array(
+                'errors' => $tagToDelete->hasErrors() ? $tagToDelete->getErrors() : false,
+            ));
+        }
+    }
+
 }
