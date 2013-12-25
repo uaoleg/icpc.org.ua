@@ -41,7 +41,11 @@ class Rbac extends \CApplicationComponent
     const OP_QA_QUESTION_READ       = 'qaQuestionRead';
     const OP_QA_QUESTION_UPDATE     = 'qaQuestionUpdate';
     const OP_QA_QUESTION_DELETE     = 'qaQuestionDelete';
-    
+    const OP_QA_TAG_CREATE          = 'qaTagCreate';
+    const OP_QA_TAG_READ            = 'qaTagRead';
+    const OP_QA_TAG_UPDATE          = 'qaTagUpdate';
+    const OP_QA_TAG_DELETE          = 'qaTagDelete';
+
     /**
      * Current user
      * @var User

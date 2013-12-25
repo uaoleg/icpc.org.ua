@@ -55,6 +55,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_QA_ANSWER_READ,
             Rbac::OP_QA_COMMENT_READ,
             Rbac::OP_QA_QUESTION_READ,
+            Rbac::OP_QA_TAG_READ,
         ));
 
         /**
@@ -99,6 +100,8 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_RESULT_CREATE,
             Rbac::OP_QA_ANSWER_CREATE,
             Rbac::OP_QA_ANSWER_UPDATE,
+            Rbac::OP_QA_TAG_CREATE,
+            Rbac::OP_QA_TAG_UPDATE,
         ));
 
         /**
@@ -116,6 +119,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_QA_ANSWER_DELETE,
             Rbac::OP_QA_COMMENT_DELETE,
             Rbac::OP_QA_QUESTION_DELETE,
+            Rbac::OP_QA_TAG_DELETE,
         ));
 
         /**
@@ -234,6 +238,10 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->auth->createOperation(Rbac::OP_QA_QUESTION_READ, 'Read question');
         $this->auth->createOperation(Rbac::OP_QA_QUESTION_UPDATE, 'Update question');
         $this->auth->createOperation(Rbac::OP_QA_QUESTION_DELETE, 'Delete question');
+        $this->auth->createOperation(Rbac::OP_QA_TAG_CREATE, 'Create tag');
+        $this->auth->createOperation(Rbac::OP_QA_TAG_READ, 'Read tag');
+        $this->auth->createOperation(Rbac::OP_QA_TAG_UPDATE, 'Update tag');
+        $this->auth->createOperation(Rbac::OP_QA_TAG_DELETE, 'Delete tag');
     }
 
     /**

@@ -4,7 +4,12 @@
     </h1>
     <a href="<?=$this->createUrl('ask')?>"
        class="btn btn-success btn-lg pull-right"
-       style="margin-top: 10px;"><?=\yii::t('app', 'Ask Question')?></a>
+       style="margin: 10px 0 0;"><?=\yii::t('app', 'Ask Question')?></a>
+    <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_QA_TAG_CREATE)): ?>
+    <a href="<?=$this->createUrl('/staff/qaTags')?>"
+       class="btn btn-default btn-lg pull-right"
+       style="margin: 10px 20px 0 0;"><?=\yii::t('app', 'Manage Tags')?></a>
+    <?php endif; ?>
 </div>
 
 <hr />

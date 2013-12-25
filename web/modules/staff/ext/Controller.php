@@ -7,7 +7,6 @@ use \common\models\User;
 class Controller extends \web\ext\Controller
 {
 
-
     /**
      * Returns the access rules for this controller
      *
@@ -18,7 +17,7 @@ class Controller extends \web\ext\Controller
         return array_merge(parent::accessRules(), array(
             array(
                 'allow',
-                'controllers'   => array('staff/coaches', 'staff/coordinators', 'staff/news'),
+                'controllers'   => array('staff/coaches', 'staff/coordinators', 'staff/news', 'staff/qaTags'),
                 'roles'         => array(User::ROLE_COORDINATOR_STATE),
             ),
             array(
@@ -31,6 +30,5 @@ class Controller extends \web\ext\Controller
             ),
         ));
     }
-
 
 }
