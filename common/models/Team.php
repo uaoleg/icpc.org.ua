@@ -275,21 +275,22 @@ class Team extends \common\ext\MongoDb\Document
             $this->addError('memberIds', \yii::t('app', 'The number of members should be greater or equal then 3.'));
         } elseif (count($this->memberIds) > 4) {
             $this->addError('memberIds', \yii::t('app', 'The number of members should be less or equal then 4.'));
-        }
+        } else {
+            // Check if user tries to add user who is already is some other team
+            $teams = Team::model()->findAllByAttributes(array(
+                '_id' => array('$ne' => $this->_id),
+                'year' => $this->year,
+                'memberIds' => array('$in' => $this->memberIds)
+            ));
+            foreach ($teams as $team) {
+                $userIds = array_intersect($team->memberIds, $this->memberIds);
 
-        // Check if user tries to add user who is already is some other team
-        $teams = Team::model()->findAllByAttributes(array(
-            '_id' => array('$ne' => $this->_id),
-            'year' => $this->year,
-            'memberIds' => array('$in' => $this->memberIds)
-        ));
-        foreach ($teams as $team) {
-            $userIds = array_intersect($team->memberIds, $this->memberIds);
-            foreach ($userIds as $userId) {
-                $user = User::model()->findByPk(new \MongoId((string)$userId));
-                $this->addError('memberIds', \yii::t('app', '{name} is already in another team.', array(
-                    '{name}' => \web\widgets\user\Name::create(array('user' => $user), true)
-                )));
+                foreach ($userIds as $userId) {
+                    $user = User::model()->findByPk(new \MongoId((string)$userId));
+                    $this->addError('memberIds', \yii::t('app', '{name} is already in another team.', array(
+                        '{name}' => \web\widgets\user\Name::create(array('user' => $user), true)
+                    )));
+                }
             }
         }
 
