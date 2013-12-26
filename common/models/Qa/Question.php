@@ -2,8 +2,16 @@
 
 namespace common\models\Qa;
 
+use \common\models\User;
+
+/**
+ * Question
+ *
+ * @property-read User $user
+ */
 class Question extends \common\ext\MongoDb\Document
 {
+    const SC_AFTER_DELETE_TAG = 'afterDeleteTag';
 
     /**
      * User ID
@@ -43,6 +51,25 @@ class Question extends \common\ext\MongoDb\Document
     public $dateCreated;
 
     /**
+     * Answer author
+     * @var User
+     */
+    protected $_user;
+
+    /**
+     * Returns answer author
+     *
+     * @return Question
+     */
+    public function getUser()
+    {
+        if ($this->_user === null) {
+            $this->_user = User::model()->findByPk(new \MongoId($this->userId));
+        }
+        return $this->_user;
+    }
+
+    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -70,7 +97,8 @@ class Question extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('userId, title, content, tagList, dateCreated', 'required'),
+            array('userId, title, content, dateCreated', 'required'),
+            array('tagList', 'required', 'except' => static::SC_AFTER_DELETE_TAG),
             array('title', 'length', 'max' => 300),
             array('content', 'length', 'max' => 5000),
         ));
@@ -120,6 +148,9 @@ class Question extends \common\ext\MongoDb\Document
 
         // Convert to string
         $this->userId = (string)$this->userId;
+
+        // Filter tags
+        $this->tagList = array_filter(array_unique($this->tagList));
 
         // Set created date
         if ($this->dateCreated == null) {

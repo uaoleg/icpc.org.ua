@@ -1,8 +1,8 @@
 <?php
 
-use \common\components\Rbac,
-    \common\ext\MongoDb\Auth,
-    \common\models\User;
+use \common\components\Rbac;
+use \common\ext\MongoDb\Auth;
+use \common\models\User;
 
 class RbacCommand extends \console\ext\ConsoleCommand
 {
@@ -43,6 +43,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->_operationsNews();
         $this->_operationsResult();
         $this->_operationsTeam();
+        $this->_operationsQa();
 
         /**
          * Guest role
@@ -51,6 +52,10 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_DOCUMENT_READ,
             Rbac::OP_NEWS_READ,
             Rbac::OP_TEAM_READ,
+            Rbac::OP_QA_ANSWER_READ,
+            Rbac::OP_QA_COMMENT_READ,
+            Rbac::OP_QA_QUESTION_READ,
+            Rbac::OP_QA_TAG_READ,
         ));
 
         /**
@@ -58,6 +63,10 @@ class RbacCommand extends \console\ext\ConsoleCommand
          */
         $this->_createRole(User::ROLE_USER, array(
             User::ROLE_GUEST,
+            Rbac::OP_QA_COMMENT_CREATE,
+            Rbac::OP_QA_COMMENT_UPDATE,
+            Rbac::OP_QA_QUESTION_CREATE,
+            Rbac::OP_QA_QUESTION_UPDATE,
         ));
 
         /**
@@ -89,6 +98,10 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_NEWS_CREATE,
             Rbac::OP_NEWS_UPDATE,
             Rbac::OP_RESULT_CREATE,
+            Rbac::OP_QA_ANSWER_CREATE,
+            Rbac::OP_QA_ANSWER_UPDATE,
+            Rbac::OP_QA_TAG_CREATE,
+            Rbac::OP_QA_TAG_UPDATE,
         ));
 
         /**
@@ -103,6 +116,10 @@ class RbacCommand extends \console\ext\ConsoleCommand
          */
         $this->_createRole(User::ROLE_COORDINATOR_UKRAINE, array(
             User::ROLE_COORDINATOR_REGION,
+            Rbac::OP_QA_ANSWER_DELETE,
+            Rbac::OP_QA_COMMENT_DELETE,
+            Rbac::OP_QA_QUESTION_DELETE,
+            Rbac::OP_QA_TAG_DELETE,
         ));
 
         /**
@@ -202,6 +219,29 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->auth->createOperation(Rbac::OP_TEAM_CREATE, 'Create team');
         $this->auth->createOperation(Rbac::OP_TEAM_READ, 'Read team');
         $this->auth->createOperation(Rbac::OP_TEAM_UPDATE, 'Edit team', $bizRuleUpdate);
+    }
+
+    /**
+     * Q&A operations
+     */
+    protected function _operationsQa()
+    {
+        $this->auth->createOperation(Rbac::OP_QA_ANSWER_CREATE, 'Create answer');
+        $this->auth->createOperation(Rbac::OP_QA_ANSWER_READ, 'Read answer');
+        $this->auth->createOperation(Rbac::OP_QA_ANSWER_UPDATE, 'Update answer');
+        $this->auth->createOperation(Rbac::OP_QA_ANSWER_DELETE, 'Delete answer');
+        $this->auth->createOperation(Rbac::OP_QA_COMMENT_CREATE, 'Create comment');
+        $this->auth->createOperation(Rbac::OP_QA_COMMENT_READ, 'Read comment');
+        $this->auth->createOperation(Rbac::OP_QA_COMMENT_UPDATE, 'Update comment');
+        $this->auth->createOperation(Rbac::OP_QA_COMMENT_DELETE, 'Delete comment');
+        $this->auth->createOperation(Rbac::OP_QA_QUESTION_CREATE, 'Create question');
+        $this->auth->createOperation(Rbac::OP_QA_QUESTION_READ, 'Read question');
+        $this->auth->createOperation(Rbac::OP_QA_QUESTION_UPDATE, 'Update question');
+        $this->auth->createOperation(Rbac::OP_QA_QUESTION_DELETE, 'Delete question');
+        $this->auth->createOperation(Rbac::OP_QA_TAG_CREATE, 'Create tag');
+        $this->auth->createOperation(Rbac::OP_QA_TAG_READ, 'Read tag');
+        $this->auth->createOperation(Rbac::OP_QA_TAG_UPDATE, 'Update tag');
+        $this->auth->createOperation(Rbac::OP_QA_TAG_DELETE, 'Delete tag');
     }
 
     /**

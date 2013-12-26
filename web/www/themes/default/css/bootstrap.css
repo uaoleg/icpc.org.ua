@@ -3,6 +3,7 @@
     Button group
     Checkbox
     Dropdown
+    Forms
     Labels
     Navbar
     Panel
@@ -90,6 +91,14 @@
     border-radius: 6px 0 6px 6px;
     left: -100%;
     margin-left: 10px;
+}
+
+/* Forms
+----------------------------------------------------------------------------- */
+
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 /* Labels

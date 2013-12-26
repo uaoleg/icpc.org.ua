@@ -2,10 +2,13 @@
 
 namespace common\models\Qa;
 
+use \common\models\User;
+
 /**
  * Answer
  *
- * @property-read Question $question
+ * @property-read User      $user
+ * @property-read Question  $question
  */
 class Answer extends \common\ext\MongoDb\Document
 {
@@ -35,10 +38,29 @@ class Answer extends \common\ext\MongoDb\Document
     public $dateCreated;
 
     /**
+     * Answer author
+     * @var User
+     */
+    protected $_user;
+
+    /**
      * Related question
      * @var Question
      */
     protected $_question;
+
+    /**
+     * Returns answer author
+     *
+     * @return Question
+     */
+    public function getUser()
+    {
+        if ($this->_user === null) {
+            $this->_user = User::model()->findByPk(new \MongoId($this->userId));
+        }
+        return $this->_user;
+    }
 
     /**
      * Returns related question
@@ -124,7 +146,9 @@ class Answer extends \common\ext\MongoDb\Document
      */
     protected function beforeValidate()
     {
-        if (!parent::beforeValidate()) return false;
+        if (!parent::beforeValidate()) {
+            return false;
+        }
 
         // Convert to string
         $this->userId = (string)$this->userId;
@@ -143,11 +167,12 @@ class Answer extends \common\ext\MongoDb\Document
      */
     protected function afterSave()
     {
-        // Increase answer count in the related question
+        // Recount answers for the related question
         if ($this->_isFirstTimeSaved) {
-            $modify = new \EMongoModifier();
-            $modify->addModifier('answerCount', 'inc', 1);
-            $this->question->update(null, $modify);
+            $this->question->answerCount = $this->countByAttributes(array(
+                'questionId' => $this->questionId,
+            ));
+            $this->question->save();
         }
 
         parent::afterSave();

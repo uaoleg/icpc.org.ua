@@ -111,6 +111,10 @@
                                 'href'     => $this->createUrl('/team/list'),
                                 'caption'  => \yii::t('app', 'Teams'),
                             ),
+                            'qa' => array(
+                                'href'     => $this->createUrl('/qa'),
+                                'caption'  => \yii::t('app', 'Q&A'),
+                            ),
                             'lang' => array(
                                 'href'      => $this->createUrl('/staff/lang'),
                                 'caption'   => \yii::t('app', 'Langs'),
