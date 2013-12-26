@@ -68,9 +68,9 @@ function appUserMe() {
     });
 
     /**
-     * Save button handler
+     * Save button info handler
      */
-    $('.btn-save').on('click', function() {
+    $('.btn-save-info').on('click', function() {
         var $this = $(this),
             $form = $this.closest('.form-horizontal');
         $this.prop('disabled', true);
@@ -84,11 +84,33 @@ function appUserMe() {
                 middleNameEn:          $('[name=middleNameEn]').val(),
                 lastNameEn:            $('[name=lastNameEn]').val(),
                 schoolId:              $('[name=schoolId]').val(),
-                currentPassword:       $('[name=currentPassword]').val(),
                 type:                  $('.form-group .btn.active [name=type]').val(),
                 coordinator:           $('.form-group .btn.active [name=coordinator]').val(),
-                password:              $('[name=password]').val(),
-                passwordRepeat:        $('[name=passwordRepeat]').val()
+            },
+            success: function(response) {
+                appShowErrors(response.errors, $form);
+                if (response.errors) {
+                    $this.prop('disabled', false);
+                } else {
+                    location.href = app.baseUrl + '/user/me';
+                }
+            }
+        });
+    });
+
+    /**
+     * Save button password handler
+     */
+    $('.btn-save-password').on('click', function() {
+        var $this = $(this),
+            $form = $this.closest('.form-horizontal');
+        $this.prop('disabled', true);
+        $.ajax({
+            url: app.baseUrl + '/user/passwordChange',
+            data: {
+                currentPassword: $('[name=currentPassword]').val(),
+                password:        $('[name=password]').val(),
+                passwordRepeat:  $('[name=passwordRepeat]').val()
             },
             success: function(response) {
                 appShowErrors(response.errors, $form);

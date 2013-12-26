@@ -42,9 +42,6 @@ class UserController extends \web\ext\Controller
         $firstNameEn       = $this->request->getPost('firstNameEn');
         $middleNameEn      = $this->request->getPost('middleNameEn');
         $lastNameEn        = $this->request->getPost('lastNameEn');
-        $currentPassword   = $this->request->getPost('currentPassword');
-        $password          = $this->request->getPost('password');
-        $passwordRepeat    = $this->request->getPost('passwordRepeat');
         $schoolId          = $this->request->getPost('schoolId');
         $type              = $this->request->getPost('type');
         $coordinator       = $this->request->getPost('coordinator');
@@ -69,18 +66,7 @@ class UserController extends \web\ext\Controller
             ), false);
             $user->validate();
 
-            // Set new password
-            if (!empty($password)) {
-                if ($user->checkPassword($currentPassword)) {
-                    $user->setPassword($password, $passwordRepeat);
-                } else {
-                    $user->addError('currentPassword', \yii::t('app', '{attr} is incorrect', array(
-                        '{attr}' => $user->getAttributeLabel('password'),
-                    )));
-                }
-            }
-
-            // Save chagnes
+            // Save changes
             if (!$user->hasErrors()) {
                 $user->save();
             }
@@ -150,6 +136,40 @@ class UserController extends \web\ext\Controller
             'lang' => $lang,
             'info' => $user->setUseLanguage($lang)->info,
         ));
+    }
+
+    /**
+     * Change password request
+     */
+    public function actionPasswordChange()
+    {
+        // Update password
+        if ($this->request->isPostRequest) {
+
+            // Get params
+            $currentPassword = $this->request->getPost('currentPassword');
+            $password        = $this->request->getPost('password');
+            $passwordRepeat  = $this->request->getPost('passwordRepeat');
+
+            // Set new password
+            $user = \yii::app()->user->getInstance();
+            if ($user->checkPassword($currentPassword)) {
+                $user->setPassword($password, $passwordRepeat);
+            } else {
+                $user->addError('currentPassword', \yii::t('app', '{attr} is incorrect', array(
+                    '{attr}' => $user->getAttributeLabel('password'),
+                )));
+            }
+            if (!$user->hasErrors()) {
+                $user->save();
+            }
+
+            // Render json
+            $this->renderJson(array(
+                'errors' => $user->hasErrors() ? $user->getErrors() : false,
+            ));
+
+        }
     }
 
     /**
