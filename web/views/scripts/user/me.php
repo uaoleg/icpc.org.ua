@@ -153,7 +153,7 @@
 
                     <div class="form-group">
                         <div class="col-lg-9 col-lg-offset-3">
-                            <button type="submit" class="btn btn-primary btn-save-password">
+                            <button type="submit" class="btn btn-lg btn-primary btn-save-password">
                                 <?=\yii::t('app', 'Change password')?>
                             </button>
                         </div>

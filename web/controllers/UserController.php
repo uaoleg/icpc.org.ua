@@ -138,16 +138,21 @@ class UserController extends \web\ext\Controller
         ));
     }
 
+    /**
+     * Change password request
+     */
     public function actionPasswordChange()
     {
         // Update password
         if ($this->request->isPostRequest) {
-            $user = \yii::app()->user->getInstance();
 
+            // Get params
             $currentPassword = $this->request->getPost('currentPassword');
             $password        = $this->request->getPost('password');
             $passwordRepeat  = $this->request->getPost('passwordRepeat');
 
+            // Set new password
+            $user = \yii::app()->user->getInstance();
             if ($user->checkPassword($currentPassword)) {
                 $user->setPassword($password, $passwordRepeat);
             } else {
@@ -159,14 +164,11 @@ class UserController extends \web\ext\Controller
                 $user->save();
             }
 
+            // Render json
             $this->renderJson(array(
-                'errors' => $user->hasErrors() ? $user->getErrors() : false
+                'errors' => $user->hasErrors() ? $user->getErrors() : false,
             ));
 
-        // Show form
-        } else {
-            $this->setPageTitle(\yii::t('app', 'ICPC - Password change User'));
-            $this->render('passwordChange');
         }
     }
 
