@@ -294,6 +294,13 @@ class Team extends \common\ext\MongoDb\Document
             }
         }
 
+        // Check if name contains only prefix
+        $teamName = $this->name;
+        $schoolShortNameEn = $this->school->shortNameEn;
+        if ($teamName === $schoolShortNameEn) {
+            $this->addError('name', \yii::t('app', 'Team name cannot be empty'));
+        }
+
         // Validate assigned school
         $this->school->scenario = School::SC_ASSIGN_TO_TEAM;
         $this->school->validate();

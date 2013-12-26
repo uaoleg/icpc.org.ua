@@ -80,12 +80,6 @@ class TeamController extends \web\ext\Controller
                 $this->httpException(404);
            }
 
-            // Check if name without prefix is empty
-            $name = $this->request->getPost('name');
-            if (empty($name)) {
-                $team->addError('name', \yii::t('app', 'Team name cannot be empty'));
-            }
-
             // Update team
             $team->setAttributes(array(
                 'name'      => $teamName,
@@ -93,9 +87,8 @@ class TeamController extends \web\ext\Controller
                 'schoolId'  => $school->_id,
                 'memberIds' => $memberIds,
             ), false);
-            if (!$team->hasErrors()) {
-                $team->save();
-            }
+
+            $team->save();
 
             // Get errors
             $errors = array_merge($team->getErrors(), $school->getErrors());
