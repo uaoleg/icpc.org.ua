@@ -1,7 +1,6 @@
 <?php
 
-use \common\ext\Message,
-    \common\models\Dictionary;
+use \common\ext\Message;
 
 class MessageCommand extends \console\ext\ConsoleCommand
 {

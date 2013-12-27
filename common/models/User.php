@@ -484,4 +484,44 @@ class User extends \common\ext\MongoDb\Document
         return (crypt($password, $this->hash) === $this->hash);
     }
 
+    /**
+     * After delete action
+     */
+    protected function afterDelete()
+    {
+        $userId = (string)$this->_id;
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('userId', '==', $userId);
+
+        // Delete settings
+        if (!$this->settings->isNewRecord) {
+            $this->settings->delete();
+        }
+
+        // Delete additional info
+        if (!$this->info->isNewRecord) {
+            $this->info->delete();
+        }
+
+        // Delete teams where this user is coach
+        $teamsToDelete = Team::model()->findAllByAttributes(array(
+            'coachId' => $userId,
+        ));
+        foreach ($teamsToDelete as $team) {
+            $team->delete();
+        }
+
+        // Remove user's ID from memberIds of teams user is in
+        $teams = Team::model()->findAllByAttributes(array(
+            'memberIds' => $userId,
+        ));
+        foreach ($teams as $team) {
+            $team->scenario = Team::SC_USER_DELETING;
+            $team->memberIds = array_diff($team->memberIds, (array)$userId);
+            $team->save();
+        }
+
+        parent::afterDelete();
+    }
+
 }
