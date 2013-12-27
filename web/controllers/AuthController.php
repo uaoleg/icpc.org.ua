@@ -248,6 +248,30 @@ class AuthController extends \web\ext\Controller
     }
 
     /**
+     * Confirm email page
+     */
+    public function actionEmailConfirm()
+    {
+        // Get params
+        $token = \yii::app()->request->getParam('token');
+        if (empty($token)) {
+            $this->httpException(400);
+        }
+
+        // Confirm email
+        $emailConfirmation = User\EmailConfirmation::model()->findByPk(new \MongoId($token));
+        if ($emailConfirmation !== null) {
+            $user = User::model()->findByPk(new \MongoId($emailConfirmation->userId));
+            $user->isEmailConfirmed = true;
+            $user->save();
+            $emailConfirmation->delete();
+        }
+
+        // Render view
+        $this->render('emailConfirm');
+    }
+
+    /**
      * Signup page
      */
     public function actionSignup()
@@ -301,6 +325,24 @@ class AuthController extends \web\ext\Controller
 
                 // Save user
                 $user->save();
+
+                // Create an email confirmation record
+                $emailConfirmation = new User\EmailConfirmation();
+                $emailConfirmation->userId = $user->_id;
+                $emailConfirmation->save();
+
+                // Send email
+                $message = new \common\ext\Mail\MailMessage();
+                $message
+                    ->addTo($user->email)
+                    ->setFrom(\yii::app()->params['emails']['noreply']['address'], \yii::app()->params['emails']['noreply']['name'])
+                    ->setSubject(\yii::t('app', '{app} Email confirmation', array('{app}' => \yii::app()->name)))
+                    ->setView('emailConfirmation', array(
+                        'link' => $this->createAbsoluteUrl('/auth/emailConfirm', array(
+                            'token' => (string)$emailConfirmation->_id,
+                        )),
+                    ));
+                \yii::app()->mail->send($message);
 
                 // Save user settings
                 $settings = $user->settings;
