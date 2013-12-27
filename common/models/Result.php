@@ -149,12 +149,12 @@ class Result extends \common\ext\MongoDb\Document
 
     /**
      * Returns school name in appropriate language
-     * @param  string $lang
+     *
      * @return string
      */
-    public function getSchoolName($lang = null) {
-        $lang = isset($lang) ? $lang : \yii::app()->language;
-        switch ($lang) {
+    public function getSchoolName()
+    {
+        switch ($this->useLanguage) {
             default:
             case 'uk':
                 return $this->schoolNameUk;
@@ -167,12 +167,12 @@ class Result extends \common\ext\MongoDb\Document
 
     /**
      * Returns coach name in appropriate language
-     * @param  string $lang
+     *
      * @return string
      */
-    public function getCoachName($lang = null) {
-        $lang = isset($lang) ? $lang : \yii::app()->language;
-        switch ($lang) {
+    public function getCoachName()
+    {
+        switch ($this->useLanguage) {
             default:
             case 'uk':
                 return $this->coachNameUk;

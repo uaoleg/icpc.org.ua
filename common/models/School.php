@@ -55,13 +55,12 @@ class School extends \common\ext\MongoDb\Document
 
     /**
      * Returns school name in appropriate language
-     * @param string $lang
+     *
      * @return string
      */
-    public function getSchoolName($lang = null)
+    public function getSchoolName()
     {
-        $lang = ($lang === null) ? \yii::app()->language : $lang;
-        switch ($lang) {
+        switch ($this->useLanguage) {
             default:
             case 'uk':
                 return $this->fullNameUk;

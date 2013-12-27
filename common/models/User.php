@@ -5,14 +5,14 @@ namespace common\models;
 /**
  * User
  *
- * @property-read string        $firstName
- * @property-read string        $middleName
- * @property-read string        $lastName
- * @property-read bool          $isApprovedCoach
- * @property-read bool          $isApprovedCoordinator
- * @property-read School        $school
- * @property-read User\Settings $settings
- * @property-read User\InfoCoach|User\InfoStudent $info
+ * @property-read string            $firstName
+ * @property-read string            $middleName
+ * @property-read string            $lastName
+ * @property-read bool              $isApprovedCoach
+ * @property-read bool              $isApprovedCoordinator
+ * @property-read School            $school
+ * @property-read User\Settings     $settings
+ * @property-read User\InfoAbstract $info
  */
 class User extends \common\ext\MongoDb\Document
 {
@@ -116,20 +116,18 @@ class User extends \common\ext\MongoDb\Document
 
     /**
      * User's additional info
-     * @var User\InfoCoach|User\InfoStudent
+     * @var User\InfoAbstract
      */
     protected $_info;
 
     /**
      * Returns first name in appropriate language
      *
-     * @param string $lang
      * @return string
      */
-    public function getFirstName($lang = null)
+    public function getFirstName()
     {
-        $lang = ($lang === null) ? \yii::app()->language : $lang;
-        switch ($lang) {
+        switch ($this->useLanguage) {
             default:
             case 'uk':
                 return $this->firstNameUk;
@@ -143,13 +141,11 @@ class User extends \common\ext\MongoDb\Document
     /**
      * Returns middle name in appropriate language
      *
-     * @param string $lang
      * @return string
      */
-    public function getMiddleName($lang = null)
+    public function getMiddleName()
     {
-        $lang = ($lang === null) ? \yii::app()->language : $lang;
-        switch ($lang) {
+        switch ($this->useLanguage) {
             default:
             case 'uk':
                 return $this->middleNameUk;
@@ -163,13 +159,11 @@ class User extends \common\ext\MongoDb\Document
     /**
      * Returns last name in appropriate language
      *
-     * @param string $lang
      * @return string
      */
-    public function getLastName($lang = null)
+    public function getLastName()
     {
-        $lang = ($lang === null) ? \yii::app()->language : $lang;
-        switch ($lang) {
+        switch ($this->useLanguage) {
             default:
             case 'uk':
                 return $this->lastNameUk;
@@ -238,35 +232,33 @@ class User extends \common\ext\MongoDb\Document
     /**
      * Returns user's additional info
      *
-     * @param string $lang
      * @return User\InfoAbstract
      */
-    public function getInfo($lang = null)
+    public function getInfo()
     {
-        $lang = ($lang === null) ? \yii::app()->language : $lang;
         if (!isset($this->_info)) {
             if ($this->type === static::ROLE_STUDENT) {
                 $this->_info = User\InfoStudent::model()->findByAttributes(array(
                     'userId' => (string)$this->_id,
-                    'lang'   => $lang
+                    'lang'   => $this->useLanguage,
                 ));
                 if (!isset($this->_info)) {
                     $this->_info = new User\InfoStudent();
                     $this->_info->setAttributes(array(
                         'userId'    => (string)$this->_id,
-                        'lang'      => $lang,
+                        'lang'      => $this->useLanguage,
                     ), false);
                 }
             } elseif ($this->type === static::ROLE_COACH) {
                 $this->_info = User\InfoCoach::model()->findByAttributes(array(
                     'userId' => (string)$this->_id,
-                    'lang'   => $lang
+                    'lang'   => $this->useLanguage,
                 ));
                 if (!isset($this->_info)) {
                     $this->_info = new User\InfoCoach();
                     $this->_info->setAttributes(array(
                         'userId'    => (string)$this->_id,
-                        'lang'      => $lang,
+                        'lang'      => $this->useLanguage,
                     ), false);
                 }
             }
@@ -396,6 +388,11 @@ class User extends \common\ext\MongoDb\Document
             \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_UKRAINE, $this->_id);
         }
 
+        // Revoke coach roles if it was changed
+        if ((!$this->_isFirstTimeSaved) && ($this->attributeHasChanged('type'))) {
+            \yii::app()->authManager->revoke(static::ROLE_COACH, $this->_id);
+        }
+
         // If user changed any name, info in results and teams models should be updated
         $initialUser = new static();
         $initialUser->setAttributes($this->_initialAttributes, false);
@@ -477,6 +474,46 @@ class User extends \common\ext\MongoDb\Document
     public function checkPassword($password)
     {
         return (crypt($password, $this->hash) === $this->hash);
+    }
+
+    /**
+     * After delete action
+     */
+    protected function afterDelete()
+    {
+        $userId = (string)$this->_id;
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('userId', '==', $userId);
+
+        // Delete settings
+        if (!$this->settings->isNewRecord) {
+            $this->settings->delete();
+        }
+
+        // Delete additional info
+        if (!$this->info->isNewRecord) {
+            $this->info->delete();
+        }
+
+        // Delete teams where this user is coach
+        $teamsToDelete = Team::model()->findAllByAttributes(array(
+            'coachId' => $userId,
+        ));
+        foreach ($teamsToDelete as $team) {
+            $team->delete();
+        }
+
+        // Remove user's ID from memberIds of teams user is in
+        $teams = Team::model()->findAllByAttributes(array(
+            'memberIds' => $userId,
+        ));
+        foreach ($teams as $team) {
+            $team->scenario = Team::SC_USER_DELETING;
+            $team->memberIds = array_diff($team->memberIds, (array)$userId);
+            $team->save();
+        }
+
+        parent::afterDelete();
     }
 
 }

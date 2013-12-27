@@ -37,11 +37,22 @@ class ResultsController extends \web\ext\Controller
             'geo'   => array('$in' => Geo\State::model()->getConstantList('NAME_'))
         ));
 
+        $statesWithLabels = array();
+        foreach ($states as $state) {
+            $statesWithLabels[$state] = Geo\State::model()->getAttributeLabel($state, 'name');
+        }
+        asort($statesWithLabels);
+
         // Select regions for which there are results
         $regions = Result::model()->getCollection()->distinct('geo', array(
             'year' => $year,
             'geo'  => array('$in' => Geo\Region::model()->getConstantList('NAME_'))
         ));
+
+        $regionsWithLabels = array();
+        foreach ($regions as $region) {
+            $regionsWithLabels[$region] = Geo\Region::model()->getAttributeLabel($region, 'name');
+        }
 
         // Check if there are results for 3rd phase
         $hasUkraineResults = false;
@@ -55,8 +66,8 @@ class ResultsController extends \web\ext\Controller
         // Render view
         $this->render('latest', array(
             'year'              => $year,
-            'states'            => $states,
-            'regions'           => $regions,
+            'states'            => $statesWithLabels,
+            'regions'           => $regionsWithLabels,
             'hasUkraineResults' => $hasUkraineResults,
             'school'            => \yii::app()->user->getInstance()->school
         ));
@@ -133,17 +144,30 @@ class ResultsController extends \web\ext\Controller
         // Fill rows
         $rows = array();
         foreach ($jqgrid['itemList'] as $result) {
+            if (isset($result->teamId)) {
+                $teamName = '<a href="' . $this->createUrl('/team/view', array('id' => $result->teamId)). '">' .
+                    $result->teamName . '</a>';
+            } else {
+                $teamName = $result->teamName;
+            }
             $arrayToAdd = array(
                 'id'                        => $result->teamId,
                 'place'                     => $result->place,
-                'teamName'                  => $result->teamName,
+                'teamName'                  => $teamName,
                 'schoolName'.ucfirst($lang) => $result->schoolName,
                 'coachName'.ucfirst($lang)  => $result->coachName,
                 'total'                     => $result->total,
                 'penalty'                   => $result->penalty
             );
             foreach ($result->tasksTries as $letter => $tries) {
-                $arrayToAdd[$letter] = $tries . '&nbsp;(' . gmdate("H:i", $result->tasksTime[$letter]) . ')';
+                if (isset($tries)) {
+                    $arrayToAdd[$letter] = $tries;
+                    if ($tries > 0) {
+                        $datetime = new \DateTime();
+                        $datetime->setTime(0, 0, $result->tasksTime[$letter]);
+                        $arrayToAdd[$letter] .= '&nbsp;(' . $datetime->format('G:i') . ')';
+                    }
+                }
             }
             $rows[] = $arrayToAdd;
         }

@@ -2,8 +2,8 @@
 
 namespace web\controllers;
 
-use \common\models\School,
-    \common\models\User;
+use \common\models\School;
+use \common\models\User;
 
 class AuthController extends \web\ext\Controller
 {
@@ -298,7 +298,20 @@ class AuthController extends \web\ext\Controller
 
             // If no errors, than create and auth user
             if (!$user->hasErrors()) {
+
+                // Save user
                 $user->save();
+
+                // Save user settings
+                $settings = $user->settings;
+                $settings->setAttributes(array(
+                    'geo'   => $this->getGeo(),
+                    'year'  => $this->getYear(),
+                    'lang'  => $this->request->cookies['language']->value,
+                ), false);
+                $settings->save();
+
+                // Authenticate user
                 $identity = new \web\ext\UserIdentity($email, $password);
                 $identity->authenticate();
                 \yii::app()->user->login($identity);

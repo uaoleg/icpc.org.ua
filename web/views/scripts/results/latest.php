@@ -24,10 +24,10 @@
 </div>
 <?php if (count($states) > 0): ?>
 <ul>
-    <?php foreach($states as $state): ?>
+    <?php foreach($states as $state => $label): ?>
         <li>
             <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 1, 'state' => $state))?>">
-                <?=\common\models\Geo\State::model()->getAttributeLabel($state, 'name')?>
+                <?=$label?>
             </a>
         </li>
     <?php endforeach; ?>
@@ -43,10 +43,10 @@
 </div>
 <?php if (count($regions) > 0): ?>
 <ul>
-    <?php foreach($regions as $region): ?>
+    <?php foreach($regions as $region => $label): ?>
         <li>
             <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 2, 'region' => $region))?>">
-                <?=\common\models\Geo\Region::model()->getAttributeLabel($region, 'name')?>
+                <?=$label?>
             </a>
         </li>
     <?php endforeach; ?>
@@ -88,44 +88,51 @@
                         <p class="form-control-static"><b><?=date('Y')?></b>&nbsp;<?=\yii::t('app', 'year')?></p>
                     </div>
 
-                    <div class="form-group">
-                        <button type="button" class="btn btn-lg2 btn-info" id="uploadPickfiles">
-                            <?=\yii::t('app', 'Choose file')?>
+                    <?php if (!\yii::app()->user->getInstance()->school->getIsNewRecord()): ?>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-lg2 btn-info" id="uploadPickfiles">
+                                <?=\yii::t('app', 'Choose file')?>
+                            </button>
+                            <span class="document-origin-filename"></span>
+                            <div class="help-block"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="radio">
+                                <label class="control-label">
+                                    <input type="radio" name="phase" value="1"
+                                           <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE) ? '' : 'disabled'?>
+                                    />
+                                    <?=\common\models\Geo\State::model()->getAttributeLabel($school->state, 'name')?>
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="control-label">
+                                    <input type="radio" name="phase" value="2"
+                                           <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION) ? '' : 'disabled'?>
+                                    />
+                                    <?=\common\models\Geo\Region::model()->getAttributeLabel($school->region, 'name')?>
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="control-label">
+                                    <input type="radio" name="phase" value="3"
+                                           <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE) ? '' : 'disabled'?>
+                                    />
+                                    <?=\common\models\School::getCountryLabel()?>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="uploadResults" disabled>
+                            <?=\yii::t('app', 'Upload')?>
                         </button>
-                        <span class="document-origin-filename"></span>
-                        <div class="help-block"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="radio">
-                            <label class="control-label">
-                                <input type="radio" name="phase" value="1"
-                                       <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE) ? '' : 'disabled'?>
-                                />
-                                <?=\common\models\Geo\State::model()->getAttributeLabel($school->state, 'name')?>
-                            </label>
+                    <?php else: ?>
+                        <div class="alert alert-danger">
+                            <?=\yii::t('app', 'To upload results you have to specify your school at your {a}profile page</a>',
+                            array('{a}' => '<a href="' . $this->createUrl('/user/me') . '">'))?>
                         </div>
-                        <div class="radio">
-                            <label class="control-label">
-                                <input type="radio" name="phase" value="2"
-                                       <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION) ? '' : 'disabled'?>
-                                />
-                                <?=\common\models\Geo\Region::model()->getAttributeLabel($school->region, 'name')?>
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label class="control-label">
-                                <input type="radio" name="phase" value="3"
-                                       <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE) ? '' : 'disabled'?>
-                                />
-                                <?=\common\models\School::getCountryLabel()?>
-                            </label>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary" id="uploadResults" disabled>
-                        <?=\yii::t('app', 'Upload')?>
-                    </button>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

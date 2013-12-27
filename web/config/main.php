@@ -68,8 +68,8 @@ $config = array(
                 ),
                 'plupload' => array(
                     'js' => array(
-                        'lib/plupload-2.0.0-beta/js/plupload.full.min.js',
-                        'lib/plupload-2.0.0-beta/js/jquery.plupload.queue/jquery.plupload.queue.min.js',
+                        'lib/plupload-834/js/plupload.full.min.js',
+                        'lib/plupload-834/js/jquery.plupload.queue/jquery.plupload.queue.min.js',
                     ),
                     'css' => array(
                     ),

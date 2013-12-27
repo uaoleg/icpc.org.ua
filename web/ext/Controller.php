@@ -56,8 +56,21 @@ class Controller extends \CController
         $this->_navActiveItems = \yii::app()->user->getState('nav-active-items', array());
 
         // Set application language and save it with the help of cookies
+        if (!\yii::app()->user->isGuest) {
+            $settings = \yii::app()->user->getInstance()->settings;
+            if (isset($settings->lang)) {
+                $this->request->cookies['language'] = new \CHttpCookie('language', $settings->lang);
+            } else {
+                $settings->lang = $this->request->cookies['language']->value;
+                $settings->save();
+            }
+
+        }
         if (!isset($this->request->cookies['language'])) {
-            $this->request->cookies['language'] = new \CHttpCookie('language', 'uk');
+            $languageCodes = array_keys(\yii::app()->params['languages']);
+            $langCode = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+            $defaultLang = (in_array($langCode, $languageCodes)) ? $langCode : 'uk';
+            $this->request->cookies['language'] = new \CHttpCookie('language', $defaultLang);
         }
         if (isset($this->request->cookies['language'])) {
             \yii::app()->language = $this->request->cookies['language']->value;

@@ -41,9 +41,10 @@ class Name extends \web\ext\Widget
     public function run()
     {
         // Prepare name parts
-        $first  = \CHtml::encode($this->user->getFirstName($this->lang));
-        $middle = \CHtml::encode($this->user->getMiddleName($this->lang));
-        $last   = \CHtml::encode($this->user->getLastName($this->lang));
+        $this->user->useLanguage = $this->lang;
+        $first  = \CHtml::encode($this->user->firstName);
+        $middle = \CHtml::encode($this->user->middleName);
+        $last   = \CHtml::encode($this->user->lastName);
 
         // Render full name
         switch ($this->view) {
