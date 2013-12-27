@@ -252,18 +252,23 @@ class AuthController extends \web\ext\Controller
      */
     public function actionEmailConfirm()
     {
+        // Get params
         $token = \yii::app()->request->getParam('token');
-        if (isset($token)) {
-            $emailConfirmation = User\EmailConfirmation::model()->findByPk(new \MongoId($token));
-            if (isset($emailConfirmation)) {
-                $user = User::model()->findByPk(new \MongoId($emailConfirmation->userId));
-                $user->isEmailConfirmed = true;
-                $user->save();
-                $emailConfirmation->delete();
-                $this->render('emailConfirm');
-            }
+        if (empty($token)) {
+            $this->httpException(400);
         }
-        $this->httpException(400);
+
+        // Confirm email
+        $emailConfirmation = User\EmailConfirmation::model()->findByPk(new \MongoId($token));
+        if ($emailConfirmation !== null) {
+            $user = User::model()->findByPk(new \MongoId($emailConfirmation->userId));
+            $user->isEmailConfirmed = true;
+            $user->save();
+            $emailConfirmation->delete();
+        }
+
+        // Render view
+        $this->render('emailConfirm');
     }
 
     /**
@@ -286,14 +291,13 @@ class AuthController extends \web\ext\Controller
         // Set attributes
         $user = new User();
         $user->setAttributes(array(
-            'firstNameUk'       => $firstNameUk,
-            'middleNameUk'      => $middleNameUk,
-            'lastNameUk'        => $lastNameUk,
-            'email'             => $email,
-            'type'              => $type,
-            'coordinator'       => $coordinator,
-            'schoolId'          => $schoolId,
-            'isEmailConfirmed'  => false,
+            'firstNameUk'   => $firstNameUk,
+            'middleNameUk'  => $middleNameUk,
+            'lastNameUk'    => $lastNameUk,
+            'email'         => $email,
+            'type'          => $type,
+            'coordinator'   => $coordinator,
+            'schoolId'      => $schoolId,
         ), false);
 
         // Register a new user
@@ -324,7 +328,7 @@ class AuthController extends \web\ext\Controller
 
                 // Create an email confirmation record
                 $emailConfirmation = new User\EmailConfirmation();
-                $emailConfirmation->userId = (string)$user->_id;
+                $emailConfirmation->userId = $user->_id;
                 $emailConfirmation->save();
 
                 // Send email
@@ -332,11 +336,11 @@ class AuthController extends \web\ext\Controller
                 $message
                     ->addTo($user->email)
                     ->setFrom(\yii::app()->params['emails']['noreply']['address'], \yii::app()->params['emails']['noreply']['name'])
-                    ->setSubject(\yii::t('app', 'icpc.org.ua Email confirmation'))
+                    ->setSubject(\yii::t('app', '{app} Email confirmation', array('{app}' => \yii::app()->name)))
                     ->setView('emailConfirmation', array(
                         'link' => $this->createAbsoluteUrl('/auth/emailConfirm', array(
-                                'token' => (string)$emailConfirmation->_id,
-                            )),
+                            'token' => (string)$emailConfirmation->_id,
+                        )),
                     ));
                 \yii::app()->mail->send($message);
 

@@ -1,5 +1,7 @@
-<?=\yii::t('app', 'Congrats! You\'ve been successfully registered on icpc.org.ua.')?>
-<br>
+<?=\yii::t('app', 'Congrats! You\'ve been successfully registered on {app}.', array(
+    '{app}' => \yii::app()->name,
+))?>
+<br />
 <?=\yii::t('app', 'Please, confirm your email by following this link.')?>
-<br>
+<br />
 <?=$link?>

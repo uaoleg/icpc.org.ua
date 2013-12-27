@@ -4,6 +4,7 @@ namespace common\models\User;
 
 class EmailConfirmation extends \common\ext\MongoDb\Document
 {
+
     /**
      * User ID
      * @var string
@@ -46,6 +47,23 @@ class EmailConfirmation extends \common\ext\MongoDb\Document
     public function getCollectionName()
     {
         return 'user.emailConfirmation';
+    }
+
+    /**
+     * Before validate action
+     *
+     * @return boolean
+     */
+    protected function beforeValidate()
+    {
+        if (!parent::beforeValidate()) {
+            return false;
+        }
+
+        // MongoId to string
+        $this->userId = (string)$this->userId;
+
+        return true;
     }
 
 }

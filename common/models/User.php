@@ -106,7 +106,7 @@ class User extends \common\ext\MongoDb\Document
      * Is email confirmed
      * @var boolean
      */
-    public $isEmailConfirmed;
+    public $isEmailConfirmed = false;
 
     /**
      * User's school
@@ -355,13 +355,12 @@ class User extends \common\ext\MongoDb\Document
 
         // Email
         $this->email = mb_strtolower($this->email);
+        $this->isEmailConfirmed = (bool)$this->isEmailConfirmed;
 
         // Type
         if (!in_array($this->type, array(static::ROLE_STUDENT, static::ROLE_COACH))) {
             $this->type = null;
         }
-
-        $this->isEmailConfirmed = (bool)$this->isEmailConfirmed;
 
         // Coordinator
         if (empty($this->coordinator)) {
