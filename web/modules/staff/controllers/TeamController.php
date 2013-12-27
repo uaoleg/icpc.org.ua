@@ -87,6 +87,7 @@ class TeamController extends \web\ext\Controller
                 'schoolId'  => $school->_id,
                 'memberIds' => $memberIds,
             ), false);
+
             $team->save();
 
             // Get errors
