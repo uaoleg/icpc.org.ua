@@ -1,5 +1,5 @@
 <div class="col-lg-offset-4 col-lg-4">
-    <div class="panel panel-default">
+    <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title"><?=\yii::t('app', 'Login')?></h3>
         </div>
@@ -18,7 +18,7 @@
                     </a>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-default"><?=\yii::t('app', 'Sign in')?></button>
+                    <button type="submit" class="btn btn-primary"><?=\yii::t('app', 'Sign in')?></button>
                     <a href="<?=$this->createUrl('signup')?>" class="btn btn-link pull-right"><?=\yii::t('app', 'register')?></a>
                 </div>
             </form>
