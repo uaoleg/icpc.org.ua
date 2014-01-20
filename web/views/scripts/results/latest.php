@@ -26,7 +26,7 @@
 <ul>
     <?php foreach($states as $state => $label): ?>
         <li>
-            <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 1, 'state' => $state))?>">
+            <a href="<?=$this->createUrl('/results/view', array('year' => $year, 'phase' => 1, 'state' => $state))?>">
                 <?=$label?>
             </a>
         </li>
@@ -45,7 +45,7 @@
 <ul>
     <?php foreach($regions as $region => $label): ?>
         <li>
-            <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 2, 'region' => $region))?>">
+            <a href="<?=$this->createUrl('/results/view', array('year' => $year, 'phase' => 2, 'region' => $region))?>">
                 <?=$label?>
             </a>
         </li>
@@ -63,7 +63,7 @@
 <?php if ($hasUkraineResults): ?>
 <ul>
     <li>
-        <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 3, 'country' => \common\models\School::getCountry()))?>">
+        <a href="<?=$this->createUrl('/results/view', array('year' => $year,'phase' => 3, 'country' => \common\models\School::getCountry()))?>">
             <?=\common\models\School::getCountryLabel()?>
         </a>
     </li>
