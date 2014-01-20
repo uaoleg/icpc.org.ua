@@ -361,8 +361,8 @@ class AuthController extends \web\ext\Controller
 
             // Render json
             $this->renderJson(array(
-                'errors' => $user->hasErrors() ? $user->getErrors() : false,
-                'url' => !$user->hasErrors() ? $this->createUrl('/auth/signedup', array('id' => $emailConfirmation->_id)) : false
+                'errors'    => $user->hasErrors() ? $user->getErrors() : false,
+                'url'       => $user->hasErrors() ? '' : $this->createUrl('signedup', array('id' => $emailConfirmation->_id)),
             ));
         }
 
@@ -390,12 +390,14 @@ class AuthController extends \web\ext\Controller
      */
     public function actionSignedUp()
     {
+        // Get params
         $confirmationId = $this->request->getParam('id');
+
         if ($confirmationId !== null) {
             $confirmation = User\EmailConfirmation::model()->findByPk(new \MongoId($confirmationId));
             if ($confirmation !== null) {
                 $this->render('signedup', array(
-                    'confirmation' => $confirmation
+                    'confirmation' => $confirmation,
                 ));
             } else {
                 $this->httpException(404);
@@ -410,23 +412,32 @@ class AuthController extends \web\ext\Controller
      */
     public function actionResendEmailConfirmation()
     {
-        $confirmation = User\EmailConfirmation::model()->findByPk(new \MongoId($this->request->getParam('confirmationId')));
-        if ($confirmation !== null) {
-            // Send email
-            $user = User::model()->findByPk(new \MongoId($confirmation->userId));
-            if ($user !== null) {
-                $message = new \common\ext\Mail\MailMessage();
-                $message
-                    ->addTo($user->email)
-                    ->setFrom(\yii::app()->params['emails']['noreply']['address'], \yii::app()->params['emails']['noreply']['name'])
-                    ->setSubject(\yii::t('app', '{app} Email confirmation', array('{app}' => \yii::app()->name)))
-                    ->setView('emailConfirmation', array(
-                        'link' => $this->createAbsoluteUrl('/auth/emailConfirm', array(
-                                'token' => (string)$confirmation->_id,
-                            )),
-                    ));
-                \yii::app()->mail->send($message);
-            }
+        // Get params
+        $confirmationId = $this->request->getParam('confirmationId');
+
+        // Get confirmation
+        $confirmation = User\EmailConfirmation::model()->findByPk(new \MongoId($confirmationId));
+        if ($confirmation === null) {
+            $this->httpException(404);
         }
+
+        // Get user
+        $user = User::model()->findByPk(new \MongoId($confirmation->userId));
+        if ($user === null) {
+            $this->httpException(404);
+        }
+
+        // Send email
+        $message = new \common\ext\Mail\MailMessage();
+        $message
+            ->addTo($user->email)
+            ->setFrom(\yii::app()->params['emails']['noreply']['address'], \yii::app()->params['emails']['noreply']['name'])
+            ->setSubject(\yii::t('app', '{app} Email confirmation', array('{app}' => \yii::app()->name)))
+            ->setView('emailConfirmation', array(
+                'link' => $this->createAbsoluteUrl('/auth/emailConfirm', array(
+                    'token' => (string)$confirmation->_id,
+                )),
+            ));
+        \yii::app()->mail->send($message);
     }
 }
