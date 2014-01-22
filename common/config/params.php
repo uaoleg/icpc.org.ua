@@ -21,7 +21,7 @@ $params = array(
 
     'yearFirst' => 2013, // News, Results, etc.
 
-    'version' => 'phase-2-1.2013-11-27.1',
+    'version' => 'phase-2-1.2014-01-22.1',
 
 );
 

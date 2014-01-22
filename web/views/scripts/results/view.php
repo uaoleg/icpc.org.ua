@@ -45,10 +45,8 @@
                 sortname: 'place',
                 sortorder: 'asc',
                 shrinkToFit: false,
-                loadError: function(xhr, status, error) {
-                    console.log(xhr);
-                    console.log(status);
-                    console.log(error);
+                beforeSelectRow: function() {
+                    return false;
                 }
             })
             .jqGrid('filterToolbar', {

@@ -34,10 +34,8 @@
             sortname: 'teamname',
             sortorder: 'asc',
             autowidth: true,
-            loadError: function(xhr, status, error) {
-                console.log(xhr);
-                console.log(status);
-                console.log(error);
+            beforeSelectRow: function() {
+                return false;
             }
         });
         $table.jqGrid('filterToolbar', {
