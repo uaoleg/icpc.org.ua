@@ -17,9 +17,9 @@ class Result extends \common\ext\MongoDb\Document
     /**
      * List of available phases
      */
-    const PHASE_1 = 1;
-    const PHASE_2 = 2;
-    const PHASE_3 = 3;
+    const PHASE_1 = 1; // State
+    const PHASE_2 = 2; // Region
+    const PHASE_3 = 3; // Ukraine
 
     /**
      * Letters for tasks

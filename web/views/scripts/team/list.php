@@ -11,8 +11,10 @@
 
 
 <script type="text/javascript">
-
     $(document).ready(function(){
+
+        new appTeamList();
+
         var $table = $('#team-list');
         $table.jqGrid({
             url: '<?=$this->createUrl('/team/GetTeamListJson')?>',
@@ -23,13 +25,15 @@
                 '<?=\yii::t('app', 'Coach name')?>',
                 '<?=\yii::t('app', 'Members')?>',
                 '<?=\yii::t('app', 'Year')?>',
+                '<?=\yii::t('app', 'Phase')?>',
             ],
             colModel: [
                 {name: 'name', index: 'name', width: 20, formatter: 'showlink', formatoptions:{baseLinkUrl:'/team/view'}},
                 {name: 'schoolName<?=ucfirst(\yii::app()->language)?>', index: 'schoolName<?=ucfirst(\yii::app()->language)?>', width: 20},
                 {name: 'coachName<?=ucfirst(\yii::app()->language)?>', index: 'coachName<?=ucfirst(\yii::app()->language)?>', width: 15},
                 {name: 'members', index: 'members', width: 40, search: false},
-                {name: 'year', index: 'year', width: 5, search: false}
+                {name: 'year', index: 'year', width: 5, search: false},
+                {name: 'phase', index: 'phase', width: 5, search: false}
             ],
             sortname: 'teamname',
             sortorder: 'asc',

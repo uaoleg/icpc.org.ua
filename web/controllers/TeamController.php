@@ -91,7 +91,8 @@ class TeamController extends \web\ext\Controller
                 'schoolName' . ucfirst($lang)   => $team->schoolName,
                 'coachName' . ucfirst($lang)    => $team->coachName,
                 'members'                       => $members_str,
-                'year'                          => $team->year
+                'year'                          => $team->year,
+                'phase'                         => $this->renderPartial('list/phase', array('team' => $team), true),
             );
         }
 

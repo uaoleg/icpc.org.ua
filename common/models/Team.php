@@ -33,6 +33,12 @@ class Team extends \common\ext\MongoDb\Document
     public $year;
 
     /**
+     * Phase the team participates in
+     * @var int
+     */
+    public $phase = Result::PHASE_1;
+
+    /**
      * ID of team's coach
      * @var string
      */
@@ -184,15 +190,16 @@ class Team extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'name'         => \yii::t('app', 'Name of a team'),
-            'year'         => \yii::t('app', 'Year in which team participated'),
-            'coachId'      => \yii::t('app', 'Related coach ID'),
-            'coachNameUk'  => \yii::t('app', 'Name of the coach in ukrainian'),
-            'coachNameEn'  => \yii::t('app', 'Name of the coach in english'),
-            'schoolId'     => \yii::t('app', 'Related school ID'),
-            'schoolNameUk' => \yii::t('app', 'Full name of school in ukrainian'),
-            'schoolNameEn' => \yii::t('app', 'Full name of school in english'),
-            'memberIds'    => \yii::t('app', 'List of members')
+            'name'          => \yii::t('app', 'Name of a team'),
+            'year'          => \yii::t('app', 'Year in which team participates'),
+            'phase'         => \yii::t('app', 'Phase in which team participates'),
+            'coachId'       => \yii::t('app', 'Related coach ID'),
+            'coachNameUk'   => \yii::t('app', 'Name of the coach in ukrainian'),
+            'coachNameEn'   => \yii::t('app', 'Name of the coach in english'),
+            'schoolId'      => \yii::t('app', 'Related school ID'),
+            'schoolNameUk'  => \yii::t('app', 'Full name of school in ukrainian'),
+            'schoolNameEn'  => \yii::t('app', 'Full name of school in english'),
+            'memberIds'     => \yii::t('app', 'List of members')
         ));
     }
 
@@ -204,12 +211,20 @@ class Team extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('name, year, coachId, coachNameUk, coachNameEn, schoolId, schoolNameUk, schoolNameEn, memberIds', 'required'),
+            array('name, year, phase, coachId, coachNameUk, coachNameEn, schoolId, schoolNameUk, schoolNameEn, memberIds', 'required'),
+            array('name', \common\models\Team\Validator\Name::className()),
             array('year', 'numerical',
                 'integerOnly'   => true,
                 'min'           => (int)\yii::app()->params['yearFirst'],
-                'max'           => (int)date('Y')
+                'max'           => (int)date('Y'),
             ),
+            array('phase', 'numerical',
+                'integerOnly'   => true,
+                'min'           => Result::PHASE_1,
+                'max'           => Result::PHASE_3,
+            ),
+            array('schoolId', \common\models\Team\Validator\School::className()),
+            array('memberIds', \common\models\Team\Validator\Members::className(), 'except' => static::SC_USER_DELETING),
         ));
     }
 
@@ -248,7 +263,9 @@ class Team extends \common\ext\MongoDb\Document
      */
     protected function beforeValidate()
     {
-        if (!parent::beforeValidate()) return false;
+        if (!parent::beforeValidate()) {
+            return false;
+        }
 
         // Convert MongoId to String
         $this->coachId = (string)$this->coachId;
@@ -270,48 +287,7 @@ class Team extends \common\ext\MongoDb\Document
 
         // Year
         if (empty($this->year)) {
-            $this->year = date('Y');
-        }
-        $this->year = (int)$this->year;
-
-        // Members
-        if ($this->scenario !== static::SC_USER_DELETING) {
-            if (count($this->memberIds) < 3) {
-                $this->addError('memberIds', \yii::t('app', 'The number of members should be greater or equal then 3.'));
-            } elseif (count($this->memberIds) > 4) {
-                $this->addError('memberIds', \yii::t('app', 'The number of members should be less or equal then 4.'));
-            } else {
-                // Check if user tries to add user who is already is some other team
-                $teams = Team::model()->findAllByAttributes(array(
-                    '_id' => array('$ne' => $this->_id),
-                    'year' => $this->year,
-                    'memberIds' => array('$in' => $this->memberIds)
-                ));
-                foreach ($teams as $team) {
-                    $userIds = array_intersect($team->memberIds, $this->memberIds);
-
-                    foreach ($userIds as $userId) {
-                        $user = User::model()->findByPk(new \MongoId((string)$userId));
-                        $this->addError('memberIds', \yii::t('app', '{name} is already in another team.', array(
-                            '{name}' => \web\widgets\user\Name::create(array('user' => $user), true)
-                        )));
-                    }
-                }
-            }
-        }
-
-        // Check if name contains only prefix
-        $teamName = $this->name;
-        $schoolShortNameEn = $this->school->shortNameEn;
-        if ($teamName === $schoolShortNameEn) {
-            $this->addError('name', \yii::t('app', 'Team name cannot be empty'));
-        }
-
-        // Validate assigned school
-        $this->school->scenario = School::SC_ASSIGN_TO_TEAM;
-        $this->school->validate();
-        if ($this->school->hasErrors()) {
-            $this->addError('schoolId', \yii::t('app', 'Assigned school is invalid.'));
+            $this->year = (int)date('Y');
         }
 
         return true;

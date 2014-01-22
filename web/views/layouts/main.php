@@ -88,6 +88,10 @@
                                     ),
                                 ),
                             ),
+                            'team' => array(
+                                'href'     => $this->createUrl('/team/list'),
+                                'caption'  => \yii::t('app', 'Teams'),
+                            ),
                             'results' => array(
                                 'href'      => '/results',
                                 'caption'   => \yii::t('app', 'Results'),
@@ -106,10 +110,6 @@
                                         'caption'   => \yii::t('app', 'Coaches'),
                                     ),
                                 ),
-                            ),
-                            'team' => array(
-                                'href'     => $this->createUrl('/team/list'),
-                                'caption'  => \yii::t('app', 'Teams'),
                             ),
                             'qa' => array(
                                 'href'     => $this->createUrl('/qa'),

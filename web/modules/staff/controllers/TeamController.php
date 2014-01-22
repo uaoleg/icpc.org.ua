@@ -37,6 +37,11 @@ class TeamController extends \web\ext\Controller
                 'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE),
             ),
             array(
+                'allow',
+                'actions' => array('phaseupdate'),
+                'roles' => array(Rbac::OP_TEAM_UPDATE_PHASE),
+            ),
+            array(
                 'deny',
             )
         );
@@ -163,6 +168,26 @@ class TeamController extends \web\ext\Controller
                 ));
 
             }
+        }
+    }
+
+    /**
+     * Update team phase
+     */
+    public function actionPhaseUpdate()
+    {
+        // Get params
+        $id     = $this->request->getParam('id');
+        $phase  = $this->request->getParam('phase');
+
+        // Get team
+        $team = Team::model()->findByPk(new \MongoId($id));
+
+        // Update phase
+        $team->name = '';
+        $team->phase = (int)$phase;
+        if ($team->validate(array('phase'))) {
+            $team->save(false);
         }
     }
 
