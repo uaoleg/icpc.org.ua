@@ -1,8 +1,8 @@
 <?php
 
-namespace common\ext\MongoDb;
+namespace common\ext\MongoDb\Validator;
 
-abstract class Validator extends \CValidator
+abstract class AbstractValidator extends \CValidator
 {
 
     /**

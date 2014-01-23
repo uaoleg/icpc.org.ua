@@ -133,12 +133,16 @@ class ResultsController extends \web\ext\Controller
      */
     public function actionGetResultsListJson()
     {
-        $lang = \yii::app()->language;
+        // Get params
+        $year   = (int)$this->request->getParam('year');
+        $geo    = $this->request->getParam('geo');
+        $phase  = (int)$this->request->getParam('phase');
+        $lang   = \yii::app()->language;
 
         // Get jqGrid params
         $criteria = new \EMongoCriteria();
-        $criteria->addCond('year', '==', (int)$this->getYear());
-        $criteria->addCond('geo', '==', $this->request->getParam('geo'));
+        $criteria->addCond('year', '==', $year);
+        $criteria->addCond('geo', '==', $geo);
         $jqgrid = $this->_getJqgridParams(Result::model(), $criteria);
 
         // Fill rows
@@ -152,7 +156,7 @@ class ResultsController extends \web\ext\Controller
             }
             $arrayToAdd = array(
                 'id'                        => $result->teamId,
-                'place'                     => $result->place,
+                'place'                     => $this->renderPartial('view/place', array('result' => $result), true),
                 'teamName'                  => $teamName,
                 'schoolName'.ucfirst($lang) => $result->schoolName,
                 'coachName'.ucfirst($lang)  => $result->coachName,

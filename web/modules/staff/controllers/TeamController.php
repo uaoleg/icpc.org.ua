@@ -184,7 +184,7 @@ class TeamController extends \web\ext\Controller
         $team = Team::model()->findByPk(new \MongoId($id));
 
         // Update phase
-        $team->name = '';
+        $team->scenario = Team::SC_PHASE_UPDATE;
         $team->phase = (int)$phase;
         if ($team->validate(array('phase'))) {
             $team->save(false);

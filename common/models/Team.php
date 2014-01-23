@@ -18,7 +18,8 @@ class Team extends \common\ext\MongoDb\Document
     /**
      * Scenarios
      */
-    const SC_USER_DELETING = 'userDeleting';
+    const SC_PHASE_UPDATE   = 'phaseUpdate';
+    const SC_USER_DELETING  = 'userDeleting';
 
     /**
      * Name of a team
@@ -212,19 +213,21 @@ class Team extends \common\ext\MongoDb\Document
     {
         return array_merge(parent::rules(), array(
             array('name, year, phase, coachId, coachNameUk, coachNameEn, schoolId, schoolNameUk, schoolNameEn, memberIds', 'required'),
-            array('name', \common\models\Team\Validator\Name::className()),
+            array('name', Team\Validator\Name::className()),
             array('year', 'numerical',
                 'integerOnly'   => true,
                 'min'           => (int)\yii::app()->params['yearFirst'],
                 'max'           => (int)date('Y'),
             ),
+            array('phase', 'readonly', 'except' => static::SC_PHASE_UPDATE),
+            array('phase', Team\Validator\Phase::className()),
             array('phase', 'numerical',
                 'integerOnly'   => true,
                 'min'           => Result::PHASE_1,
-                'max'           => Result::PHASE_3,
+                'max'           => Result::PHASE_3 + 1,
             ),
-            array('schoolId', \common\models\Team\Validator\School::className()),
-            array('memberIds', \common\models\Team\Validator\Members::className(), 'except' => static::SC_USER_DELETING),
+            array('schoolId', Team\Validator\School::className()),
+            array('memberIds', Team\Validator\Members::className(), 'except' => static::SC_USER_DELETING),
         ));
     }
 

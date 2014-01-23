@@ -4,7 +4,7 @@ namespace common\models\Team\Validator;
 
 use \common\models\Team;
 
-class Name extends \common\ext\MongoDb\Validator\AbstractValidator
+class Phase extends \common\ext\MongoDb\Validator\AbstractValidator
 {
 
     /**
@@ -20,10 +20,8 @@ class Name extends \common\ext\MongoDb\Validator\AbstractValidator
         }
 
         // Check if name contains only prefix
-        $teamName = $team->name;
-        $schoolShortNameEn = $team->school->shortNameEn;
-        if (mb_strlen($teamName) <= mb_strlen($schoolShortNameEn)) {
-            $this->addError($team, $attribute, \yii::t('app', 'Team name cannot be empty.'));
+        if ($team->phase - 1 > $team->attributeInitValue('phase')) {
+            $this->addError($team, $attribute, \yii::t('app', 'Can increase the Phase Number by only 1.'));
         }
 	}
 

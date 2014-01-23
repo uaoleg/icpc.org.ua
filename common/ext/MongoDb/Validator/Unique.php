@@ -1,10 +1,10 @@
 <?php
 
-namespace common\ext\MongoDb;
+namespace common\ext\MongoDb\Validator;
 
 \yii::import('common.lib.YiiMongoDbSuite.extra.EMongoUniqueValidator', true);
 
-class UniqueValidator extends \EMongoUniqueValidator
+class Unique extends \EMongoUniqueValidator
 {
 
     /**

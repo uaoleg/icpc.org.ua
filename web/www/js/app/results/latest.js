@@ -1,4 +1,5 @@
 function appResultsLatest() {
+    
     var self = this;
 
     // Init uploader

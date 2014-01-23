@@ -4,7 +4,7 @@ namespace common\models\Team\Validator;
 
 use \common\models\Team;
 
-class Members extends \common\ext\MongoDb\Validator
+class Members extends \common\ext\MongoDb\Validator\AbstractValidator
 {
 
     /**

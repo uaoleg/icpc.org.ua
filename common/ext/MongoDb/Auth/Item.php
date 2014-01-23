@@ -80,7 +80,7 @@ class Item extends \common\ext\MongoDb\Document
     {
 		return array_merge(parent::rules(), array(
             array('type, name', 'required'),
-            array('name', '\common\ext\MongoDb\UniqueValidator'),
+            array('name', 'unique'),
 		));
 	}
 

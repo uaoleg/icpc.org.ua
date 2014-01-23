@@ -3,7 +3,8 @@
 namespace common\ext\MongoDb;
 
 \CValidator::$builtInValidators = array_merge(\CValidator::$builtInValidators, array(
-    'unique' => '\common\ext\MongoDb\UniqueValidator',
+    'readonly'  => '\common\ext\MongoDb\Validator\Readonly',
+    'unique'    => '\common\ext\MongoDb\Validator\Unique',
 ));
 
 /**

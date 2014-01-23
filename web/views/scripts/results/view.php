@@ -2,14 +2,11 @@
     \yii::app()->getClientScript()->registerCoreScript('jquery.jqgrid');
 ?>
 
-<div class="page-header">
-    <h1><?=$header?> <small><?=$year?>, <?=\yii::t('app', 'phase')?> <?=$phase?></small></h1>
-</div>
-
-
 <script type="text/javascript">
-
     $(document).ready(function(){
+
+        new appResultsView();
+
         $('#results')
             .jqGrid({
                 url: '<?=$this->createUrl('/results/GetResultsListJson')?>',
@@ -37,7 +34,9 @@
                     <?php endfor; ?>
                 ],
                 postData: {
-                    geo: '<?=$geo?>'
+                    year:   '<?=$year?>',
+                    geo:    '<?=$geo?>',
+                    phase:  '<?=$phase?>'
                 },
                 cellEdit: false,
                 scroll: false,
@@ -47,6 +46,9 @@
                 shrinkToFit: false,
                 beforeSelectRow: function() {
                     return false;
+                },
+                loadComplete: function() {
+                    $('[rel=tooltip]').tooltip();
                 }
             })
             .jqGrid('filterToolbar', {
@@ -64,4 +66,10 @@
     });
 </script>
 
+<div class="page-header">
+    <h1><?=$header?> <small><?=$year?>, <?=\yii::t('app', 'phase')?> <?=$phase?></small></h1>
+</div>
+
 <table id="results" style="width: 100%;"></table>
+
+<input type="hidden" name="results-phase" value="<?=$phase?>" />

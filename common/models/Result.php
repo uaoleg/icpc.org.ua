@@ -9,6 +9,7 @@ use \common\models\Team;
  *
  * @property-read string $schoolName
  * @property-read string $coachName
+ * @property-read bool   $phaseIsCompleted
  * @property-read Team   $team
  */
 class Result extends \common\ext\MongoDb\Document
@@ -136,6 +137,12 @@ class Result extends \common\ext\MongoDb\Document
     protected $_team;
 
     /**
+     * Is phase completed
+     * @var bool
+     */
+    protected $_phaseIsCompleted;
+
+    /**
      * Returns the object of the team
      * @return Team
      */
@@ -145,6 +152,19 @@ class Result extends \common\ext\MongoDb\Document
             $this->_team = Team::model()->findByPk(new \MongoId($this->teamId));
         }
         return $this->_team;
+    }
+
+    /**
+     * Returns whether the phase is completed
+     *
+     * @return bool
+     */
+    public function getPhaseIsCompleted()
+    {
+        if ($this->_phaseIsCompleted === null) {
+            $this->_phaseIsCompleted = ($this->phase + 1 <= $this->team->phase);
+        }
+        return $this->_phaseIsCompleted;
     }
 
     /**
