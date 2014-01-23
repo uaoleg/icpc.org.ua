@@ -162,7 +162,11 @@ class Result extends \common\ext\MongoDb\Document
     public function getPhaseIsCompleted()
     {
         if ($this->_phaseIsCompleted === null) {
-            $this->_phaseIsCompleted = ($this->phase + 1 <= $this->team->phase);
+            if ($this->team !== null) {
+                $this->_phaseIsCompleted = ($this->phase + 1 <= $this->team->phase);
+            } else {
+                $this->phaseIsCompleted = false;
+            }
         }
         return $this->_phaseIsCompleted;
     }
