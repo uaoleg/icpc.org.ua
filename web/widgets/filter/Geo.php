@@ -36,10 +36,10 @@ class Geo extends \web\ext\Widget
             $countryChecked = true;
         } elseif (in_array($this->checked, Region::model()->getConstantList('NAME_'))) {
             $regionChecked  = true;
-            $regionLabel    = Region::model()->getAttributeLabel($this->checked);
+            $regionLabel    = Region::model()->getAttributeLabel($this->checked, 'name');
         } elseif (in_array($this->checked, State::model()->getConstantList('NAME_'))) {
             $stateChecked   = true;
-            $stateLabel     = State::model()->getAttributeLabel($this->checked);
+            $stateLabel     = State::model()->getAttributeLabel($this->checked, 'name');
         }
 
         // Render view
