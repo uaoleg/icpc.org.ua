@@ -142,7 +142,9 @@ class School extends \common\ext\MongoDb\Document
         return array_merge(parent::rules(), array(
             array('fullNameUk, state, region', 'required'),
             array('fullNameUk, fullNameEn, shortNameUk, shortNameEn', 'unique'),
-            array('shortNameUk, fullNameEn, shortNameEn', 'required', 'on' => static::SC_ASSIGN_TO_TEAM)
+            array('shortNameUk, fullNameEn, shortNameEn', 'required', 'on' => static::SC_ASSIGN_TO_TEAM),
+            array('state', School\Validator\State::className()),
+            array('region', School\Validator\Region::className()),
         ));
     }
 
@@ -196,16 +198,6 @@ class School extends \common\ext\MongoDb\Document
     protected function beforeValidate()
     {
         if (!parent::beforeValidate()) return false;
-
-        // State
-        if (!in_array($this->state, Geo\State::model()->getConstantList('NAME_'))) {
-            $this->addError('state', \yii::t('app', 'Unknown state name.'));
-        }
-
-        // Region
-        if (!in_array($this->region, Geo\Region::model()->getConstantList('NAME_'))) {
-            $this->addError('region', \yii::t('app', 'Unknown region name.'));
-        }
 
         return true;
     }
