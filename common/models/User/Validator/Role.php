@@ -5,6 +5,11 @@ use \common\models\User;
 
 class Role extends \common\ext\MongoDb\Validator\AbstractValidator
 {
+    /**
+     * Validate role assigned to user
+     * @param User   $user
+     * @param string $attribute
+     */
     public function validateAttribute($user, $attribute)
     {
         if ((empty($user->type)) && (empty($user->coordinator))) {

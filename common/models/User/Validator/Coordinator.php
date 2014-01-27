@@ -7,6 +7,11 @@ use \common\models\User;
 class Coordinator extends \common\ext\MongoDb\Validator\AbstractValidator
 {
 
+    /**
+     * Validate coordinator attribute
+     * @param User   $user
+     * @param string $attribute
+     */
     public function validateAttribute($user, $attribute) {
         if (!$user->attributeHasChanged($attribute)) {
             return;
