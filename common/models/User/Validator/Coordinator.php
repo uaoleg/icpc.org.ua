@@ -12,7 +12,8 @@ class Coordinator extends \common\ext\MongoDb\Validator\AbstractValidator
      * @param User   $user
      * @param string $attribute
      */
-    public function validateAttribute($user, $attribute) {
+    public function validateAttribute($user, $attribute)
+    {
         if (!$user->attributeHasChanged($attribute)) {
             return;
         }
