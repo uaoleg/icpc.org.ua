@@ -165,7 +165,7 @@ class Result extends \common\ext\MongoDb\Document
             if ($this->team !== null) {
                 $this->_phaseIsCompleted = ($this->phase + 1 <= $this->team->phase);
             } else {
-                $this->phaseIsCompleted = false;
+                $this->_phaseIsCompleted = false;
             }
         }
         return $this->_phaseIsCompleted;
