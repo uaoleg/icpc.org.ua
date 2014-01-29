@@ -98,7 +98,7 @@ class School extends \common\ext\MongoDb\Document
      */
     public function getRegionLabel()
     {
-        return Geo\Region::model()->getAttributeLabel($this->region);
+        return Geo\Region::model()->getAttributeLabel($this->region, 'name');
     }
 
     /**
@@ -108,7 +108,7 @@ class School extends \common\ext\MongoDb\Document
      */
     public function getStateLabel()
     {
-        return Geo\State::model()->getAttributeLabel($this->state);
+        return Geo\State::model()->getAttributeLabel($this->state, 'name');
     }
 
     /**
