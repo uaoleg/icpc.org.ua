@@ -314,6 +314,8 @@ class User extends \common\ext\MongoDb\Document
             array('email', 'email'),
             array('email', 'unique'),
             array('firstNameUk, middleName, lastNameUk', 'length', 'max' => 100),
+            array('coordinator', User\Validator\Coordinator::className()),
+            array('role', User\Validator\Role::className()),
         ));
     }
 
@@ -360,20 +362,6 @@ class User extends \common\ext\MongoDb\Document
         // Type
         if (!in_array($this->type, array(static::ROLE_STUDENT, static::ROLE_COACH))) {
             $this->type = null;
-        }
-
-        // Coordinator
-        if (empty($this->coordinator)) {
-            $this->coordinator = null;
-        } elseif (!in_array($this->coordinator, $this->getConstantList('ROLE_COORDINATOR_'))) {
-            $this->addError('coordinator', \yii::t('app', 'Unknown coordinator type.'));
-        } elseif ($this->type === static::ROLE_STUDENT) {
-            $this->addError('coordinator', \yii::t('app', 'Student can not be coordinator.'));
-        }
-
-        // Check that either type or coordinator is filled
-        if ((empty($this->type)) && (empty($this->coordinator))) {
-            $this->addError('role', \yii::t('app', 'User should have some role.'));
         }
 
         // Set created date
