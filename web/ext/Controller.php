@@ -13,9 +13,10 @@ use \common\models\Team;
 class Controller extends \CController
 {
     /*
-     * Search operation name for daterange field type
+     * Search operation names for different field types
      */
     const JQGRID_OPERATION_DATERANGE = 'dr';
+    const JQGRID_OPERATION_GREATER_OR_EQUAL = 'ge';
 
     /**
      * Nav active items
@@ -327,6 +328,8 @@ class Controller extends \CController
 
                     $criteria->addCond($filter->field, '>=', $startDate);
                     $criteria->addCond($filter->field, '<=', $endDate);
+                } elseif ($filter->op === static::JQGRID_OPERATION_GREATER_OR_EQUAL) {
+                    $criteria->addCond($filter->field, '>=', (int)$filter->data);
                 } else {
                     $regex = new \MongoRegex('/'.preg_quote($filter->data).'/i');
                     $criteria->addCond($filter->field, '==', $regex);

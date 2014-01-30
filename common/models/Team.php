@@ -82,6 +82,18 @@ class Team extends \common\ext\MongoDb\Document
     public $memberIds = array();
 
     /**
+     * State labels of a team
+     * @var array
+     */
+    public $state;
+
+    /**
+     * Region labels of a team
+     * @var array
+     */
+    public $region;
+
+    /**
      * Objects of member users
      * @var array
      */
@@ -181,6 +193,40 @@ class Team extends \common\ext\MongoDb\Document
     }
 
     /**
+     * Returns team's state label
+     * @param string|null $lang
+     * @return string
+     */
+    public function getStateLabel($lang = null)
+    {
+        if ($lang === null) {
+            $lang = \yii::app()->language;
+        }
+        if (isset($this->state[$lang])) {
+            return $this->state[$lang];
+        } else {
+            return $this->state['uk'];
+        }
+    }
+
+    /**
+     * Returns team's region label
+     * @param string|null $lang
+     * @return string
+     */
+    public function getRegionLabel($lang = null)
+    {
+        if ($lang === null) {
+            $lang = \yii::app()->language;
+        }
+        if (isset($this->region[$lang])) {
+            return $this->region[$lang];
+        } else {
+            return $this->region['uk'];
+        }
+    }
+
+    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -200,7 +246,9 @@ class Team extends \common\ext\MongoDb\Document
             'schoolId'      => \yii::t('app', 'Related school ID'),
             'schoolNameUk'  => \yii::t('app', 'Full name of school in ukrainian'),
             'schoolNameEn'  => \yii::t('app', 'Full name of school in english'),
-            'memberIds'     => \yii::t('app', 'List of members')
+            'memberIds'     => \yii::t('app', 'List of members'),
+            'state'         => \yii::t('app', 'List of state labels of a team'),
+            'region'        => \yii::t('app', 'List of region labels of a team'),
         ));
     }
 
@@ -212,7 +260,8 @@ class Team extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('name, year, phase, coachId, coachNameUk, coachNameEn, schoolId, schoolNameUk, schoolNameEn, memberIds', 'required'),
+            array('name, year, phase, coachId, coachNameUk, coachNameEn, schoolId, schoolNameUk, schoolNameEn,
+                   memberIds, state, region', 'required'),
             array('name', Team\Validator\Name::className()),
             array('year', 'numerical',
                 'integerOnly'   => true,
@@ -292,6 +341,15 @@ class Team extends \common\ext\MongoDb\Document
         if (empty($this->year)) {
             $this->year = (int)date('Y');
         }
+
+        // Set state and region labels
+        $iniLang = \yii::app()->language;
+        foreach (\yii::app()->params['languages'] as $language => $label) {
+            \yii::app()->language = $language;
+            $this->state[$language] = $this->school->getStateLabel();
+            $this->region[$language] = $this->school->getRegionLabel();
+        }
+        \yii::app()->language = $iniLang;
 
         return true;
     }

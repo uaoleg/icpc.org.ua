@@ -22,14 +22,18 @@
                 '<?=\yii::t('app', 'School name')?>',
                 '<?=\yii::t('app', 'Coach name')?>',
                 '<?=\yii::t('app', 'Members')?>',
-                '<?=\yii::t('app', 'Year')?>',
+                '<?=\yii::t('app', 'State')?>',
+                '<?=\yii::t('app', 'Region')?>',
+                '<?=\yii::t('app', 'Phase')?>'
             ],
             colModel: [
                 {name: 'name', index: 'name', width: 20, formatter: 'showlink', formatoptions:{baseLinkUrl:'/team/view'}},
                 {name: 'schoolName<?=ucfirst(\yii::app()->language)?>', index: 'schoolName<?=ucfirst(\yii::app()->language)?>', width: 20},
                 {name: 'coachName<?=ucfirst(\yii::app()->language)?>', index: 'coachName<?=ucfirst(\yii::app()->language)?>', width: 15},
                 {name: 'members', index: 'members', width: 40, search: false},
-                {name: 'year', index: 'year', width: 5, search: false},
+                {name: 'state', index: 'state', width: 15, search: false},
+                {name: 'region', index: 'region', width: 10, search: false},
+                {name: 'phase', index: 'phase', width: 5, searchoptions: {sopt: ['ge']}}
             ],
             sortname: 'teamname',
             sortorder: 'asc',

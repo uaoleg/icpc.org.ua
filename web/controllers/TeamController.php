@@ -92,6 +92,9 @@ class TeamController extends \web\ext\Controller
                 'coachName' . ucfirst($lang)    => $team->coachName,
                 'members'                       => $members_str,
                 'year'                          => $team->year,
+                'state'                         => $team->getStateLabel(),
+                'region'                        => $team->getRegionLabel(),
+                'phase'                         => $team->phase,
             );
         }
 
