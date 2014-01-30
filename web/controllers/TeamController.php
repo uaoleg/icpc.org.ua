@@ -2,6 +2,7 @@
 
 namespace web\controllers;
 
+use common\models\Result;
 use \common\models\Team;
 
 class TeamController extends \web\ext\Controller
@@ -56,11 +57,21 @@ class TeamController extends \web\ext\Controller
             $this->httpException(404);
         }
 
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('teamId', '==', $teamId);
+        $criteria->sort('phase', \EMongoCriteria::SORT_ASC);
+        $results = Result::model()->findAll($criteria);
+        $result = Result::model()->find($criteria);
+        $tasksCount = ($result !== null) ? count($result->tasksTries) : 0;
+
         // Render view
         $this->render('view', array(
-            'team'    => $team,
-            'coach'   => $team->coach,
-            'members' => $team->members
+            'team'       => $team,
+            'coach'      => $team->coach,
+            'members'    => $team->members,
+            'results'    => $results,
+            'tasksCount' => $tasksCount,
+            'letters'    => Result::TASKS_LETTERS,
         ));
     }
 

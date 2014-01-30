@@ -24,3 +24,45 @@
 
     </div>
 </div>
+
+<?php if (count($results)): ?>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th><?=\yii::t('app', 'Place')?></th>
+                        <th><?=\yii::t('app', 'Phase')?></th>
+                        <?php for ($i = 0; $i < $tasksCount; $i++): ?>
+                            <th><?=$letters[$i]?></th>
+                        <?php endfor; ?>
+                        <th><?=\yii::t('app', 'Total')?></th>
+                        <th><?=\yii::t('app', 'Penalty')?></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php foreach($results as $result): ?>
+                        <tr>
+                            <td><?=$result->place?></td>
+                            <td><?=$result->phase?></td>
+                            <?php for ($i = 0; $i < $tasksCount; $i++): ?>
+                                <td>
+                                    <?php
+                                        if ($result->tasksTries[$letters[$i]] > 0) {
+                                            $datetime = new \DateTime();
+                                            $datetime->setTime(0, 0, $result->tasksTime[$letters[$i]]);
+                                            echo $result->tasksTries[$letters[$i]] . '&nbsp;(' . $datetime->format('G:i') . ')';
+                                        }
+                                    ?>
+                                </td>
+                            <?php endfor; ?>
+                            <td><?=$result->total?></td>
+                            <td><?=$result->penalty?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<?php endif; ?>
