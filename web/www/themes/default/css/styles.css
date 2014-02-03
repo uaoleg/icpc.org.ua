@@ -73,6 +73,10 @@ transform: rotate(-90deg);
     margin: -10px 10px 10px;
 }
 
+.collapsible:empty {
+    display: none;
+}
+
 /* Document
 ----------------------------------------------------------------------------- */
 

@@ -37,9 +37,13 @@ appResultsLatest.prototype.initUploader = function () {
             .removeClass('has-error')
             .find('.help-block').text('');
         $.each(files, function(i, file) {
+            if (file.name.split('.')[1] !== 'html') {
+                self.uploader.trigger('Error', {message: 'not-html'});
+            } else {
+                self.onchange();
+            }
             $('.document-origin-filename').text(file.name);
         });
-        self.onchange();
 
         up.refresh(); // Reposition Flash/Silverlight
     });
@@ -55,10 +59,14 @@ appResultsLatest.prototype.initUploader = function () {
     });
 
     self.uploader.bind('Error', function(up, err) {
-        $('#uploadPickfiles').closest('.form-group')
-            .addClass('has-error')
-            .find('.help-block').text(err.message);
-
+        var $helpBlock = $('#uploadPickfiles').closest('.form-group')
+                        .addClass('has-error')
+                        .find('.help-block');
+        if ($helpBlock.data(err.message) != undefined) {
+            $helpBlock.text($helpBlock.data(err.message));
+        } else {
+            $helpBlock.text(err.message);
+        }
         up.refresh(); // Reposition Flash/Silverlight
     });
 
