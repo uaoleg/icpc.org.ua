@@ -1,6 +1,5 @@
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
-
         <h1>
             <?=\CHtml::encode($team->name)?>
             <?php if ($team->coachId === \yii::app()->user->id): ?>
@@ -20,24 +19,21 @@
             <li><?php \web\widgets\user\Name::create(array('user' => $member)); ?></li>
             <?php endforeach; ?>
         </ul>
-
-
     </div>
 </div>
 
 <?php if (count($results)): ?>
     <div class="row">
-        <div class="col-lg-12">
-            <table class="table table-hover table-bordered">
+        <div class="col-lg-6 col-lg-offset-3">
+            <h2><?=\yii::t('app', 'Results')?></h2>
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th><?=\yii::t('app', 'Place')?></th>
                         <th><?=\yii::t('app', 'Phase')?></th>
-                        <?php for ($i = 0; $i < $tasksCount; $i++): ?>
-                            <th><?=$letters[$i]?></th>
-                        <?php endfor; ?>
                         <th><?=\yii::t('app', 'Total')?></th>
                         <th><?=\yii::t('app', 'Penalty')?></th>
+                        <th><?=\yii::t('app', 'Details')?></th>
                     </tr>
                 </thead>
 
@@ -46,19 +42,15 @@
                         <tr>
                             <td><?=$result->place?></td>
                             <td><?=$result->phase?></td>
-                            <?php for ($i = 0; $i < $tasksCount; $i++): ?>
-                                <td>
-                                    <?php
-                                        if ($result->tasksTries[$letters[$i]] > 0) {
-                                            $datetime = new \DateTime();
-                                            $datetime->setTime(0, 0, $result->tasksTime[$letters[$i]]);
-                                            echo $result->tasksTries[$letters[$i]] . '&nbsp;(' . $datetime->format('G:i') . ')';
-                                        }
-                                    ?>
-                                </td>
-                            <?php endfor; ?>
                             <td><?=$result->total?></td>
                             <td><?=$result->penalty?></td>
+                            <td>
+                                <a href="<?=$this->createUrl('/results/view', array(
+                                    'year'              => $result->year,
+                                    'phase'             => $result->phase,
+                                    $result->geoType    => $result->geo,
+                                ))?>"><?=\yii::t('app', 'View')?></a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
