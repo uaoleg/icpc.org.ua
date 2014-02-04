@@ -10,6 +10,7 @@ use \common\models\Team;
  * @property-read string $schoolName
  * @property-read string $coachName
  * @property-read bool   $phaseIsCompleted
+ * @property-read string $geoType
  * @property-read Team   $team
  */
 class Result extends \common\ext\MongoDb\Document
@@ -169,6 +170,26 @@ class Result extends \common\ext\MongoDb\Document
             }
         }
         return $this->_phaseIsCompleted;
+    }
+
+    /**
+     * Returns geo type
+     *
+     * @return string
+     */
+    public function getGeoType()
+    {
+        switch ($this->phase) {
+            case static::PHASE_1:
+                return 'state';
+                break;
+            case static::PHASE_2:
+                return 'region';
+                break;
+            case static::PHASE_3:
+                return 'country';
+                break;
+        }
     }
 
     /**
