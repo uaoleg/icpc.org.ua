@@ -67,7 +67,7 @@
 </script>
 
 <div class="page-header">
-    <h1><?=$header?> <small><?=$year?>, <?=\yii::t('app', 'phase')?> <?=$phase?></small></h1>
+    <h1><?=$header?> <small><?=$year?>, <?=\yii::t('app', 'stage')?> <?=$phase?></small></h1>
 </div>
 
 <table id="results" style="width: 100%;"></table>

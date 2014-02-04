@@ -20,7 +20,7 @@
 <?php endif; ?>
 
 <div class="page-header">
-    <h1><?=\yii::t('app', '1st Phase Results')?></h1>
+    <h1><?=\yii::t('app', '1st Stage Results')?></h1>
 </div>
 <?php if (count($states) > 0): ?>
 <ul>
@@ -39,7 +39,7 @@
 <?php endif; ?>
 
 <div class="page-header">
-    <h1><?=\yii::t('app', '2nd Phase Results')?></h1>
+    <h1><?=\yii::t('app', '2nd Stage Results')?></h1>
 </div>
 <?php if (count($regions) > 0): ?>
 <ul>
@@ -58,7 +58,7 @@
 <?php endif; ?>
 
 <div class="page-header">
-    <h1><?=\yii::t('app', '3rd Phase Results')?></h1>
+    <h1><?=\yii::t('app', '3rd Stage Results')?></h1>
 </div>
 <?php if ($hasUkraineResults): ?>
 <ul>

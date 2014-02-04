@@ -14,7 +14,7 @@
                 '<?=\yii::t('app', 'Members')?>',
                 '<?=\yii::t('app', 'State')?>',
                 '<?=\yii::t('app', 'Region')?>',
-                '<?=\yii::t('app', 'Phase')?>'
+                '<?=\yii::t('app', 'Stage')?>'
             ],
             colModel: [
                 {name: 'name', index: 'name', width: 20, formatter: 'showlink', formatoptions:{baseLinkUrl:'/team/view'}},

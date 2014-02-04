@@ -30,7 +30,7 @@
                 <thead>
                     <tr>
                         <th><?=\yii::t('app', 'Place')?></th>
-                        <th><?=\yii::t('app', 'Phase')?></th>
+                        <th><?=\yii::t('app', 'Stage')?></th>
                         <th><?=\yii::t('app', 'Total')?></th>
                         <th><?=\yii::t('app', 'Penalty')?></th>
                         <th><?=\yii::t('app', 'Details')?></th>

@@ -3,7 +3,7 @@
     <input type="checkbox"
            <?=$result->phaseIsCompleted ? 'checked' : ''?>
            class="results-phase-completed"
-           title="<?=\yii::t('app', 'Phase is completed')?>"
+           title="<?=\yii::t('app', 'Stage is completed')?>"
            rel="tooltip"
            data-placement="right" />
 <?php elseif ($result->phaseIsCompleted): ?>

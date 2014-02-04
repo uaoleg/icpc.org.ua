@@ -21,7 +21,7 @@ class Phase extends \common\ext\MongoDb\Validator\AbstractValidator
 
         // Check if name contains only prefix
         if ($team->phase - 1 > $team->attributeInitValue('phase')) {
-            $this->addError($team, $attribute, \yii::t('app', 'Can increase the Phase Number by only 1.'));
+            $this->addError($team, $attribute, \yii::t('app', 'Can increase the Stage Number by only 1.'));
         }
 	}
 

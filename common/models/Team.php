@@ -233,7 +233,7 @@ class Team extends \common\ext\MongoDb\Document
         return array_merge(parent::attributeLabels(), array(
             'name'          => \yii::t('app', 'Name of a team'),
             'year'          => \yii::t('app', 'Year in which team participates'),
-            'phase'         => \yii::t('app', 'Phase in which team participates'),
+            'phase'         => \yii::t('app', 'Stage in which team participates'),
             'coachId'       => \yii::t('app', 'Related coach ID'),
             'coachNameUk'   => \yii::t('app', 'Name of the coach in ukrainian'),
             'coachNameEn'   => \yii::t('app', 'Name of the coach in english'),

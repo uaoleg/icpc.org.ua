@@ -240,7 +240,7 @@ class Result extends \common\ext\MongoDb\Document
     {
         return array_merge(parent::attributeLabels(), array(
             'year'          => \yii::t('app', 'Year of the result'),
-            'phase'         => \yii::t('app', 'Number of phase'),
+            'phase'         => \yii::t('app', 'Number of stage'),
             'geo'           => \yii::t('app', 'Geographical position'),
             'place'         => \yii::t('app', 'Place of the team'),
             'teamId'        => \yii::t('app', 'ID of the team'),
