@@ -8,7 +8,7 @@
            data-placement="right" />
 <?php elseif ($result->phaseIsCompleted): ?>
     <span class="glyphicon glyphicon-chevron-down"
-           title="<?=\yii::t('app', 'Phase is completed')?>"
+           title="<?=\yii::t('app', 'Stage is completed')?>"
            rel="tooltip"
            data-placement="right"></span>
 <?php endif; ?>
