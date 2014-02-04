@@ -76,9 +76,15 @@ class QaController extends \web\ext\Controller
         $criteria->sort('dateCreated', \EMongoCriteria::SORT_DESC);
         $questions = Qa\Question::model()->findAll($criteria);
 
+        // Get list of tags
+        $tagsCriteria = new \EMongoCriteria();
+        $tagsCriteria->sort('name', \EMongoCriteria::SORT_ASC);
+        $tags = Qa\Tag::model()->findAll($tagsCriteria);
+
         // Render view
         $this->render('latest', array(
             'questions' => $questions,
+            'tags'      => $tags,
         ));
     }
 

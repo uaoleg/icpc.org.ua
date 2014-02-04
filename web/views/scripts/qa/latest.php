@@ -12,6 +12,16 @@
     <?php endif; ?>
 </div>
 
+<?php if (count($tags)): ?>
+<div class="row">
+    <div class="col-lg-12">
+        <?php foreach ($tags as $tag): ?>
+            <?php \web\widgets\qa\Tag::create(array('tag' => $tag->name));?>
+        <?php endforeach; ?>
+    </div>
+</div>
+<?php endif; ?>
+
 <hr />
 
 <?php foreach($questions as $question): ?>
