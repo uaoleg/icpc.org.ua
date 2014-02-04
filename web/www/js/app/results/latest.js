@@ -7,10 +7,11 @@ function appResultsLatest() {
 
     // Upload results
     $('#uploadResults').on('click', function(){
-        if ($('[name=phase]:checked').length !== 1) {
-            $('[name=phase]').closest('.form-group').addClass('has-error');
+        if ($('[name=filter-geo]:checked').length !== 1) {
+            $('[name=filter-geo]').closest('.form-group').addClass('has-error');
         } else {
-            $(this).add('#uploadPickfiles, [name=phase]').prop('disabled', true);
+            $(this).add('#uploadPickfiles').prop('disabled', true);
+            $('[data-toggle=buttons] > label').addClass('disabled');
             self.uploader.start();
         }
     });
@@ -46,7 +47,7 @@ appResultsLatest.prototype.initUploader = function () {
     self.uploader.bind('BeforeUpload', function (up, file) {
         var fileExt = file.name.split('.').pop();
         up.settings.multipart_params.uniqueName = $.fn.uniqueId() + '.' + fileExt;
-        up.settings.multipart_params.phase      = $('[name=phase]:checked').val();
+        up.settings.multipart_params.geo        = $('[name=filter-geo]:checked').val();
     });
 
     self.uploader.bind('UploadProgress', function(up, file) {
