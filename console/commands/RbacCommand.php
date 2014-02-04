@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use \common\components\Rbac;
 use \common\ext\MongoDb\Auth;
@@ -224,7 +224,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->auth->createOperation(Rbac::OP_TEAM_READ, 'Read team');
         $this->auth->createOperation(Rbac::OP_TEAM_UPDATE, 'Edit team', $bizRuleUpdate);
         $this->auth->createOperation(Rbac::OP_TEAM_UPDATE_PHASE, 'Set team phase', $bizRuleUpdatePhase);
-        $this->auth->createOperation(Rbac::OP_TEAM_EXPORT, 'Set team export', $bizRuleExport);
+        $this->auth->createOperation(Rbac::OP_TEAM_EXPORT, 'Export team', $bizRuleExport);
     }
 
     /**

@@ -112,12 +112,14 @@ class TeamController extends \web\ext\Controller
      */
     public function actionCsv()
     {
+        // Get params
         $phase = \yii::app()->request->getParam('phase');
 
         // Set headers
-        header("Content-Disposition: attachment; filename=\"icpc_teams_" . $this->getYear() . "_{$phase}.csv\"");
+        header("Content-Disposition: attachment; filename=\"icpc_teams_{$this->getYear()}_{$phase}.csv\"");
         header('Content-Type: text/csv; charset=UTF-16LE');
 
+        // Get list of teams
         $criteria = new \EMongoCriteria();
         $criteria->addCond('year', '==', (int)$this->getYear());
         $criteria->addCond('phase', '>=', (int)$phase);

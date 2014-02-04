@@ -208,6 +208,8 @@ class Rbac extends \CApplicationComponent
     }
 
     /**
+     * Export team (csv)
+     *
      * @param array $params
      * @return bool
      */
