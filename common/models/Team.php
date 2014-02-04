@@ -85,13 +85,13 @@ class Team extends \common\ext\MongoDb\Document
      * State labels of a team
      * @var array
      */
-    public $state;
+    public $state = array();
 
     /**
      * Region labels of a team
      * @var array
      */
-    public $region;
+    public $region = array();
 
     /**
      * Objects of member users
@@ -194,16 +194,13 @@ class Team extends \common\ext\MongoDb\Document
 
     /**
      * Returns team's state label
-     * @param string|null $lang
+     *
      * @return string
      */
-    public function getStateLabel($lang = null)
+    public function getStateLabel()
     {
-        if ($lang === null) {
-            $lang = \yii::app()->language;
-        }
-        if (isset($this->state[$lang])) {
-            return $this->state[$lang];
+        if (isset($this->state[$this->useLanguage])) {
+            return $this->state[$this->useLanguage];
         } else {
             return $this->state['uk'];
         }
@@ -211,16 +208,13 @@ class Team extends \common\ext\MongoDb\Document
 
     /**
      * Returns team's region label
-     * @param string|null $lang
+     *
      * @return string
      */
-    public function getRegionLabel($lang = null)
+    public function getRegionLabel()
     {
-        if ($lang === null) {
-            $lang = \yii::app()->language;
-        }
-        if (isset($this->region[$lang])) {
-            return $this->region[$lang];
+        if (isset($this->region[$this->useLanguage])) {
+            return $this->region[$this->useLanguage];
         } else {
             return $this->region['uk'];
         }
@@ -343,13 +337,15 @@ class Team extends \common\ext\MongoDb\Document
         }
 
         // Set state and region labels
-        $iniLang = \yii::app()->language;
-        foreach (\yii::app()->params['languages'] as $language => $label) {
-            \yii::app()->language = $language;
-            $this->state[$language] = $this->school->getStateLabel();
-            $this->region[$language] = $this->school->getRegionLabel();
+        if ($this->attributeHasChanged('schoolId')) {
+            $initLang = \yii::app()->language;
+            foreach (\yii::app()->params['languages'] as $language => $label) {
+                \yii::app()->language = $language;
+                $this->state[$language] = $this->school->getStateLabel();
+                $this->region[$language] = $this->school->getRegionLabel();
+            }
+            \yii::app()->language = $initLang;
         }
-        \yii::app()->language = $iniLang;
 
         return true;
     }
