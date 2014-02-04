@@ -90,7 +90,7 @@
 
                     <?php if (!\yii::app()->user->getInstance()->school->getIsNewRecord()): ?>
                         <div class="form-group">
-                            <button type="button" class="btn btn-lg2 btn-info" id="uploadPickfiles">
+                            <button type="button" class="btn btn-primary" id="uploadPickfiles">
                                 <?=\yii::t('app', 'Choose file')?>
                             </button>
                             <span class="document-origin-filename"></span>
@@ -98,30 +98,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="radio">
-                                <label class="control-label">
-                                    <input type="radio" name="phase" value="1"
-                                           <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE) ? '' : 'disabled'?>
-                                    />
-                                    <?=\common\models\Geo\State::model()->getAttributeLabel($school->state, 'name')?>
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label class="control-label">
-                                    <input type="radio" name="phase" value="2"
-                                           <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION) ? '' : 'disabled'?>
-                                    />
-                                    <?=\common\models\Geo\Region::model()->getAttributeLabel($school->region, 'name')?>
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label class="control-label">
-                                    <input type="radio" name="phase" value="3"
-                                           <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE) ? '' : 'disabled'?>
-                                    />
-                                    <?=\common\models\School::getCountryLabel()?>
-                                </label>
-                            </div>
+                            <?php \web\widgets\user\GeoFilter::create(); ?>
                         </div>
 
                         <button type="submit" class="btn btn-primary" id="uploadResults" disabled>

@@ -25,7 +25,7 @@
         <?php if ($document->isNewRecord): ?>
             <div id="container" style="position: relative;">
                 <button type="button" class="btn btn-primary" id="pickfiles">
-                    <?=\yii::t('app', 'Upload')?>
+                    <?=\yii::t('app', 'Choose file')?>
                 </button>
                 <span class="document-origin-filename"></span>
                 <div class="help-block"></div>
