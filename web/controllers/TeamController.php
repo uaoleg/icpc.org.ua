@@ -107,4 +107,33 @@ class TeamController extends \web\ext\Controller
         ));
     }
 
+    /**
+     * Action to export teams list in CSV
+     */
+    public function actionCsv()
+    {
+        // Get params
+        $phase = \yii::app()->request->getParam('phase');
+
+        // Set headers
+        header("Content-Disposition: attachment; filename=\"icpc_teams_{$this->getYear()}_{$phase}.csv\"");
+        header('Content-Type: text/csv; charset=UTF-16LE');
+
+        // Get list of teams
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('year', '==', (int)$this->getYear());
+        $criteria->addCond('phase', '>=', (int)$phase);
+        $teams = Team::model()->findAll($criteria);
+
+        // Send content
+        $fileHandler = fopen('php://output', 'w');
+        fwrite($fileHandler, "sep=,\n");
+        foreach ($teams as $team) {
+            fputcsv($fileHandler, array(implode(',', array(
+                $team->name, $team->school->fullNameUk, $team->school->shortNameUk, $team->coachNameUk
+            ))));
+        }
+        fclose($fileHandler);
+    }
+
 }

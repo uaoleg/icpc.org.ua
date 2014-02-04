@@ -1,15 +1,5 @@
 <?php \yii::app()->getClientScript()->registerCoreScript('jquery.jqgrid'); ?>
 
-<div class="pull-right">
-    <?php \web\widgets\filter\Year::create(array('checked' => $year)); ?>
-</div>
-
-<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_CREATE)): ?>
-    <a class="btn btn-success btn-lg" href="<?=$this->createUrl('/staff/team/manage')?>"><?=\yii::t('app', 'Create a new team')?></a>
-    <hr>
-<?php endif; ?>
-
-
 <script type="text/javascript">
     $(document).ready(function(){
 
@@ -44,13 +34,44 @@
         });
         $table.jqGrid('filterToolbar', {
             stringResult: true,
-            searchOnEnter: false
+            searchOnEnter: false,
+            afterSearch: function() {
+                var filters = JSON.parse($table.getGridParam("postData").filters).rules;
+                for(var prop in filters) {
+                    if (filters.hasOwnProperty(prop)) {
+                        if (filters[prop]['field'] === 'phase') {
+                            $('.btn-csv').data('phase', filters[prop]['data']);
+                        }
+                    }
+                }
+            }
         });
 
+        /**
+         * Export teams
+         */
+        $('.btn-csv').on('click', function() {
+            location.href = '<?=$this->createUrl('/team/csv')?>' + '/phase/' + $(this).data('phase');
+        });
     });
 </script>
 
+<div class="pull-right">
+    <?php \web\widgets\filter\Year::create(array('checked' => $year)); ?>
+</div>
 
+<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_CREATE)): ?>
+    <a class="btn btn-success btn-lg" href="<?=$this->createUrl('/staff/team/manage')?>">
+        <?=\yii::t('app', 'Create a new team')?>
+    </a>
+<?php endif; ?>
+
+<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_EXPORT)): ?>
+    <button class="btn btn-default btn-csv" data-phase="1">
+        <?=\yii::t('app', 'Export to CSV')?>
+    </button>
+    <hr/>
+<?php endif; ?>
 
 <?php if ($teamsCount > 0): ?>
 
