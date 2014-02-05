@@ -28,6 +28,13 @@
                   id="question-content"
                   style="height: 500px;"><?=\CHtml::encode($question->content)?></textarea>
     </div>
+    <?php if (count($tags)): ?>
+        <div class="form-group tags-list">
+            <?php foreach ($tags as $tag): ?>
+                <span class="label label-default" style="cursor:pointer;"><?=$tag->name?></span>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
     <div class="form-group">
         <input type="text"
                name="tagList"

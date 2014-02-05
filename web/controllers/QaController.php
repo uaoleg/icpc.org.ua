@@ -132,9 +132,14 @@ class QaController extends \web\ext\Controller
             }
         }
 
+        $tagsCriteria = new \EMongoCriteria();
+        $tagsCriteria->sort('name', \EMongoCriteria::SORT_ASC);
+        $tags = Qa\Tag::model()->findAll($tagsCriteria);
+
         // Render view
         $this->render('ask', array(
-            'question' => $question
+            'question' => $question,
+            'tags'     => $tags
         ));
     }
 

@@ -16,7 +16,8 @@ function appQaManage() {
     /**
      * Init select2 for tags
      */
-    $('input[name=tagList]').select2({
+    var $inputTagList = $('input[name=tagList]');
+    $inputTagList.select2({
         minimumInputLength: 1,
         maximumSelectionSize: 10,
         multiple: true,
@@ -73,5 +74,16 @@ function appQaManage() {
         });
     });
 
+    /**
+     * Tags list: tag click
+     */
+    $('.tags-list span').on('click', function() {
+        $inputTagList.select2(
+            "val",
+            $inputTagList
+                .select2('val')
+                .concat([$(this).text()])
+        );
+    });
 
 }
