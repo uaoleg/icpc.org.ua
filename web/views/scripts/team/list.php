@@ -23,7 +23,7 @@
                 {name: 'members', index: 'members', width: 40, search: false},
                 {name: 'state', index: 'state', width: 15, search: false},
                 {name: 'region', index: 'region', width: 10, search: false},
-                {name: 'phase', index: 'phase', width: 5, searchoptions: {sopt: ['ge']}}
+                {name: 'phase', index: 'phase', width: 5, stype: 'select', searchoptions: {sopt: ['ge'], value: "1:1;2:2;3:3"}}
             ],
             sortname: 'teamname',
             sortorder: 'asc',
