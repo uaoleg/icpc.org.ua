@@ -139,9 +139,9 @@ class TeamController extends \web\ext\Controller
     }
 
     /**
-     * Action to export teams list in CSV
+     * Action to export teams list in CSV for checking system
      */
-    public function actionCsv()
+    public function actionExportCheckingSystem()
     {
         // Get params
         $phase = \yii::app()->request->getParam('phase');
@@ -149,7 +149,7 @@ class TeamController extends \web\ext\Controller
         // Set headers
         header('Content-Encoding: UTF-8');
         header('Content-type: text/csv; charset=UTF-8');
-        header("Content-Disposition: attachment; filename=\"icpc_teams_{$this->getYear()}_{$phase}.csv\"");
+        header("Content-Disposition: attachment; filename=\"icpc_teams_cs_{$this->getYear()}_{$phase}.csv\"");
 
         // Get list of teams
         $criteria = new \EMongoCriteria();
@@ -164,6 +164,40 @@ class TeamController extends \web\ext\Controller
             fputcsv($fileHandler, array(
                 $team->name, $team->school->fullNameUk, $team->school->shortNameUk, $team->coachNameUk
             ), ',');
+        }
+        fclose($fileHandler);
+    }
+
+    /**
+     * Action to export teams list in CSV for registration
+     */
+    public function actionExportRegistration()
+    {
+        // Get params
+        $phase = \yii::app()->request->getParam('phase');
+
+        // Set headers
+        header('Content-Encoding: UTF-8');
+        header('Content-type: text/csv; charset=UTF-8');
+        header("Content-Disposition: attachment; filename=\"icpc_teams_r_{$this->getYear()}_{$phase}.csv\"");
+
+        // Get list of teams
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('year', '==', (int)$this->getYear());
+        $criteria->addCond('phase', '>=', (int)$phase);
+        $teams = Team::model()->findAll($criteria);
+
+        // Send content
+        $fileHandler = fopen('php://output', 'w');
+        fwrite($fileHandler, "\xEF\xBB\xBF"); // UTF-8 BOM
+        foreach ($teams as $team) {
+            $arrayToPut = array(
+                $team->name, $team->school->fullNameUk, $team->school->shortNameUk, $team->coachNameUk
+            );
+            foreach ($team->members as $member) {
+                $arrayToPut[] = \web\widgets\user\Name::create(array('user' => $member, 'lang' => 'uk'), true);
+            }
+            fputcsv($fileHandler, $arrayToPut, ',');
         }
         fclose($fileHandler);
     }
