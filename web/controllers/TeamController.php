@@ -7,6 +7,28 @@ use \common\models\Team;
 
 class TeamController extends \web\ext\Controller
 {
+    /**
+     * Returns the access rules for this controller
+     * @return array
+     */
+    public function accessRules()
+    {
+        // Return rules
+        return array(
+            array(
+                'allow',
+                'actions'   => array('csv'),
+                'roles'     => array(\common\components\Rbac::OP_TEAM_EXPORT),
+            ),
+            array(
+                'deny',
+                'actions'   => array('csv'),
+            ),
+            array(
+                'allow',
+            ),
+        );
+    }
 
     /**
      * Init
