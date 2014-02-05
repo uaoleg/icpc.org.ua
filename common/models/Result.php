@@ -24,6 +24,14 @@ class Result extends \common\ext\MongoDb\Document
     const PHASE_3 = 3; // Ukraine
 
     /**
+     * List of prize places
+     */
+    const PRIZE_PLACE_1     = 1;
+    const PRIZE_PLACE_2     = 2;
+    const PRIZE_PLACE_3     = 3;
+    const PRIZE_PLACE_NO    = 4;
+
+    /**
      * Letters for tasks
      */
     const TASKS_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -47,10 +55,16 @@ class Result extends \common\ext\MongoDb\Document
     public $geo;
 
     /**
-     * Place of team
+     * Absolute place
      * @var integer
      */
     public $place;
+
+    /**
+     * Prize place (is set manually)
+     * @var integer
+     */
+    public $prizePlace = self::PRIZE_PLACE_NO;
 
     /**
      * ID of the team
@@ -242,7 +256,8 @@ class Result extends \common\ext\MongoDb\Document
             'year'          => \yii::t('app', 'Year of the result'),
             'phase'         => \yii::t('app', 'Number of stage'),
             'geo'           => \yii::t('app', 'Geographical position'),
-            'place'         => \yii::t('app', 'Place of the team'),
+            'place'         => \yii::t('app', 'Absolute Place'),
+            'prizePlace'    => \yii::t('app', 'Prize Place'),
             'teamId'        => \yii::t('app', 'ID of the team'),
             'teamName'      => \yii::t('app', 'Name of the team'),
             'schoolId'      => \yii::t('app', 'School ID'),
@@ -267,7 +282,8 @@ class Result extends \common\ext\MongoDb\Document
     {
         return array_merge(parent::rules(), array(
             array('year, phase, geo, place, teamName, tasksTries, tasksTime', 'required'),
-            array('place', 'numerical', 'min' => 1)
+            array('place', 'numerical', 'min' => 1),
+            array('prizePlace', 'numerical', 'min' => static::PRIZE_PLACE_1, 'max' => static::PRIZE_PLACE_NO),
         ));
     }
 
@@ -348,11 +364,12 @@ class Result extends \common\ext\MongoDb\Document
 
         // Convert to integer
         $this->setAttributes(array(
-            'year'      => (int)$this->year,
-            'place'     => (int)$this->place,
-            'phase'     => (int)$this->phase,
-            'total'     => (int)$this->total,
-            'penalty'   => (int)$this->penalty,
+            'year'          => (int)$this->year,
+            'place'         => (int)$this->place,
+            'prizePlace'    => (int)$this->prizePlace,
+            'phase'         => (int)$this->phase,
+            'total'         => (int)$this->total,
+            'penalty'       => (int)$this->penalty,
         ), false);
 
         return true;

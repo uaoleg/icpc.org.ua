@@ -1,3 +1,7 @@
 .results-phase-completed {
     vertical-align: text-bottom !important;
 }
+
+.results-place-item {
+    margin: 10px auto;
+}

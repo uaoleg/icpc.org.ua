@@ -8,7 +8,7 @@ class Phase extends \common\ext\MongoDb\Validator\AbstractValidator
 {
 
     /**
-     * Validate name
+     * Validate phase
      *
      * @param Team $team
      * @param string $attribute
@@ -19,7 +19,7 @@ class Phase extends \common\ext\MongoDb\Validator\AbstractValidator
             return;
         }
 
-        // Check if name contains only prefix
+        // Can increase the Stage Number by only 1
         if ($team->phase - 1 > $team->attributeInitValue('phase')) {
             $this->addError($team, $attribute, \yii::t('app', 'Can increase the Stage Number by only 1.'));
         }

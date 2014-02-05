@@ -39,6 +39,9 @@
                     phase:  '<?=$phase?>'
                 },
                 cellEdit: false,
+                cmTemplate: {
+                    title: false
+                },
                 scroll: false,
                 rowNum: 100,
                 sortname: 'place',
@@ -49,6 +52,7 @@
                 },
                 loadComplete: function() {
                     $('[rel=tooltip]').tooltip();
+                    $('.results-phase-completed').trigger('changed');
                 }
             })
             .jqGrid('filterToolbar', {

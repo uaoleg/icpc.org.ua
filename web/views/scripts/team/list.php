@@ -56,22 +56,27 @@
     });
 </script>
 
-<div class="pull-right">
-    <?php \web\widgets\filter\Year::create(array('checked' => $year)); ?>
+<div class="clearfix">
+
+    <div class="pull-right">
+        <?php \web\widgets\filter\Year::create(array('checked' => $year)); ?>
+    </div>
+
+    <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_CREATE)): ?>
+        <a class="btn btn-success btn-lg" href="<?=$this->createUrl('/staff/team/manage')?>">
+            <?=\yii::t('app', 'Create a new team')?>
+        </a>
+    <?php endif; ?>
+
+    <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_EXPORT)): ?>
+        <button class="btn btn-default btn-csv" data-phase="1">
+            <?=\yii::t('app', 'Export to CSV')?>
+        </button>
+    <?php endif; ?>
+
 </div>
 
-<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_CREATE)): ?>
-    <a class="btn btn-success btn-lg" href="<?=$this->createUrl('/staff/team/manage')?>">
-        <?=\yii::t('app', 'Create a new team')?>
-    </a>
-<?php endif; ?>
-
-<?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_EXPORT)): ?>
-    <button class="btn btn-default btn-csv" data-phase="1">
-        <?=\yii::t('app', 'Export to CSV')?>
-    </button>
-    <hr/>
-<?php endif; ?>
+<hr />
 
 <?php if ($teamsCount > 0): ?>
 

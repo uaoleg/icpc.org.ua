@@ -7,7 +7,7 @@ use \common\models\School;
 use \common\models\Team;
 use \common\models\User;
 
-class TeamController extends \web\ext\Controller
+class TeamController extends \web\modules\staff\ext\Controller
 {
 
     /**

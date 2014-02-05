@@ -40,7 +40,12 @@
                 <tbody>
                     <?php foreach($results as $result): ?>
                         <tr>
-                            <td><?=$result->place?></td>
+                            <td>
+                                <?=$result->place?>
+                                <?php if ($result->prizePlace < \common\models\Result::PRIZE_PLACE_NO): ?>
+                                    (<?=$result->prizePlace?>)
+                                <?php endif; ?>
+                            </td>
                             <td><?=$result->phase?></td>
                             <td><?=$result->total?></td>
                             <td><?=$result->penalty?></td>

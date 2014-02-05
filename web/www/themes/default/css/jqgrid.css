@@ -1,6 +1,20 @@
 .ui-widget-content a,
 .ui-state-highlight a,
+.ui-state-hover a,
+.ui-state-hover a:hover,
+.ui-state-hover a:link,
+.ui-state-hover a:visited,
 .ui-widget-content .ui-state-highlight a,
-.ui-widget-header .ui-state-highlight a {
+.ui-widget-header .ui-state-highlight a{
     color: #428bca;
+}
+
+.ui-jqgrid tr.jqgrow td {
+    white-space: normal;
+}
+
+.ui-jqgrid tr.ui-search-toolbar td input {
+    border: medium none;
+    border-radius: 3px;
+    margin: 3px auto;
 }
