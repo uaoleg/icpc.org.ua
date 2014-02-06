@@ -18,7 +18,6 @@ function appUserAdditionalCoach(options) {
                 acmNumber:                $('[name=acmNumber]').val(),
                 schoolName:               $('[name=schoolName]').val(),
                 schoolNameShort:          $('[name=schoolNameShort]').val(),
-                schoolDivision:           $('[name=schoolDivision]:checked').val(),
                 schoolPostEmailAddresses: $('[name=schoolPostEmailAddresses]').val(),
 
                 position:      $('[name=position]').val(),

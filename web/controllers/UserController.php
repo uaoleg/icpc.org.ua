@@ -186,7 +186,6 @@ class UserController extends \web\ext\Controller
         $acmnumber                = $this->request->getPost('acmNumber');
         $schoolName               = $this->request->getPost('schoolName');
         $schoolNameShort          = $this->request->getPost('schoolNameShort');
-        $schoolDivision           = $this->request->getPost('schoolDivision');
         $schoolPostEmailAddresses = $this->request->getPost('schoolPostEmailAddresses');
 
         $position      = $this->request->getPost('position');
@@ -204,7 +203,6 @@ class UserController extends \web\ext\Controller
             'acmNumber'                => $acmnumber,
             'schoolName'               => $schoolName,
             'schoolNameShort'          => $schoolNameShort,
-            'schoolDivision'           => $schoolDivision,
             'schoolPostEmailAddresses' => $schoolPostEmailAddresses,
 
             'position'      => $position,
@@ -233,7 +231,6 @@ class UserController extends \web\ext\Controller
         $acmnumber                = $this->request->getPost('acmNumber');
         $schoolName               = $this->request->getPost('schoolName');
         $schoolNameShort          = $this->request->getPost('schoolNameShort');
-        $schoolDivision           = $this->request->getPost('schoolDivision');
         $schoolPostEmailAddresses = $this->request->getPost('schoolPostEmailAddresses');
 
         $studyField          = $this->request->getPost('studyField');
@@ -254,7 +251,6 @@ class UserController extends \web\ext\Controller
             'acmNumber'                => $acmnumber,
             'schoolName'               => $schoolName,
             'schoolNameShort'          => $schoolNameShort,
-            'schoolDivision'           => $schoolDivision,
             'schoolPostEmailAddresses' => $schoolPostEmailAddresses,
 
             'studyField'          => $studyField,

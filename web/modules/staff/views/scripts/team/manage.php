@@ -61,7 +61,6 @@
                            placeholder="<?=\yii::t('app', 'Name of your team with prefix')?>" readonly/>
                 </div>
 
-
                 <div class="form-group">
                     <label for="memberIds"><?=\yii::t('app', 'Members')?></label>
                     <select name="memberIds" id="memberIds" class="form-control" multiple>

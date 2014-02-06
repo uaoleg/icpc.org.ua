@@ -54,14 +54,6 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public $schoolNameShort;
 
     /**
-     * Division
-     * I-offers advanced degree in computer science
-     * II-does not offer advanced degree in computer science
-     * @var string
-     */
-    public $schoolDivision;
-
-    /**
      * Official post and email addresses
      * @var string
      */
@@ -86,7 +78,6 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
             'acmNumber'                    => \yii::t('app', 'ACM number if you have'),
             'schoolName'                   => \yii::t('app', 'School name'),
             'schoolNameShort'              => \yii::t('app', 'Short name of the school name'),
-            'schoolDivision'               => \yii::t('app', 'Division'),
             'schoolPostEmailAddresses'     => \yii::t('app', 'Official post and email addresses')
         ));
     }
