@@ -61,6 +61,20 @@
                            placeholder="<?=\yii::t('app', 'Name of your team with prefix')?>" readonly/>
                 </div>
 
+                <?php if (\yii::app()->user->checkAccess(\common\models\User::ROLE_COORDINATOR_STATE)): ?>
+                    <div class="form-group">
+                        <label for="teamLeague"><?=\yii::t('app', 'League')?></label><br/>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default">
+                                <input type="radio" name="league" value="I"> I
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="league" value="II"> II
+                            </label>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
                 <div class="form-group">
                     <label for="memberIds"><?=\yii::t('app', 'Members')?></label>
                     <select name="memberIds" id="memberIds" class="form-control" multiple>

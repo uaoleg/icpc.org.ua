@@ -76,6 +76,14 @@ class Team extends \common\ext\MongoDb\Document
     public $schoolNameEn;
 
     /**
+     * League
+     * I-offers advanced degree in computer science
+     * II-does not offer advanced degree in computer science
+     * @var string
+     */
+    public $league;
+
+    /**
      * List of members IDs
      * @var array
      */
