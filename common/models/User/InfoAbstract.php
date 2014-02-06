@@ -99,7 +99,9 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, userId, schoolName, schoolNameShort, schoolPostEmailAddresses, phoneMobile', 'required'),
+            array('lang, userId, schoolName, schoolNameShort, schoolPostEmailAddresses', 'required'),
+            array('lang, userId, schoolName, schoolNameShort, schoolPostEmailAddresses', 'required'),
+            array('phone', InfoAbstract\Validator\Phone::className())
         ));
     }
 
