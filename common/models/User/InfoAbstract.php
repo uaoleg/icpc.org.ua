@@ -99,7 +99,7 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, userId, schoolName, schoolNameShort, schoolPostEmailAddresses, phoneMobile, skype', 'required'),
+            array('lang, userId, schoolName, schoolNameShort, schoolPostEmailAddresses, phoneMobile', 'required'),
         ));
     }
 
@@ -145,5 +145,31 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
 
         return true;
     }
+
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
+        if ($this->attributeHasChanged('skype') || $this->attributeHasChanged('phoneHome') ||
+            $this->attributeHasChanged('phoneMobile') || $this->attributeHasChanged('acmNumber')
+        ) {
+            if ($this->lang === 'uk') {
+                $lang = 'en';
+            } elseif ($this->lang === 'en') {
+                $lang = 'uk';
+            }
+            $modifier = new \EMongoModifier();
+            $modifier->addModifier('skype', 'set', $this->skype);
+            $modifier->addModifier('phoneHome', 'set', $this->phoneHome);
+            $modifier->addModifier('phoneMobile', 'set', $this->phoneMobile);
+            $modifier->addModifier('acmNumber', 'set', $this->acmNumber);
+            $criteria = new \EMongoCriteria();
+            $criteria->addCond('userId', '==', $this->userId);
+            $criteria->addCond('lang', '==', $lang);
+            static::model()->updateAll($modifier, $criteria);
+        }
+    }
+
 
 }
