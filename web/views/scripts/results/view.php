@@ -11,17 +11,14 @@
             .jqGrid({
                 url: '<?=$this->createUrl('/results/GetResultsListJson')?>',
                 datatype: 'json',
-                colNames: [
-                    '<?=\yii::t('app', 'Place')?>',
-                    '<?=\yii::t('app', 'Team name')?>',
-                    '<?=\yii::t('app', 'Coach name')?>',
-                    '<?=\yii::t('app', 'School name')?>',
-                    '<?=\yii::t('app', 'Total')?>',
-                    '<?=\yii::t('app', 'Penalty')?>',
-                    <?php for ($i = 0; $i < $tasksCount; $i++): ?>
-                        '<?=$letters[$i]?>',
-                    <?php endfor; ?>
-                ],
+                colNames: <?=\CJSON::encode(array_merge(array(
+                    \yii::t('app', 'Place'),
+                    \yii::t('app', 'Team name'),
+                    \yii::t('app', 'Coach name'),
+                    \yii::t('app', 'School name'),
+                    \yii::t('app', 'Total'),
+                    \yii::t('app', 'Penalty'),
+                ), $usedLetters))?>,
                 colModel: [
                     {name: 'place', index: 'place', width: 60, align: 'center', search: false, frozen: true},
                     {name: 'teamName', index: 'teamName', width: 150, frozen: true},

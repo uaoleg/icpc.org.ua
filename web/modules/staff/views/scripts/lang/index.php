@@ -8,34 +8,34 @@
 
         new appStaffLangIndex();
 
-        $('table#message').jqGrid({
-            url: '<?=$this->createUrl('getMessageList')?>',
-            colNames: [
-                '<?=\yii::t('app', 'Lang')?>',
-                '<?=\yii::t('app', 'Message')?>',
-                '<?=\yii::t('app', 'Translation')?>'
-            ],
-            colModel: [
-                {name: 'language', index: 'language', width: 20},
-                {name: 'message', index: 'message', width: 40},
-                {name: 'translation', index: 'translation', width: 40, editable: true},
-            ],
-            autowidth:   true,
-            caption:    '<?=\yii::t('app', 'Message translations')?>',
-            cellurl:    '<?=$this->createUrl('saveTranslation')?>',
-            sortname:   'language',
-            sortorder:  'desc',
-            loadError: function(xhr, status, error) {
-                console.log(xhr);
-                console.log(status);
-                console.log(error);
-            }
-        });
-        $('table#message').jqGrid('filterToolbar', {
-            stringResult: true,
-            searchOnEnter: false
-        });
-
+        $('table#message')
+            .jqGrid({
+                url: '<?=$this->createUrl('getMessageList')?>',
+                colNames: <?=\CJSON::encode(array(
+                    \yii::t('app', 'Lang'),
+                    \yii::t('app', 'Message'),
+                    \yii::t('app', 'Translation'),
+                ))?>,
+                colModel: [
+                    {name: 'language', index: 'language', width: 20},
+                    {name: 'message', index: 'message', width: 40},
+                    {name: 'translation', index: 'translation', width: 40, editable: true},
+                ],
+                autowidth:   true,
+                caption:    '<?=\yii::t('app', 'Message translations')?>',
+                cellurl:    '<?=$this->createUrl('saveTranslation')?>',
+                sortname:   'language',
+                sortorder:  'desc',
+                loadError: function(xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                }
+            })
+            .jqGrid('filterToolbar', {
+                stringResult: true,
+                searchOnEnter: false
+            });
     });
 </script>
 

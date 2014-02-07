@@ -116,15 +116,22 @@ class ResultsController extends \web\ext\Controller
         $result     = Result::model()->find($criteria);
         $tasksCount = ($result !== null) ? count($result->tasksTries) : 0;
 
+        $allLetters = Result::TASKS_LETTERS;
+        $usedLetters = array();
+        for ($i = 0; $i < $tasksCount; $i++) {
+            $usedLetters[] = $allLetters[$i];
+        }
+
         // Render view
         $this->render('view', array(
-            'geo'       => $geo,
-            'header'    => $header,
-            'year'      => $year,
-            'phase'     => $phase,
-            'results'   => $results,
-            'tasksCount'=> $tasksCount,
-            'letters'   => Result::TASKS_LETTERS,
+            'geo'         => $geo,
+            'header'      => $header,
+            'year'        => $year,
+            'phase'       => $phase,
+            'results'     => $results,
+            'tasksCount'  => $tasksCount,
+            'letters'     => $allLetters,
+            'usedLetters' => $usedLetters
         ));
     }
 
