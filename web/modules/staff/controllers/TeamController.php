@@ -64,6 +64,7 @@ class TeamController extends \web\modules\staff\ext\Controller
             $shortNameUk    = $this->request->getPost('shortNameUk');
             $fullNameEn     = $this->request->getPost('fullNameEn');
             $shortNameEn    = $this->request->getPost('shortNameEn');
+            $league         = $this->request->getPost('league');
             $memberIds      = $this->request->getPost('memberIds');
 
             // Update school
@@ -92,6 +93,10 @@ class TeamController extends \web\modules\staff\ext\Controller
                 'schoolId'  => $school->_id,
                 'memberIds' => $memberIds,
             ), false);
+
+            if (\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE)) {
+                $team->league = $league;
+            }
 
             $team->save();
 
