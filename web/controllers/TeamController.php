@@ -17,12 +17,12 @@ class TeamController extends \web\ext\Controller
         return array(
             array(
                 'allow',
-                'actions'   => array('csv'),
+                'actions'   => array('ExportCheckingSystem', 'ExportRegistration'),
                 'roles'     => array(\common\components\Rbac::OP_TEAM_EXPORT),
             ),
             array(
                 'deny',
-                'actions'   => array('csv'),
+                'actions'   => array('ExportCheckingSystem', 'ExportRegistration'),
             ),
             array(
                 'allow',
