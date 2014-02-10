@@ -3,6 +3,7 @@
 namespace web\controllers;
 
 use \common\models\School;
+use common\models\Team;
 use \common\models\User;
 
 class UserController extends \web\ext\Controller
@@ -270,6 +271,23 @@ class UserController extends \web\ext\Controller
         // Render json
         $this->renderJson(array(
             'errors' => $info->hasErrors() ? $info->getErrors() : false
+        ));
+    }
+
+    /**
+     * Public user's profile
+     */
+    public function actionView() {
+        $userId = $this->request->getParam('id');
+
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('memberIds', 'in', (array)$userId);
+        $criteria->sort('year', \EMongoCriteria::SORT_DESC);
+        $teams = Team::model()->findAll($criteria);
+
+        $this->render('view', array(
+            'user'  => User::model()->findByPk(new \MongoId($userId)),
+            'teams' => $teams
         ));
     }
 
