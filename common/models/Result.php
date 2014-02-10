@@ -61,6 +61,12 @@ class Result extends \common\ext\MongoDb\Document
     public $place;
 
     /**
+     * String representation of place (e.g. "1", "37-38", etc.)
+     * @var string
+     */
+    public $placeText;
+
+    /**
      * Prize place (is set manually)
      * @var integer
      */
@@ -257,6 +263,7 @@ class Result extends \common\ext\MongoDb\Document
             'phase'         => \yii::t('app', 'Number of stage'),
             'geo'           => \yii::t('app', 'Geographical position'),
             'place'         => \yii::t('app', 'Absolute Place'),
+            'placeText'     => \yii::t('app', 'Absolute Place'),
             'prizePlace'    => \yii::t('app', 'Prize Place'),
             'teamId'        => \yii::t('app', 'ID of the team'),
             'teamName'      => \yii::t('app', 'Name of the team'),
