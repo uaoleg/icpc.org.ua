@@ -99,7 +99,9 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, userId, schoolName, schoolNameShort, schoolPostEmailAddresses, phoneMobile, skype', 'required'),
+            array('lang, userId, schoolName, schoolNameShort, schoolPostEmailAddresses', 'required'),
+            array('lang, userId, schoolName, schoolNameShort, schoolPostEmailAddresses', 'required'),
+            array('phone', InfoAbstract\Validator\Phone::className())
         ));
     }
 
@@ -145,5 +147,29 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
 
         return true;
     }
+
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
+        // Copy new contacts to the other languages
+        if ($this->attributeHasChanged('skype') || $this->attributeHasChanged('phoneHome') ||
+            $this->attributeHasChanged('phoneMobile') || $this->attributeHasChanged('acmNumber')
+        ) {
+            $modifier = new \EMongoModifier();
+            $modifier
+                ->addModifier('skype', 'set', $this->skype)
+                ->addModifier('phoneHome', 'set', $this->phoneHome)
+                ->addModifier('phoneMobile', 'set', $this->phoneMobile)
+                ->addModifier('acmNumber', 'set', $this->acmNumber);
+            $criteria = new \EMongoCriteria();
+            $criteria
+                ->addCond('userId', '==', (string)$this->userId)
+                ->addCond('lang', '!=', $this->lang);
+            static::model()->updateAll($modifier, $criteria);
+        }
+    }
+
 
 }
