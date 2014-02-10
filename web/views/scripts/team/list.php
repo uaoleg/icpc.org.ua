@@ -50,8 +50,13 @@
         /**
          * Export teams
          */
-        $('.btn-csv').on('click', function() {
-            location.href = '<?=$this->createUrl('/team/csv')?>' + '/phase/' + $(this).data('phase');
+        $('.btn-csv-checking-system').on('click', function(e){
+            e.preventDefault();
+            location.href = '<?=$this->createUrl('/team/exportCheckingSystem')?>' + '/phase/' + $(this).closest('.btn-csv').data('phase');
+        });
+        $('.btn-csv-registration').on('click', function(e){
+            e.preventDefault();
+            location.href = '<?=$this->createUrl('/team/exportRegistration')?>' + '/phase/' + $(this).closest('.btn-csv').data('phase');
         });
     });
 </script>
@@ -69,9 +74,15 @@
     <?php endif; ?>
 
     <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_EXPORT)): ?>
-        <button class="btn btn-default btn-csv" data-phase="1">
-            <?=\yii::t('app', 'Export to CSV')?>
-        </button>
+        <div class="btn-group btn-csv" data-phase="1">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <?=\yii::t('app', 'Export to CSV')?> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#" class="btn-csv-checking-system"><?=\yii::t('app', 'For checking system')?></a></li>
+                <li><a href="#" class="btn-csv-registration"><?=\yii::t('app', 'For registration')?></a></li>
+            </ul>
+        </div>
     <?php endif; ?>
 
 </div>
