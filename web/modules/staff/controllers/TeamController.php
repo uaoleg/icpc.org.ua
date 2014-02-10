@@ -42,6 +42,11 @@ class TeamController extends \web\modules\staff\ext\Controller
                 'roles' => array(Rbac::OP_TEAM_UPDATE_PHASE),
             ),
             array(
+                'allow',
+                'actions' => array('leagueUpdate'),
+                'roles' => array(Rbac::OP_TEAM_LEAGUE_UPDATE),
+            ),
+            array(
                 'deny',
             )
         );
@@ -64,7 +69,6 @@ class TeamController extends \web\modules\staff\ext\Controller
             $shortNameUk    = $this->request->getPost('shortNameUk');
             $fullNameEn     = $this->request->getPost('fullNameEn');
             $shortNameEn    = $this->request->getPost('shortNameEn');
-            $league         = $this->request->getPost('league');
             $memberIds      = $this->request->getPost('memberIds');
 
             // Update school
@@ -93,10 +97,6 @@ class TeamController extends \web\modules\staff\ext\Controller
                 'schoolId'  => $school->_id,
                 'memberIds' => $memberIds,
             ), false);
-
-            if (\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE)) {
-                $team->league = $league;
-            }
 
             $team->save();
 
@@ -194,6 +194,21 @@ class TeamController extends \web\modules\staff\ext\Controller
         if ($team->validate(array('phase'))) {
             $team->save(false);
         }
+    }
+
+    /**
+     * Update team league
+     */
+    public function actionLeagueUpdate()
+    {
+        $teamId = $this->request->getParam('team');
+        $league = $this->request->getParam('league');
+
+        $team = Team::model()->findByPk(new \MongoId($teamId));
+        $team->league = $league;
+        $team->save();
+
+        $this->redirect($this->createAbsoluteUrl('/team/view', array('id' => $teamId)));
     }
 
 }

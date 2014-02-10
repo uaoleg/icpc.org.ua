@@ -22,7 +22,6 @@ function appStaffTeamManage(options)
                 fullNameEn:     $('[name=fullNameEn]').val(),
                 shortNameEn:    $('[name=shortNameEn]').val(),
                 teamNamePrefix: $('[name=teamNamePrefix]').val(),
-                league:         $('[name=league]:checked').val(),
                 memberIds:      $('[name=memberIds]').val()
             },
             success: function(response) {

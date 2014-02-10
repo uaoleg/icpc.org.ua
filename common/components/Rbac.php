@@ -27,6 +27,7 @@ class Rbac extends \CApplicationComponent
     const OP_NEWS_UPDATE            = 'newsUpdate';
     const OP_RESULT_CREATE          = 'resultCreate';
     const OP_TEAM_CREATE            = 'teamCreate';
+    const OP_TEAM_LEAGUE_UPDATE     = 'teamLeagueUpdate';
     const OP_TEAM_READ              = 'teamRead';
     const OP_TEAM_UPDATE            = 'teamUpdate';
     const OP_TEAM_UPDATE_PHASE      = 'teamUpdatePhase';
@@ -214,6 +215,16 @@ class Rbac extends \CApplicationComponent
      * @return bool
      */
     public function bizRuleTeamExport(array $params)
+    {
+        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
+    }
+
+    /**
+     * Biz rule to update team's league
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleTeamLeagueUpdate(array $params)
     {
         return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
     }
