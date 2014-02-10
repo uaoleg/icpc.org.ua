@@ -8,7 +8,7 @@
             url: '<?=$this->createUrl('/team/GetTeamListJson')?>',
             datatype: 'json',
             colNames: <?=\CJSON::encode(array(
-                \yii::t('app', 'Team name\''),
+                \yii::t('app', 'Team name'),
                 \yii::t('app', 'School name'),
                 \yii::t('app', 'Coach name'),
                 \yii::t('app', 'Members'),

@@ -116,6 +116,7 @@ class ResultsController extends \web\ext\Controller
         $result     = Result::model()->find($criteria);
         $tasksCount = ($result !== null) ? count($result->tasksTries) : 0;
 
+        // Get used letters
         $allLetters = Result::TASKS_LETTERS;
         $usedLetters = array();
         for ($i = 0; $i < $tasksCount; $i++) {
@@ -130,7 +131,6 @@ class ResultsController extends \web\ext\Controller
             'phase'       => $phase,
             'results'     => $results,
             'tasksCount'  => $tasksCount,
-            'letters'     => $allLetters,
             'usedLetters' => $usedLetters
         ));
     }
