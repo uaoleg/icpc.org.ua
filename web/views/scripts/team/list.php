@@ -21,8 +21,8 @@
                 {name: 'schoolName<?=ucfirst(\yii::app()->language)?>', index: 'schoolName<?=ucfirst(\yii::app()->language)?>', width: 20},
                 {name: 'coachName<?=ucfirst(\yii::app()->language)?>', index: 'coachName<?=ucfirst(\yii::app()->language)?>', width: 15},
                 {name: 'members', index: 'members', width: 40, search: false},
-                {name: 'state', index: 'state', width: 15, search: false},
-                {name: 'region', index: 'region', width: 10, search: false},
+                {name: 'state', index: 'state.<?=\yii::app()->language?>', width: 15, search: true},
+                {name: 'region', index: 'region.<?=\yii::app()->language?>', width: 10, search: true},
                 {name: 'phase', index: 'phase', width: 5, stype: 'select', searchoptions: {sopt: ['ge'], value: "1:1;2:2;3:3"}}
             ],
             sortname: 'teamname',
