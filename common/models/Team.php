@@ -24,9 +24,9 @@ class Team extends \common\ext\MongoDb\Document
     /**
      * League values
      */
-    const LEAGUE_NULL = null;
-    const LEAGUE_I = 'I';
-    const LEAGUE_II = 'II';
+    const LEAGUE_NULL   = null;
+    const LEAGUE_I      = 'I';
+    const LEAGUE_II     = 'II';
 
     /**
      * Name of a team
@@ -88,7 +88,7 @@ class Team extends \common\ext\MongoDb\Document
      * II-does not offer advanced degree in computer science
      * @var string
      */
-    public $league;
+    public $league = self::LEAGUE_NULL;
 
     /**
      * List of members IDs
@@ -286,8 +286,8 @@ class Team extends \common\ext\MongoDb\Document
                 'max'           => Result::PHASE_3 + 1,
             ),
             array('schoolId', Team\Validator\School::className()),
-            array('memberIds', Team\Validator\Members::className(), 'except' => static::SC_USER_DELETING),
             array('league', Team\Validator\League::className()),
+            array('memberIds', Team\Validator\Members::className(), 'except' => static::SC_USER_DELETING),
         ));
     }
 
