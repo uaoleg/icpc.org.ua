@@ -3,11 +3,10 @@
 namespace web\controllers;
 
 use \common\models\Document;
-use common\models\Team;
-use \common\models\UploadedFile;
+use \common\models\Team;
 use \common\models\Result;
+use \common\models\UploadedFile;
 use \common\models\User;
-use \common\models\Geo;
 
 class UploadController extends \web\ext\Controller
 {
@@ -146,9 +145,9 @@ class UploadController extends \web\ext\Controller
 
             // Get team
             $teamName = $tr->find('.st_team', 0)->plaintext;
-
             $team = Team::model()->findByAttributes(array(
                 'name' => new \MongoRegex('/^' . preg_quote($teamName) . '$/i'),
+                'year' => date('Y'),
             ));
 
             // Parse tasks tries and time
@@ -173,7 +172,7 @@ class UploadController extends \web\ext\Controller
             // Create result
             $result = new Result();
             $result->setAttributes(array(
-                'year'      => date('Y'),
+                'year'      => $team->year,
                 'phase'     => $phase,
                 'geo'       => $geo,
                 'place'     => $tr->find('.st_place', 0)->plaintext,

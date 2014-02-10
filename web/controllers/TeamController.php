@@ -83,6 +83,7 @@ class TeamController extends \web\ext\Controller
         $criteria = new \EMongoCriteria();
         $criteria
             ->addCond('teamId', '==', $teamId)
+            ->addCond('year', '==', $team->year)
             ->sort('phase', \EMongoCriteria::SORT_ASC);
         $results = Result::model()->findAll($criteria);
 
