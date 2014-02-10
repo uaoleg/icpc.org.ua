@@ -153,22 +153,20 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
      */
     protected function afterSave()
     {
+        // Copy new contacts to the other languages
         if ($this->attributeHasChanged('skype') || $this->attributeHasChanged('phoneHome') ||
             $this->attributeHasChanged('phoneMobile') || $this->attributeHasChanged('acmNumber')
         ) {
-            if ($this->lang === 'uk') {
-                $lang = 'en';
-            } elseif ($this->lang === 'en') {
-                $lang = 'uk';
-            }
             $modifier = new \EMongoModifier();
-            $modifier->addModifier('skype', 'set', $this->skype);
-            $modifier->addModifier('phoneHome', 'set', $this->phoneHome);
-            $modifier->addModifier('phoneMobile', 'set', $this->phoneMobile);
-            $modifier->addModifier('acmNumber', 'set', $this->acmNumber);
+            $modifier
+                ->addModifier('skype', 'set', $this->skype)
+                ->addModifier('phoneHome', 'set', $this->phoneHome)
+                ->addModifier('phoneMobile', 'set', $this->phoneMobile)
+                ->addModifier('acmNumber', 'set', $this->acmNumber);
             $criteria = new \EMongoCriteria();
-            $criteria->addCond('userId', '==', $this->userId);
-            $criteria->addCond('lang', '==', $lang);
+            $criteria
+                ->addCond('userId', '==', (string)$this->userId)
+                ->addCond('lang', '!=', $this->lang);
             static::model()->updateAll($modifier, $criteria);
         }
     }
