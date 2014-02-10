@@ -11,17 +11,14 @@
             .jqGrid({
                 url: '<?=$this->createUrl('/results/GetResultsListJson')?>',
                 datatype: 'json',
-                colNames: [
-                    '<?=\yii::t('app', 'Place')?>',
-                    '<?=\yii::t('app', 'Team name')?>',
-                    '<?=\yii::t('app', 'Coach name')?>',
-                    '<?=\yii::t('app', 'School name')?>',
-                    '<?=\yii::t('app', 'Total')?>',
-                    '<?=\yii::t('app', 'Penalty')?>',
-                    <?php for ($i = 0; $i < $tasksCount; $i++): ?>
-                        '<?=$letters[$i]?>',
-                    <?php endfor; ?>
-                ],
+                colNames: <?=\CJSON::encode(array_merge(array(
+                    \yii::t('app', 'Place'),
+                    \yii::t('app', 'Team name'),
+                    \yii::t('app', 'Coach name'),
+                    \yii::t('app', 'School name'),
+                    \yii::t('app', 'Total'),
+                    \yii::t('app', 'Penalty'),
+                ), $usedLetters))?>,
                 colModel: [
                     {name: 'place', index: 'place', width: 60, align: 'center', search: false, frozen: true},
                     {name: 'teamName', index: 'teamName', width: 150, frozen: true},
@@ -29,9 +26,9 @@
                     {name: 'schoolName<?=ucfirst(\yii::app()->language)?>', index: 'schoolName<?=ucfirst(\yii::app()->language)?>', width: 250, frozen: true},
                     {name: 'total', index: 'total', width: 50, search: false, align: 'center', frozen: true},
                     {name: 'penalty', index: 'penalty', width: 50, search: false, align: 'center', frozen: true},
-                    <?php for ($i = 0; $i < $tasksCount; $i++): ?>
-                        {name: '<?=$letters[$i]?>', index: '<?=$letters[$i]?>', width: 60, align: 'center', search: false},
-                    <?php endfor; ?>
+                    <?php foreach ($usedLetters as $letter): ?>
+                        {name: '<?=$letter?>', index: '<?=$letter?>', width: 60, align: 'center', search: false},
+                    <?php endforeach; ?>
                 ],
                 postData: {
                     year:   '<?=$year?>',
@@ -62,7 +59,7 @@
             .jqGrid('setGroupHeaders', {
                     useColSpanStyle: true,
                     groupHeaders:[
-                        {startColumnName: '<?=$letters[0]?>', numberOfColumns: <?=$tasksCount?>, titleText: '<?=\yii::t('app', 'Tasks')?>'}
+                        {startColumnName: '<?=reset($usedLetters)?>', numberOfColumns: <?=$tasksCount?>, titleText: '<?=\yii::t('app', 'Tasks')?>'}
                     ]
                 }
             )

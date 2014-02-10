@@ -7,15 +7,15 @@
         $table.jqGrid({
             url: '<?=$this->createUrl('/team/GetTeamListJson')?>',
             datatype: 'json',
-            colNames: [
-                '<?=\yii::t('app', 'Team name')?>',
-                '<?=\yii::t('app', 'School name')?>',
-                '<?=\yii::t('app', 'Coach name')?>',
-                '<?=\yii::t('app', 'Members')?>',
-                '<?=\yii::t('app', 'State')?>',
-                '<?=\yii::t('app', 'Region')?>',
-                '<?=\yii::t('app', 'Stage')?>'
-            ],
+            colNames: <?=\CJSON::encode(array(
+                \yii::t('app', 'Team name'),
+                \yii::t('app', 'School name'),
+                \yii::t('app', 'Coach name'),
+                \yii::t('app', 'Members'),
+                \yii::t('app', 'State'),
+                \yii::t('app', 'Region'),
+                \yii::t('app', 'Stage'),
+            ))?>,
             colModel: [
                 {name: 'name', index: 'name', width: 20, formatter: 'showlink', formatoptions:{baseLinkUrl:'/team/view'}},
                 {name: 'schoolName<?=ucfirst(\yii::app()->language)?>', index: 'schoolName<?=ucfirst(\yii::app()->language)?>', width: 20},
