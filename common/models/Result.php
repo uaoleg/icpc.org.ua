@@ -61,6 +61,12 @@ class Result extends \common\ext\MongoDb\Document
     public $place;
 
     /**
+     * String representation of place
+     * @var string
+     */
+    public $placeText;
+
+    /**
      * Prize place (is set manually)
      * @var integer
      */

@@ -177,6 +177,7 @@ class UploadController extends \web\ext\Controller
                 'phase'     => $phase,
                 'geo'       => $geo,
                 'place'     => $tr->find('.st_place', 0)->plaintext,
+                'placeText' => $tr->find('.st_place', 0)->plaintext,
                 'teamId'    => (isset($team)) ? $team->_id : null,
                 'teamName'  => $teamName,
                 'tasksTries'=> $tasksTries,

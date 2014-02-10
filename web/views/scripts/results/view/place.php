@@ -5,7 +5,7 @@
           title="<?=\yii::t('app', 'Absolute place')?>"
           rel="tooltip"
           data-placement="right">
-        <?=$result->place?>
+        <?=$result->placeText?>
     </span>
 </div>
 
