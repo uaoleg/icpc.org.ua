@@ -25,13 +25,17 @@ class TmpCommand extends \console\ext\ConsoleCommand
 
     /**
      * Update teams' placeText
+     *
+     * @version 2.1
      */
     public function actionResultPlaceText()
     {
-        $results = \common\models\Result::model()->findAll();
+        $results = \common\models\Result::model()->findAllByAttributes(array(
+            'placeText' => array('$exists' => false),
+        ));
         foreach ($results as $result) {
             echo '.';
-            $result->placeText = $result->place;
+            $result->placeText = (string)$result->place;
             $result->save(false);
         }
         echo "\nDone";
