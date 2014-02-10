@@ -149,6 +149,7 @@ class UploadController extends \web\ext\Controller
 
             $team = Team::model()->findByAttributes(array(
                 'name' => new \MongoRegex('/^' . preg_quote($teamName) . '$/i'),
+                'year' => date('Y')
             ));
 
             // Parse tasks tries and time
