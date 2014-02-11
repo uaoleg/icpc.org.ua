@@ -95,9 +95,9 @@ class Controller extends \CController
      *
      * @param \EMongoCursor $data
      * @param string        $fileName
-     * @param callable      $function
+     * @param \Closure      $function
      */
-    public function renderCsv($data, $fileName, callable $function)
+    public function renderCsv($data, $fileName, \Closure $function)
     {
         // Set headers
         header('Content-Encoding: UTF-8');
