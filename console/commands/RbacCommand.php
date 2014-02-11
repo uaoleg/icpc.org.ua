@@ -98,9 +98,9 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_NEWS_CREATE,
             Rbac::OP_NEWS_UPDATE,
             Rbac::OP_RESULT_CREATE,
-            Rbac::OP_TEAM_UPDATE_PHASE,
             Rbac::OP_TEAM_EXPORT,
             Rbac::OP_TEAM_LEAGUE_UPDATE,
+            Rbac::OP_TEAM_PHASE_UPDATE,
             Rbac::OP_QA_ANSWER_CREATE,
             Rbac::OP_QA_ANSWER_UPDATE,
             Rbac::OP_QA_TAG_CREATE,
@@ -225,7 +225,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->auth->createOperation(Rbac::OP_TEAM_CREATE, 'Create team');
         $this->auth->createOperation(Rbac::OP_TEAM_READ, 'Read team');
         $this->auth->createOperation(Rbac::OP_TEAM_UPDATE, 'Edit team', $bizRuleUpdate);
-        $this->auth->createOperation(Rbac::OP_TEAM_UPDATE_PHASE, 'Set team phase', $bizRuleUpdatePhase);
+        $this->auth->createOperation(Rbac::OP_TEAM_PHASE_UPDATE, 'Set team phase', $bizRuleUpdatePhase);
         $this->auth->createOperation(Rbac::OP_TEAM_EXPORT, 'Export team', $bizRuleExport);
         $this->auth->createOperation(Rbac::OP_TEAM_LEAGUE_UPDATE, 'Team\'s league update', $bizRuleLeagueUpdate);
     }

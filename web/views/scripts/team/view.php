@@ -15,23 +15,29 @@
         <strong><?=\yii::t('app', 'School')?></strong>:
         <?=\CHtml::encode($team->school->fullNameUk)?>
         <br />
-        <?php if(isset($team->league)): ?>
-            <strong><?=\yii::t('app', 'League')?></strong>:
-            <?php if(\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_LEAGUE_UPDATE) && $team->phase === \common\models\Result::PHASE_3):?>
+        <?php if ($team->phase >= \common\models\Result::PHASE_3): ?>
+            <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_LEAGUE_UPDATE)): ?>
+                <strong><?=\yii::t('app', 'League')?></strong>:
                 <div class="btn-group">
-                    <a href="<?=$this->createUrl('/staff/team/leagueUpdate', array('team' => (string)$team->_id, 'league' => \common\models\Team::LEAGUE_I))?>"
-                       class="btn btn-default <?= ($team->league === \common\models\Team::LEAGUE_I) ? 'active' : ''?>">
+                    <a href="<?=$this->createUrl('/staff/team/leagueUpdate', array(
+                        'team'      => (string)$team->_id,
+                        'league'    => \common\models\Team::LEAGUE_I,
+                    ))?>" class="btn btn-default <?=($team->league === \common\models\Team::LEAGUE_I) ? 'active' : ''?>">
                         <?=\common\models\Team::LEAGUE_I?>
                     </a>
-                    <a href="<?=$this->createUrl('/staff/team/leagueUpdate', array('team' => (string)$team->_id, 'league' => \common\models\Team::LEAGUE_II))?>"
-                       class="btn btn-default <?= ($team->league === \common\models\Team::LEAGUE_II) ? 'active' : ''?>">
+                    <a href="<?=$this->createUrl('/staff/team/leagueUpdate', array(
+                        'team'      => (string)$team->_id,
+                        'league'    => \common\models\Team::LEAGUE_II,
+                    ))?>" class="btn btn-default <?= ($team->league === \common\models\Team::LEAGUE_II) ? 'active' : ''?>">
                         <?=\common\models\Team::LEAGUE_II?>
                     </a>
                 </div>
-            <?php else: ?>
+                <br />
+            <?php elseif ($team->league): ?>
+                <strong><?=\yii::t('app', 'League')?></strong>:
                 <?=\CHtml::encode($team->league)?>
+                <br />
             <?php endif; ?>
-            <br />
         <?php endif; ?>
         <strong><?=\yii::t('app', 'Participants')?></strong>:
         <ul>

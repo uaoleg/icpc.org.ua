@@ -27,10 +27,10 @@ class Rbac extends \CApplicationComponent
     const OP_NEWS_UPDATE            = 'newsUpdate';
     const OP_RESULT_CREATE          = 'resultCreate';
     const OP_TEAM_CREATE            = 'teamCreate';
-    const OP_TEAM_LEAGUE_UPDATE     = 'teamLeagueUpdate';
     const OP_TEAM_READ              = 'teamRead';
     const OP_TEAM_UPDATE            = 'teamUpdate';
-    const OP_TEAM_UPDATE_PHASE      = 'teamUpdatePhase';
+    const OP_TEAM_LEAGUE_UPDATE     = 'teamLeagueUpdate';
+    const OP_TEAM_PHASE_UPDATE      = 'teamPhaseUpdate';
     const OP_TEAM_EXPORT            = 'teamExport';
     const OP_QA_ANSWER_CREATE       = 'qaAnswerCreate';
     const OP_QA_ANSWER_READ         = 'qaAnswerRead';
@@ -221,6 +221,7 @@ class Rbac extends \CApplicationComponent
 
     /**
      * Biz rule to update team's league
+     * 
      * @param array $params
      * @return bool
      */

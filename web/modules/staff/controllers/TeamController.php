@@ -39,7 +39,7 @@ class TeamController extends \web\modules\staff\ext\Controller
             array(
                 'allow',
                 'actions' => array('phaseupdate'),
-                'roles' => array(Rbac::OP_TEAM_UPDATE_PHASE),
+                'roles' => array(Rbac::OP_TEAM_PHASE_UPDATE),
             ),
             array(
                 'allow',
@@ -201,13 +201,16 @@ class TeamController extends \web\modules\staff\ext\Controller
      */
     public function actionLeagueUpdate()
     {
+        // Get params
         $teamId = $this->request->getParam('team');
         $league = $this->request->getParam('league');
 
+        // Update team
         $team = Team::model()->findByPk(new \MongoId($teamId));
         $team->league = $league;
         $team->save();
 
+        // Redirect to team page
         $this->redirect($this->createAbsoluteUrl('/team/view', array('id' => $teamId)));
     }
 
