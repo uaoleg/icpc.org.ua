@@ -153,7 +153,8 @@ class TeamController extends \web\ext\Controller
         $criteria->addCond('phase', '>=', (int)$phase);
         $teams = Team::model()->findAll($criteria);
 
-        $this->_renderCsv($teams, "\"icpc_teams_cs_{$this->getYear()}_{$phase}.csv\"", function($team) {
+        // Render CSV
+        $this->renderCsv($teams, "icpc_teams_cs_{$this->getYear()}_{$phase}.csv", function($team) {
             return array(
                 $team->name, $team->school->fullNameUk, $team->school->shortNameUk, $team->coachNameUk
             );
@@ -174,7 +175,8 @@ class TeamController extends \web\ext\Controller
         $criteria->addCond('phase', '>=', (int)$phase);
         $teams = Team::model()->findAll($criteria);
 
-        $this->_renderCsv($teams, "\"icpc_teams_r_{$this->getYear()}_{$phase}.csv\"", function($team) {
+        // Render CSV
+        $this->renderCsv($teams, "icpc_teams_r_{$this->getYear()}_{$phase}.csv", function($team) {
             $arrayToPut = array(
                 $team->name, $team->school->fullNameUk, $team->school->shortNameUk, $team->coachNameUk
             );
