@@ -147,26 +147,18 @@ class TeamController extends \web\ext\Controller
         // Get params
         $phase = \yii::app()->request->getParam('phase');
 
-        // Set headers
-        header('Content-Encoding: UTF-8');
-        header('Content-type: text/csv; charset=UTF-8');
-        header("Content-Disposition: attachment; filename=\"icpc_teams_cs_{$this->getYear()}_{$phase}.csv\"");
-
         // Get list of teams
         $criteria = new \EMongoCriteria();
         $criteria->addCond('year', '==', (int)$this->getYear());
         $criteria->addCond('phase', '>=', (int)$phase);
         $teams = Team::model()->findAll($criteria);
 
-        // Send content
-        $fileHandler = fopen('php://output', 'w');
-        fwrite($fileHandler, "\xEF\xBB\xBF"); // UTF-8 BOM
-        foreach ($teams as $team) {
-            fputcsv($fileHandler, array(
+        // Render CSV
+        $this->renderCsv($teams, "icpc_teams_cs_{$this->getYear()}_{$phase}.csv", function($team) {
+            return array(
                 $team->name, $team->school->fullNameUk, $team->school->shortNameUk, $team->coachNameUk
-            ), ',');
-        }
-        fclose($fileHandler);
+            );
+        });
     }
 
     /**
@@ -177,30 +169,22 @@ class TeamController extends \web\ext\Controller
         // Get params
         $phase = \yii::app()->request->getParam('phase');
 
-        // Set headers
-        header('Content-Encoding: UTF-8');
-        header('Content-type: text/csv; charset=UTF-8');
-        header("Content-Disposition: attachment; filename=\"icpc_teams_r_{$this->getYear()}_{$phase}.csv\"");
-
         // Get list of teams
         $criteria = new \EMongoCriteria();
         $criteria->addCond('year', '==', (int)$this->getYear());
         $criteria->addCond('phase', '>=', (int)$phase);
         $teams = Team::model()->findAll($criteria);
 
-        // Send content
-        $fileHandler = fopen('php://output', 'w');
-        fwrite($fileHandler, "\xEF\xBB\xBF"); // UTF-8 BOM
-        foreach ($teams as $team) {
+        // Render CSV
+        $this->renderCsv($teams, "icpc_teams_r_{$this->getYear()}_{$phase}.csv", function($team) {
             $arrayToPut = array(
                 $team->name, $team->school->fullNameUk, $team->school->shortNameUk, $team->coachNameUk
             );
             foreach ($team->members as $member) {
                 $arrayToPut[] = \web\widgets\user\Name::create(array('user' => $member, 'lang' => 'uk'), true);
             }
-            fputcsv($fileHandler, $arrayToPut, ',');
-        }
-        fclose($fileHandler);
+            return $arrayToPut;
+        });
     }
 
 }

@@ -91,6 +91,29 @@ class Controller extends \CController
     }
 
     /**
+     * Action to render CSV
+     *
+     * @param \EMongoCursor $data
+     * @param string        $fileName
+     * @param callable      $function
+     */
+    public function renderCsv($data, $fileName, callable $function)
+    {
+        // Set headers
+        header('Content-Encoding: UTF-8');
+        header('Content-type: text/csv; charset=UTF-8');
+        header("Content-Disposition: attachment; filename=\"{$fileName}\"");
+
+        // Send content
+        $fileHandler = fopen('php://output', 'w');
+        fwrite($fileHandler, "\xEF\xBB\xBF"); // UTF-8 BOM
+        foreach ($data as $datum) {
+            fputcsv($fileHandler, call_user_func($function, $datum), ',');
+        }
+        fclose($fileHandler);
+    }
+
+    /**
      * Render JSON response
      *
      * @param array $data
