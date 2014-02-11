@@ -39,6 +39,15 @@ abstract class Document extends \EMongoDocument
     protected $_useLanguage;
 
     /**
+     * Initialize model with initial attributes that are set in model
+     */
+    public function init()
+    {
+        parent::init();
+        $this->_initialAttributes = $this->getAttributes();
+    }
+
+    /**
      * Sets language to use for multilang properties
      *
      * @param string $lang
