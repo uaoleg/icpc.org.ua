@@ -53,24 +53,6 @@
 </div>
 
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="schoolDivision"><?=\yii::t('app', 'Divison (I or II)', null, null, $lang)?></label>
-    <div class="col-lg-9">
-        <div class="radio">
-            <label>
-                <input type="radio" name="schoolDivision" value="I"<?=($info->schoolDivision === 'I') ? ' checked' : ''?>>
-                I
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio" name="schoolDivision" value="II"<?=($info->schoolDivision === 'II') ? ' checked' : ''?>>
-                II
-            </label>
-        </div>
-    </div>
-</div>
-
-<div class="form-group">
     <label class="col-lg-3 control-label" for="schoolPostEmailAddresses"><?=\yii::t('app', 'Official post and email addresses', null, null, $lang)?></label>
     <div class="col-lg-9">
         <input class="form-control" id="schoolPostEmailAddresses" name="schoolPostEmailAddresses" type="text"

@@ -22,6 +22,13 @@ class Team extends \common\ext\MongoDb\Document
     const SC_USER_DELETING  = 'userDeleting';
 
     /**
+     * League values
+     */
+    const LEAGUE_NULL   = null;
+    const LEAGUE_I      = 'I';
+    const LEAGUE_II     = 'II';
+
+    /**
      * Name of a team
      * @var string
      */
@@ -74,6 +81,14 @@ class Team extends \common\ext\MongoDb\Document
      * @var string
      */
     public $schoolNameEn;
+
+    /**
+     * League
+     * I-offers advanced degree in computer science
+     * II-does not offer advanced degree in computer science
+     * @var string
+     */
+    public $league = self::LEAGUE_NULL;
 
     /**
      * List of members IDs
@@ -240,6 +255,7 @@ class Team extends \common\ext\MongoDb\Document
             'schoolId'      => \yii::t('app', 'Related school ID'),
             'schoolNameUk'  => \yii::t('app', 'Full name of school in ukrainian'),
             'schoolNameEn'  => \yii::t('app', 'Full name of school in english'),
+            'league'        => \yii::t('app', 'League of a team'),
             'memberIds'     => \yii::t('app', 'List of members'),
             'state'         => \yii::t('app', 'List of state labels of a team'),
             'region'        => \yii::t('app', 'List of region labels of a team'),
@@ -270,6 +286,7 @@ class Team extends \common\ext\MongoDb\Document
                 'max'           => Result::PHASE_3 + 1,
             ),
             array('schoolId', Team\Validator\School::className()),
+            array('league', Team\Validator\League::className()),
             array('memberIds', Team\Validator\Members::className(), 'except' => static::SC_USER_DELETING),
         ));
     }

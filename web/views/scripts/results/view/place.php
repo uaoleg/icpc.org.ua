@@ -10,7 +10,7 @@
 </div>
 
 <div class="results-place-item">
-    <?php if (($result->team !== null) && (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_UPDATE_PHASE))): ?>
+    <?php if (($result->team !== null) && (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_PHASE_UPDATE))): ?>
         <input type="checkbox"
                <?=$result->phaseIsCompleted ? 'checked' : ''?>
                class="results-phase-completed"
