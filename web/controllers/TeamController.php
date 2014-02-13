@@ -62,7 +62,7 @@ class TeamController extends \web\ext\Controller
             'user'          => \yii::app()->user->getInstance(),
             'year'          => $year,
             'teamsCount'    => $teamsCount,
-            'lang'          => (\yii::app()->language == 'en') ? 'en' : 'uk'
+            'lang'          => (\yii::app()->language === 'en') ? 'en' : 'uk'
         ));
     }
 
@@ -102,7 +102,7 @@ class TeamController extends \web\ext\Controller
      */
     public function actionGetTeamListJson()
     {
-        $lang = (\yii::app()->language == 'en') ? 'en' : 'uk';
+        $lang = (\yii::app()->language === 'en') ? 'en' : 'uk';
 
         // Get jqGrid params
         $criteria = new \EMongoCriteria();
