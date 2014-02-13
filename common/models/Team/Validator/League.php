@@ -25,7 +25,7 @@ class League extends \common\ext\MongoDb\Validator\AbstractValidator
         };
 
         // Team should be at least on 3rd phase (or complete it)
-        if ($team->phase < Result::PHASE_3 && $team->$attribute !== Team::LEAGUE_NULL) {
+        if (($team->phase < Result::PHASE_3) && ($team->$attribute !== Team::LEAGUE_NULL)) {
             $this->addError($team, $attribute,
                 \yii::t('app', 'Cannot set {attribute} unless phase is {phase}', array('{phase}' => Result::PHASE_3))
             );

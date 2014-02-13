@@ -38,14 +38,6 @@ abstract class Document extends \EMongoDocument
      */
     protected $_useLanguage;
 
-    /**
-     * Initialize model with initial attributes that are set in model
-     */
-    public function init()
-    {
-        parent::init();
-        $this->_initialAttributes = $this->getAttributes();
-    }
 
     /**
      * Sets language to use for multilang properties
@@ -80,6 +72,17 @@ abstract class Document extends \EMongoDocument
     public static function className()
     {
         return get_called_class();
+    }
+
+    /**
+     * Init
+     */
+    public function init()
+    {
+        parent::init();
+
+        // Store initial attributes
+        $this->_initialAttributes = $this->toArrayUnwindEmbedded();
     }
 
     /**
