@@ -38,6 +38,7 @@ abstract class Document extends \EMongoDocument
      */
     protected $_useLanguage;
 
+
     /**
      * Sets language to use for multilang properties
      *
@@ -71,6 +72,17 @@ abstract class Document extends \EMongoDocument
     public static function className()
     {
         return get_called_class();
+    }
+
+    /**
+     * Init
+     */
+    public function init()
+    {
+        parent::init();
+
+        // Store initial attributes
+        $this->_initialAttributes = $this->toArrayUnwindEmbedded();
     }
 
     /**
