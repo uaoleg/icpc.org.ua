@@ -12,6 +12,7 @@ use \common\models\Team;
  */
 class Controller extends \CController
 {
+
     /*
      * Search operation names for different field types
      */
@@ -46,11 +47,6 @@ class Controller extends \CController
         // Generate sprite
         if (APP_ENV === APP_ENV_DEV) {
             \yii::app()->sprite->generate();
-        }
-
-        // Remember last visited URL
-        if (($this->getId() != 'auth') && (!\yii::app()->request->isAjaxRequest)) {
-            \yii::app()->user->setState('last-visited-url',  \yii::app()->request->url);
         }
 
         // Restore nav active items
@@ -88,6 +84,21 @@ class Controller extends \CController
         return array_merge(parent::filters(), array(
             'accessControl',
         ));
+    }
+
+    /**
+     * This method is invoked right after an action is executed
+     *
+     * @param CAction $action
+     */
+    protected function afterAction($action)
+    {
+        // Remember last visited URL
+        if (($this->getId() !== 'auth') && (!\yii::app()->request->isAjaxRequest)) {
+            \yii::app()->customer->setState('last-visited-url',  \yii::app()->request->url);
+        }
+
+        parent::afterAction($action);
     }
 
     /**
