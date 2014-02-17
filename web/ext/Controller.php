@@ -95,7 +95,7 @@ class Controller extends \CController
     {
         // Remember last visited URL
         if (($this->getId() !== 'auth') && (!\yii::app()->request->isAjaxRequest)) {
-            \yii::app()->customer->setState('last-visited-url',  \yii::app()->request->url);
+            \yii::app()->user->setState('last-visited-url',  \yii::app()->request->url);
         }
 
         parent::afterAction($action);
