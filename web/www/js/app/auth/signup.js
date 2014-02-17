@@ -111,7 +111,11 @@ function appAuthSignup() {
                 if (response.errors) {
                     $thisElement.prop('disabled', false);
                 } else {
-                    location.href = response.url;
+                    if (response.url === undefined) {
+                        location.reload();
+                    } else {
+                        location.href = response.url;
+                    }
                 }
             }
         });
