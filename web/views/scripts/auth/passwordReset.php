@@ -5,7 +5,7 @@
 </script>
 
 <div class="col-lg-offset-3 col-lg-6">
-    <div class="panel panel-default">
+    <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title"><?=\yii::t('app', 'Password reset')?></h3>
         </div>
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-default reset-password"><?=\yii::t('app', 'Reset password')?></button>
+                    <button type="submit" class="btn btn-primary reset-password"><?=\yii::t('app', 'Reset password')?></button>
                 </div>
             </div>
         </div>

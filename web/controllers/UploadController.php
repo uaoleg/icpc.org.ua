@@ -3,9 +3,9 @@
 namespace web\controllers;
 
 use \common\models\Document;
-use common\models\Team;
-use \common\models\UploadedFile;
+use \common\models\Team;
 use \common\models\Result;
+use \common\models\UploadedFile;
 use \common\models\User;
 
 class UploadController extends \web\ext\Controller
@@ -90,7 +90,7 @@ class UploadController extends \web\ext\Controller
         }
 
         // Get params
-        $phase = (int)$this->request->getParam('phase');
+        $geo = $this->request->getParam('geo');
 
         // Import HTML DOM Parser
         \yii::import('common.lib.HtmlDomParser.*');
@@ -101,26 +101,29 @@ class UploadController extends \web\ext\Controller
         $html = $parser->str_get_html($uploadedFile->getBytes());
         $uploadedFile->delete();
 
-        // Check access and define geo
+        // Define phase and check access
         $school = \yii::app()->user->getInstance()->school;
-        switch ($phase) {
-            case Result::PHASE_1:
+        switch ($geo) {
+            case ($school->state):
                 if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE)) {
                     $this->httpException(403);
                 }
-                $geo = $school->state;
+                $phase = Result::PHASE_1;
                 break;
-            case Result::PHASE_2:
+            case ($school->region):
                 if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION)) {
                     $this->httpException(403);
                 }
-                $geo = $school->region;
+                $phase = Result::PHASE_2;
                 break;
-            case Result::PHASE_3:
+            case ($school->country):
                 if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE)) {
                     $this->httpException(403);
                 }
-                $geo = $school->country;
+                $phase = Result::PHASE_3;
+                break;
+            default:
+                $this->httpException(404);
                 break;
         }
 
@@ -142,13 +145,10 @@ class UploadController extends \web\ext\Controller
 
             // Get team
             $teamName = $tr->find('.st_team', 0)->plaintext;
-
             $team = Team::model()->findByAttributes(array(
                 'name' => new \MongoRegex('/^' . preg_quote($teamName) . '$/i'),
+                'year' => date('Y'),
             ));
-            if ($team === null) {
-                continue;
-            }
 
             // Parse tasks tries and time
             $tasksTries = $tasksTime = array();
@@ -172,11 +172,13 @@ class UploadController extends \web\ext\Controller
             // Create result
             $result = new Result();
             $result->setAttributes(array(
-                'year'      => date('Y'),
+                'year'      => $team->year,
                 'phase'     => $phase,
                 'geo'       => $geo,
                 'place'     => $tr->find('.st_place', 0)->plaintext,
-                'teamId'    => $team->_id,
+                'placeText' => $tr->find('.st_place', 0)->plaintext,
+                'teamId'    => (isset($team)) ? $team->_id : null,
+                'teamName'  => $teamName,
                 'tasksTries'=> $tasksTries,
                 'tasksTime' => $tasksTime,
                 'total'     => $tr->find('.st_total', 0)->plaintext,

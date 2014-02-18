@@ -1,41 +1,76 @@
+<?php
+    \yii::app()->getClientScript()->registerCoreScript('jquery.jqgrid');
+?>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        new appResultsView();
+
+        $('#results')
+            .jqGrid({
+                url: '<?=$this->createUrl('/results/GetResultsListJson')?>',
+                datatype: 'json',
+                colNames: <?=\CJSON::encode(array_merge(array(
+                    \yii::t('app', 'Place'),
+                    \yii::t('app', 'Team name'),
+                    \yii::t('app', 'Coach name'),
+                    \yii::t('app', 'School name'),
+                    \yii::t('app', 'Total'),
+                    \yii::t('app', 'Penalty'),
+                ), $usedLetters))?>,
+                colModel: [
+                    {name: 'place', index: 'place', width: 60, align: 'center', search: false, frozen: true},
+                    {name: 'teamName', index: 'teamName', width: 150, frozen: true},
+                    {name: 'coachName<?=ucfirst(\yii::app()->language)?>', index: 'coachName<?=ucfirst(\yii::app()->language)?>', width: 175, frozen: true},
+                    {name: 'schoolName<?=ucfirst(\yii::app()->language)?>', index: 'schoolName<?=ucfirst(\yii::app()->language)?>', width: 250, frozen: true},
+                    {name: 'total', index: 'total', width: 50, search: false, align: 'center', frozen: true},
+                    {name: 'penalty', index: 'penalty', width: 50, search: false, align: 'center', frozen: true},
+                    <?php foreach ($usedLetters as $letter): ?>
+                        {name: '<?=$letter?>', index: '<?=$letter?>', width: 60, align: 'center', search: false},
+                    <?php endforeach; ?>
+                ],
+                postData: {
+                    year:   '<?=$year?>',
+                    geo:    '<?=$geo?>',
+                    phase:  '<?=$phase?>'
+                },
+                cellEdit: false,
+                cmTemplate: {
+                    title: false
+                },
+                scroll: false,
+                rowNum: 100,
+                sortname: 'place',
+                sortorder: 'asc',
+                shrinkToFit: false,
+                beforeSelectRow: function() {
+                    return false;
+                },
+                loadComplete: function() {
+                    $('[rel=tooltip]').tooltip();
+                    $('.results-phase-completed').trigger('changed');
+                }
+            })
+            .jqGrid('filterToolbar', {
+                stringResult: true,
+                searchOnEnter: false
+            })
+            .jqGrid('setGroupHeaders', {
+                    useColSpanStyle: true,
+                    groupHeaders:[
+                        {startColumnName: '<?=reset($usedLetters)?>', numberOfColumns: <?=$tasksCount?>, titleText: '<?=\yii::t('app', 'Tasks')?>'}
+                    ]
+                }
+            )
+            .jqGrid('setFrozenColumns');
+    });
+</script>
+
 <div class="page-header">
-    <h1><?=$header?> <small><?=$year?>, <?=\yii::t('app', 'phase')?> <?=$phase?></small></h1>
+    <h1><?=$header?> <small><?=$year?>, <?=\yii::t('app', 'stage')?> <?=$phase?></small></h1>
 </div>
 
-<?php if (count($results) > 0): ?>
-    <table class="table table-striped table-bordered table-hover">
-        <thead>
-            <tr>
-                <th><?=\yii::t('app', 'Place')?></th>
-                <th><?=\yii::t('app', 'Team name')?></th>
-                <?php for ($i = 0; $i < $tasksCount; $i++): ?>
-                <th><?=$letters[$i]?></th>
-                <?php endfor; ?>
-                <th><?=\yii::t('app', 'Total')?></th>
-                <th><?=\yii::t('app', 'Penalty')?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($results as $result): ?>
-                <tr>
-                    <td><?=\CHtml::encode($result->place)?></td>
-                    <td>
-                        <a href="<?=$this->createUrl('/team/view', array('id' => $result->team->_id))?>">
-                            <?=\CHtml::encode($result->team->name)?>
-                        </a>
-                    </td>
-                    <?php foreach ($result->tasksTries as $try): ?>
-                        <td><?=\CHtml::encode($try)?></td>
-                    <?php endforeach; ?>
-                    <td><?=\CHtml::encode($result->total)?></td>
-                    <td><?=\CHtml::encode($result->penalty)?></td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
+<table id="results" style="width: 100%;"></table>
 
-    </table>
-<?php else: ?>
-    <div class="alert alert-info">
-        <?=\yii::t('app', 'Sorry but results are not available yet.')?>
-    </div>
-<?php endif; ?>
+<input type="hidden" name="results-phase" value="<?=$phase?>" />

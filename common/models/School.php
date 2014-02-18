@@ -9,6 +9,7 @@ namespace common\models;
  * @property-read string $countryLabel
  * @property-read string $regionLabel
  * @property-read string $stateLabel
+ * @property-read string $schoolName
  */
 class School extends \common\ext\MongoDb\Document
 {
@@ -53,6 +54,24 @@ class School extends \common\ext\MongoDb\Document
     public $region;
 
     /**
+     * Returns school name in appropriate language
+     *
+     * @return string
+     */
+    public function getSchoolName()
+    {
+        switch ($this->useLanguage) {
+            default:
+            case 'uk':
+                return $this->fullNameUk;
+                break;
+            case 'en':
+                return (!empty($this->fullNameEn)) ? $this->fullNameEn : $this->fullNameUk;
+                break;
+        }
+    }
+
+    /**
      * Returns country
      *
      * @return string
@@ -79,7 +98,7 @@ class School extends \common\ext\MongoDb\Document
      */
     public function getRegionLabel()
     {
-        return Geo\Region::model()->getAttributeLabel($this->region);
+        return Geo\Region::model()->getAttributeLabel($this->region, 'name');
     }
 
     /**
@@ -89,7 +108,7 @@ class School extends \common\ext\MongoDb\Document
      */
     public function getStateLabel()
     {
-        return Geo\State::model()->getAttributeLabel($this->state);
+        return Geo\State::model()->getAttributeLabel($this->state, 'name');
     }
 
     /**
@@ -123,7 +142,9 @@ class School extends \common\ext\MongoDb\Document
         return array_merge(parent::rules(), array(
             array('fullNameUk, state, region', 'required'),
             array('fullNameUk, fullNameEn, shortNameUk, shortNameEn', 'unique'),
-            array('shortNameUk, fullNameEn, shortNameEn', 'required', 'on' => static::SC_ASSIGN_TO_TEAM)
+            array('shortNameUk, fullNameEn, shortNameEn', 'required', 'on' => static::SC_ASSIGN_TO_TEAM),
+            array('state', School\Validator\State::className()),
+            array('region', School\Validator\Region::className()),
         ));
     }
 
@@ -178,17 +199,28 @@ class School extends \common\ext\MongoDb\Document
     {
         if (!parent::beforeValidate()) return false;
 
-        // State
-        if (!in_array($this->state, Geo\State::model()->getConstantList('NAME_'))) {
-            $this->addError('state', \yii::t('app', 'Unknown state name.'));
-        }
-
-        // Region
-        if (!in_array($this->region, Geo\Region::model()->getConstantList('NAME_'))) {
-            $this->addError('region', \yii::t('app', 'Unknown region name.'));
-        }
-
         return true;
     }
+
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
+        // If any name is changed, info in result model should be updated
+        foreach (array('fullNameUk', 'fullNameEn') as $attr) {
+            if ($this->attributeHasChanged($attr)) {
+                $lang = substr($attr, -2);
+                $modifier = new \EMongoModifier();
+                $modifier->addModifier('schoolName' . $lang, 'set', $this->$attr);
+                $criteria = new \EMongoCriteria();
+                $criteria->addCond('schoolId', '==', (string)$this->_id);
+                Result::model()->updateAll($modifier, $criteria);
+            }
+        }
+
+        parent::afterSave();
+    }
+
 
 }

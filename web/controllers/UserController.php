@@ -42,9 +42,6 @@ class UserController extends \web\ext\Controller
         $firstNameEn       = $this->request->getPost('firstNameEn');
         $middleNameEn      = $this->request->getPost('middleNameEn');
         $lastNameEn        = $this->request->getPost('lastNameEn');
-        $currentPassword   = $this->request->getPost('currentPassword');
-        $password          = $this->request->getPost('password');
-        $passwordRepeat    = $this->request->getPost('passwordRepeat');
         $schoolId          = $this->request->getPost('schoolId');
         $type              = $this->request->getPost('type');
         $coordinator       = $this->request->getPost('coordinator');
@@ -69,18 +66,7 @@ class UserController extends \web\ext\Controller
             ), false);
             $user->validate();
 
-            // Set new password
-            if (!empty($password)) {
-                if ($user->checkPassword($currentPassword)) {
-                    $user->setPassword($password, $passwordRepeat);
-                } else {
-                    $user->addError('currentPassword', \yii::t('app', '{attr} is incorrect', array(
-                        '{attr}' => $user->getAttributeLabel('password'),
-                    )));
-                }
-            }
-
-            // Save chagnes
+            // Save changes
             if (!$user->hasErrors()) {
                 $user->save();
             }
@@ -117,18 +103,9 @@ class UserController extends \web\ext\Controller
 
             // Render view
             $this->render('me', array(
-                'firstNameUk'       => $user->firstNameUk,
-                'middleNameUk'      => $user->middleNameUk,
-                'lastNameUk'        => $user->lastNameUk,
-                'firstNameEn'       => $user->firstNameEn,
-                'middleNameEn'      => $user->middleNameEn,
-                'lastNameEn'        => $user->lastNameEn,
-                'email'             => $user->email,
-                'schoolId'          => $user->schoolId,
-                'type'              => $user->type,
-                'coordinator'       => $user->coordinator,
+                'user'              => $user,
                 'coordinatorLabel'  => $coordinatorLabel,
-                'schools'           => $schools
+                'schools'           => $schools,
             ));
         }
     }
@@ -157,8 +134,43 @@ class UserController extends \web\ext\Controller
         // Render view
         $this->render($view, array(
             'lang' => $lang,
-            'info' => $user->getInfo($lang)
+            'info' => $user->setUseLanguage($lang)->info,
         ));
+    }
+
+    /**
+     * Change password request
+     */
+    public function actionPasswordChange()
+    {
+        // Update password
+        if ($this->request->isPostRequest) {
+
+            // Get params
+            $currentPassword = $this->request->getPost('currentPassword');
+            $password        = $this->request->getPost('password');
+            $passwordRepeat  = $this->request->getPost('passwordRepeat');
+
+            // Set new password
+            $user = \yii::app()->user->getInstance();
+            if ($user->checkPassword($currentPassword)) {
+                $user->setPassword($password, $passwordRepeat);
+            } else {
+                $user->addError('currentPassword', \yii::t('app', '{attr} is incorrect', array(
+                    '{attr}' => $user->getAttributeLabel('password'),
+                )));
+            }
+            if (!$user->hasErrors()) {
+                $user->save();
+                \yii::app()->user->setFlash('passwordChangeSuccess', true);
+            }
+
+            // Render json
+            $this->renderJson(array(
+                'errors' => $user->hasErrors() ? $user->getErrors() : false,
+            ));
+
+        }
     }
 
     /**
@@ -174,7 +186,6 @@ class UserController extends \web\ext\Controller
         $acmnumber                = $this->request->getPost('acmNumber');
         $schoolName               = $this->request->getPost('schoolName');
         $schoolNameShort          = $this->request->getPost('schoolNameShort');
-        $schoolDivision           = $this->request->getPost('schoolDivision');
         $schoolPostEmailAddresses = $this->request->getPost('schoolPostEmailAddresses');
 
         $position      = $this->request->getPost('position');
@@ -183,7 +194,7 @@ class UserController extends \web\ext\Controller
         $fax           = $this->request->getPost('fax');
 
         // Save additional info
-        $info = \yii::app()->user->getInstance()->getInfo($lang);
+        $info = \yii::app()->user->getInstance()->setUseLanguage($lang)->info;
         $info->setAttributes(array(
             'lang'                     => $lang,
             'phoneHome'                => $phoneHome,
@@ -192,7 +203,6 @@ class UserController extends \web\ext\Controller
             'acmNumber'                => $acmnumber,
             'schoolName'               => $schoolName,
             'schoolNameShort'          => $schoolNameShort,
-            'schoolDivision'           => $schoolDivision,
             'schoolPostEmailAddresses' => $schoolPostEmailAddresses,
 
             'position'      => $position,
@@ -221,7 +231,6 @@ class UserController extends \web\ext\Controller
         $acmnumber                = $this->request->getPost('acmNumber');
         $schoolName               = $this->request->getPost('schoolName');
         $schoolNameShort          = $this->request->getPost('schoolNameShort');
-        $schoolDivision           = $this->request->getPost('schoolDivision');
         $schoolPostEmailAddresses = $this->request->getPost('schoolPostEmailAddresses');
 
         $studyField          = $this->request->getPost('studyField');
@@ -233,7 +242,7 @@ class UserController extends \web\ext\Controller
         $document            = $this->request->getPost('document');
 
         // Save additional info
-        $info = \yii::app()->user->getInstance()->getInfo($lang);
+        $info = \yii::app()->user->getInstance()->setUseLanguage($lang)->info;
         $info->setAttributes(array(
             'lang'                     => $lang,
             'phoneHome'                => $phoneHome,
@@ -242,7 +251,6 @@ class UserController extends \web\ext\Controller
             'acmNumber'                => $acmnumber,
             'schoolName'               => $schoolName,
             'schoolNameShort'          => $schoolNameShort,
-            'schoolDivision'           => $schoolDivision,
             'schoolPostEmailAddresses' => $schoolPostEmailAddresses,
 
             'studyField'          => $studyField,

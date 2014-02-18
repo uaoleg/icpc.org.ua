@@ -19,7 +19,7 @@
         <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_DOCUMENT_DELETE, array(
             'document' => $this->document,
         ))): ?>
-            <button class="btn btn-danger btn-xs document-delete"
+            <button type="button" class="btn btn-danger btn-xs document-delete"
                     data-confirm="<?=\yii::t('app', 'Delete {file} ?', array(
                         '{file}' => '<i>' . \CHtml::encode($this->document->title) . '</i>',
                     ))?>">

@@ -8,10 +8,25 @@ use \common\models\School;
  *
  * @property-read User          $coach
  * @property-read School        $school
+ * @property-read string        $schoolName
+ * @property-read string        $coachName
  * @property-read \EMongoCursor $members
  */
 class Team extends \common\ext\MongoDb\Document
 {
+
+    /**
+     * Scenarios
+     */
+    const SC_PHASE_UPDATE   = 'phaseUpdate';
+    const SC_USER_DELETING  = 'userDeleting';
+
+    /**
+     * League values
+     */
+    const LEAGUE_NULL   = null;
+    const LEAGUE_I      = 'I';
+    const LEAGUE_II     = 'II';
 
     /**
      * Name of a team
@@ -26,10 +41,28 @@ class Team extends \common\ext\MongoDb\Document
     public $year;
 
     /**
+     * Phase the team participates in
+     * @var int
+     */
+    public $phase = Result::PHASE_1;
+
+    /**
      * ID of team's coach
      * @var string
      */
     public $coachId;
+
+    /**
+     * Name of a coach in ukrainian
+     * @var string
+     */
+    public $coachNameUk;
+
+    /**
+     * Name of a coach in english
+     * @var string
+     */
+    public $coachNameEn;
 
     /**
      * ID of team's school
@@ -38,10 +71,42 @@ class Team extends \common\ext\MongoDb\Document
     public $schoolId;
 
     /**
+     * Name of a school in ukrainian
+     * @var string
+     */
+    public $schoolNameUk;
+
+    /**
+     * Name of a school in english
+     * @var string
+     */
+    public $schoolNameEn;
+
+    /**
+     * League
+     * I-offers advanced degree in computer science
+     * II-does not offer advanced degree in computer science
+     * @var string
+     */
+    public $league = self::LEAGUE_NULL;
+
+    /**
      * List of members IDs
      * @var array
      */
     public $memberIds = array();
+
+    /**
+     * State labels of a team
+     * @var array
+     */
+    public $state = array();
+
+    /**
+     * Region labels of a team
+     * @var array
+     */
+    public $region = array();
 
     /**
      * Objects of member users
@@ -107,6 +172,70 @@ class Team extends \common\ext\MongoDb\Document
     }
 
     /**
+     * Returns school name in appropriate language
+     *
+     * @return string
+     */
+    public function getSchoolName()
+    {
+        switch ($this->useLanguage) {
+            default:
+            case 'uk':
+                return $this->schoolNameUk;
+                break;
+            case 'en':
+                return (!empty($this->schoolNameEn)) ? $this->schoolNameEn : $this->schoolNameUk;
+                break;
+        }
+    }
+
+    /**
+     * Returns coach name in appropriate language
+     *
+     * @return string
+     */
+    public function getCoachName()
+    {
+        switch ($this->useLanguage) {
+            default:
+            case 'uk':
+                return $this->coachNameUk;
+                break;
+            case 'en':
+                return (!empty($this->coachNameEn)) ? $this->coachNameEn : $this->coachNameUk;
+                break;
+        }
+    }
+
+    /**
+     * Returns team's state label
+     *
+     * @return string
+     */
+    public function getStateLabel()
+    {
+        if (isset($this->state[$this->useLanguage])) {
+            return $this->state[$this->useLanguage];
+        } else {
+            return $this->state['uk'];
+        }
+    }
+
+    /**
+     * Returns team's region label
+     *
+     * @return string
+     */
+    public function getRegionLabel()
+    {
+        if (isset($this->region[$this->useLanguage])) {
+            return $this->region[$this->useLanguage];
+        } else {
+            return $this->region['uk'];
+        }
+    }
+
+    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -117,11 +246,19 @@ class Team extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'name'      => \yii::t('app', 'Name of a team'),
-            'year'      => \yii::t('app', 'Year in which team participated'),
-            'coachId'   => \yii::t('app', 'Related coach ID'),
-            'schoolId'  => \yii::t('app', 'Related school ID'),
-            'memberIds' => \yii::t('app', 'List of members')
+            'name'          => \yii::t('app', 'Name of a team'),
+            'year'          => \yii::t('app', 'Year in which team participates'),
+            'phase'         => \yii::t('app', 'Stage in which team participates'),
+            'coachId'       => \yii::t('app', 'Related coach ID'),
+            'coachNameUk'   => \yii::t('app', 'Name of the coach in ukrainian'),
+            'coachNameEn'   => \yii::t('app', 'Name of the coach in english'),
+            'schoolId'      => \yii::t('app', 'Related school ID'),
+            'schoolNameUk'  => \yii::t('app', 'Full name of school in ukrainian'),
+            'schoolNameEn'  => \yii::t('app', 'Full name of school in english'),
+            'league'        => \yii::t('app', 'League of a team'),
+            'memberIds'     => \yii::t('app', 'List of members'),
+            'state'         => \yii::t('app', 'List of state labels of a team'),
+            'region'        => \yii::t('app', 'List of region labels of a team'),
         ));
     }
 
@@ -133,12 +270,24 @@ class Team extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('name, year, coachId, schoolId, memberIds', 'required'),
+            array('name, year, phase, coachId, coachNameUk, coachNameEn, schoolId, schoolNameUk, schoolNameEn,
+                   memberIds, state, region', 'required'),
+            array('name', Team\Validator\Name::className()),
             array('year', 'numerical',
                 'integerOnly'   => true,
                 'min'           => (int)\yii::app()->params['yearFirst'],
-                'max'           => (int)date('Y')
+                'max'           => (int)date('Y'),
             ),
+            array('phase', 'readonly', 'except' => static::SC_PHASE_UPDATE),
+            array('phase', Team\Validator\Phase::className()),
+            array('phase', 'numerical',
+                'integerOnly'   => true,
+                'min'           => Result::PHASE_1,
+                'max'           => Result::PHASE_3 + 1,
+            ),
+            array('schoolId', Team\Validator\School::className()),
+            array('league', Team\Validator\League::className()),
+            array('memberIds', Team\Validator\Members::className(), 'except' => static::SC_USER_DELETING),
         ));
     }
 
@@ -177,34 +326,77 @@ class Team extends \common\ext\MongoDb\Document
      */
     protected function beforeValidate()
     {
-        if (!parent::beforeValidate()) return false;
+        if (!parent::beforeValidate()) {
+            return false;
+        }
 
         // Convert MongoId to String
         $this->coachId = (string)$this->coachId;
         $this->schoolId = (string)$this->schoolId;
 
+        // Set coach name and school name properties
+        if (empty($this->coachNameUk)) {
+            $this->coachNameUk = \web\widgets\user\Name::create(array('user' => $this->coach, 'lang' => 'uk'), true);
+        }
+        if (empty($this->coachNameEn)) {
+            $this->coachNameEn = \web\widgets\user\Name::create(array('user' => $this->coach, 'lang' => 'en'), true);
+        }
+        if (empty($this->schoolNameUk)) {
+            $this->schoolNameUk = $this->school->fullNameUk;
+        }
+        if (empty($this->schoolNameEn)) {
+            $this->schoolNameEn = $this->school->fullNameEn;
+        }
+
         // Year
         if (empty($this->year)) {
-            $this->year = date('Y');
-        }
-        $this->year = (int)$this->year;
-
-        // Members
-        if (count($this->memberIds) < 3) {
-            $this->addError('memberIds', \yii::t('app', 'The number of members should be greater or equal then 3.'));
-        } elseif (count($this->memberIds) > 4) {
-            $this->addError('memberIds', \yii::t('app', 'The number of members should be less or equal then 4.'));
+            $this->year = (int)date('Y');
         }
 
-        // Validate assigned school
-        $this->school->scenario = School::SC_ASSIGN_TO_TEAM;
-        $this->school->validate();
-        if ($this->school->hasErrors()) {
-            $this->addError('schoolId', \yii::t('app', 'Assigned school is invalid.'));
+        // Set state and region labels
+        if ($this->attributeHasChanged('schoolId')) {
+            $initLang = \yii::app()->language;
+            foreach (\yii::app()->params['languages'] as $language => $label) {
+                \yii::app()->language = $language;
+                $this->state[$language] = $this->school->getStateLabel();
+                $this->region[$language] = $this->school->getRegionLabel();
+            }
+            \yii::app()->language = $initLang;
         }
 
         return true;
     }
 
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
+        // If team name is changed then teamName attribute in Results needs to be changed
+        if ($this->attributeHasChanged('name')) {
+            $modifier = new \EMongoModifier();
+            $modifier->addModifier('teamName', 'set', $this->name);
+            $criteria = new \EMongoCriteria();
+            $criteria->addCond('teamId', '==', (string)$this->_id);
+            Result::model()->updateAll($modifier, $criteria);
+        }
+
+        parent::afterSave();
+    }
+
+    /**
+     * After delete action
+     */
+    protected function afterDelete()
+    {
+        // After team is deleted results for it should be removed too
+        $criteria = new \EMongoCriteria();
+        $criteria
+            ->addCond('teamId', '==', (string)$this->_id)
+            ->addCond('year', '==', (int)$this->year);
+        Result::model()->deleteAll($criteria);
+
+        parent::afterDelete();
+    }
 
 }

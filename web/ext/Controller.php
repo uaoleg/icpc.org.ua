@@ -13,6 +13,12 @@ use \common\models\Team;
 class Controller extends \CController
 {
 
+    /*
+     * Search operation names for different field types
+     */
+    const JQGRID_OPERATION_DATERANGE = 'dr';
+    const JQGRID_OPERATION_GREATER_OR_EQUAL = 'ge';
+
     /**
      * Nav active items
      * @var array
@@ -43,17 +49,25 @@ class Controller extends \CController
             \yii::app()->sprite->generate();
         }
 
-        // Remember last visited URL
-        if (($this->getId() != 'auth') && (!\yii::app()->request->isAjaxRequest)) {
-            \yii::app()->user->setState('last-visited-url',  \yii::app()->request->url);
-        }
-
         // Restore nav active items
         $this->_navActiveItems = \yii::app()->user->getState('nav-active-items', array());
 
         // Set application language and save it with the help of cookies
+        if (!\yii::app()->user->isGuest) {
+            $settings = \yii::app()->user->getInstance()->settings;
+            if (isset($settings->lang)) {
+                $this->request->cookies['language'] = new \CHttpCookie('language', $settings->lang);
+            } else {
+                $settings->lang = $this->request->cookies['language']->value;
+                $settings->save();
+            }
+
+        }
         if (!isset($this->request->cookies['language'])) {
-            $this->request->cookies['language'] = new \CHttpCookie('language', 'uk');
+            $languageCodes = array_keys(\yii::app()->params['languages']);
+            $langCode = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+            $defaultLang = (in_array($langCode, $languageCodes)) ? $langCode : 'uk';
+            $this->request->cookies['language'] = new \CHttpCookie('language', $defaultLang);
         }
         if (isset($this->request->cookies['language'])) {
             \yii::app()->language = $this->request->cookies['language']->value;
@@ -70,6 +84,44 @@ class Controller extends \CController
         return array_merge(parent::filters(), array(
             'accessControl',
         ));
+    }
+
+    /**
+     * This method is invoked right after an action is executed
+     *
+     * @param CAction $action
+     */
+    protected function afterAction($action)
+    {
+        // Remember last visited URL
+        if (($this->getId() !== 'auth') && (!\yii::app()->request->isAjaxRequest)) {
+            \yii::app()->user->setState('last-visited-url',  \yii::app()->request->url);
+        }
+
+        parent::afterAction($action);
+    }
+
+    /**
+     * Action to render CSV
+     *
+     * @param \EMongoCursor $data
+     * @param string        $fileName
+     * @param \Closure      $function
+     */
+    public function renderCsv($data, $fileName, \Closure $function)
+    {
+        // Set headers
+        header('Content-Encoding: UTF-8');
+        header('Content-type: text/csv; charset=UTF-8');
+        header("Content-Disposition: attachment; filename=\"{$fileName}\"");
+
+        // Send content
+        $fileHandler = fopen('php://output', 'w');
+        fwrite($fileHandler, "\xEF\xBB\xBF"); // UTF-8 BOM
+        foreach ($data as $datum) {
+            fputcsv($fileHandler, call_user_func($function, $datum), ',');
+        }
+        fclose($fileHandler);
     }
 
     /**
@@ -162,7 +214,7 @@ class Controller extends \CController
             switch ($this->id) {
                 // Find latest year with news
                 case 'news':
-                    $publishedOnly = !\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_UPDATE);
+                    $publishedOnly = !\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_CREATE);
                     while (News::model()->scopeByLatest($this->getGeo(), $year, $publishedOnly)->count() === 0) {
                         $year--;
                         if ($year <= \yii::app()->params['yearFirst']) {
@@ -265,6 +317,70 @@ class Controller extends \CController
     public function httpException($status, $message = null, $code = 0)
     {
         throw new \CHttpException($status, $message, $code);
+    }
+
+    /**
+     * Get jqGrid params
+     *
+     * @param \common\ext\MongoDb\Document $model
+     * @param \EMongoCriteria $criteria
+     * @return array
+     */
+    protected function _getJqgridParams(\common\ext\MongoDb\Document $model, \EMongoCriteria $criteria = null)
+    {
+        // Get params
+        $page       = (int)$this->request->getParam('page', 1);
+        $perPage    = (int)$this->request->getParam('rows', 10);
+        $sortName   = $this->request->getParam('sidx', 'time');
+        $sortOrder  = ($this->request->getParam('sord', 'desc') == 'desc') ? \EMongoCriteria::SORT_DESC : \EMongoCriteria::SORT_ASC;
+        $filters    = $this->request->getParam('filters');
+
+        // Get items
+        if ($criteria === null) {
+            $criteria = new \EMongoCriteria();
+        }
+        $criteria
+            ->sort($sortName, $sortOrder)
+            ->limit($perPage)
+            ->offset(($page - 1) * $perPage);
+        if ($filters) {
+            $filters = json_decode($filters);
+
+            foreach ($filters->rules as $filter) {
+
+                // Specify criteria for datarange field
+                if ($filter->op === static::JQGRID_OPERATION_DATERANGE) {
+                    $dateRange = explode('-', $filter->data);
+                    $day = SECONDS_IN_DAY;
+                    $startDate = strtotime($dateRange[0] . ' UTC');
+
+                    // Specify end date as the date increased by on one day
+                    $endDate = $startDate + $day;
+                    if (isset($dateRange[1])) {
+                        $endDate = strtotime($dateRange[1] . ' UTC') + $day;
+                    }
+
+                    $criteria->addCond($filter->field, '>=', $startDate);
+                    $criteria->addCond($filter->field, '<=', $endDate);
+                } elseif ($filter->op === static::JQGRID_OPERATION_GREATER_OR_EQUAL) {
+                    $criteria->addCond($filter->field, '>=', (int)$filter->data);
+                } else {
+                    $regex = new \MongoRegex('/'.preg_quote($filter->data).'/i');
+                    $criteria->addCond($filter->field, '==', $regex);
+                }
+
+            }
+        }
+        $itemList   = $model->findAll($criteria);
+        $totalCount = $model->count($criteria);
+
+        // Return params
+        return array(
+            'page'      => $page,
+            'perPage'   => $perPage,
+            'itemList'  => $itemList,
+            'totalCount'=> $totalCount,
+        );
     }
 
 }

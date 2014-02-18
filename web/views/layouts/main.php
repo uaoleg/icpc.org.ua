@@ -88,6 +88,10 @@
                                     ),
                                 ),
                             ),
+                            'team' => array(
+                                'href'     => $this->createUrl('/team/list'),
+                                'caption'  => \yii::t('app', 'Teams'),
+                            ),
                             'results' => array(
                                 'href'      => '/results',
                                 'caption'   => \yii::t('app', 'Results'),
@@ -107,9 +111,9 @@
                                     ),
                                 ),
                             ),
-                            'team' => array(
-                                'href'     => $this->createUrl('/team/list'),
-                                'caption'  => \yii::t('app', 'Teams'),
+                            'qa' => array(
+                                'href'     => $this->createUrl('/qa'),
+                                'caption'  => \yii::t('app', 'Q&A'),
                             ),
                             'lang' => array(
                                 'href'      => $this->createUrl('/staff/lang'),
@@ -125,7 +129,10 @@
                             <li>
                                 <p class="navbar-text">
                                     <?=\yii::t('app', 'Hello')?>,
-                                    <a href="<?=$this->createUrl('/user/me')?>"><?=\yii::app()->user->getInstance()->firstName?></a>
+                                    <a href="<?=$this->createUrl('/user/me')?>"><?php \web\widgets\user\Name::create(array(
+                                        'user'  => \yii::app()->user->getInstance(),
+                                        'view'  => \web\widgets\user\Name::VIEW_FIRST,
+                                    )); ?></a>
                                 </p>
                             </li>
                             <li><a href="<?=$this->createUrl('/auth/logout')?>"><?=\yii::t('app', 'Logout')?></a></li>
@@ -141,7 +148,7 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                 <li>
-                    &copy; 2013 <a href="http://www.dataart.ua" target="_blank" class="inline">DataArt</a>
+                    &copy; <?=date('Y')?> <a href="http://www.dataart.ua" target="_blank" class="inline">DataArt</a>
                 </li>
                 <li>
                     <a href="https://github.com/uaoleg/icpc.org.ua" target="_blank" class="inline">

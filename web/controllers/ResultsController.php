@@ -28,10 +28,48 @@ class ResultsController extends \web\ext\Controller
      */
     public function actionLatest()
     {
+        // Get params
+        $year = $this->getYear();
+
+        // Select states for which there are results
+        $states = Result::model()->getCollection()->distinct('geo',  array(
+            'year'  => $year,
+            'geo'   => array('$in' => Geo\State::model()->getConstantList('NAME_'))
+        ));
+
+        $statesWithLabels = array();
+        foreach ($states as $state) {
+            $statesWithLabels[$state] = Geo\State::model()->getAttributeLabel($state, 'name');
+        }
+        asort($statesWithLabels);
+
+        // Select regions for which there are results
+        $regions = Result::model()->getCollection()->distinct('geo', array(
+            'year' => $year,
+            'geo'  => array('$in' => Geo\Region::model()->getConstantList('NAME_'))
+        ));
+
+        $regionsWithLabels = array();
+        foreach ($regions as $region) {
+            $regionsWithLabels[$region] = Geo\Region::model()->getAttributeLabel($region, 'name');
+        }
+
+        // Check if there are results for 3rd phase
+        $hasUkraineResults = false;
+        if (count(Result::model()->findAllByAttributes(array(
+                'year' => $year,
+                'geo'  => \yii::app()->user->getInstance()->school->getCountry()
+            ))) > 0) {
+            $hasUkraineResults = true;
+        }
+
         // Render view
         $this->render('latest', array(
-            'states'  => Geo\State::model()->getConstantList('NAME_'),
-            'regions' => Geo\Region::model()->getConstantList('NAME_')
+            'year'              => $year,
+            'states'            => $statesWithLabels,
+            'regions'           => $regionsWithLabels,
+            'hasUkraineResults' => $hasUkraineResults,
+            'school'            => \yii::app()->user->getInstance()->school
         ));
     }
 
@@ -63,6 +101,9 @@ class ResultsController extends \web\ext\Controller
                 $this->httpException(404);
                 break;
         }
+        if (empty($header)) {
+            $this->httpException(404);
+        }
 
         // Get the list of results
         $criteria = new \EMongoCriteria();
@@ -75,14 +116,78 @@ class ResultsController extends \web\ext\Controller
         $result     = Result::model()->find($criteria);
         $tasksCount = ($result !== null) ? count($result->tasksTries) : 0;
 
+        // Get used letters
+        $allLetters = Result::TASKS_LETTERS;
+        $usedLetters = array();
+        for ($i = 0; $i < $tasksCount; $i++) {
+            $usedLetters[] = $allLetters[$i];
+        }
+
         // Render view
         $this->render('view', array(
-            'header'    => $header,
-            'year'      => $year,
-            'phase'     => $phase,
-            'results'   => $results,
-            'tasksCount'=> $tasksCount,
-            'letters'   => Result::TASKS_LETTERS,
+            'geo'         => $geo,
+            'header'      => $header,
+            'year'        => $year,
+            'phase'       => $phase,
+            'results'     => $results,
+            'tasksCount'  => $tasksCount,
+            'usedLetters' => $usedLetters
+        ));
+    }
+
+    /**
+     * Method for jqGrid which returns all the results to be shown
+     */
+    public function actionGetResultsListJson()
+    {
+        // Get params
+        $year   = (int)$this->request->getParam('year');
+        $geo    = $this->request->getParam('geo');
+        $lang   = \yii::app()->language;
+
+        // Get jqGrid params
+        $criteria = new \EMongoCriteria();
+        $criteria
+            ->addCond('year', '==', $year)
+            ->addCond('geo', '==', $geo)
+            ->sort('prizePlace', \EMongoCriteria::SORT_ASC);
+        $jqgrid = $this->_getJqgridParams(Result::model(), $criteria);
+
+        // Fill rows
+        $rows = array();
+        foreach ($jqgrid['itemList'] as $result) {
+            if (isset($result->teamId)) {
+                $teamName = '<a href="' . $this->createUrl('/team/view', array('id' => $result->teamId)). '">' .
+                    $result->teamName . '</a>';
+            } else {
+                $teamName = $result->teamName;
+            }
+            $arrayToAdd = array(
+                'id'                        => (string)$result->_id,
+                'place'                     => $this->renderPartial('view/place', array('result' => $result), true),
+                'teamName'                  => $teamName,
+                'schoolName'.ucfirst($lang) => $result->schoolName,
+                'coachName'.ucfirst($lang)  => $result->coachName,
+                'total'                     => $result->total,
+                'penalty'                   => $result->penalty
+            );
+            foreach ($result->tasksTries as $letter => $tries) {
+                if (isset($tries)) {
+                    $arrayToAdd[$letter] = $tries;
+                    if ($tries > 0) {
+                        $datetime = new \DateTime();
+                        $datetime->setTime(0, 0, $result->tasksTime[$letter]);
+                        $arrayToAdd[$letter] .= '&nbsp;(' . $datetime->format('G:i') . ')';
+                    }
+                }
+            }
+            $rows[] = $arrayToAdd;
+        }
+        $this->renderJson(array(
+            'page'      => $jqgrid['page'],
+            'total'     => ceil($jqgrid['totalCount'] / $jqgrid['perPage']),
+            'records'   => count($jqgrid['itemList']),
+            'rows'      => $rows,
         ));
     }
 

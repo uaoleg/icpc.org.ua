@@ -7,7 +7,7 @@
 </script>
 
 <div class="row">
-    <div class="col-lg-6 col-lg-offset-3">
+    <div class="col-lg-8 col-lg-offset-2">
 
         <?php $this->renderPartial('partial/additionalTabs'); ?>
 
@@ -54,7 +54,7 @@
 
                     <div class="form-group">
                         <div class="col-lg-9 col-lg-offset-3">
-                            <button class="btn btn-lg btn-primary btn-save"><?=\yii::t('app', 'Save')?></button>
+                            <button type="submit" class="btn btn-lg btn-primary btn-save"><?=\yii::t('app', 'Save')?></button>
                         </div>
                     </div>
 

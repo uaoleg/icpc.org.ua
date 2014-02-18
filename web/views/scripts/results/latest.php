@@ -9,49 +9,70 @@
     });
 </script>
 
+<div class="pull-right" style="margin-left: 20px;">
+    <?php \web\widgets\filter\Year::create(array('checked' => $year)); ?>
+</div>
 
 <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_RESULT_CREATE)): ?>
-    <button class="btn btn-lg btn-primary" id="pickfiles-modal" data-toggle="modal" data-target="#uploadModal">
+    <button type="button" class="btn btn-lg btn-primary" id="pickfiles-modal" data-toggle="modal" data-target="#uploadModal">
         <?=\yii::t('app', 'Upload results')?>
     </button>
 <?php endif; ?>
 
 <div class="page-header">
-    <h1><?=\yii::t('app', '1st Phase Results')?></h1>
+    <h1><?=\yii::t('app', '1st Stage Results')?></h1>
 </div>
+<?php if (count($states) > 0): ?>
 <ul>
-    <?php foreach($states as $state): ?>
+    <?php foreach($states as $state => $label): ?>
         <li>
-            <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 1, 'state' => $state))?>">
-                <?=\common\models\Geo\State::model()->getAttributeLabel($state, 'name')?>
+            <a href="<?=$this->createUrl('/results/view', array('year' => $year, 'phase' => 1, 'state' => $state))?>">
+                <?=$label?>
             </a>
         </li>
     <?php endforeach; ?>
 </ul>
+<?php else: ?>
+<div class="alert alert-info">
+    <?=\yii::t('app', 'There are no results at the moment')?>
+</div>
+<?php endif; ?>
 
 <div class="page-header">
-    <h1><?=\yii::t('app', '2nd Phase Results')?></h1>
+    <h1><?=\yii::t('app', '2nd Stage Results')?></h1>
 </div>
+<?php if (count($regions) > 0): ?>
 <ul>
-    <?php foreach($regions as $region): ?>
+    <?php foreach($regions as $region => $label): ?>
         <li>
-            <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 2, 'region' => $region))?>">
-                <?=\common\models\Geo\Region::model()->getAttributeLabel($region, 'name')?>
+            <a href="<?=$this->createUrl('/results/view', array('year' => $year, 'phase' => 2, 'region' => $region))?>">
+                <?=$label?>
             </a>
         </li>
     <?php endforeach; ?>
 </ul>
+<?php else: ?>
+<div class="alert alert-info">
+    <?=\yii::t('app', 'There are no results at the moment')?>
+</div>
+<?php endif; ?>
 
 <div class="page-header">
-    <h1><?=\yii::t('app', '3rd Phase Results')?></h1>
+    <h1><?=\yii::t('app', '3rd Stage Results')?></h1>
 </div>
+<?php if ($hasUkraineResults): ?>
 <ul>
     <li>
-        <a href="<?=$this->createUrl('/results/view', array('year' => date('Y'), 'phase' => 3, 'country' => \common\models\School::getCountry()))?>">
+        <a href="<?=$this->createUrl('/results/view', array('year' => $year,'phase' => 3, 'country' => \common\models\School::getCountry()))?>">
             <?=\common\models\School::getCountryLabel()?>
         </a>
     </li>
 </ul>
+<?php else: ?>
+<div class="alert alert-info">
+    <?=\yii::t('app', 'There are no results at the moment')?>
+</div>
+<?php endif; ?>
 
 <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_RESULT_CREATE)): ?>
 <div class="modal" id="uploadModal">
@@ -67,44 +88,30 @@
                         <p class="form-control-static"><b><?=date('Y')?></b>&nbsp;<?=\yii::t('app', 'year')?></p>
                     </div>
 
-                    <div class="form-group">
-                        <button class="btn btn-lg2 btn-info" id="uploadPickfiles">
-                            <?=\yii::t('app', 'Choose file')?>
+                    <?php if (!\yii::app()->user->getInstance()->school->getIsNewRecord()): ?>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" id="uploadPickfiles">
+                                <?=\yii::t('app', 'Choose file')?>
+                            </button>
+                            <span class="document-origin-filename"></span>
+                            <div class="help-block"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <?php \web\widgets\user\GeoFilter::create(); ?>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="uploadResults" disabled>
+                            <?=\yii::t('app', 'Upload')?>
                         </button>
-                        <span class="document-origin-filename"></span>
-                        <div class="help-block"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="radio">
-                            <label class="control-label">
-                                <input type="radio" name="phase" value="1"
-                                       <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE) ? '' : 'disabled'?>
-                                />
-                                <?=\yii::t('app', '1st phase')?>
-                            </label>
+                    <?php else: ?>
+                        <div class="alert alert-danger">
+                            <?=\yii::t('app', 'To upload results you have to specify your school at your {a}profile page{/a}', array(
+                                '{a}'   => '<a href="' . $this->createUrl('/user/me') . '">',
+                                '{/a}'  => '</a>',
+                            ))?>
                         </div>
-                        <div class="radio">
-                            <label class="control-label">
-                                <input type="radio" name="phase" value="2"
-                                       <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION) ? '' : 'disabled'?>
-                                />
-                                <?=\yii::t('app', '2nd phase')?>
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label class="control-label">
-                                <input type="radio" name="phase" value="3"
-                                       <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE) ? '' : 'disabled'?>
-                                />
-                                <?=\yii::t('app', '3rd phase')?>
-                            </label>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-primary" id="uploadResults" disabled>
-                        <?=\yii::t('app', 'Upload')?>
-                    </button>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

@@ -1,3 +1,7 @@
+<?php use \common\models\Result; ?>
+<?php use \common\models\User; ?>
+<?php use \common\models\Team; ?>
+
 <script type="text/javascript">
     $(document).ready(function() {
         new appStaffTeamManage({
@@ -61,14 +65,26 @@
                            placeholder="<?=\yii::t('app', 'Name of your team with prefix')?>" readonly/>
                 </div>
 
+                <?php if (\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE) && $team->phase === Result::PHASE_3): ?>
+                    <div class="form-group">
+                        <label for="teamLeague"><?=\yii::t('app', 'League')?></label><br/>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default <?= ($team->league === Team::LEAGUE_I) ? 'active' : ''?>">
+                                <input type="radio" name="league" value="I"> <?=Team::LEAGUE_I?>
+                            </label>
+                            <label class="btn btn-default <?= ($team->league === Team::LEAGUE_II) ? 'active' : ''?>">
+                                <input type="radio" name="league" value="II"> <?=Team::LEAGUE_II?>
+                            </label>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
                 <div class="form-group">
                     <label for="memberIds"><?=\yii::t('app', 'Members')?></label>
                     <select name="memberIds" id="memberIds" class="form-control" multiple>
                         <?php foreach($users as $user): ?>
                             <option value="<?=$user->_id?>" <?=(in_array((string)$user->_id, $team->memberIds)) ? 'selected' : ''?>>
-                                <?=\CHtml::encode($user->firstName)?>&nbsp;
-                                <?=\CHtml::encode($user->lastName)?>&nbsp;
+                                <?php \web\widgets\user\Name::create(array('user' => $user)); ?>
                                 <?=\CHtml::encode($user->email)?>
                             </option>
                         <?php endforeach; ?>
@@ -76,7 +92,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-primary btn-lg btn-save">
+                    <button type="submit" class="btn btn-primary btn-lg btn-save">
                         <?=\yii::t('app', 'Save')?>
                     </button>
                 </div>

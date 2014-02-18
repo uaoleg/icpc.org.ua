@@ -7,7 +7,7 @@ use \common\models\School;
 use \common\models\Team;
 use \common\models\User;
 
-class TeamController extends \web\ext\Controller
+class TeamController extends \web\modules\staff\ext\Controller
 {
 
     /**
@@ -35,6 +35,16 @@ class TeamController extends \web\ext\Controller
                 'allow',
                 'actions' => array('manage'),
                 'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE),
+            ),
+            array(
+                'allow',
+                'actions' => array('phaseupdate'),
+                'roles' => array(Rbac::OP_TEAM_PHASE_UPDATE),
+            ),
+            array(
+                'allow',
+                'actions' => array('leagueUpdate'),
+                'roles' => array(Rbac::OP_TEAM_LEAGUE_UPDATE),
             ),
             array(
                 'deny',
@@ -87,6 +97,7 @@ class TeamController extends \web\ext\Controller
                 'schoolId'  => $school->_id,
                 'memberIds' => $memberIds,
             ), false);
+
             $team->save();
 
             // Get errors
@@ -125,10 +136,33 @@ class TeamController extends \web\ext\Controller
                     $team->year = date('Y');
                 }
 
-                // Get team members
-                $users = User::model()->findAllByAttributes(array(
+                if (!isset($team)) {
+                    $this->httpException(404);
+                }
+
+                // Get students from the school
+                $allUsers = User::model()->findAllByAttributes(array(
                     'schoolId' => (string)$school->_id,
                     'type'     => User::ROLE_STUDENT
+                ));
+                $allUsersIds = array();
+                foreach ($allUsers as $user) {
+                    $allUsersIds[] = (string)$user->_id;
+                }
+
+                // Get all team members for this year and from the school
+                $usersInTeam = Team::model()->getCollection()->distinct('memberIds', array(
+                    'year'     => (int)$team->year,
+                    'schoolId' => (string)$school->_id
+                ));
+
+                // Get all users from the school and not in the teams
+                $usersIds = array_diff($allUsersIds, $usersInTeam);
+                $usersMongoIds = array_map(function($id) {
+                    return new \MongoId($id);
+                }, array_merge($usersIds, $team->memberIds));
+                $users = User::model()->findAllByAttributes(array(
+                    '_id' => array('$in' => $usersMongoIds)
                 ));
 
                 // Render view
@@ -140,6 +174,44 @@ class TeamController extends \web\ext\Controller
 
             }
         }
+    }
+
+    /**
+     * Update team phase
+     */
+    public function actionPhaseUpdate()
+    {
+        // Get params
+        $id     = $this->request->getParam('id');
+        $phase  = $this->request->getParam('phase');
+
+        // Get team
+        $team = Team::model()->findByPk(new \MongoId($id));
+
+        // Update phase
+        $team->scenario = Team::SC_PHASE_UPDATE;
+        $team->phase = (int)$phase;
+        if ($team->validate(array('phase'))) {
+            $team->save(false);
+        }
+    }
+
+    /**
+     * Update team league
+     */
+    public function actionLeagueUpdate()
+    {
+        // Get params
+        $teamId = $this->request->getParam('team');
+        $league = $this->request->getParam('league');
+
+        // Update team
+        $team = Team::model()->findByPk(new \MongoId($teamId));
+        $team->league = $league;
+        $team->save();
+
+        // Redirect to team page
+        $this->redirect($this->createAbsoluteUrl('/team/view', array('id' => $teamId)));
     }
 
 }

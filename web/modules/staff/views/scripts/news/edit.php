@@ -49,7 +49,7 @@
         <textarea class="form-control" name="content" style="height: 500px;"><?=\CHtml::encode($news->content)?></textarea>
     </div>
     <div class="form-group">
-        <button class="btn btn-primary save-news btn-lg pull-left" disabled="">
+        <button type="submit" class="btn btn-primary save-news btn-lg pull-left" disabled="">
             <?=\yii::t('app', 'Save News')?>
         </button>
         <div class="pull-right">

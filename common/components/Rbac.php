@@ -2,6 +2,7 @@
 
 namespace common\components;
 
+use \common\models\Geo;
 use \common\models\User;
 
 /**
@@ -28,6 +29,25 @@ class Rbac extends \CApplicationComponent
     const OP_TEAM_CREATE            = 'teamCreate';
     const OP_TEAM_READ              = 'teamRead';
     const OP_TEAM_UPDATE            = 'teamUpdate';
+    const OP_TEAM_LEAGUE_UPDATE     = 'teamLeagueUpdate';
+    const OP_TEAM_PHASE_UPDATE      = 'teamPhaseUpdate';
+    const OP_TEAM_EXPORT            = 'teamExport';
+    const OP_QA_ANSWER_CREATE       = 'qaAnswerCreate';
+    const OP_QA_ANSWER_READ         = 'qaAnswerRead';
+    const OP_QA_ANSWER_UPDATE       = 'qaAnswerUpdate';
+    const OP_QA_ANSWER_DELETE       = 'qaAnswerDelete';
+    const OP_QA_COMMENT_CREATE      = 'qaCommentCreate';
+    const OP_QA_COMMENT_READ        = 'qaCommentRead';
+    const OP_QA_COMMENT_UPDATE      = 'qaCommentUpdate';
+    const OP_QA_COMMENT_DELETE      = 'qaCommentDelete';
+    const OP_QA_QUESTION_CREATE     = 'qaQuestionCreate';
+    const OP_QA_QUESTION_READ       = 'qaQuestionRead';
+    const OP_QA_QUESTION_UPDATE     = 'qaQuestionUpdate';
+    const OP_QA_QUESTION_DELETE     = 'qaQuestionDelete';
+    const OP_QA_TAG_CREATE          = 'qaTagCreate';
+    const OP_QA_TAG_READ            = 'qaTagRead';
+    const OP_QA_TAG_UPDATE          = 'qaTagUpdate';
+    const OP_QA_TAG_DELETE          = 'qaTagDelete';
 
     /**
      * Current user
@@ -140,7 +160,30 @@ class Rbac extends \CApplicationComponent
      */
     public function bizRuleNewsUpdate(array $params)
     {
-        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
+        $geo = $params['news']->geo;
+
+        // Any news
+        if ($this->checkAccess(User::ROLE_COORDINATOR_UKRAINE)) {
+            return true;
+        }
+
+        // Region news
+        elseif (in_array($geo, Geo\Region::model()->getConstantList('NAME_'))) {
+            return (($geo === $this->user->school->region) && ($this->checkAccess(User::ROLE_COORDINATOR_REGION)));
+        }
+
+        // State news
+        elseif (in_array($geo, Geo\State::model()->getConstantList('NAME_'))) {
+            $region = Geo\State::get($geo)->region->name;
+            $stateMatch = (($geo === $this->user->school->state) && ($this->checkAccess(User::ROLE_COORDINATOR_STATE)));
+            $regionMatch = (($region === $this->user->school->region) && ($this->checkAccess(User::ROLE_COORDINATOR_REGION)));
+            return (($stateMatch) || ($regionMatch));
+        }
+
+        // Failed
+        else {
+            return false;
+        }
     }
 
     /**
@@ -152,6 +195,39 @@ class Rbac extends \CApplicationComponent
     public function bizRuleTeamUpdate(array $params)
     {
         return $this->checkAccess(User::ROLE_COACH);
+    }
+
+    /**
+     * Biz rule for set team phase
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleTeamUpdatePhase(array $params)
+    {
+        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
+    }
+
+    /**
+     * Export team (csv)
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleTeamExport(array $params)
+    {
+        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
+    }
+
+    /**
+     * Biz rule to update team's league
+     * 
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleTeamLeagueUpdate(array $params)
+    {
+        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
     }
 
 }

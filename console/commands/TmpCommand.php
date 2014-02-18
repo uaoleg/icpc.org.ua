@@ -4,31 +4,41 @@ class TmpCommand extends \console\ext\ConsoleCommand
 {
 
     /**
-     * Set yearCreated attribute for news
+     * Update teams' state and region
      *
-     * @version phase-2
+     * @version 2.1
      */
-    public function actionNewsYearCreated()
+    public function actionTeamStateRegion()
     {
-        $newsList = \common\models\News::model()->findAll();
-        foreach ($newsList as $news) {
-            $news->yearCreated = (int)date('Y', $news->dateCreated);
-            $news->save();
+        $teams = \common\models\Team::model()->findAll();
+        foreach ($teams as $team) {
             echo ".";
+            foreach (\yii::app()->params['languages'] as $language => $label) {
+                \yii::app()->language = $language;
+                $team->state[$language] = $team->school->getStateLabel();
+                $team->region[$language] = $team->school->getRegionLabel();
+            }
+            $team->save(false);
         }
         echo "\nDone";
     }
 
     /**
-     * Set geo attribute for news
+     * Update teams' placeText
      *
-     * @version phase-2
+     * @version 2.1
      */
-    public function actionNewsGeo()
+    public function actionResultPlaceText()
     {
-        $modifier = new \EMongoModifier();
-        $modifier->addModifier('geo', 'set', \common\models\School::model()->country);
-        \common\models\News::model()->updateAll($modifier);
+        $results = \common\models\Result::model()->findAllByAttributes(array(
+            'placeText' => array('$exists' => false),
+        ));
+        foreach ($results as $result) {
+            echo '.';
+            $result->placeText = (string)$result->place;
+            $result->save(false);
+        }
+        echo "\nDone";
     }
 
 }

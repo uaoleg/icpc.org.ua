@@ -3,13 +3,15 @@
 namespace common\ext\MongoDb;
 
 \CValidator::$builtInValidators = array_merge(\CValidator::$builtInValidators, array(
-    'unique' => '\common\ext\MongoDb\UniqueValidator',
+    'readonly'  => '\common\ext\MongoDb\Validator\Readonly',
+    'unique'    => '\common\ext\MongoDb\Validator\Unique',
 ));
 
 /**
  * Abstract document
  *
- * @property boolean $isNewRecord 
+ * @property boolean $isNewRecord
+ * @property string  $useLanguage
  */
 abstract class Document extends \EMongoDocument
 {
@@ -31,6 +33,38 @@ abstract class Document extends \EMongoDocument
     protected $_initialAttributes = array();
 
     /**
+     * Language to use for multilang properties
+     * @var string
+     */
+    protected $_useLanguage;
+
+
+    /**
+     * Sets language to use for multilang properties
+     *
+     * @param string $lang
+     * @return \common\ext\MongoDb\Document
+     */
+    public function setUseLanguage($lang)
+    {
+        $this->_useLanguage = $lang;
+        return $this;
+    }
+
+    /**
+     * Returns language to use for multilang properties
+     *
+     * @return string
+     */
+    public function getUseLanguage()
+    {
+        if ($this->_useLanguage === null) {
+            $this->_useLanguage = \yii::app()->language;
+        }
+        return $this->_useLanguage;
+    }
+
+    /**
      * Returns class name
      *
      * @return string
@@ -38,6 +72,17 @@ abstract class Document extends \EMongoDocument
     public static function className()
     {
         return get_called_class();
+    }
+
+    /**
+     * Init
+     */
+    public function init()
+    {
+        parent::init();
+
+        // Store initial attributes
+        $this->_initialAttributes = $this->toArrayUnwindEmbedded();
     }
 
     /**

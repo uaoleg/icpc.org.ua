@@ -106,12 +106,16 @@ function appAuthSignup() {
                 recaptcha_challenge_field: $('#recaptcha_challenge_field').val(),
                 recaptcha_response_field:  $('#recaptcha_response_field').val()
             },
-            success: function(resposne) {
-                appShowErrors(resposne.errors, $form);
-                if (resposne.errors) {
+            success: function(response) {
+                appShowErrors(response.errors, $form);
+                if (response.errors) {
                     $thisElement.prop('disabled', false);
                 } else {
-                    location.href = app.baseUrl + '/user/me';
+                    if (response.url === undefined) {
+                        location.reload();
+                    } else {
+                        location.href = response.url;
+                    }
                 }
             }
         });

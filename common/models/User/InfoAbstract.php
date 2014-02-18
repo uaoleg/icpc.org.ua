@@ -54,14 +54,6 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public $schoolNameShort;
 
     /**
-     * Division
-     * I-offers advanced degree in computer science
-     * II-does not offer advanced degree in computer science
-     * @var string
-     */
-    public $schoolDivision;
-
-    /**
      * Official post and email addresses
      * @var string
      */
@@ -86,7 +78,6 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
             'acmNumber'                    => \yii::t('app', 'ACM number if you have'),
             'schoolName'                   => \yii::t('app', 'School name'),
             'schoolNameShort'              => \yii::t('app', 'Short name of the school name'),
-            'schoolDivision'               => \yii::t('app', 'Division'),
             'schoolPostEmailAddresses'     => \yii::t('app', 'Official post and email addresses')
         ));
     }
@@ -99,7 +90,8 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, userId, schoolName, schoolNameShort, schoolPostEmailAddresses, phoneMobile, skype', 'required'),
+            array('lang, userId, schoolName, schoolNameShort, schoolPostEmailAddresses', 'required'),
+            array('phone', InfoAbstract\Validator\Phone::className())
         ));
     }
 
@@ -145,5 +137,29 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
 
         return true;
     }
+
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
+        // Copy new contacts to the other languages
+        if ($this->attributeHasChanged('skype') || $this->attributeHasChanged('phoneHome') ||
+            $this->attributeHasChanged('phoneMobile') || $this->attributeHasChanged('acmNumber')
+        ) {
+            $modifier = new \EMongoModifier();
+            $modifier
+                ->addModifier('skype', 'set', $this->skype)
+                ->addModifier('phoneHome', 'set', $this->phoneHome)
+                ->addModifier('phoneMobile', 'set', $this->phoneMobile)
+                ->addModifier('acmNumber', 'set', $this->acmNumber);
+            $criteria = new \EMongoCriteria();
+            $criteria
+                ->addCond('userId', '==', (string)$this->userId)
+                ->addCond('lang', '!=', $this->lang);
+            static::model()->updateAll($modifier, $criteria);
+        }
+    }
+
 
 }
