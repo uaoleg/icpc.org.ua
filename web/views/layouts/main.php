@@ -109,6 +109,10 @@
                                         'href'      => $this->createUrl('/staff/coaches'),
                                         'caption'   => \yii::t('app', 'Coaches'),
                                     ),
+                                    'users-students' => array(
+                                        'href'      => $this->createUrl('/staff/students'),
+                                        'caption'   => \yii::t('app', 'Students'),
+                                    ),
                                 ),
                             ),
                             'qa' => array(

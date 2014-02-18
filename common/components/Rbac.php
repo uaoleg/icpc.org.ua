@@ -16,6 +16,7 @@ class Rbac extends \CApplicationComponent
     /**
      * List of available operations
      */
+    const OP_STUDENT_SET_STATUS     = 'studentSetStatus';
     const OP_COACH_SET_STATUS       = 'coachSetStatus';
     const OP_COORDINATOR_SET_STATUS = 'coordinatorSetStatus';
     const OP_DOCUMENT_CREATE        = 'documentCreate';
@@ -92,6 +93,16 @@ class Rbac extends \CApplicationComponent
     public function checkAccess($operation, array $params = array())
     {
         return \yii::app()->authManager->checkAccess($operation, (string)$this->user->_id, $params);
+    }
+
+    /**
+     * Biz rule to suspend/activate students
+     * @param array $params
+     * @return bool
+     ц*/
+    public function bizRuleStudentSetStatus(array $params)
+    {
+        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
     }
 
     /**
@@ -221,7 +232,7 @@ class Rbac extends \CApplicationComponent
 
     /**
      * Biz rule to update team's league
-     * 
+     *
      * @param array $params
      * @return bool
      */
