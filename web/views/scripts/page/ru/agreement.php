@@ -2,8 +2,7 @@
 
 <p>
     <strong><?=\yii::app()->name?></strong> разработан <a href="http://dataart.com/" target="_blank">DataArt Apps</a> и поставляется под лицензицей с открытым исходным кодом <a href="http://en.wikipedia.org/wiki/MIT_License" target="_blank">MIT license</a>.
-    Это означает, что вы можете делать с приложением любые действия, сохраняя авторство.
-    This also menas you don't have to contribute the end product or modified sources back to Open Source, but if you feel like sharing, you are highly encouraged to do so!
+    Это означает, что вы можете использовать данный исходный код по своему усмотрению, сохраняя однако информацию об авторском праве.
 </p>
 
 <p>
@@ -11,7 +10,7 @@
 </p>
 
 <p>
-    <strong><?=\yii::app()->name?></strong> не является средством массовой информации, Администрация ресурса не обязана осуществлять редактирование размещаемой информации, ее предварительную модерацию и не несёт ответственность за её содержание.
+    <strong><?=\yii::app()->name?></strong> не является средством массовой информации, Администрация ресурса не обязана осуществлять редактирование размещаемой информации, её предварительную модерацию и не несёт ответственность за её содержание.
 </p>
 
 <p>
@@ -23,7 +22,7 @@
 </p>
 
 <p>
-    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    Вышеупомянутый копирайт и данное уведомление о разрешении должно быть включено во все копии или существенные части данного продукта.
 </p>
 
 <p>

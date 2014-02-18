@@ -1,29 +1,28 @@
 <h1 class="page-header">Угода користувача</h1>
 
 <p>
-    <strong><?=\yii::app()->name?></strong> is developed by <a href="http://dataart.com/" target="_blank">DataArt Apps</a> and distributed under Open Source <a href="http://en.wikipedia.org/wiki/MIT_License" target="_blank">MIT license</a>.
-    This basically means you can do whatever you want with the software as long as the copyright notice is included.
-    This also menas you don't have to contribute the end product or modified sources back to Open Source, but if you feel like sharing, you are highly encouraged to do so!
+    <strong><?=\yii::app()->name?></strong> розроблено <a href="http://dataart.com/" target="_blank">DataArt Apps</a> і поставляється під ліцензією з відкритим вихідним кодом <a href="http://en.wikipedia.org/wiki/MIT_License" target="_blank">MIT license</a>.
+    Це означає що ви можете використовувати цей код на свій розсуд, зберігаючи при цьому інформацію про авторське право.
 </p>
 
 <p>
-    Copyright &copy; <?=date('Y')?> DataArt Apps
+    Всі права захищено &copy; <?=date('Y')?> DataArt Apps
 </p>
 
 <p>
-    <strong><?=\yii::app()->name?></strong> не является средством массовой информации, Администрация ресурса не обязана осуществлять редактирование размещаемой информации, ее предварительную модерацию и не несёт ответственность за её содержание.
+    <strong><?=\yii::app()->name?></strong> не є засобом масової інформації, Адміністрація ресурсу не зобов'язана здійснювати редагування опублікованої інформації, її попередню модерацію та не несе відповідальності за її вміст.
 </p>
 
 <p>
-    На <strong><?=\yii::app()->name?></strong> уважается и защищается авторское право и связанные с ним личные имущественные и неимущественные права. 
+    На <strong><?=\yii::app()->name?></strong> поважається і захищається авторське право й пов'язані із ним особисті майнові та немайнові права.
 </p>
 
 <p>
-    Лицо, разместившее информацию на <strong><?=\yii::app()->name?></strong>, самостоятельно представляет и защищает свои интересы, возникающие в связи с размещением указанной информации, в отношениях с третьими лицами.
+    Особа, що розмістила інформацію на <strong><?=\yii::app()->name?></strong>, самостійно представляє та захищає свої інтереси, що виникають у зв'язку із розміщенням вказаної інформації, у відносинах із третіми особами.
 </p>
 
 <p>
-    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    Вищезазначений копірайт і це повідомлення про дозволи має бути включено у всі копії та значимі частини даного продукту.
 </p>
 
 <p>

@@ -3,7 +3,6 @@
 <p>
     <strong><?=\yii::app()->name?></strong> is developed by <a href="http://dataart.com/" target="_blank">DataArt Apps</a> and distributed under Open Source <a href="http://en.wikipedia.org/wiki/MIT_License" target="_blank">MIT license</a>.
     This basically means you can do whatever you want with the software as long as the copyright notice is included.
-    This also means you don't have to contribute the end product or modified sources back to Open Source, but if you feel like sharing, you are highly encouraged to do so!
 </p>
 
 <p>
