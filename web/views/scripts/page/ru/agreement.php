@@ -1,13 +1,13 @@
-<h1 class="page-header">Угода користувача</h1>
+<h1 class="page-header">Пользовательское соглашение</h1>
 
 <p>
-    <strong><?=\yii::app()->name?></strong> is developed by <a href="http://dataart.com/" target="_blank">DataArt Apps</a> and distributed under Open Source <a href="http://en.wikipedia.org/wiki/MIT_License" target="_blank">MIT license</a>.
-    This basically means you can do whatever you want with the software as long as the copyright notice is included.
+    <strong><?=\yii::app()->name?></strong> разработан <a href="http://dataart.com/" target="_blank">DataArt Apps</a> и поставляется под лицензицей с открытым исходным кодом <a href="http://en.wikipedia.org/wiki/MIT_License" target="_blank">MIT license</a>.
+    Это означает, что вы можете делать с приложением любые действия, сохраняя авторство.
     This also menas you don't have to contribute the end product or modified sources back to Open Source, but if you feel like sharing, you are highly encouraged to do so!
 </p>
 
 <p>
-    Copyright &copy; <?=date('Y')?> DataArt Apps
+    Все права защищены &copy; <?=date('Y')?> DataArt Apps
 </p>
 
 <p>
@@ -15,7 +15,7 @@
 </p>
 
 <p>
-    На <strong><?=\yii::app()->name?></strong> уважается и защищается авторское право и связанные с ним личные имущественные и неимущественные права. 
+    На <strong><?=\yii::app()->name?></strong> уважается и защищается авторское право и связанные с ним личные имущественные и неимущественные права.
 </p>
 
 <p>
