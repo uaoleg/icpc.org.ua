@@ -172,7 +172,7 @@ class UploadController extends \web\ext\Controller
             // Create result
             $result = new Result();
             $result->setAttributes(array(
-                'year'      => $team->year,
+                'year'      => date('Y'),
                 'phase'     => $phase,
                 'geo'       => $geo,
                 'place'     => $tr->find('.st_place', 0)->plaintext,
