@@ -13,13 +13,15 @@
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" name="password" placeholder="<?=\yii::t('app', 'Password')?>">
+                </div>
+                <div class="form-group">
                     <a href="<?=$this->createUrl('passwordReset')?>">
                         <?=\yii::t('app', 'Forgot your password?')?>
                     </a>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><?=\yii::t('app', 'Sign in')?></button>
-                    <a href="<?=$this->createUrl('signup')?>" class="btn btn-link pull-right"><?=\yii::t('app', 'register')?></a>
+                    <a href="<?=$this->createUrl('signup')?>" class="btn btn-default pull-right"><?=\yii::t('app', 'Register')?></a>
                 </div>
             </form>
         </div>

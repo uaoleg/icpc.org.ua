@@ -14,7 +14,7 @@
 </div>
 
 <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_RESULT_CREATE)): ?>
-    <button type="button" class="btn btn-lg btn-primary" id="pickfiles-modal" data-toggle="modal" data-target="#uploadModal">
+    <button type="button" class="btn btn-lg btn-success" id="pickfiles-modal" data-toggle="modal" data-target="#uploadModal">
         <?=\yii::t('app', 'Upload results')?>
     </button>
 <?php endif; ?>
