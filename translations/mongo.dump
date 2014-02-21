@@ -68,7 +68,6 @@
 { "_id" : { "$oid" : "52248a3673bda44c25000061" }, "category" : "app", "language" : "uk", "message" : "Logout", "translation" : "Вихід" }
 { "_id" : { "$oid" : "52248a3673bda44c25000066" }, "category" : "app", "language" : "uk", "message" : "Password", "translation" : "Пароль" }
 { "_id" : { "$oid" : "52248a3673bda44c25000067" }, "category" : "app", "language" : "uk", "message" : "Sign in", "translation" : "Увійти" }
-{ "_id" : { "$oid" : "52248a3673bda44c25000068" }, "category" : "app", "language" : "uk", "message" : "register", "translation" : "реєстрація" }
 { "_id" : { "$oid" : "52248a3673bda44c25000069" }, "category" : "app", "language" : "uk", "message" : "Signup", "translation" : "Зареєструватися" }
 { "_id" : { "$oid" : "52248a3673bda44c2500006e" }, "category" : "app", "language" : "uk", "message" : "Repeat password", "translation" : "Пароль ще раз" }
 { "_id" : { "$oid" : "52248a3673bda44c2500006f" }, "category" : "app", "language" : "uk", "message" : "Sign up", "translation" : "Зареєструватися" }
@@ -152,7 +151,6 @@
 { "_id" : { "$oid" : "52248a3673bda44c250000dd" }, "category" : "app", "language" : "ru", "message" : "Logout", "translation" : "Выход" }
 { "_id" : { "$oid" : "52248a3673bda44c250000e2" }, "category" : "app", "language" : "ru", "message" : "Password", "translation" : "Пароль" }
 { "_id" : { "$oid" : "52248a3673bda44c250000e3" }, "category" : "app", "language" : "ru", "message" : "Sign in", "translation" : "Войти" }
-{ "_id" : { "$oid" : "52248a3673bda44c250000e4" }, "category" : "app", "language" : "ru", "message" : "register", "translation" : "регистрация" }
 { "_id" : { "$oid" : "52248a3673bda44c250000e5" }, "category" : "app", "language" : "ru", "message" : "Signup", "translation" : "Зарегистрироваться" }
 { "_id" : { "$oid" : "52248a3673bda44c250000ea" }, "category" : "app", "language" : "ru", "message" : "Repeat password", "translation" : "Пароль ещё раз" }
 { "_id" : { "$oid" : "52248a3673bda44c250000eb" }, "category" : "app", "language" : "ru", "message" : "Sign up", "translation" : "Зарегистрироваться" }
@@ -236,7 +234,6 @@
 { "_id" : { "$oid" : "52248a3673bda44c25000159" }, "category" : "app", "language" : "en", "message" : "Logout", "translation" : "" }
 { "_id" : { "$oid" : "52248a3673bda44c2500015e" }, "category" : "app", "language" : "en", "message" : "Password", "translation" : "" }
 { "_id" : { "$oid" : "52248a3673bda44c2500015f" }, "category" : "app", "language" : "en", "message" : "Sign in", "translation" : "" }
-{ "_id" : { "$oid" : "52248a3673bda44c25000160" }, "category" : "app", "language" : "en", "message" : "register", "translation" : "" }
 { "_id" : { "$oid" : "52248a3673bda44c25000161" }, "category" : "app", "language" : "en", "message" : "Signup", "translation" : "" }
 { "_id" : { "$oid" : "52248a3673bda44c25000166" }, "category" : "app", "language" : "en", "message" : "Repeat password", "translation" : "" }
 { "_id" : { "$oid" : "52248a3673bda44c25000167" }, "category" : "app", "language" : "en", "message" : "Sign up", "translation" : "" }
@@ -1060,3 +1057,9 @@
 { "_id" : { "$oid" : "530225444457988f168b4a73" }, "category" : "app", "language" : "en", "message" : "League", "translation" : "" }
 { "_id" : { "$oid" : "530225444457988f168b4af2" }, "category" : "app", "language" : "en", "message" : "For checking system", "translation" : "" }
 { "_id" : { "$oid" : "530225444457988f168b4af3" }, "category" : "app", "language" : "en", "message" : "For registration", "translation" : "" }
+{ "category" : "app", "language" : "uk", "message" : "Do not have an account?", "translation" : "Немає профілю?", "_id" : { "$oid" : "530736d4445798d1318b469f" } }
+{ "category" : "app", "language" : "uk", "message" : "Register now!", "translation" : "Зареєструйтесь зараз!", "_id" : { "$oid" : "530736d4445798d1318b46a0" } }
+{ "category" : "app", "language" : "ru", "message" : "Do not have an account?", "translation" : "Нет профиля?", "_id" : { "$oid" : "530736d4445798d1318b488e" } }
+{ "category" : "app", "language" : "ru", "message" : "Register now!", "translation" : "Зарегистрируйтесь сейчас!", "_id" : { "$oid" : "530736d4445798d1318b488f" } }
+{ "_id" : { "$oid" : "530736d5445798d1318b4a7d" }, "category" : "app", "language" : "en", "message" : "Do not have an account?", "translation" : "" }
+{ "_id" : { "$oid" : "530736d5445798d1318b4a7e" }, "category" : "app", "language" : "en", "message" : "Register now!", "translation" : "" }
