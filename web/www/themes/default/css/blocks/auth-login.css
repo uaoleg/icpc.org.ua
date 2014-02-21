@@ -1,0 +1,15 @@
+.auth-login .form-group {
+    position: relative;
+}
+
+.auth-login [name=password] + a {
+    font-weight: bold;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+}
+
+.auth-login [type=submit] {
+    display: block;
+    margin: 0 auto;
+}

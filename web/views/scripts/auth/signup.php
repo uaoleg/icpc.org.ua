@@ -100,7 +100,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary signup"><?=\yii::t('app', 'Sign up')?></button>
+                    <button type="submit" class="signup btn btn-primary btn-lg">
+                        <?=\yii::t('app', 'Sign up')?>
+                    </button>
                 </div>
             </div>
         </div>
