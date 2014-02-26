@@ -23,13 +23,13 @@
     <tbody>
         <?php foreach ($userList as $user): ?>
             <tr data-id="<?=$user->_id?>">
-                <td>
+                <td style="vertical-align: middle;">
                     <a href="<?=$this->createUrl('/user/view', array('id' => (string)$user->_id))?>">
                         <?php \web\widgets\user\Name::create(array('user' => $user)); ?>
                     </a>
                 </td>
-                <td><?=$user->email?></td>
-                <td><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
+                <td style="vertical-align: middle;"><?=$user->email?></td>
+                <td style="vertical-align: middle;"><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
                 <td style="width: 200px;">
                     <button type="button" class="btn btn-success coach-state <?=$user->isApprovedCoach ? 'hide' : ''?>"
                             <?=(\yii::app()->user->checkAccess(Rbac::OP_COACH_SET_STATUS, array('user' => $user))) ? '' : 'disabled'?>
