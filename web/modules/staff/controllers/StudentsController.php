@@ -23,7 +23,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
      */
     public function actionIndex()
     {
-        // Get list of coaches
+        // Get list of students
         $criteria = new \EMongoCriteria();
         $criteria
             ->addCond('type', '==', User::ROLE_STUDENT)
@@ -56,7 +56,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
             return $this->httpException(403);
         }
 
-        // Assign coach role to the user
+        // Assign student role to the user
         if ($state) {
             \yii::app()->authManager->assign(User::ROLE_STUDENT, $userId);
         }

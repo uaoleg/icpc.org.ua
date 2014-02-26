@@ -327,7 +327,9 @@ class AuthController extends \web\ext\Controller
                 $user->save();
 
                 // Assign student role
-                \yii::app()->authManager->assign(User::ROLE_STUDENT, $user->_id);
+                if ($user->role === User::ROLE_STUDENT) {
+                    \yii::app()->authManager->assign(User::ROLE_STUDENT, $user->_id);
+                }
 
                 // Create an email confirmation record
                 $emailConfirmation = new User\EmailConfirmation();

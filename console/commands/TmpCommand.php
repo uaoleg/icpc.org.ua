@@ -43,6 +43,7 @@ class TmpCommand extends \console\ext\ConsoleCommand
 
     /**
      * Activate all existing students
+     * 
      * @version 2.2
      */
     public function actionActivateStudents()

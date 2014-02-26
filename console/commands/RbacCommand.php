@@ -163,6 +163,16 @@ class RbacCommand extends \console\ext\ConsoleCommand
     }
 
     /**
+     * Student operations
+     */
+    protected function _operationsStudent()
+    {
+        $bizRuleSetStatus = 'return \yii::app()->rbac->bizRuleStudentSetStatus($params);';
+
+        $this->auth->createOperation(Rbac::OP_STUDENT_SET_STATUS, 'Activate (or suspend) student', $bizRuleSetStatus);
+    }
+
+    /**
      * Coach operations
      */
     protected function _operationsCoach()
@@ -180,16 +190,6 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $bizRuleSetStatus = 'return \yii::app()->rbac->bizRuleCoordinatorSetStatus($params);';
 
         $this->auth->createOperation(Rbac::OP_COORDINATOR_SET_STATUS, 'Activate (or suspend) coordinator', $bizRuleSetStatus);
-    }
-
-    /**
-     * Coordinator operations
-     */
-    protected function _operationsStudent()
-    {
-        $bizRuleSetStatus = 'return \yii::app()->rbac->bizRuleStudentSetStatus($params);';
-
-        $this->auth->createOperation(Rbac::OP_STUDENT_SET_STATUS, 'Activate (or suspend) student', $bizRuleSetStatus);
     }
 
     /**

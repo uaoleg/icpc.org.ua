@@ -97,9 +97,10 @@ class Rbac extends \CApplicationComponent
 
     /**
      * Biz rule to suspend/activate students
+     * 
      * @param array $params
      * @return bool
-     ц*/
+     */
     public function bizRuleStudentSetStatus(array $params)
     {
         return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
