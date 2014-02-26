@@ -14,11 +14,11 @@
 <table class="table">
     <thead>
         <tr>
-            <td><?=\yii::t('app', 'Name')?></td>
-            <td><?=\yii::t('app', 'Email')?></td>
-            <td><?=\yii::t('app', 'Registration date')?></td>
-            <td><?=\yii::t('app', 'Coordinates')?></td>
-            <td><?=\yii::t('app', 'Action')?></td>
+            <th><?=\yii::t('app', 'Name')?></th>
+            <th><?=\yii::t('app', 'Email')?></th>
+            <th><?=\yii::t('app', 'Registration date')?></th>
+            <th><?=\yii::t('app', 'Coordinates')?></th>
+            <th><?=\yii::t('app', 'Action')?></th>
         </tr>
     </thead>
     <tbody>
