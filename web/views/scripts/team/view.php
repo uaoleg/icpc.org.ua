@@ -42,7 +42,11 @@
         <strong><?=\yii::t('app', 'Participants')?></strong>:
         <ul>
             <?php foreach ($members as $member): ?>
-            <li><?php \web\widgets\user\Name::create(array('user' => $member)); ?></li>
+            <li>
+                <a href="<?=$this->createUrl('/user/view', array('id' => (string)$member->_id))?>">
+                    <?php \web\widgets\user\Name::create(array('user' => $member)); ?>
+                </a>
+            </li>
             <?php endforeach; ?>
         </ul>
     </div>
