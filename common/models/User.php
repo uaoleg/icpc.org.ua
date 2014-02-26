@@ -8,6 +8,7 @@ namespace common\models;
  * @property-read string            $firstName
  * @property-read string            $middleName
  * @property-read string            $lastName
+ * @property-read bool              $isApprovedStudent
  * @property-read bool              $isApprovedCoach
  * @property-read bool              $isApprovedCoordinator
  * @property-read School            $school
@@ -178,6 +179,16 @@ class User extends \common\ext\MongoDb\Document
                 return (!empty($this->lastNameEn)) ? $this->lastNameEn : $this->lastNameUk;
                 break;
         }
+    }
+
+    /**
+     * Returns if student role is approved
+     * 
+     * @return bool
+     */
+    public function getIsApprovedStudent()
+    {
+        return \yii::app()->authManager->checkAccess(static::ROLE_STUDENT, $this->_id);
     }
 
     /**

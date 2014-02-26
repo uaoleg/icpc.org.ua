@@ -17,7 +17,7 @@ class Controller extends \web\ext\Controller
         return array_merge(parent::accessRules(), array(
             array(
                 'allow',
-                'controllers'   => array('staff/coaches', 'staff/coordinators', 'staff/news', 'staff/qaTags'),
+                'controllers'   => array('staff/students', 'staff/coaches', 'staff/coordinators', 'staff/news', 'staff/qaTags'),
                 'roles'         => array(User::ROLE_COORDINATOR_STATE),
             ),
             array(
