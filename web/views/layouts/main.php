@@ -102,18 +102,18 @@
                                     'caption'   => \yii::t('app', 'Users'),
                                     'rbac'      => \common\models\User::ROLE_COORDINATOR_STATE,
                                     'itemList'  => array(
-                                        'users-coordinators' => array(
-                                            'href'      => $this->createUrl('/staff/coordinators'),
-                                            'caption'   => \yii::t('app', 'Coordinators'),
+                                        'users-students' => array(
+                                            'href'      => $this->createUrl('/staff/students'),
+                                            'caption'   => \yii::t('app', 'Students'),
                                         ),
                                         'users-coaches' => array(
                                             'href'      => $this->createUrl('/staff/coaches'),
                                             'caption'   => \yii::t('app', 'Coaches'),
                                         ),
-                                    ),
-                                    'users-students' => array(
-                                        'href'      => $this->createUrl('/staff/students'),
-                                        'caption'   => \yii::t('app', 'Students'),
+                                        'users-coordinators' => array(
+                                            'href'      => $this->createUrl('/staff/coordinators'),
+                                            'caption'   => \yii::t('app', 'Coordinators'),
+                                        ),
                                     ),
                                 ),
                                 'qa' => array(
