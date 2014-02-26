@@ -24,7 +24,11 @@
     <tbody>
         <?php foreach ($userList as $user): ?>
             <tr data-id="<?=$user->_id?>">
-                <td><?php \web\widgets\user\Name::create(array('user' => $user)); ?></td>
+                <td>
+                    <a href="<?=$this->createUrl('/user/view', array('id' => (string)$user->_id))?>">
+                        <?php \web\widgets\user\Name::create(array('user' => $user)); ?>
+                    </a>
+                </td>
                 <td><?=$user->email?></td>
                 <td><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
                 <td><strong>
