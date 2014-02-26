@@ -899,7 +899,7 @@
 { "category" : "app", "language" : "uk", "message" : "{n} answer|{n} answers", "translation" : "{n} запитання|{n} запитань", "_id" : { "$oid" : "52dce3a7445798d1188b46cc" } }
 { "category" : "app", "language" : "uk", "message" : "Your Answer", "translation" : "Ваша відповідь", "_id" : { "$oid" : "52dce3a7445798d1188b46cf" } }
 { "category" : "app", "language" : "uk", "message" : "Post Your Answer", "translation" : "Опубліковати вашу відповідь", "_id" : { "$oid" : "52dce3a7445798d1188b46d0" } }
-{ "category" : "app", "language" : "ru", "message" : "Middle name in Ukrainian", "translation" : "Отчество на украинсом", "_id" : { "$oid" : "52dce3a7445798d1188b47d4" } }
+{ "category" : "app", "language" : "ru", "message" : "Middle name in Ukrainian", "translation" : "Отчество на украинском", "_id" : { "$oid" : "52dce3a7445798d1188b47d4" } }
 { "category" : "app", "language" : "ru", "message" : "Is email confirmed", "translation" : "Подтвержден ли e-mail", "_id" : { "$oid" : "52dce3a8445798d1188b47df" } }
 { "category" : "app", "language" : "ru", "message" : "{app} Email confirmation", "translation" : "{app} Подтверждение e-mail", "_id" : { "$oid" : "52dce3a8445798d1188b4807" } }
 { "category" : "app", "language" : "ru", "message" : "{n} Answer|{n} Answers", "translation" : "{n} Ответ|{n} Ответы", "_id" : { "$oid" : "52dce3a8445798d1188b480c" } }
