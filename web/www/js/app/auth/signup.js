@@ -79,8 +79,25 @@ function appAuthSignup() {
     /**
      * Init Select2
      */
-    $('.form-group .form-control[name=schoolId]').select2({
-        'width': 'resolve'
+    $("#schoolId").select2({
+        minimumInputLength: 2,
+        query: function (query) {
+            var data = {
+                results: []
+            };
+            $.ajax({
+                url: app.baseUrl + '/auth/getSchools',
+                data:{
+                    q: query.term
+                },
+                success: function(response) {
+                    data.results = response;
+                },
+                complete: function() {
+                    query.callback(data);
+                }
+            });
+        }
     });
 
     /**
