@@ -440,4 +440,31 @@ class AuthController extends \web\ext\Controller
             ));
         \yii::app()->mail->send($message);
     }
+
+    /**
+     * Action to get the list of schools for signup
+     */
+    public function actionSchools()
+    {
+        // Get params
+        $query = $this->request->getParam('q');
+
+        // Get schools
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('fullNameUk', '==', new \MongoRegex('/' . preg_quote($query) . '/i'));
+        $schools = School::model()->findAll($criteria);
+
+        // Create json list of schools
+        $schoolsJson = array();
+        foreach ($schools as $school) {
+            $schoolsJson[] = array(
+                'id'    => (string)$school->_id,
+                'text'  => $school->fullNameUk
+            );
+        }
+
+        // Render json
+        $this->renderJson($schoolsJson);
+    }
+    
 }

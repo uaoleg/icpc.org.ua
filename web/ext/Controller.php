@@ -72,6 +72,16 @@ class Controller extends \CController
         if (isset($this->request->cookies['language'])) {
             \yii::app()->language = $this->request->cookies['language']->value;
         }
+
+        //  Include language file for Select2
+        switch (\yii::app()->language) {
+            case 'uk':
+                \yii::app()->clientScript->packages['select2']['js'][] = 'lib/select2/select2_locale_ua.js';
+                break;
+            case 'ru':
+                \yii::app()->clientScript->packages['select2']['js'][] = 'lib/select2/select2_locale_ru.js';
+                break;
+        }
     }
 
     /**

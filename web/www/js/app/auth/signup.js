@@ -80,7 +80,24 @@ function appAuthSignup() {
      * Init Select2
      */
     $('.form-group .form-control[name=schoolId]').select2({
-        'width': 'resolve'
+        minimumInputLength: 2,
+        query: function (query) {
+            var data = {
+                results: []
+            };
+            $.ajax({
+                url: app.baseUrl + '/auth/schools',
+                data:{
+                    q: query.term
+                },
+                success: function(response) {
+                    data.results = response;
+                },
+                complete: function() {
+                    query.callback(data);
+                }
+            });
+        }
     });
 
     /**
