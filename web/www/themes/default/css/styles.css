@@ -73,10 +73,6 @@ transform: rotate(-90deg);
     margin: -10px 10px 10px;
 }
 
-table.table-row-middle td {
-    vertical-align: middle !important;
-}
-
 /* Document
 ----------------------------------------------------------------------------- */
 
