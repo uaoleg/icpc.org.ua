@@ -12,10 +12,6 @@ class Role extends \common\ext\MongoDb\Validator\AbstractValidator
      */
     public function validateAttribute($user, $attribute)
     {
-        if ((!$user->attributeHasChanged('type')) && (!$user->attributeHasChanged('coordinator'))) {
-            return;
-        }
-
         if ((empty($user->type)) && (empty($user->coordinator))) {
             $this->addError($user, $attribute, \yii::t('app', 'User should have some role.'));
         }
