@@ -23,14 +23,14 @@
     <tbody>
         <?php foreach ($userList as $user): ?>
             <tr data-id="<?=$user->_id?>">
-                <td style="vertical-align: middle;">
+                <td class="table-row-middle">
                     <a href="<?=$this->createUrl('/user/view', array('id' => (string)$user->_id))?>">
                         <?php \web\widgets\user\Name::create(array('user' => $user)); ?>
                     </a>
                 </td>
-                <td style="vertical-align: middle;"><?=$user->email?></td>
-                <td style="vertical-align: middle;"><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
-                <td style="width: 200px;">
+                <td class="table-row-middle"><?=$user->email?></td>
+                <td class="table-row-middle"><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
+                <td class="table-row-middle">
                     <button type="button" class="btn btn-success student-state <?=$user->isApprovedStudent ? 'hide' : ''?>"
                             <?=(\yii::app()->user->checkAccess(Rbac::OP_STUDENT_SET_STATUS)) ? '' : 'disabled'?>
                             data-state="1">

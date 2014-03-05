@@ -24,14 +24,14 @@
     <tbody>
         <?php foreach ($userList as $user): ?>
             <tr data-id="<?=$user->_id?>">
-                <td style="vertical-align: middle;">
+                <td class="table-row-middle">
                     <a href="<?=$this->createUrl('/user/view', array('id' => (string)$user->_id))?>">
                         <?php \web\widgets\user\Name::create(array('user' => $user)); ?>
                     </a>
                 </td>
-                <td style="vertical-align: middle;"><?=$user->email?></td>
-                <td style="vertical-align: middle;"><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
-                <td style="vertical-align: middle;"><strong>
+                <td class="table-row-middle"><?=$user->email?></td>
+                <td class="table-row-middle"><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
+                <td class="table-row-middle"><strong>
                     <?php if ($user->school->isNewRecord): ?>
                         <?=$user->getAttributeLabel($user->coordinator, 'coord')?>
                     <?php else: ?>
@@ -48,7 +48,7 @@
                         } ?>
                     <?php endif; ?>
                 </strong></td>
-                <td style="width: 200px;">
+                <td class="table-row-middle">
                     <button type="button" class="btn btn-success coordinator-state <?=$user->isApprovedCoordinator ? 'hide' : ''?>"
                             <?=(\yii::app()->user->checkAccess(Rbac::OP_COORDINATOR_SET_STATUS, array('user' => $user))) ? '' : 'disabled'?>
                             data-state="1">
