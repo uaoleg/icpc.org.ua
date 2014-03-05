@@ -36,3 +36,14 @@
     </div>
     <hr />
 <?php endforeach; ?>
+
+<?php if (count($tags)): ?>
+    <div class="row">
+        <div class="col-lg-12">
+            <h3><?=\yii::t('app', 'Filter guestions by following tags')?></h3>
+            <?php foreach ($tags as $tag): ?>
+                <?php \web\widgets\qa\Tag::create(array('tag' => $tag->name));?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php endif; ?>
