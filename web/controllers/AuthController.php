@@ -377,7 +377,6 @@ class AuthController extends \web\ext\Controller
             // Get list of schools
             $criteria = new \EMongoCriteria();
             $criteria->sort('fullNameUk', \EMongoCriteria::SORT_ASC);
-            $schools = School::model()->findAll($criteria);
 
             // Render view
             $this->render('signup', array(
@@ -385,7 +384,6 @@ class AuthController extends \web\ext\Controller
                 'password'          => $password,
                 'passwordRepeat'    => $passwordRepeat,
                 'rulesAgree'        => $rulesAgree,
-                'schools'           => $schools
             ));
         }
     }

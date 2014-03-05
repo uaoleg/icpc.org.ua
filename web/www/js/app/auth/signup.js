@@ -79,7 +79,7 @@ function appAuthSignup() {
     /**
      * Init Select2
      */
-    $('#schoolId').select2({
+    $('.form-group .form-control[name=schoolId]').select2({
         minimumInputLength: 2,
         query: function (query) {
             var data = {

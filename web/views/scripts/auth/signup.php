@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="hidden" name="schoolId" id="schoolId" class="form-control"/>
+                    <input type="hidden" name="schoolId" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <div style="margin-left: -3px;">
