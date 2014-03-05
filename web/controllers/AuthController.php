@@ -449,22 +449,26 @@ class AuthController extends \web\ext\Controller
     /**
      * Action to get the list of schools for signup
      */
-    public function actionGetSchools()
+    public function actionSchools()
     {
+        // Get params
         $query = $this->request->getParam('q');
 
-        // get schools
+        // Get schools
         $criteria = new \EMongoCriteria();
         $criteria->addCond('fullNameUk', '==', new \MongoRegex('/' . preg_quote($query) . '/i'));
         $schools = School::model()->findAll($criteria);
 
-        $schoolsToShow = array();
+        // Create json list of schools
+        $schoolsJson = array();
         foreach ($schools as $school) {
-            $schoolsToShow[] = array(
-                'id' => (string)$school->_id,
-                'text' => $school->fullNameUk
+            $schoolsJson[] = array(
+                'id'    => (string)$school->_id,
+                'text'  => $school->fullNameUk
             );
         }
-        $this->renderJson($schoolsToShow);
+
+        // Render json
+        $this->renderJson($schoolsJson);
     }
 }

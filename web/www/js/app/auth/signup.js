@@ -79,14 +79,14 @@ function appAuthSignup() {
     /**
      * Init Select2
      */
-    $("#schoolId").select2({
+    $('#schoolId').select2({
         minimumInputLength: 2,
         query: function (query) {
             var data = {
                 results: []
             };
             $.ajax({
-                url: app.baseUrl + '/auth/getSchools',
+                url: app.baseUrl + '/auth/schools',
                 data:{
                     q: query.term
                 },
