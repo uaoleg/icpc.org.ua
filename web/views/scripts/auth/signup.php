@@ -73,7 +73,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="hidden" name="schoolId" class="form-control"/>
+                    <input type="hidden"
+                           name="schoolId"
+                           class="form-control"
+                           data-placeholder="<?=\yii::t('app', 'Your school')?>" />
                 </div>
                 <div class="form-group">
                     <div style="margin-left: -3px;">
