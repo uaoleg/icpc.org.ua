@@ -4,7 +4,11 @@
             <?=\web\widgets\user\Name::create(array('user' => $user), true)?>
         </h3>
         <h4>
-            <?=$user->school->{'fullName' . ucfirst(\yii::app()->language)}?>
+            <?php if (isset($user->school->{'fullName' . ucfirst(\yii::app()->language)})): ?>
+                <?=$user->school->{'fullName' . ucfirst(\yii::app()->language)}?>
+            <?php else: ?>
+                <?=$user->schoold->fullNameUk?>
+            <?php endif; ?>
         </h4>
 
         <div class="row">

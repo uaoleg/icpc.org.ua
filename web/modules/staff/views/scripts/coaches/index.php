@@ -11,22 +11,26 @@
 
 <h3><?=\yii::t('app', 'List of Coaches')?></h3>
 
-<table class="table">
+<table class="table table-row-middle">
     <thead>
         <tr>
-            <td><?=\yii::t('app', 'Name')?></td>
-            <td><?=\yii::t('app', 'Email')?></td>
-            <td><?=\yii::t('app', 'Registration date')?></td>
-            <td><?=\yii::t('app', 'Action')?></td>
+            <th><?=\yii::t('app', 'Name')?></th>
+            <th><?=\yii::t('app', 'Email')?></th>
+            <th><?=\yii::t('app', 'Registration date')?></th>
+            <th><?=\yii::t('app', 'Action')?></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($userList as $user): ?>
             <tr data-id="<?=$user->_id?>">
-                <td><?php \web\widgets\user\Name::create(array('user' => $user)); ?></td>
+                <td>
+                    <a href="<?=$this->createUrl('/user/view', array('id' => (string)$user->_id))?>">
+                        <?php \web\widgets\user\Name::create(array('user' => $user)); ?>
+                    </a>
+                </td>
                 <td><?=$user->email?></td>
                 <td><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
-                <td style="width: 200px;">
+                <td>
                     <button type="button" class="btn btn-success coach-state <?=$user->isApprovedCoach ? 'hide' : ''?>"
                             <?=(\yii::app()->user->checkAccess(Rbac::OP_COACH_SET_STATUS, array('user' => $user))) ? '' : 'disabled'?>
                             data-state="1">

@@ -11,13 +11,13 @@
 
 <h3><?=\yii::t('app', 'List of Students')?></h3>
 
-<table class="table">
+<table class="table table-row-middle">
     <thead>
         <tr>
-            <td><?=\yii::t('app', 'Name')?></td>
-            <td><?=\yii::t('app', 'Email')?></td>
-            <td><?=\yii::t('app', 'Registration date')?></td>
-            <td><?=\yii::t('app', 'Action')?></td>
+            <th><?=\yii::t('app', 'Name')?></th>
+            <th><?=\yii::t('app', 'Email')?></th>
+            <th><?=\yii::t('app', 'Registration date')?></th>
+            <th><?=\yii::t('app', 'Action')?></th>
         </tr>
     </thead>
     <tbody>
@@ -30,7 +30,7 @@
                 </td>
                 <td><?=$user->email?></td>
                 <td><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
-                <td style="width: 200px;">
+                <td>
                     <button type="button" class="btn btn-success student-state <?=$user->isApprovedStudent ? 'hide' : ''?>"
                             <?=(\yii::app()->user->checkAccess(Rbac::OP_STUDENT_SET_STATUS)) ? '' : 'disabled'?>
                             data-state="1">
