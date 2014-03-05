@@ -11,7 +11,7 @@
 
 <h3><?=\yii::t('app', 'List of Coordinators')?></h3>
 
-<table class="table">
+<table class="table table-row-middle">
     <thead>
         <tr>
             <th><?=\yii::t('app', 'Name')?></th>
@@ -24,14 +24,14 @@
     <tbody>
         <?php foreach ($userList as $user): ?>
             <tr data-id="<?=$user->_id?>">
-                <td class="table-row-middle">
+                <td>
                     <a href="<?=$this->createUrl('/user/view', array('id' => (string)$user->_id))?>">
                         <?php \web\widgets\user\Name::create(array('user' => $user)); ?>
                     </a>
                 </td>
-                <td class="table-row-middle"><?=$user->email?></td>
-                <td class="table-row-middle"><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
-                <td class="table-row-middle"><strong>
+                <td><?=$user->email?></td>
+                <td><?=date('Y-m-d H:i:s', $user->dateCreated)?></td>
+                <td><strong>
                     <?php if ($user->school->isNewRecord): ?>
                         <?=$user->getAttributeLabel($user->coordinator, 'coord')?>
                     <?php else: ?>
@@ -48,7 +48,7 @@
                         } ?>
                     <?php endif; ?>
                 </strong></td>
-                <td class="table-row-middle">
+                <td>
                     <button type="button" class="btn btn-success coordinator-state <?=$user->isApprovedCoordinator ? 'hide' : ''?>"
                             <?=(\yii::app()->user->checkAccess(Rbac::OP_COORDINATOR_SET_STATUS, array('user' => $user))) ? '' : 'disabled'?>
                             data-state="1">
