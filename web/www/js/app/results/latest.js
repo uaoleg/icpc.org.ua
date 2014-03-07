@@ -1,5 +1,5 @@
 function appResultsLatest() {
-    
+
     var self = this;
 
     // Init uploader
@@ -27,7 +27,12 @@ appResultsLatest.prototype.initUploader = function () {
     self.uploader = new plupload.Uploader(pluploadHelpersSettings({
         browse_button:    'uploadPickfiles',
         container:        'uploadContainer',
-        url:              app.baseUrl + '/upload/results'
+        url:              app.baseUrl + '/upload/results',
+        filters: {
+            mime_types : [
+                { title : "HTML files", extensions : "html" }
+            ]
+        }
     }));
 
     self.uploader.init();
@@ -37,13 +42,9 @@ appResultsLatest.prototype.initUploader = function () {
             .removeClass('has-error')
             .find('.help-block').text('');
         $.each(files, function(i, file) {
-            if (file.name.split('.')[1] !== 'html') {
-                self.uploader.trigger('Error', {message: 'not-html'});
-            } else {
-                self.onchange();
-            }
             $('.document-origin-filename').text(file.name);
         });
+        self.onchange();
 
         up.refresh(); // Reposition Flash/Silverlight
     });
@@ -59,19 +60,23 @@ appResultsLatest.prototype.initUploader = function () {
     });
 
     self.uploader.bind('Error', function(up, err) {
-        var $helpBlock = $('#uploadPickfiles').closest('.form-group')
-                        .addClass('has-error')
-                        .find('.help-block');
-        if ($helpBlock.data(err.message) != undefined) {
-            $helpBlock.text($helpBlock.data(err.message));
-        } else {
-            $helpBlock.text(err.message);
-        }
+        $('#uploadPickfiles').closest('.form-group')
+            .addClass('has-error')
+            .find('.help-block').text(err.message);
         up.refresh(); // Reposition Flash/Silverlight
     });
 
-    self.uploader.bind('FileUploaded', function(up, file) {
-        location.href = app.baseUrl + '/results';
+    self.uploader.bind('FileUploaded', function(up, file, res) {
+        var response = JSON.parse(res.response);
+        if (response.errors) {
+            $('.help-block')
+                .text(response.message)
+                .closest('.form-group')
+                .addClass('has-error');
+        } else {
+            location.href = app.baseUrl + '/results';
+        }
+
     });
 }
 

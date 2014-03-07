@@ -184,8 +184,20 @@ class UploadController extends \web\ext\Controller
                 'total'     => $tr->find('.st_total', 0)->plaintext,
                 'penalty'   => $tr->find('.st_pen', 0)->plaintext,
             ), false);
-            $result->save();
+
+            if (!$result->save()) {
+                $this->renderJson(array(
+                    'errors' => true,
+                    'message' => \yii::t('app', 'Not all results were saved!')
+                ));
+                \yii::app()->end();
+            }
         }
+
+        $this->renderJson(array(
+            'errors' => false,
+            'message' => \yii::t('app', 'Not all results were saved!')
+        ));
     }
 
     /**
