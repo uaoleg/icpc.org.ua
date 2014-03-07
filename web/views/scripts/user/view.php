@@ -7,7 +7,7 @@
             <?php if (isset($user->school->{'fullName' . ucfirst(\yii::app()->language)})): ?>
                 <?=$user->school->{'fullName' . ucfirst(\yii::app()->language)}?>
             <?php else: ?>
-                <?=$user->schoold->fullNameUk?>
+                <?=$user->school->fullNameUk?>
             <?php endif; ?>
         </h4>
 
