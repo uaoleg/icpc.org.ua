@@ -2,8 +2,11 @@
 
 namespace common\models;
 
+use common\models\News\Image;
+
 class News extends \common\ext\MongoDb\Document
 {
+    const MAX_IMAGES_COUNT = 20;
 
     /**
      * Common ID for all translations
@@ -56,6 +59,12 @@ class News extends \common\ext\MongoDb\Document
     public $dateCreated;
 
     /**
+     * Array of news images ids
+     * @var array
+     */
+    protected $_imagesIds;
+
+    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -91,15 +100,33 @@ class News extends \common\ext\MongoDb\Document
         ));
     }
 
-	/**
-	 * This returns the name of the collection for this class
+    /**
+     * This returns the name of the collection for this class
      *
      * @return string
-	 */
-	public function getCollectionName()
-	{
-		return 'news';
-	}
+     */
+    public function getCollectionName()
+    {
+        return 'news';
+    }
+
+    /**
+     * Get images ids of the news
+     * @return array
+     */
+    public function getImagesIds()
+    {
+        $images = Image::model()->findAllByAttributes(array(
+            'newsId' => (string)$this->commonId
+        ));
+
+        $imagesIds = array();
+        foreach ($images as $image) {
+            $imagesIds[] = (string)$image->_id;
+        }
+
+        return $imagesIds;
+    }
 
     /**
      * List of collection indexes

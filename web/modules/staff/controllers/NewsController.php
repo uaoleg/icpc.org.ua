@@ -70,7 +70,8 @@ class NewsController extends \web\modules\staff\ext\Controller
         // Render view
         else {
             $this->render('edit', array(
-                'news' => $news,
+                'news'       => $news,
+                'newsImages' => $news->imagesIds
             ));
         }
     }
@@ -101,6 +102,16 @@ class NewsController extends \web\modules\staff\ext\Controller
         $this->renderJson(array(
             'errors'    => ($news->hasErrors()) ? $news->getErrors() : false,
         ));
+    }
+
+    /**
+     * Action to delete image from news
+     */
+    public function actionDeleteImage()
+    {
+        $imageId = $this->request->getParam('imageId');
+        $image = News\Image::model()->findByPk(new \MongoId($imageId));
+        $image->delete();
     }
 
 }

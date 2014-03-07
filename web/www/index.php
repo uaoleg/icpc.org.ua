@@ -39,6 +39,7 @@ class Yii extends YiiBase {
  * @property-read \common\components\Cli            $cli
  * @property-read \CClientScript                    $clientScript
  * @property-read \common\components\ErrorHandler   $errorHandler
+ * @property-read \common\components\Image          $image
  * @property-read \CLogRouter                       $log
  * @property-read \common\ext\MongoDb\DB            $mongodb
  * @property-read \YiiBootstrapCssSprite            $sprite

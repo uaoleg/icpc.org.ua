@@ -3,6 +3,9 @@ function appStaffNewsEdit() {
     var self = this;
     self.init();
 
+    // Init uploader
+    self.initUploader();
+
     /**
      * On window unload
      */
@@ -45,6 +48,94 @@ function appStaffNewsEdit() {
         });
     });
 
+    /**
+     * Upload images for news
+     */
+    $('#uploadNewsImages').on('click', function() {
+        self.uploader.start();
+    });
+
+    /**
+     * Delete image
+     */
+    $('.news-edit__image-item > button').on('confirmed', function(event){
+        event.preventDefault();
+        var imageId = $(this).closest('div').data('image-id');
+        $.ajax({
+            url: app.baseUrl + '/staff/news/deleteImage',
+            data: {
+                imageId: imageId
+            },
+            success: function(response) {
+                $('#uploadImagesContainer').find('button').removeClass('hide');
+                $('[data-image-id=' + imageId + ']').remove();
+            }
+        });
+    });
+
 }
 
 appStaffNewsEdit.prototype = appStaffNewsManage.prototype;
+
+/**
+ * Init uploader
+ */
+appStaffNewsEdit.prototype.initUploader = function () {
+
+    var self = this;
+
+    self.uploader = new plupload.Uploader(pluploadHelpersSettings({
+        browse_button:    'uploadNewsImages',
+        container:        'uploadImagesContainer',
+        url:              app.baseUrl + '/upload/images'
+    }));
+
+    self.uploader.init();
+
+    self.uploader.bind('FilesAdded', function(up, files) {
+        $('#uploadNewsImages').closest('.form-group')
+            .removeClass('has-error')
+            .find('.help-block').text('');
+        self.uploader.start();
+        up.refresh(); // Reposition Flash/Silverlight
+    });
+
+    self.uploader.bind('BeforeUpload', function (up, file) {
+        var fileExt = file.name.split('.').pop();
+        up.settings.multipart_params.uniqueName = $.fn.uniqueId() + '.' + fileExt;
+        up.settings.multipart_params.newsId     = $('[name=id]').val();
+    });
+
+    self.uploader.bind('UploadProgress', function(up, file) {
+        $('#' + file.id + " b").html(file.percent + "%");
+    });
+
+    self.uploader.bind('Error', function(up, err) {
+        $('#uploadNewsImages').closest('.form-group')
+            .addClass('has-error')
+            .find('.help-block').text(err.message);
+
+        up.refresh(); // Reposition Flash/Silverlight
+    });
+
+    self.uploader.bind('FileUploaded', function(up, file, res) {
+        var response = JSON.parse(res.response);
+        if (!response.errors) {
+            $('.news-edit__image-item.hide')
+                .first()
+                .clone(true)
+                .removeClass('hide')
+                .attr('data-image-id', response.id)
+                .appendTo('.images-block')
+                .find('img').attr('src', '/news/image/id/' + response.id);
+
+            if ($('.news-edit__image-item[data-image-id]').length >= $('#uploadImagesContainer').data('images-limit')) {
+                $('.btn-upload').addClass('hide');
+            }
+        } else {
+            $('#uploadNewsImages').closest('.form-group')
+                .addClass('has-error')
+                .find('.help-block').text(response.message);
+        }
+    });
+};

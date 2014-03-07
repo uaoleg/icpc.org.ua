@@ -102,7 +102,26 @@ class NewsController extends \web\ext\Controller
         // Render view
         $this->render('view', array(
             'news' => $news,
+            'imagesIds' => $news->imagesIds
         ));
+    }
+
+    public function actionImage()
+    {
+        // Get params
+        $imageId = $this->request->getParam('id');
+
+        // Get document
+        $image = News\Image::model()->findByPk(new \MongoId($imageId));
+        if ($image === null) {
+            return $this->httpException(404);
+        }
+
+        // Download file
+        header('Content-type: image/jpeg');
+        header('Content-Disposition: attachment; filename="' . $image->fileName . '"');
+
+        echo $image->file->getBytes();
     }
 
 }
