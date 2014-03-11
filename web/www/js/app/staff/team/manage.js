@@ -17,12 +17,9 @@ function appStaffTeamManage(options)
         $.ajax({
             url: app.baseUrl + '/staff/team/manage',
             data: {
-                teamId:         options.teamId,
-                shortNameUk:    $('[name=shortNameUk]').val(),
-                fullNameEn:     $('[name=fullNameEn]').val(),
-                shortNameEn:    $('[name=shortNameEn]').val(),
-                teamNamePrefix: $('[name=teamNamePrefix]').val(),
-                memberIds:      $('[name=memberIds]').val()
+                teamId:    options.teamId,
+                name:      $('[name=name]').val(),
+                memberIds: $('[name=memberIds]').val()
             },
             success: function(response) {
                 appShowErrors(response.errors, $form);
@@ -41,12 +38,18 @@ function appStaffTeamManage(options)
     });
 
     /**
-     * onChange team name handler to show what will the name with prefix be
+     * onKeyUp action to append prefix to team name
      */
-    $('[name=shortNameEn], [name=name]').on('keyup', function() {
-        $('#teamNamePrefix').val($('[name=shortNameEn]').val() + $('[name=name]').val());
-    }).trigger('keyup');
+    $('[name=name]').on('keyup', function(){
+        var $this = $(this),
+            prefix = $this.data('prefix'),
+            val = $this.val();
 
-
+        if (val.length <= prefix.length) {
+            $this.val(prefix);
+        } else {
+            $this.val(prefix + val.substr(prefix.length));
+        }
+    });
 
 }

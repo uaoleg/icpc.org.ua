@@ -21,48 +21,23 @@
             <div class="panel-body form">
 
                 <div class="form-group">
-                    <p class="form-control-static"><b><?=$team->year?></b>&nbsp;<?=\yii::t('app', 'year')?></p>
+                    <p class="form-control-static"><strong><?=$team->year?></strong>&nbsp;<?=\yii::t('app', 'year')?></p>
                 </div>
 
                 <div class="form-group">
-                    <p class="form-control-static"><?=\CHtml::encode($school->fullNameUk)?></p>
+                    <p class="form-control-static">
+                        <?=(\yii::app()->language === 'en') ? $school->fullNameEn : $school->fullNameUk?>
+                    </p>
                 </div>
 
-                <div class="form-group">
-                    <input type="text" class="form-control" name="shortNameUk"
-                           placeholder="<?=\yii::t('app', 'Short name of university (ukrainian)')?>"
-                           value="<?=\CHtml::encode($school->shortNameUk)?>"
-                           <?=(!empty($school->shortNameUk)) ? ' disabled' : ''?>>
-                </div>
-
-                <div class="form-group">
-                    <input type="text" class="form-control" name="fullNameEn"
-                           placeholder="<?=\yii::t('app', 'Full name of university (english)')?>"
-                           value="<?=\CHtml::encode($school->fullNameEn)?>"
-                           <?=(!empty($school->fullNameEn)) ? ' disabled' : ''?>>
-                </div>
-
-                <div class="form-group">
-                    <input type="text" class="form-control" name="shortNameEn"
-                           placeholder="<?=\yii::t('app', 'Short name of university (english)')?>"
-                           value="<?=\CHtml::encode($school->shortNameEn)?>"
-                           <?=(!empty($school->shortNameEn)) ? ' disabled' : ''?>>
-                </div>
-
-                <hr>
+                <hr/>
 
                 <div class="form-group">
                     <label for="name"><?=\yii::t('app', 'Name of a team')?></label>
                     <input type="text" class="form-control" id="name" name="name"
-                           value="<?=\CHtml::encode(substr($team->name, strlen($school->shortNameEn)))?>"
-                           placeholder="<?=\yii::t('app', 'Name of your team')?>"/>
-                </div>
-
-                <div class="form-group">
-                    <label for="teamNamePrefix"><?=\yii::t('app', 'Full name preview')?></label>
-                    <input type="text" class="form-control" id="teamNamePrefix" name="teamNamePrefix"
-                           value="<?=\CHtml::encode($team->name)?>"
-                           placeholder="<?=\yii::t('app', 'Name of your team with prefix')?>" readonly/>
+                           data-prefix="<?=\CHtml::encode($schoolShortNameEn)?>"
+                           value="<?=(!empty($team->name)) ? \CHtml::encode($team->name) : $schoolShortNameEn?>"
+                           placeholder="<?=\yii::t('app', 'Name of your team')?>">
                 </div>
 
                 <?php if (\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE) && $team->phase === Result::PHASE_3): ?>

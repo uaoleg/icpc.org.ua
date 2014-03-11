@@ -33,7 +33,7 @@ class TeamController extends \web\modules\staff\ext\Controller
         return array(
             array(
                 'allow',
-                'actions' => array('manage'),
+                'actions' => array('manage', 'schoolComplete'),
                 'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE),
             ),
             array(
@@ -65,20 +65,8 @@ class TeamController extends \web\modules\staff\ext\Controller
 
             // Get params
             $teamId         = $this->request->getPost('teamId');
-            $teamName       = $this->request->getPost('teamNamePrefix');
-            $shortNameUk    = $this->request->getPost('shortNameUk');
-            $fullNameEn     = $this->request->getPost('fullNameEn');
-            $shortNameEn    = $this->request->getPost('shortNameEn');
+            $teamName       = $this->request->getPost('name');
             $memberIds      = $this->request->getPost('memberIds');
-
-            // Update school
-            $school->scenario = School::SC_ASSIGN_TO_TEAM;
-            $school->setAttributes(array(
-                'shortNameUk'  => $shortNameUk,
-                'fullNameEn'   => $fullNameEn,
-                'shortNameEn'  => $shortNameEn
-            ), false);
-            $school->save();
 
             // Get team
             if (!empty($teamId)) {
@@ -100,80 +88,114 @@ class TeamController extends \web\modules\staff\ext\Controller
 
             $team->save();
 
-            // Get errors
-            $errors = array_merge($team->getErrors(), $school->getErrors());
-
             // Render json
             $this->renderJson(array(
-                'errors' => (!empty($errors)) ? $errors : false
+                'errors' => $team->hasErrors() ? $team->getErrors() : false
             ));
-
 
         }
 
         // Display manage page
         else {
 
-            if ($school === null) {
+            if (empty($school->shortNameUk) || empty($school->fullNameEn) || empty($school->shortNameEn)) {
+                $this->redirect($this->createUrl('/staff/team/schoolComplete'));
+            }
 
-                 $this->render('manageError', array(
-                     'error' => \yii::t('app', 'To manage teams, you must specify your school on the {a}profile page{/a}.', array(
-                         '{a}'  => '<a href="' . $this->createUrl('/user/me') . '">',
-                         '{/a}' => '</a>',
-                     )),
-                 ));
+            // Get params
+            $teamId = $this->request->getParam('id');
 
+            // Get team
+            if (isset($teamId)) {
+                $team = Team::model()->findByPk(new \MongoId($teamId));
             } else {
+                $team = new Team();
+                $team->year = date('Y');
+            }
 
-                // Get params
-                $teamId = $this->request->getParam('id');
+            if (!isset($team)) {
+                $this->httpException(404);
+            }
 
-                // Get team
-                if (isset($teamId)) {
-                    $team = Team::model()->findByPk(new \MongoId($teamId));
-                } else {
-                    $team = new Team();
-                    $team->year = date('Y');
-                }
+            // Get students from the school
+            $allUsers = User::model()->findAllByAttributes(array(
+                'schoolId' => (string)$school->_id,
+                'type'     => User::ROLE_STUDENT
+            ));
+            $allUsersIds = array();
+            foreach ($allUsers as $user) {
+                $allUsersIds[] = (string)$user->_id;
+            }
 
-                if (!isset($team)) {
-                    $this->httpException(404);
-                }
+            // Get all team members for this year and from the school
+            $usersInTeam = Team::model()->getCollection()->distinct('memberIds', array(
+                'year'     => (int)$team->year,
+                'schoolId' => (string)$school->_id
+            ));
 
-                // Get students from the school
-                $allUsers = User::model()->findAllByAttributes(array(
-                    'schoolId' => (string)$school->_id,
-                    'type'     => User::ROLE_STUDENT
+            // Get all users from the school and not in the teams
+            $usersIds = array_diff($allUsersIds, $usersInTeam);
+            $usersMongoIds = array_map(function($id) {
+                return new \MongoId($id);
+            }, array_merge($usersIds, $team->memberIds));
+            $users = User::model()->findAllByAttributes(array(
+                '_id' => array('$in' => $usersMongoIds)
+            ));
+
+            // Render view
+            $this->render('manage', array(
+                'school'    => $school,
+                'users'     => $users,
+                'team'      => $team,
+                'schoolShortNameEn' => $school->shortNameEn
+            ));
+
+        }
+    }
+
+    /**
+     * Complete school info before creating a team
+     */
+    public function actionSchoolComplete()
+    {
+        $school = \yii::app()->user->getInstance()->school;
+
+        // Update school
+        if ($this->request->isPostRequest) {
+            // Get params
+            $shortNameUk    = $this->request->getPost('shortNameUk');
+            $fullNameEn     = $this->request->getPost('fullNameEn');
+            $shortNameEn    = $this->request->getPost('shortNameEn');
+
+            // Update school
+            $school->scenario = School::SC_ASSIGN_TO_TEAM;
+            $school->setAttributes(array(
+                'shortNameUk'  => $shortNameUk,
+                'fullNameEn'   => $fullNameEn,
+                'shortNameEn'  => $shortNameEn
+            ), false);
+            $school->save();
+
+            // Render json
+            $this->renderJson(array(
+                'errors' => $school->hasErrors() ? $school->getErrors() : false
+            ));
+        } else {
+            if ($school === null) {
+                $this->render('manageError', array(
+                    'error' => \yii::t('app', 'To manage teams, you must specify your school on the {a}profile page{/a}.', array(
+                            '{a}'  => '<a href="' . $this->createUrl('/user/me') . '">',
+                            '{/a}' => '</a>',
+                        )),
                 ));
-                $allUsersIds = array();
-                foreach ($allUsers as $user) {
-                    $allUsersIds[] = (string)$user->_id;
-                }
-
-                // Get all team members for this year and from the school
-                $usersInTeam = Team::model()->getCollection()->distinct('memberIds', array(
-                    'year'     => (int)$team->year,
-                    'schoolId' => (string)$school->_id
+            } else {
+                $this->render('schoolComplete', array(
+                    'school' => $school
                 ));
-
-                // Get all users from the school and not in the teams
-                $usersIds = array_diff($allUsersIds, $usersInTeam);
-                $usersMongoIds = array_map(function($id) {
-                    return new \MongoId($id);
-                }, array_merge($usersIds, $team->memberIds));
-                $users = User::model()->findAllByAttributes(array(
-                    '_id' => array('$in' => $usersMongoIds)
-                ));
-
-                // Render view
-                $this->render('manage', array(
-                    'school'    => $school,
-                    'users'     => $users,
-                    'team'      => $team,
-                ));
-
             }
         }
+
+
     }
 
     /**
