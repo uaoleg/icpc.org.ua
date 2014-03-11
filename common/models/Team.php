@@ -83,6 +83,12 @@ class Team extends \common\ext\MongoDb\Document
     public $schoolNameEn;
 
     /**
+     * Is team deleted
+     * @var bool
+     */
+    public $isDeleted = false;
+
+    /**
      * League
      * I-offers advanced degree in computer science
      * II-does not offer advanced degree in computer science
@@ -255,6 +261,7 @@ class Team extends \common\ext\MongoDb\Document
             'schoolId'      => \yii::t('app', 'Related school ID'),
             'schoolNameUk'  => \yii::t('app', 'Full name of school in ukrainian'),
             'schoolNameEn'  => \yii::t('app', 'Full name of school in english'),
+            'isDeleted'     => \yii::t('app', 'Is team deleted'),
             'league'        => \yii::t('app', 'League of a team'),
             'memberIds'     => \yii::t('app', 'List of members'),
             'state'         => \yii::t('app', 'List of state labels of a team'),
@@ -397,6 +404,18 @@ class Team extends \common\ext\MongoDb\Document
         Result::model()->deleteAll($criteria);
 
         parent::afterDelete();
+    }
+
+    /**
+     * Scope for active teams
+     */
+    public function scopeByActive()
+    {
+        $criteria = $this->getDbCriteria();
+        $criteria->addCond('isDeleted', '==', false);
+        $this->setDbCriteria($criteria);
+
+        return $this;
     }
 
 }

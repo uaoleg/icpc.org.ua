@@ -10,6 +10,8 @@ use \common\models\User;
 class TeamController extends \web\modules\staff\ext\Controller
 {
 
+    protected $team = null;
+
     /**
      * Init
      */
@@ -22,6 +24,8 @@ class TeamController extends \web\modules\staff\ext\Controller
 
         // Set active main menu item
         $this->setNavActiveItem('main', 'team');
+
+        $this->team = Team::model()->findByPk(new \MongoId($this->request->getParam('teamId')));
     }
 
     /**
@@ -34,7 +38,12 @@ class TeamController extends \web\modules\staff\ext\Controller
             array(
                 'allow',
                 'actions' => array('manage'),
-                'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE),
+                'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE => array('team' => $this->team)),
+            ),
+            array(
+                'allow',
+                'actions' => array('delete'),
+                'roles' => array(Rbac::OP_TEAM_DELETE => array('team' => $this->team)),
             ),
             array(
                 'allow',
@@ -151,7 +160,7 @@ class TeamController extends \web\modules\staff\ext\Controller
                 }
 
                 // Get all team members for this year and from the school
-                $usersInTeam = Team::model()->getCollection()->distinct('memberIds', array(
+                $usersInTeam = Team::model()->scopeByActive()->getCollection()->distinct('memberIds', array(
                     'year'     => (int)$team->year,
                     'schoolId' => (string)$school->_id
                 ));
@@ -212,6 +221,22 @@ class TeamController extends \web\modules\staff\ext\Controller
 
         // Redirect to team page
         $this->redirect($this->createAbsoluteUrl('/team/view', array('id' => $teamId)));
+    }
+
+    /**
+     * Delete team action
+     */
+    public function actionDelete()
+    {
+        $teamId = $this->request->getParam('teamId');
+        $team = Team::model()->findByPk(new \MongoId($teamId));
+
+        if (!isset($team)) {
+            $this->httpException(404);
+        } else {
+            $team->isDeleted = true;
+            $team->save();
+        }
     }
 
 }

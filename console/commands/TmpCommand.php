@@ -22,4 +22,16 @@ class TmpCommand extends \console\ext\ConsoleCommand
         echo "\nDone";
     }
 
+    /**
+     * Set isDeleted = false for all teams
+     * @version 2.2
+     */
+    public function actionSetTeamsNotDeleted()
+    {
+        $modifier = new \EMongoModifier();
+        $modifier->addModifier('isDeleted', 'set', false);
+        \common\models\Team::model()->updateAll($modifier);
+        echo "\nDone";
+    }
+
 }

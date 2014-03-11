@@ -1,11 +1,20 @@
 <?php use \common\models\User; ?>
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        new appTeamView();
+    });
+</script>
+
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
         <h1>
             <?=\CHtml::encode($team->name)?>
-            <?php if ($team->coachId === \yii::app()->user->id): ?>
+            <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_UPDATE, array('team' => $team))): ?>
                 <a href="<?=$this->createUrl('staff/team/manage', array('id' => $team->_id))?>" class="btn btn-primary"><?=\yii::t('app', 'Manage')?></a>
+            <?php endif; ?>
+            <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_DELETE, array('team' => $team))): ?>
+                <button class="btn btn-danger btn-delete-team" data-team-id="<?=$team->_id?>" data-confirm="<?=\yii::t('app', 'Are you sure you want to delete the team?')?>"><?=\yii::t('app', 'Delete')?></button>
             <?php endif; ?>
         </h1>
         <h3><?=$team->year?></h3>

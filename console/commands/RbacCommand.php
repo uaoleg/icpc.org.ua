@@ -84,6 +84,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             User::ROLE_USER,
             Rbac::OP_TEAM_CREATE,
             Rbac::OP_TEAM_UPDATE,
+            Rbac::OP_TEAM_DELETE,
         ));
 
         /**
@@ -233,10 +234,12 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $bizRuleUpdatePhase = 'return \yii::app()->rbac->bizRuleTeamUpdatePhase($params);';
         $bizRuleExport = 'return \yii::app()->rbac->bizRuleTeamExport($params);';
         $bizRuleLeagueUpdate = 'return \yii::app()->rbac->bizRuleTeamLeagueUpdate($params);';
+        $bizRuleDelete = 'return \yii::app()->rbac->bizRuleTeamDelete($params);';
 
         $this->auth->createOperation(Rbac::OP_TEAM_CREATE, 'Create team');
         $this->auth->createOperation(Rbac::OP_TEAM_READ, 'Read team');
         $this->auth->createOperation(Rbac::OP_TEAM_UPDATE, 'Edit team', $bizRuleUpdate);
+        $this->auth->createOperation(Rbac::OP_TEAM_DELETE, 'Delete team', $bizRuleDelete);
         $this->auth->createOperation(Rbac::OP_TEAM_PHASE_UPDATE, 'Set team phase', $bizRuleUpdatePhase);
         $this->auth->createOperation(Rbac::OP_TEAM_EXPORT, 'Export team', $bizRuleExport);
         $this->auth->createOperation(Rbac::OP_TEAM_LEAGUE_UPDATE, 'Team\'s league update', $bizRuleLeagueUpdate);
