@@ -49,6 +49,7 @@ class Rbac extends \CApplicationComponent
     const OP_QA_TAG_READ            = 'qaTagRead';
     const OP_QA_TAG_UPDATE          = 'qaTagUpdate';
     const OP_QA_TAG_DELETE          = 'qaTagDelete';
+    const OP_USER_FULL_INFO         = 'userFullInfo';
 
     /**
      * Current user
@@ -97,7 +98,7 @@ class Rbac extends \CApplicationComponent
 
     /**
      * Biz rule to suspend/activate students
-     * 
+     *
      * @param array $params
      * @return bool
      */
@@ -240,6 +241,23 @@ class Rbac extends \CApplicationComponent
     public function bizRuleTeamLeagueUpdate(array $params)
     {
         return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
+    }
+
+    /**
+     * Biz rule to see user's full info
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleUserFullInfo(array $params)
+    {
+        if ($this->checkAccess(User::ROLE_COORDINATOR_STATE)) {
+            return true;
+        } else {
+            if ($this->user->schoolId === $params['user']->schoolId) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

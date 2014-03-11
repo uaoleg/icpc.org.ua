@@ -45,6 +45,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->_operationsResult();
         $this->_operationsTeam();
         $this->_operationsQa();
+        $this->_operationsUser();
 
         /**
          * Guest role
@@ -84,6 +85,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             User::ROLE_USER,
             Rbac::OP_TEAM_CREATE,
             Rbac::OP_TEAM_UPDATE,
+            Rbac::OP_USER_FULL_INFO
         ));
 
         /**
@@ -263,6 +265,15 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->auth->createOperation(Rbac::OP_QA_TAG_READ, 'Read tag');
         $this->auth->createOperation(Rbac::OP_QA_TAG_UPDATE, 'Update tag');
         $this->auth->createOperation(Rbac::OP_QA_TAG_DELETE, 'Delete tag');
+    }
+
+    /**
+     * User operation
+     */
+    protected function _operationsUser()
+    {
+        $bizRuleUserFullInfo = 'return \yii::app()->rbac->bizRuleUserFullInfo($params);';
+        $this->auth->createOperation(Rbac::OP_USER_FULL_INFO, 'User full info', $bizRuleUserFullInfo);
     }
 
     /**

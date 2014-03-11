@@ -11,6 +11,18 @@
             <?php endif; ?>
         </h4>
 
+        <?php if (!\yii::app()->user->isGuest && \yii::app()->user->checkAccess(\common\components\Rbac::OP_USER_FULL_INFO)): ?>
+            <div class="row">
+                <div class="col-lg-12">
+                    <?php foreach($attributes as $attribute): ?>
+                        <?php if(isset($user->info->$attribute) && !empty($user->info->$attribute)): ?>
+                            <?=$user->getAttributeLabel($attribute)?>:&nbsp;<?=$user->info->$attribute?><br></br>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <div class="row">
             <div class="col-lg-6">
                 <h4><?=\yii::t('app', 'Teams')?></h4>

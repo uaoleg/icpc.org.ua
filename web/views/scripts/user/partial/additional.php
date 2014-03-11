@@ -33,30 +33,3 @@
                placeholder="<?=\yii::t('app', 'ACM Number', null, null, $lang)?>" />
     </div>
 </div>
-
-<div class="form-group">
-    <label class="col-lg-3 control-label" for="schoolName"><?=\yii::t('app', 'School name', null, null, $lang)?></label>
-    <div class="col-lg-9">
-        <input class="form-control" id="schoolName" name="schoolName" type="text"
-               value="<?=\CHtml::encode($info->schoolName)?>"
-               placeholder="<?=\yii::t('app', 'School name', null, null, $lang)?>" />
-    </div>
-</div>
-
-<div class="form-group">
-    <label class="col-lg-3 control-label" for="schoolNameShort"><?=\yii::t('app', 'School short name', null, null, $lang)?></label>
-    <div class="col-lg-9">
-        <input class="form-control" id="schoolNameShort" name="schoolNameShort" type="text"
-               value="<?=\CHtml::encode($info->schoolNameShort)?>"
-               placeholder="<?=\yii::t('app', 'School short name', null, null, $lang)?>" />
-    </div>
-</div>
-
-<div class="form-group">
-    <label class="col-lg-3 control-label" for="schoolPostEmailAddresses"><?=\yii::t('app', 'Official post and email addresses', null, null, $lang)?></label>
-    <div class="col-lg-9">
-        <input class="form-control" id="schoolPostEmailAddresses" name="schoolPostEmailAddresses" type="text"
-               value="<?=\CHtml::encode($info->schoolPostEmailAddresses)?>"
-               placeholder="<?=\yii::t('app', 'Official post and email addresses', null, null, $lang)?>" />
-    </div>
-</div>
