@@ -1,6 +1,23 @@
 function appAuthSignup() {
 
     /**
+     * Show/hide tooltips
+     */
+    $('input').data({
+        'placement': 'left',
+        'trigger': 'manual'
+    }).on('focus', function() {
+        if ($(this).val()) {
+            $(this)
+                .attr('data-original-title', $(this).prop('placeholder'))
+                .tooltip('fixTitle')
+                .tooltip('show');
+        }
+    }).on('blur', function() {
+        $(this).tooltip('hide');
+    });
+
+    /**
      * On window unload
      */
     window.onbeforeunload = function() {

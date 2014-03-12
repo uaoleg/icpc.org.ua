@@ -16,50 +16,32 @@
                 <div class="form-group">
                     <input type="text" class="form-control" name="firstNameUk"
                            value="<?=\CHtml::encode($user->firstNameUk)?>"
-                           placeholder="<?=$user->getAttributeLabel('firstNameUk')?>"
-                           rel="tooltip"
-                           title="<?=$user->getAttributeLabel('firstNameUk')?>"
-                           data-placement="left">
+                           placeholder="<?=$user->getAttributeLabel('firstNameUk')?>">
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" name="middleNameUk"
                            value="<?=\CHtml::encode($user->middleNameUk)?>"
-                           placeholder="<?=$user->getAttributeLabel('middleNameUk')?>"
-                           rel="tooltip"
-                           title="<?=$user->getAttributeLabel('middleNameUk')?>"
-                           data-placement="left">
+                           placeholder="<?=$user->getAttributeLabel('middleNameUk')?>">
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" name="lastNameUk"
                            value="<?=\CHtml::encode($user->lastNameUk)?>"
-                           placeholder="<?=$user->getAttributeLabel('lastNameUk')?>"
-                           rel="tooltip"
-                           title="<?=$user->getAttributeLabel('lastNameUk')?>"
-                           data-placement="left">
+                           placeholder="<?=$user->getAttributeLabel('lastNameUk')?>">
                 </div>
                 <div class="form-group">
                         <input type="email" class="form-control" name="email"
                                value="<?=\CHtml::encode($user->email)?>"
-                               placeholder="<?=$user->getAttributeLabel('email')?>"
-                               rel="tooltip"
-                               title="<?=$user->getAttributeLabel('email')?>"
-                               data-placement="left">
+                               placeholder="<?=$user->getAttributeLabel('email')?>">
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" name="password"
                            value="<?=\CHtml::encode($password)?>"
-                           placeholder="<?=\yii::t('app', 'Password')?>"
-                           rel="tooltip"
-                           title="<?=\yii::t('app', 'Password')?>"
-                           data-placement="left">
+                           placeholder="<?=\yii::t('app', 'Password')?>">
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" name="passwordRepeat"
                            value="<?=\CHtml::encode($passwordRepeat)?>"
-                           placeholder="<?=\yii::t('app', 'Repeat password')?>"
-                           rel="tooltip"
-                           title="<?=\yii::t('app', 'Repeat password')?>"
-                           data-placement="left">
+                           placeholder="<?=\yii::t('app', 'Repeat password')?>">
                 </div>
                 <div class="form-group">
                     <div name="role" class="clearfix" style="margin-bottom: -20px;">
