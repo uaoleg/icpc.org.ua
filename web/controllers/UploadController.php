@@ -234,6 +234,7 @@ class UploadController extends \web\ext\Controller
             $image = new News\Image();
             $image->fileName = mb_strtolower($this->request->getParam('uniqueName'));
             $image->newsId = $newsId;
+            $image->userId = \yii::app()->user->id;
             $image->save();
 
             $this->_linkUploadedFile($image, $newUploadedFile);

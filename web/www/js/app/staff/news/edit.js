@@ -127,7 +127,7 @@ appStaffNewsEdit.prototype.initUploader = function () {
                 .removeClass('hide')
                 .attr('data-image-id', response.id)
                 .appendTo('.images-block')
-                .find('img').attr('src', '/news/image/id/' + response.id);
+                .find('img').attr('src', '/news/image/id/' + response.id + '.jpg');
 
             if ($('.news-edit__image-item[data-image-id]').length >= $('#uploadImagesContainer').data('images-limit')) {
                 $('.btn-upload').addClass('hide');

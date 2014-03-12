@@ -109,7 +109,7 @@ class NewsController extends \web\ext\Controller
     public function actionImage()
     {
         // Get params
-        $imageId = $this->request->getParam('id');
+        $imageId = mb_substr($this->request->getParam('id'), 0, 24);
 
         // Get document
         $image = News\Image::model()->findByPk(new \MongoId($imageId));

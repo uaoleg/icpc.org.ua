@@ -55,7 +55,7 @@
                     </div>
                     <?php foreach($newsImages as $imageId): ?>
                         <div class="news-edit__image-item" data-image-id="<?=$imageId?>">
-                            <img src="<?=$this->createUrl('/news/image', array('id' => $imageId))?>" alt="" width="75" height="auto"><br/>
+                            <img src="<?=$this->createUrl('/news/image', array('id' => $imageId))?>.jpg" alt="" width="75" height="auto"><br/>
                             <button class="btn btn-link" data-confirm="<?=\yii::t('app', 'Are you sure you want to delete this image?')?>">delete</button>
                         </div>
                     <?php endforeach; ?>

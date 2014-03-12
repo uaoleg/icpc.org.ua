@@ -23,6 +23,12 @@ class Image extends \common\ext\MongoDb\Document
     public $fileName;
 
     /**
+     * ID of a user who downloads the image
+     * @var string
+     */
+    public $userId;
+
+    /**
      * Related file
      * @var UploadedFile
      */
