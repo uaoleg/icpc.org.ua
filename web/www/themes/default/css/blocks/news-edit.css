@@ -1,5 +1,7 @@
 .news-edit__image-item {
-    display: inline-block;
+    /*display: inline-block;*/
+    float: left;
+    margin: 0 10px 10px 0;
     text-align: center;
     z-index: 10;
 }

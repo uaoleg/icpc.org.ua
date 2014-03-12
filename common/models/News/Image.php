@@ -81,7 +81,7 @@ class Image extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('newsId, fileName', 'required')
+            array('userId, fileName', 'required')
         ));
     }
 

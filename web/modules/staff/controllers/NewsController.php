@@ -56,6 +56,15 @@ class NewsController extends \web\modules\staff\ext\Controller
             $criteria->addCond('commonId', '==', $id);
             News::model()->updateAll($modifier, $criteria);
 
+            // Set news id for all downloaded images
+            $imageModifier = new \EMongoModifier();
+            $imageModifier->addModifier('newsId', 'set', $news->commonId);
+            $imageCriteria = new \EMongoCriteria();
+            $imageCriteria
+                ->addCond('newsId', '==', null)
+                ->addCond('userId', '==', \yii::app()->user->id);
+            News\Image::model()->updateAll($imageModifier, $imageCriteria);
+
             // Render json
             $this->renderJson(array(
                 'isNew'     => $isNew,

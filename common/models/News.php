@@ -116,9 +116,15 @@ class News extends \common\ext\MongoDb\Document
      */
     public function getImagesIds()
     {
-        $images = Image::model()->findAllByAttributes(array(
-            'newsId' => (string)$this->commonId
-        ));
+        if (!isset($this->commonId)) {
+            $images = Image::model()->findAllByAttributes(array(
+                'userId' => (string)\yii::app()->user->id
+            ));
+        } else {
+            $images = Image::model()->findAllByAttributes(array(
+                'newsId' => (string)$this->commonId
+            ));
+        }
 
         $imagesIds = array();
         foreach ($images as $image) {
