@@ -94,7 +94,7 @@
                                 <?=\yii::t('app', 'Choose file')?>
                             </button>
                             <span class="document-origin-filename"></span>
-                            <div class="help-block alert alert-danger collapsible" data-not-html="<?=\yii::t('app', 'Specified file is not html')?>"></div>
+                            <div class="help-block"></div>
                         </div>
 
                         <div class="form-group">

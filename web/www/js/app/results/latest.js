@@ -30,7 +30,7 @@ appResultsLatest.prototype.initUploader = function () {
         url:              app.baseUrl + '/upload/results',
         filters: {
             mime_types : [
-                { title : "HTML files", extensions : "html" }
+                { title : "HTML files", extensions : "htm,html" }
             ]
         }
     }));
