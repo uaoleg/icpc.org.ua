@@ -169,7 +169,7 @@ class QaController extends \web\ext\Controller
             'userId'    => \yii::app()->user->id,
             'title'     => $title,
             'content'   => $content,
-            'tagList'   => explode(',', $tagList),
+            'tagList'   => $tagList,
         ), false);
         $question->save();
 

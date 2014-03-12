@@ -16,40 +16,8 @@ function appQaManage() {
     /**
      * Init select2 for tags
      */
-    var $inputTagList = $('input[name=tagList]');
-    $inputTagList.select2({
-        minimumInputLength: 1,
-        maximumSelectionSize: 10,
-        multiple: true,
-        width: '500',
-        initSelection: function(element, callback) {
-            var data = [];
-            $(element.val().split(',')).each(function () {
-                data.push({id: this, text: this});
-            });
-            callback(data);
-        },
-        ajax: {
-            url: app.baseUrl + '/qa/tagList',
-            dataType: 'json',
-            data: function (term, page) {
-                return {
-                    q: term,
-                    page_limit: 10
-                };
-            },
-            results: function (data, page) {
-                return {results: data.tags};
-            }
-        },
-        escapeMarkup: function (m) { return m; },
-        formatSelection: function(item) {
-            return item.text;
-        },
-        formatResult: function(item) {
-            return item.text;
-        },
-        dropdownCssClass: 'bigdrop'
+    $('[name=tagList]').select2({
+        width: '500'
     });
 
     /**
@@ -62,7 +30,7 @@ function appQaManage() {
                 id:         $('input[name=id]').val(),
                 title:      $('input[name=title]').val(),
                 content:    editor.getData(),
-                tagList:    $('input[name=tagList]').val()
+                tagList:    $('[name=tagList]').val()
             },
             success: function(response) {
                 if (response.errors) {
@@ -73,17 +41,4 @@ function appQaManage() {
             }
         });
     });
-
-    /**
-     * Tags list: tag click
-     */
-    $('.tags-list span').on('click', function() {
-        $inputTagList.select2(
-            "val",
-            $inputTagList
-                .select2('val')
-                .concat([$(this).text()])
-        );
-    });
-
 }
