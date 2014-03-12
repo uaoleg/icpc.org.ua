@@ -83,56 +83,35 @@
                 <h4 class="modal-title"><?=\yii::t('app', 'Upload results')?></h4>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12" id="uploadContainer">
-                    <div class="form-group">
-                        <p class="form-control-static"><b><?=date('Y')?></b>&nbsp;<?=\yii::t('app', 'year')?></p>
-                    </div>
-
-                    <?php if (!\yii::app()->user->getInstance()->school->getIsNewRecord()): ?>
+                <div class="row">
+                    <div class="col-lg-12" id="uploadContainer">
                         <div class="form-group">
-                            <button type="button" class="btn btn-lg2 btn-info" id="uploadPickfiles">
-                                <?=\yii::t('app', 'Choose file')?>
+                            <p class="form-control-static"><b><?=date('Y')?></b>&nbsp;<?=\yii::t('app', 'year')?></p>
+                        </div>
+
+                        <?php if (!\yii::app()->user->getInstance()->school->getIsNewRecord()): ?>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-lg2 btn-info" id="uploadPickfiles">
+                                    <?=\yii::t('app', 'Choose file')?>
+                                </button>
+                                <span class="document-origin-filename"></span>
+                                <div class="help-block"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <?php \web\widgets\user\GeoFilter::create(); ?>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" id="uploadResults" disabled>
+                                <?=\yii::t('app', 'Upload')?>
                             </button>
-                            <span class="document-origin-filename"></span>
-                            <div class="help-block"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="radio">
-                                <label class="control-label">
-                                    <input type="radio" name="phase" value="1"
-                                           <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE) ? '' : 'disabled'?>
-                                    />
-                                    <?=\common\models\Geo\State::model()->getAttributeLabel($school->state, 'name')?>
-                                </label>
+                        <?php else: ?>
+                            <div class="alert alert-danger">
+                                <?=\yii::t('app', 'To upload results you have to specify your school at your {a}profile page</a>',
+                                array('{a}' => '<a href="' . $this->createUrl('/user/me') . '">'))?>
                             </div>
-                            <div class="radio">
-                                <label class="control-label">
-                                    <input type="radio" name="phase" value="2"
-                                           <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION) ? '' : 'disabled'?>
-                                    />
-                                    <?=\common\models\Geo\Region::model()->getAttributeLabel($school->region, 'name')?>
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label class="control-label">
-                                    <input type="radio" name="phase" value="3"
-                                           <?=\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE) ? '' : 'disabled'?>
-                                    />
-                                    <?=\common\models\School::getCountryLabel()?>
-                                </label>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary" id="uploadResults" disabled>
-                            <?=\yii::t('app', 'Upload')?>
-                        </button>
-                    <?php else: ?>
-                        <div class="alert alert-danger">
-                            <?=\yii::t('app', 'To upload results you have to specify your school at your {a}profile page</a>',
-                            array('{a}' => '<a href="' . $this->createUrl('/user/me') . '">'))?>
-                        </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>

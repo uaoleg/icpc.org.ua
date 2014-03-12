@@ -169,34 +169,36 @@ class UploadController extends \web\ext\Controller
                 }
             }
 
-            // Create result
-            $result = new Result();
-            $result->setAttributes(array(
-                'year'      => date('Y'),
-                'phase'     => $phase,
-                'geo'       => $geo,
-                'place'     => $tr->find('.st_place', 0)->plaintext,
-                'placeText' => $tr->find('.st_place', 0)->plaintext,
-                'teamId'    => (isset($team)) ? $team->_id : null,
-                'teamName'  => $teamName,
-                'tasksTries'=> $tasksTries,
-                'tasksTime' => $tasksTime,
-                'total'     => $tr->find('.st_total', 0)->plaintext,
-                'penalty'   => $tr->find('.st_pen', 0)->plaintext,
-            ), false);
+            $place = $tr->find('.st_place', 0)->plaintext;
+            if ($place != '&nbsp;') {
+                // Create result
+                $result = new Result();
+                $result->setAttributes(array(
+                    'year'      => date('Y'),
+                    'phase'     => $phase,
+                    'geo'       => $geo,
+                    'place'     => $place,
+                    'placeText' => $place,
+                    'teamId'    => (isset($team)) ? $team->_id : null,
+                    'teamName'  => $teamName,
+                    'tasksTries'=> $tasksTries,
+                    'tasksTime' => $tasksTime,
+                    'total'     => $tr->find('.st_total', 0)->plaintext,
+                    'penalty'   => $tr->find('.st_pen', 0)->plaintext,
+                ), false);
 
-            if (!$result->save()) {
-                $this->renderJson(array(
-                    'errors' => true,
-                    'message' => \yii::t('app', 'Not all results were saved!')
-                ));
-                \yii::app()->end();
+                if (!$result->save()) {
+                    $this->renderJson(array(
+                        'errors' => true,
+                        'message' => \yii::t('app', 'Not all results were saved!')
+                    ));
+                    \yii::app()->end();
+                }
             }
         }
 
         $this->renderJson(array(
             'errors' => false,
-            'message' => \yii::t('app', 'Not all results were saved!')
         ));
     }
 
