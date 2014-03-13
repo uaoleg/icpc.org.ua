@@ -29,10 +29,11 @@
                   style="height: 500px;"><?=\CHtml::encode($question->content)?></textarea>
     </div>
     <div class="form-group">
-        <input type="text"
-               name="tagList"
-               value="<?=implode(',', $question->tagList)?>"
-               placeholder="<?=\yii::t('app', 'List of tags')?>" />
+        <select name="tagList" multiple>
+            <?php foreach($tags as $tag): ?>
+                <option value="<?=$tag->name?>"><?=$tag->name?></option>
+            <?php endforeach; ?>
+        </select>
     </div>
     <div class="form-group">
         <button class="btn btn-primary btn-lg question-save">

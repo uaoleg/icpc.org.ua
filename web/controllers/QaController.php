@@ -138,9 +138,14 @@ class QaController extends \web\ext\Controller
             }
         }
 
+        $tagsCriteria = new \EMongoCriteria();
+        $tagsCriteria->sort('name', \EMongoCriteria::SORT_ASC);
+        $tags = Qa\Tag::model()->findAll($tagsCriteria);
+
         // Render view
         $this->render('ask', array(
-            'question' => $question
+            'question' => $question,
+            'tags'     => $tags
         ));
     }
 
@@ -170,7 +175,7 @@ class QaController extends \web\ext\Controller
             'userId'    => \yii::app()->user->id,
             'title'     => $title,
             'content'   => $content,
-            'tagList'   => explode(',', $tagList),
+            'tagList'   => $tagList,
         ), false);
         $question->save();
 
