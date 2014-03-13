@@ -1,11 +1,11 @@
 <?php
 namespace common\models\News;
 
-use CModelEvent;
-use common\models\UploadedFile;
+use \common\models\UploadedFile;
 
 /**
  * Image
+ *
  * @property-read UploadedFile $file
  */
 class Image extends \common\ext\MongoDb\Document
@@ -88,11 +88,14 @@ class Image extends \common\ext\MongoDb\Document
 
     /**
      * Before validate action
+     *
      * @return bool
      */
     protected function beforeValidate()
     {
-        if (!parent::beforeValidate()) return false;
+        if (!parent::beforeValidate()) {
+            return false;
+        }
 
         // Set newsId to null if it is empty
         if (empty($this->newsId)) {

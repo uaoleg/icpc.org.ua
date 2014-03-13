@@ -2,10 +2,11 @@
 
 namespace common\models;
 
-use common\models\News\Image;
+use \common\models\News\Image;
 
 class News extends \common\ext\MongoDb\Document
 {
+    
     const MAX_IMAGES_COUNT = 20;
 
     /**
