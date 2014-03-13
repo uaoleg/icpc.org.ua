@@ -30,11 +30,19 @@ class TeamController extends \web\modules\staff\ext\Controller
      */
     public function accessRules()
     {
+        // Get team
+        $team = Team::model()->findByPk(new \MongoId($this->request->getParam('teamId')));
+
         return array(
             array(
                 'allow',
                 'actions' => array('manage'),
-                'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE),
+                'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE => array('team' => $team)),
+            ),
+            array(
+                'allow',
+                'actions' => array('delete'),
+                'roles' => array(Rbac::OP_TEAM_DELETE => array('team' => $team)),
             ),
             array(
                 'allow',
@@ -151,7 +159,7 @@ class TeamController extends \web\modules\staff\ext\Controller
                 }
 
                 // Get all team members for this year and from the school
-                $usersInTeam = Team::model()->getCollection()->distinct('memberIds', array(
+                $usersInTeam = Team::model()->scopeByActive()->getCollection()->distinct('memberIds', array(
                     'year'     => (int)$team->year,
                     'schoolId' => (string)$school->_id
                 ));
@@ -212,6 +220,26 @@ class TeamController extends \web\modules\staff\ext\Controller
 
         // Redirect to team page
         $this->redirect($this->createAbsoluteUrl('/team/view', array('id' => $teamId)));
+    }
+
+    /**
+     * Delete team action
+     */
+    public function actionDelete()
+    {
+        // Get params
+        $teamId = $this->request->getParam('teamId');
+
+        // Get team
+        $team = Team::model()->findByPk(new \MongoId($teamId));
+
+        // Mark as deleted
+        if (!isset($team)) {
+            $this->httpException(404);
+        } else {
+            $team->isDeleted = true;
+            $team->save();
+        }
     }
 
 }

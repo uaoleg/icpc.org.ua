@@ -76,7 +76,7 @@ class TeamController extends \web\ext\Controller
 
         // Get team
         $team = Team::model()->findByPk(new \MongoId($teamId));
-        if ($team === null) {
+        if (($team === null) || $team->isDeleted) {
             $this->httpException(404);
         }
 
@@ -107,7 +107,7 @@ class TeamController extends \web\ext\Controller
         // Get jqGrid params
         $criteria = new \EMongoCriteria();
         $criteria->addCond('year', '==', $this->getYear());
-        $jqgrid = $this->_getJqgridParams(Team::model(), $criteria);
+        $jqgrid = $this->_getJqgridParams(Team::model()->scopeByActive(), $criteria);
 
         // Fill rows
         $rows = array();

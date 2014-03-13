@@ -109,6 +109,12 @@ class Team extends \common\ext\MongoDb\Document
     public $region = array();
 
     /**
+     * Is team deleted
+     * @var bool
+     */
+    public $isDeleted = false;
+
+    /**
      * Objects of member users
      * @var array
      */
@@ -259,6 +265,7 @@ class Team extends \common\ext\MongoDb\Document
             'memberIds'     => \yii::t('app', 'List of members'),
             'state'         => \yii::t('app', 'List of state labels of a team'),
             'region'        => \yii::t('app', 'List of region labels of a team'),
+            'isDeleted'     => \yii::t('app', 'Is team deleted'),
         ));
     }
 
@@ -397,6 +404,20 @@ class Team extends \common\ext\MongoDb\Document
         Result::model()->deleteAll($criteria);
 
         parent::afterDelete();
+    }
+
+    /**
+     * Scope for active teams
+     *
+     * @return Team
+     */
+    public function scopeByActive()
+    {
+        $criteria = $this->getDbCriteria();
+        $criteria->addCond('isDeleted', '==', false);
+        $this->setDbCriteria($criteria);
+
+        return $this;
     }
 
 }

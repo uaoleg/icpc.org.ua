@@ -30,6 +30,7 @@ class Rbac extends \CApplicationComponent
     const OP_TEAM_CREATE            = 'teamCreate';
     const OP_TEAM_READ              = 'teamRead';
     const OP_TEAM_UPDATE            = 'teamUpdate';
+    const OP_TEAM_DELETE            = 'teamDelete';
     const OP_TEAM_LEAGUE_UPDATE     = 'teamLeagueUpdate';
     const OP_TEAM_PHASE_UPDATE      = 'teamPhaseUpdate';
     const OP_TEAM_EXPORT            = 'teamExport';
@@ -97,7 +98,7 @@ class Rbac extends \CApplicationComponent
 
     /**
      * Biz rule to suspend/activate students
-     * 
+     *
      * @param array $params
      * @return bool
      */
@@ -206,7 +207,18 @@ class Rbac extends \CApplicationComponent
      */
     public function bizRuleTeamUpdate(array $params)
     {
-        return $this->checkAccess(User::ROLE_COACH);
+        return ((string)$this->user->_id === $params['team']->coachId);
+    }
+
+    /**
+     * Biz rule for deleting team
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleTeamDelete(array $params)
+    {
+        return ((string)$this->user->_id === $params['team']->coachId);
     }
 
     /**
