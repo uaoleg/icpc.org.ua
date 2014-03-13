@@ -56,6 +56,15 @@ class NewsController extends \web\modules\staff\ext\Controller
             $criteria->addCond('commonId', '==', $id);
             News::model()->updateAll($modifier, $criteria);
 
+            // Set news id for all downloaded images
+            $imageModifier = new \EMongoModifier();
+            $imageModifier->addModifier('newsId', 'set', $news->commonId);
+            $imageCriteria = new \EMongoCriteria();
+            $imageCriteria
+                ->addCond('newsId', '==', null)
+                ->addCond('userId', '==', \yii::app()->user->id);
+            News\Image::model()->updateAll($imageModifier, $imageCriteria);
+
             // Render json
             $this->renderJson(array(
                 'isNew'     => $isNew,
@@ -70,7 +79,8 @@ class NewsController extends \web\modules\staff\ext\Controller
         // Render view
         else {
             $this->render('edit', array(
-                'news' => $news,
+                'news'       => $news,
+                'newsImages' => $news->imagesIds
             ));
         }
     }
@@ -101,6 +111,16 @@ class NewsController extends \web\modules\staff\ext\Controller
         $this->renderJson(array(
             'errors'    => ($news->hasErrors()) ? $news->getErrors() : false,
         ));
+    }
+
+    /**
+     * Action to delete image from news
+     */
+    public function actionDeleteImage()
+    {
+        $imageId = $this->request->getParam('imageId');
+        $image = News\Image::model()->findByPk(new \MongoId($imageId));
+        $image->delete();
     }
 
 }

@@ -55,6 +55,10 @@ $main = array(
             'errorAction'   => 'index/error',
         ),
 
+        'image' => array(
+            'class' => '\common\components\Image'
+        ),
+
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(

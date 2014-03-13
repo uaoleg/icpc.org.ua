@@ -3,6 +3,7 @@
 namespace web\controllers;
 
 use \common\models\Document;
+use \common\models\News;
 use \common\models\Team;
 use \common\models\Result;
 use \common\models\UploadedFile;
@@ -200,6 +201,75 @@ class UploadController extends \web\ext\Controller
         $this->renderJson(array(
             'errors' => false,
         ));
+    }
+
+    public function actionImages() {
+        $newsId = $this->request->getParam('newsId');
+
+        $imagesCount = News\Image::model()->countByAttributes(array(
+            'newsId' => $newsId
+        ));
+
+        if ($imagesCount < News::MAX_IMAGES_COUNT) {
+            // Process file
+            $uploadedFile = $this->_processFile();
+            if (!$uploadedFile) {
+                return;
+            }
+
+            $filePath = \yii::getPathOfAlias('common.runtime');
+            $fileName = array_pop(explode('/', $uploadedFile->filename));
+            $file = fopen($filePath . '/' . $fileName, 'w');
+            fwrite($file, $uploadedFile->getBytes());
+            fclose($file);
+
+            $newFileName = array_shift(explode('.', $fileName)) . '.jpg';
+            \yii::app()->image->scale(
+                $filePath . '/' . $fileName,
+                $filePath . '/' . $newFileName,
+                array(
+                    'max_width' => 2000,
+                    'max_height' => 2000,
+                    'min_width' => 100,
+                    'min_height' => 100,
+                )
+            );
+
+            // delete previous file
+            $uploadedFile->delete();
+
+            // create a new scaled and converted file
+            $newUploadedFile = new UploadedFile();
+            $newUploadedFile->setAttributes(array(
+                'filename' => $filePath . '/' . $fileName,
+            ), false);
+            $newUploadedFile->save();
+
+            $image = new News\Image();
+            $image->fileName = mb_strtolower($this->request->getParam('uniqueName'));
+            $image->newsId = (!empty($newsId)) ? $newsId : null;
+            $image->userId = \yii::app()->user->id;
+            $image->save();
+
+            $this->_linkUploadedFile($image, $newUploadedFile);
+
+            // delete temporary files
+            unlink($filePath . '/' . $fileName);
+            if (file_exists($filePath . '/' . $newFileName)) {
+                unlink($filePath . '/' . $newFileName);
+            }
+
+            $this->renderJson(array(
+                'errors' => false,
+                'id' => (string)$image->_id
+            ));
+        } else {
+            $this->renderJson(array(
+                'errors' => true,
+                'message' => \yii::t('app', 'There are more than {n} images for this news. You cannot add any more.',
+                    array('{n}' => News::MAX_IMAGES_COUNT))
+            ));
+        }
     }
 
     /**

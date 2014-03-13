@@ -1,4 +1,7 @@
-<?php \yii::app()->getClientScript()->registerCoreScript('ckeditor'); ?>
+<?php
+    \yii::app()->getClientScript()->registerCoreScript('ckeditor');
+    \yii::app()->getClientScript()->registerCoreScript('plupload');
+?>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -34,10 +37,32 @@
     <br />
     <input type="hidden" name="id" value="<?=$news->commonId?>" />
     <input type="hidden" name="lang" value="<?=$news->lang?>" />
-    <div class="form-group">
-        <small><a href="http://postimage.org/index.php?um=computer&content=family" target="_blank">
-            <b><?=\yii::t('app', 'Upload images here')?></b>
-        </a></small>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group" id="uploadImagesContainer"
+                 data-images-limit="<?=\common\models\News::MAX_IMAGES_COUNT?>"
+                 data-confirm-text="<?=\yii::t('app', 'Are you sure you want to delete this image?')?>">
+                <div style="position: relative">
+                    <button class="btn btn-primary btn-upload <?= (count($newsImages) >= \common\models\News::MAX_IMAGES_COUNT) ? 'hide' : ''?>" id="uploadNewsImages">
+                        <b><?=\yii::t('app', 'Upload images')?></b>
+                    </button>
+                    <div class="help-block"></div>
+                </div>
+                <div class="images-block" style="display: inline-block">
+                    <div class="news-edit__image-item hide">
+                        <img alt="" width="75" height="auto"><br/>
+                        <button class="btn btn-link" data-confirm="<?=\yii::t('app', 'Are you sure you want to delete this image?')?>">delete</button>
+                    </div>
+                    <?php foreach($newsImages as $imageId): ?>
+                        <div class="news-edit__image-item" data-image-id="<?=$imageId?>">
+                            <img src="<?=$this->createUrl('/news/image', array('id' => $imageId))?>.jpg" alt="" width="75" height="auto"><br/>
+                            <button class="btn btn-link" data-confirm="<?=\yii::t('app', 'Are you sure you want to delete this image?')?>">delete</button>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+            </div>
+        </div>
     </div>
     <div class="form-group">
         <?php \web\widgets\user\GeoFilter::create(array('checked' => $news->geo)); ?>
