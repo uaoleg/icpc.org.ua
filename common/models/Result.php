@@ -165,11 +165,12 @@ class Result extends \common\ext\MongoDb\Document
 
     /**
      * Returns the object of the team
+     * 
      * @return Team
      */
     public function getTeam()
     {
-        if ($this->_team === null) {
+        if (($this->_team === null) && (!empty($this->teamId))) {
             $this->_team = Team::model()->findByPk(new \MongoId($this->teamId));
         }
         return $this->_team;

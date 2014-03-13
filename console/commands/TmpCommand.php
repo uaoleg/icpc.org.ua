@@ -24,6 +24,7 @@ class TmpCommand extends \console\ext\ConsoleCommand
 
     /**
      * Set isDeleted = false for all teams
+     * 
      * @version 2.2
      */
     public function actionSetTeamsNotDeleted()

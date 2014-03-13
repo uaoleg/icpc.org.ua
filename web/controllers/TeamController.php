@@ -76,7 +76,7 @@ class TeamController extends \web\ext\Controller
 
         // Get team
         $team = Team::model()->findByPk(new \MongoId($teamId));
-        if ($team === null || $team->isDeleted) {
+        if (($team === null) || $team->isDeleted) {
             $this->httpException(404);
         }
 

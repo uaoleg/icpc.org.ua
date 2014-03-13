@@ -10,8 +10,6 @@ use \common\models\User;
 class TeamController extends \web\modules\staff\ext\Controller
 {
 
-    protected $team = null;
-
     /**
      * Init
      */
@@ -24,8 +22,6 @@ class TeamController extends \web\modules\staff\ext\Controller
 
         // Set active main menu item
         $this->setNavActiveItem('main', 'team');
-
-        $this->team = Team::model()->findByPk(new \MongoId($this->request->getParam('teamId')));
     }
 
     /**
@@ -34,16 +30,19 @@ class TeamController extends \web\modules\staff\ext\Controller
      */
     public function accessRules()
     {
+        // Get team
+        $team = Team::model()->findByPk(new \MongoId($this->request->getParam('teamId')));
+
         return array(
             array(
                 'allow',
                 'actions' => array('manage'),
-                'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE => array('team' => $this->team)),
+                'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE => array('team' => $team)),
             ),
             array(
                 'allow',
                 'actions' => array('delete'),
-                'roles' => array(Rbac::OP_TEAM_DELETE => array('team' => $this->team)),
+                'roles' => array(Rbac::OP_TEAM_DELETE => array('team' => $team)),
             ),
             array(
                 'allow',
@@ -228,9 +227,13 @@ class TeamController extends \web\modules\staff\ext\Controller
      */
     public function actionDelete()
     {
+        // Get params
         $teamId = $this->request->getParam('teamId');
+
+        // Get team
         $team = Team::model()->findByPk(new \MongoId($teamId));
 
+        // Mark as deleted
         if (!isset($team)) {
             $this->httpException(404);
         } else {

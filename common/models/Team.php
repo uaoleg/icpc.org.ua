@@ -83,12 +83,6 @@ class Team extends \common\ext\MongoDb\Document
     public $schoolNameEn;
 
     /**
-     * Is team deleted
-     * @var bool
-     */
-    public $isDeleted = false;
-
-    /**
      * League
      * I-offers advanced degree in computer science
      * II-does not offer advanced degree in computer science
@@ -113,6 +107,12 @@ class Team extends \common\ext\MongoDb\Document
      * @var array
      */
     public $region = array();
+
+    /**
+     * Is team deleted
+     * @var bool
+     */
+    public $isDeleted = false;
 
     /**
      * Objects of member users
@@ -261,11 +261,11 @@ class Team extends \common\ext\MongoDb\Document
             'schoolId'      => \yii::t('app', 'Related school ID'),
             'schoolNameUk'  => \yii::t('app', 'Full name of school in ukrainian'),
             'schoolNameEn'  => \yii::t('app', 'Full name of school in english'),
-            'isDeleted'     => \yii::t('app', 'Is team deleted'),
             'league'        => \yii::t('app', 'League of a team'),
             'memberIds'     => \yii::t('app', 'List of members'),
             'state'         => \yii::t('app', 'List of state labels of a team'),
             'region'        => \yii::t('app', 'List of region labels of a team'),
+            'isDeleted'     => \yii::t('app', 'Is team deleted'),
         ));
     }
 
@@ -408,6 +408,8 @@ class Team extends \common\ext\MongoDb\Document
 
     /**
      * Scope for active teams
+     *
+     * @return Team
      */
     public function scopeByActive()
     {
