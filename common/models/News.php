@@ -116,10 +116,12 @@ class News extends \common\ext\MongoDb\Document
      */
     public function getImagesIds()
     {
-        if (!isset($this->commonId)) {
-            $images = Image::model()->findAllByAttributes(array(
-                'userId' => (string)\yii::app()->user->id
-            ));
+        if (empty($this->commonId)) {
+            $criteria = new \EMongoCriteria();
+            $criteria
+                ->addCond('newsId', '==', null)
+                ->addCond('userId', '==', (string)\yii::app()->user->id);
+            $images = Image::model()->findAll($criteria);
         } else {
             $images = Image::model()->findAllByAttributes(array(
                 'newsId' => (string)$this->commonId

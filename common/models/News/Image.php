@@ -1,6 +1,7 @@
 <?php
 namespace common\models\News;
 
+use CModelEvent;
 use common\models\UploadedFile;
 
 /**
@@ -84,6 +85,23 @@ class Image extends \common\ext\MongoDb\Document
             array('userId, fileName', 'required')
         ));
     }
+
+    /**
+     * Before validate action
+     * @return bool
+     */
+    protected function beforeValidate()
+    {
+        if (!parent::beforeValidate()) return false;
+
+        // Set newsId to null if it is empty
+        if (empty($this->newsId)) {
+            $this->newsId = null;
+        }
+
+        return true;
+    }
+
 
     /**
      * After delete action
