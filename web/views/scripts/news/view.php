@@ -9,7 +9,7 @@
         <div class="col-lg-12">
             <?php foreach($imagesIds as $imageId): ?>
                 <a href="<?=$this->createUrl('/news/image', array('id' => $imageId))?>" data-lightbox="img-<?=(string)$news->_id?>">
-                    <img src="<?=$this->createUrl('/news/image', array('id' => $imageId))?>.jpg" alt="" class="news-view__image-thumb" />
+                    <img src="<?=$this->createUrl('/news/image', array('id' => $imageId))?>" alt="" class="news-view__image-thumb" />
                 </a>
             <?php endforeach; ?>
         </div>

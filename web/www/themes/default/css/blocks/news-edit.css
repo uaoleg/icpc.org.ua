@@ -1,9 +1,13 @@
 .news-edit__image-item {
-    /*display: inline-block;*/
     float: left;
     margin: 0 10px 10px 0;
     text-align: center;
     z-index: 10;
+}
+
+.news-edit__image-item > img {
+    height: auto;
+    width: 75px;
 }
 
 .news-edit__image-item > button {
