@@ -15,6 +15,12 @@ class StatusSwitcher extends \web\ext\Widget
     public $news;
 
     /**
+     * Button size class (e.g. "btn-lg")
+     * @var string
+     */
+    public $btnSize = '';
+
+    /**
      * Run widget
      */
     public function run()
