@@ -1,3 +1,5 @@
+<?php \yii::app()->clientScript->registerCoreScript('lightbox'); ?>
+
 <div class="pull-right" style="margin-left: 20px;">
     <?php \web\widgets\filter\Year::create(array('checked' => $year)); ?>
 </div>
@@ -27,6 +29,18 @@
             <?php endif; ?>
         </h2>
         <p class="news-date"><?php \web\widgets\news\Date::create(array('news' => $news)); ?></p>
+
+        <?php if (count($news->imagesIds)): ?>
+            <div class="row">
+                <div class="col-lg-12">
+                    <?php foreach($news->imagesIds as $imageId): ?>
+                        <a href="<?=$this->createUrl('/news/image', array('id' => $imageId))?>" data-lightbox="img-<?=(string)$news->_id?>">
+                            <img src="<?=$this->createUrl('/news/image', array('id' => $imageId))?>.jpg" alt="" class="news-view__image-thumb">
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
         <p class="news-content"><?=$news->content?></p>
         <hr />
     </div>
