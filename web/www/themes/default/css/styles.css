@@ -66,6 +66,14 @@ transform: rotate(-90deg);
     padding: 0 20px;
 }
 
+.header-title p.visible-xs {
+    font-size: 18px;
+}
+
+.header-title p.visible-sm {
+    font-size: 24px;
+}
+
 .slogan {
     font-size: 18px;
     font-style: italic;

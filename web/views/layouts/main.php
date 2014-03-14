@@ -50,7 +50,16 @@
                             <img src="<?=\yii::app()->theme->baseUrl?>/images/layout/icpc.png" style="width: 98px;" />
                         </td>
                         <td>
-                            <?=\yii::t('app', 'Ukrainian Collegiate Programming Contest')?>
+                            <p class="visible-xs">
+                                <?=\yii::t('app', 'Ukrainian Collegiate Programming Contest')?>
+                            </p>
+                            <p class="visible-sm">
+                                <?=\yii::t('app', 'Ukrainian Collegiate Programming Contest')?>
+                            </p>
+                            <p class="visible-md visible-lg">
+                                <?=\yii::t('app', 'Ukrainian Collegiate Programming Contest')?>
+                            </p>
+
                         </td>
                         <td>
                             <img src="<?=\yii::app()->theme->baseUrl?>/images/layout/acm-icpc.gif" style="width: 95px;" />
