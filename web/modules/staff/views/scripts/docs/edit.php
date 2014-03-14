@@ -1,6 +1,6 @@
 <?php
     use \common\models\Document;
-    \yii::app()->getClientScript()->registerCoreScript('plupload');
+    \yii::app()->clientScript->registerCoreScript('plupload');
 ?>
 
 <script type="text/javascript">

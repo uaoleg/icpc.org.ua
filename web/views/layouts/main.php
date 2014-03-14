@@ -9,7 +9,7 @@
     <link rel="icon" type="image/x-icon" href="<?=\yii::app()->theme->baseUrl?>/favicon.ico" />
 
     <?php
-        $cs = \yii::app()->getClientScript();
+        $cs = \yii::app()->clientScript;
 
         // jQuery
         $cs->registerCoreScript('jquery');
