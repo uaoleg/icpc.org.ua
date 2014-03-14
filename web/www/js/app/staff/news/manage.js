@@ -19,12 +19,12 @@ appStaffNewsManage.prototype.init = function() {
         height: '400px',
         toolbar: [
             {
-                name: 'basicstyles',
-                items: ['Bold', 'Italic', 'Strike']
+                name: 'styles',
+                items: ['Format']
             },
             {
-                name: 'cleanup',
-                items: ['RemoveFormat']
+                name: 'basicstyles',
+                items: ['Bold', 'Italic', 'Strike']
             },
             {
                 name: 'links',
@@ -35,8 +35,8 @@ appStaffNewsManage.prototype.init = function() {
                 items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
             },
             {
-                name: 'styles',
-                items: ['Format']
+                name: 'cleanup',
+                items: ['RemoveFormat']
             }
         ]
     });
