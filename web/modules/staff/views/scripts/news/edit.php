@@ -78,7 +78,7 @@
             <?=\yii::t('app', 'Save News')?>
         </button>
         <div class="pull-right">
-            <?php \web\widgets\news\StatusSwitcher::create(array('news' => $news)); ?>
+            <?php \web\widgets\news\StatusSwitcher::create(array('news' => $news, 'btnSize' => 'btn-lg')); ?>
         </div>
     </div>
 </div>
