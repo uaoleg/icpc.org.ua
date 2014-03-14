@@ -106,6 +106,9 @@ class NewsController extends \web\ext\Controller
         ));
     }
 
+    /**
+     * Render image
+     */
     public function actionImage()
     {
         // Get params
@@ -114,13 +117,20 @@ class NewsController extends \web\ext\Controller
         // Get document
         $image = News\Image::model()->findByPk(new \MongoId($imageId));
         if ($image === null) {
-            return $this->httpException(404);
+            $this->httpException(404);
         }
 
-        // Download file
+        // Send headers
         header('Content-type: image/jpeg');
-        header('Content-Disposition: attachment; filename="' . $image->fileName . '"');
+        header('Cache-Control: public, max-age=' . SECONDS_IN_YEAR . ', pre-check=' . SECONDS_IN_YEAR);
+        header('Pragma: public');
+        header('Expires: ' . gmdate(DATE_RFC1123, time() + SECONDS_IN_YEAR));
+        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+            header('HTTP/1.1 304 Not Modified');
+            exit;
+        }
 
+        // Send content
         echo $image->file->getBytes();
     }
 
