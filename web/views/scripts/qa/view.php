@@ -1,4 +1,4 @@
-<?php \yii::app()->getClientScript()->registerCoreScript('ckeditor'); ?>
+<?php \yii::app()->clientScript->registerCoreScript('ckeditor'); ?>
 
 <script type="text/javascript">
     $(document).ready(function() {

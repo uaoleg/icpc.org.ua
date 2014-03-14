@@ -1,6 +1,6 @@
 <?php
-    \yii::app()->getClientScript()->registerCoreScript('ckeditor');
-    \yii::app()->getClientScript()->registerCoreScript('select2');
+    \yii::app()->clientScript->registerCoreScript('ckeditor');
+    \yii::app()->clientScript->registerCoreScript('select2');
 ?>
 
 <script type="text/javascript">

@@ -1,5 +1,6 @@
 /* Table of Contents:
 
+    Anchors
     Button group
     Checkbox
     Dropdown
@@ -10,6 +11,12 @@
     Table
 
 */
+
+/* Anchors
+----------------------------------------------------------------------------- */
+a:focus {
+    outline: none;
+}
 
 /* Button group
 ----------------------------------------------------------------------------- */

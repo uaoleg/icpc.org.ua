@@ -1,5 +1,5 @@
 <?php
-    \yii::app()->getClientScript()->registerCoreScript('jquery.jqgrid');
+    \yii::app()->clientScript->registerCoreScript('jquery.jqgrid');
     $this->pageTitle = \yii::t('app', '{app} - Languages', array('{app}' => \yii::app()->name));
 ?>
 

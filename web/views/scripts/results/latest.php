@@ -1,7 +1,4 @@
-<?php
-    use \common\models\User;
-    \yii::app()->getClientScript()->registerCoreScript('plupload');
-?>
+<?php \yii::app()->clientScript->registerCoreScript('plupload'); ?>
 
 <script type="text/javascript">
     $(document).ready(function() {

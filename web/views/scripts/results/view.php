@@ -1,5 +1,5 @@
 <?php
-    \yii::app()->getClientScript()->registerCoreScript('jquery.jqgrid');
+    \yii::app()->clientScript->registerCoreScript('jquery.jqgrid');
 ?>
 
 <script type="text/javascript">

@@ -1,4 +1,5 @@
-.news-view__image_item {
-    margin: 0 auto;
+.news-view__image-thumb {
     cursor: pointer;
+    margin: 0 auto;
+    width: 100px;
 }

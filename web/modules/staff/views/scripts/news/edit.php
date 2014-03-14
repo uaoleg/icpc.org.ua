@@ -1,6 +1,6 @@
 <?php
-    \yii::app()->getClientScript()->registerCoreScript('ckeditor');
-    \yii::app()->getClientScript()->registerCoreScript('plupload');
+    \yii::app()->clientScript->registerCoreScript('ckeditor');
+    \yii::app()->clientScript->registerCoreScript('plupload');
 ?>
 
 <script type="text/javascript">

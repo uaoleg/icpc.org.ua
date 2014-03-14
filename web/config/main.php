@@ -57,6 +57,15 @@ $config = array(
                     ),
                     'depends' => array('jquery'),
                 ),
+                'lightbox' => array(
+                    'js' => array(
+                        'lib/lightbox/js/lightbox-2.6.min.js',
+                    ),
+                    'css' => array(
+                        'lib/lightbox/css/lightbox.css'
+                    ),
+                    'depends' => array('jquery')
+                ),
                 'msie' => array( // Fixes for MSIE
                     'js' => array(
                         'lib/jquery/placeholder/jquery.placeholder.min.js',
