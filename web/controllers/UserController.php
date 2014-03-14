@@ -290,10 +290,21 @@ class UserController extends \web\ext\Controller
         $criteria->sort('year', \EMongoCriteria::SORT_DESC);
         $teams = Team::model()->findAll($criteria);
 
+        // Full profile view attributes
+        if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_STUDENT_VIEW_FULL, array('user' => $user))) {
+            $fullViewAttrs = array(
+                'phoneHome', 'phoneMobile', 'skype', 'acmNumber', 'studyField', 'speciality',
+                'faculty', 'group', 'schoolAdmissionYear', 'dateOfBirth', 'document',
+            );
+        } else {
+            $fullViewAttrs = array();
+        }
+
         // Render view
         $this->render('view', array(
-            'user'  => $user,
-            'teams' => $teams,
+            'user'          => $user,
+            'teams'         => $teams,
+            'fullViewAttrs' => $fullViewAttrs
         ));
     }
 

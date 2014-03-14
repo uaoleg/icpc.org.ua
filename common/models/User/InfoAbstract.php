@@ -42,24 +42,6 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public $acmNumber;
 
     /**
-     * School name
-     * @var string
-     */
-    public $schoolName;
-
-    /**
-     * Short form of the school name
-     * @var string
-     */
-    public $schoolNameShort;
-
-    /**
-     * Official post and email addresses
-     * @var string
-     */
-    public $schoolPostEmailAddresses;
-
-    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -76,9 +58,6 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
             'phoneMobile'                  => \yii::t('app', 'Mobile phone number'),
             'skype'                        => \yii::t('app', 'Skype'),
             'acmNumber'                    => \yii::t('app', 'ACM number if you have'),
-            'schoolName'                   => \yii::t('app', 'School name'),
-            'schoolNameShort'              => \yii::t('app', 'Short name of the school name'),
-            'schoolPostEmailAddresses'     => \yii::t('app', 'Official post and email addresses')
         ));
     }
 
@@ -90,7 +69,7 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, userId, schoolName, schoolNameShort, schoolPostEmailAddresses', 'required'),
+            array('lang, userId', 'required'),
             array('phone', InfoAbstract\Validator\Phone::className())
         ));
     }

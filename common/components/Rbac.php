@@ -16,7 +16,6 @@ class Rbac extends \CApplicationComponent
     /**
      * List of available operations
      */
-    const OP_STUDENT_SET_STATUS     = 'studentSetStatus';
     const OP_COACH_SET_STATUS       = 'coachSetStatus';
     const OP_COORDINATOR_SET_STATUS = 'coordinatorSetStatus';
     const OP_DOCUMENT_CREATE        = 'documentCreate';
@@ -27,6 +26,8 @@ class Rbac extends \CApplicationComponent
     const OP_NEWS_READ              = 'newsRead';
     const OP_NEWS_UPDATE            = 'newsUpdate';
     const OP_RESULT_CREATE          = 'resultCreate';
+    const OP_STUDENT_VIEW_FULL      = 'studentViewFull';
+    const OP_STUDENT_SET_STATUS     = 'studentSetStatus';
     const OP_TEAM_CREATE            = 'teamCreate';
     const OP_TEAM_READ              = 'teamRead';
     const OP_TEAM_UPDATE            = 'teamUpdate';
@@ -105,6 +106,24 @@ class Rbac extends \CApplicationComponent
     public function bizRuleStudentSetStatus(array $params)
     {
         return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
+    }
+
+    /**
+     * Biz rule to view student's full profile
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleStudentViewFull(array $params)
+    {
+        $user = $params['user'];
+        if ($user->type !== User::ROLE_STUDENT) {
+            return false;
+        } elseif ($this->checkAccess(User::ROLE_COORDINATOR_STATE)) {
+            return true;
+        } else {
+            return ($this->user->schoolId === $user->schoolId);
+        }
     }
 
     /**
