@@ -16,7 +16,29 @@ appStaffNewsManage.prototype.init = function() {
     // Init ckeditor
     self.editor = CKEDITOR.replace($('textarea[name=content]', self.$form)[0], {
         extraPlugins: 'onchange',
-        height: '400px'
+        height: '400px',
+        toolbar: [
+            {
+                name: 'basicstyles',
+                items: ['Bold', 'Italic', 'Strike']
+            },
+            {
+                name: 'cleanup',
+                items: ['RemoveFormat']
+            },
+            {
+                name: 'links',
+                items: ['Link', 'Unlink', 'Anchor']
+            },
+            {
+                name: 'list',
+                items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+            },
+            {
+                name: 'styles',
+                items: ['Format']
+            }
+        ]
     });
     self.editor.on('change', function(e) {
         self.onchange();
