@@ -128,8 +128,8 @@
 { "_id" : { "$oid" : "52248a3673bda44c250000b1" }, "category" : "app", "language" : "ru", "message" : "Requested page not found", "translation" : "Запрошенная страница не найдена" }
 { "_id" : { "$oid" : "52248a3673bda44c250000b2" }, "category" : "app", "language" : "ru", "message" : "Unknown error", "translation" : "Неизвестная ошибка" }
 { "category" : "app", "language" : "ru", "message" : "Failed to move uploaded file.", "translation" : "Не удалось переместить загруженный файл.", "_id" : { "$oid" : "52248a3673bda44c250000b3" } }
-{ "_id" : { "$oid" : "52248a3673bda44c250000b4" }, "category" : "app", "language" : "ru", "message" : "Failed to open input stream.", "translation" : "Неудалось открыть входящий поток." }
-{ "_id" : { "$oid" : "52248a3673bda44c250000b5" }, "category" : "app", "language" : "ru", "message" : "Failed to open output stream.", "translation" : "Неудалось открыть исходящий поток." }
+{ "category" : "app", "language" : "ru", "message" : "Failed to open input stream.", "translation" : "Не удалось открыть входящий поток.", "_id" : { "$oid" : "52248a3673bda44c250000b4" } }
+{ "category" : "app", "language" : "ru", "message" : "Failed to open output stream.", "translation" : "Не удалось открыть исходящий поток.", "_id" : { "$oid" : "52248a3673bda44c250000b5" } }
 { "_id" : { "$oid" : "52248a3673bda44c250000b7" }, "category" : "app", "language" : "ru", "message" : "E-mail is invalid", "translation" : "Неверный email" }
 { "_id" : { "$oid" : "52248a3673bda44c250000b8" }, "category" : "app", "language" : "ru", "message" : "Password is invalid", "translation" : "Неверный пароль" }
 { "_id" : { "$oid" : "52248a3673bda44c250000b9" }, "category" : "app", "language" : "ru", "message" : "Document", "translation" : "Документ" }
@@ -278,13 +278,10 @@
 { "_id" : { "$oid" : "5242969d445798cc118b46f0" }, "category" : "app", "language" : "en", "message" : "I'm a student", "translation" : "" }
 { "_id" : { "$oid" : "5242969d445798cc118b46fc" }, "category" : "app", "language" : "en", "message" : "No news yet.", "translation" : "" }
 { "_id" : { "$oid" : "5253c844445798cd448b45ba" }, "category" : "app", "language" : "uk", "message" : "Preview", "translation" : "Переглянути" }
-{ "_id" : { "$oid" : "5253c844445798cd448b45bb" }, "category" : "app", "language" : "uk", "message" : "Upload images here", "translation" : "Завантажити картинки тут" }
 { "_id" : { "$oid" : "5253c844445798cd448b45f4" }, "category" : "appjs", "language" : "uk", "message" : "You have unsaved changes.", "translation" : "У вас є незбережені зміни." }
 { "_id" : { "$oid" : "5253c844445798cd448b4647" }, "category" : "app", "language" : "ru", "message" : "Preview", "translation" : "Предпросмотр" }
-{ "_id" : { "$oid" : "5253c844445798cd448b4648" }, "category" : "app", "language" : "ru", "message" : "Upload images here", "translation" : "Загрузить картинки здесь" }
 { "_id" : { "$oid" : "5253c844445798cd448b4681" }, "category" : "appjs", "language" : "ru", "message" : "You have unsaved changes.", "translation" : "У вас есть несохранённые данные." }
 { "_id" : { "$oid" : "5253c844445798cd448b46d4" }, "category" : "app", "language" : "en", "message" : "Preview", "translation" : "" }
-{ "_id" : { "$oid" : "5253c844445798cd448b46d5" }, "category" : "app", "language" : "en", "message" : "Upload images here", "translation" : "" }
 { "_id" : { "$oid" : "5253c844445798cd448b470e" }, "category" : "appjs", "language" : "en", "message" : "You have unsaved changes.", "translation" : "" }
 { "_id" : { "$oid" : "52551c0f445798444b8b45b8" }, "category" : "app", "language" : "uk", "message" : "Action", "translation" : "Дія" }
 { "_id" : { "$oid" : "52551c0f445798444b8b45b9" }, "category" : "app", "language" : "uk", "message" : "Activate", "translation" : "Активувати" }
@@ -412,7 +409,6 @@
 { "category" : "app", "language" : "uk", "message" : "Answer count", "translation" : "Кількість відповідей", "_id" : { "$oid" : "5260e6a9445798b6048b45a0" } }
 { "category" : "app", "language" : "uk", "message" : "Desc", "translation" : "Опис", "_id" : { "$oid" : "5260e6a9445798b6048b45a3" } }
 { "category" : "app", "language" : "uk", "message" : "User should have some role.", "translation" : "Користувач мусить мати роль.", "_id" : { "$oid" : "5260e6a9445798b6048b45cd" } }
-{ "category" : "app", "language" : "uk", "message" : "Official post and email addresses", "translation" : "Офіційна поштова адреса", "_id" : { "$oid" : "5260e6a9445798b6048b45d4" } }
 { "category" : "app", "language" : "uk", "message" : "Home phone number", "translation" : "Домашній телефон", "_id" : { "$oid" : "5260e6a9445798b6048b45d9" } }
 { "category" : "app", "language" : "uk", "message" : "Mobile phone number", "translation" : "Мобільній телефон", "_id" : { "$oid" : "5260e6a9445798b6048b45da" } }
 { "category" : "app", "language" : "uk", "message" : "Skype", "translation" : "Skype", "_id" : { "$oid" : "5260e6a9445798b6048b45db" } }
@@ -447,7 +443,6 @@
 { "category" : "app", "language" : "ru", "message" : "Answer count", "translation" : "Количество ответов", "_id" : { "$oid" : "5260e6a9445798b6048b469b" } }
 { "category" : "app", "language" : "ru", "message" : "Desc", "translation" : "Описание", "_id" : { "$oid" : "5260e6a9445798b6048b469e" } }
 { "category" : "app", "language" : "ru", "message" : "User should have some role.", "translation" : "Пользователь должен иметь роль.", "_id" : { "$oid" : "5260e6a9445798b6048b46c8" } }
-{ "category" : "app", "language" : "ru", "message" : "Official post and email addresses", "translation" : "Официальный почтовый адрес", "_id" : { "$oid" : "5260e6a9445798b6048b46cf" } }
 { "category" : "app", "language" : "ru", "message" : "Home phone number", "translation" : "Домашний телефон", "_id" : { "$oid" : "5260e6a9445798b6048b46d4" } }
 { "category" : "app", "language" : "ru", "message" : "Mobile phone number", "translation" : "Мобильный телефон", "_id" : { "$oid" : "5260e6a9445798b6048b46d5" } }
 { "category" : "app", "language" : "ru", "message" : "Skype", "translation" : "Skype", "_id" : { "$oid" : "5260e6a9445798b6048b46d6" } }
@@ -482,7 +477,6 @@
 { "_id" : { "$oid" : "5260e6a9445798b6048b4796" }, "category" : "app", "language" : "en", "message" : "Answer count", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b4799" }, "category" : "app", "language" : "en", "message" : "Desc", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47c3" }, "category" : "app", "language" : "en", "message" : "User should have some role.", "translation" : "" }
-{ "_id" : { "$oid" : "5260e6a9445798b6048b47ca" }, "category" : "app", "language" : "en", "message" : "Official post and email addresses", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47cf" }, "category" : "app", "language" : "en", "message" : "Home phone number", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47d0" }, "category" : "app", "language" : "en", "message" : "Mobile phone number", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47d1" }, "category" : "app", "language" : "en", "message" : "Skype", "translation" : "" }
@@ -582,7 +576,6 @@
 { "category" : "app", "language" : "uk", "message" : "Last name in English", "translation" : "Прізвище англійською", "_id" : { "$oid" : "5289cb7d44579889608b45e4" } }
 { "category" : "app", "language" : "uk", "message" : "Language of the information", "translation" : "Мова інформації", "_id" : { "$oid" : "5289cb7d44579889608b45f2" } }
 { "category" : "app", "language" : "uk", "message" : "School name", "translation" : "Назва ВНЗ", "_id" : { "$oid" : "5289cb7d44579889608b45f7" } }
-{ "category" : "app", "language" : "uk", "message" : "Short name of the school name", "translation" : "Коротка назва ВНЗ", "_id" : { "$oid" : "5289cb7d44579889608b45f8" } }
 { "category" : "app", "language" : "uk", "message" : "Year", "translation" : "Рік", "_id" : { "$oid" : "5289cb7d44579889608b4609" } }
 { "category" : "app", "language" : "uk", "message" : "{attr} is incorrect", "translation" : "{attr} некоректний", "_id" : { "$oid" : "5289cb7d44579889608b4616" } }
 { "category" : "app", "language" : "uk", "message" : "To manage teams, you must specify your school on the {a}profile page{/a}.", "translation" : "Для керування командами Ви маєте вказати ВНЗ на {a}сторінці профілю{/a}.", "_id" : { "$oid" : "5289cb7d44579889608b461f" } }
@@ -593,8 +586,6 @@
 { "category" : "app", "language" : "uk", "message" : "Full name of university (english)", "translation" : "Повна назва ВНЗ (англійською)", "_id" : { "$oid" : "5289cb7d44579889608b4644" } }
 { "category" : "app", "language" : "uk", "message" : "Short name of university (english)", "translation" : "Коротка назва ВНЗ (англійською)", "_id" : { "$oid" : "5289cb7d44579889608b4645" } }
 { "category" : "app", "language" : "uk", "message" : "Name of your team", "translation" : "Назва команди", "_id" : { "$oid" : "5289cb7d44579889608b4647" } }
-{ "category" : "app", "language" : "uk", "message" : "Full name preview", "translation" : "Попередній перегляд повної назви", "_id" : { "$oid" : "5289cb7d44579889608b4648" } }
-{ "category" : "app", "language" : "uk", "message" : "Name of your team with prefix", "translation" : "Назва команди з префіксом", "_id" : { "$oid" : "5289cb7d44579889608b4649" } }
 { "category" : "app", "language" : "uk", "message" : "Members", "translation" : "Учасники", "_id" : { "$oid" : "5289cb7d44579889608b464a" } }
 { "category" : "app", "language" : "uk", "message" : "Save", "translation" : "Зберегти", "_id" : { "$oid" : "5289cb7d44579889608b464b" } }
 { "category" : "app", "language" : "uk", "message" : "Teams", "translation" : "Команди", "_id" : { "$oid" : "5289cb7d44579889608b4656" } }
@@ -616,7 +607,6 @@
 { "category" : "app", "language" : "uk", "message" : "Home phone", "translation" : "Домашній телефон", "_id" : { "$oid" : "5289cb7d44579889608b46c5" } }
 { "category" : "app", "language" : "uk", "message" : "Mobile phone", "translation" : "Мобільний телефон", "_id" : { "$oid" : "5289cb7d44579889608b46c7" } }
 { "category" : "app", "language" : "uk", "message" : "ACM Number", "translation" : "Номер ACM", "_id" : { "$oid" : "5289cb7d44579889608b46cb" } }
-{ "category" : "app", "language" : "uk", "message" : "School short name", "translation" : "Коротка назва ВНЗ", "_id" : { "$oid" : "5289cb7d44579889608b46cf" } }
 { "category" : "app", "language" : "uk", "message" : "General info", "translation" : "Основна інформація", "_id" : { "$oid" : "5289cb7d44579889608b46d4" } }
 { "category" : "app", "language" : "uk", "message" : "Additional info (ukrainian)", "translation" : "Додаткова інформація (українською)", "_id" : { "$oid" : "5289cb7d44579889608b46d5" } }
 { "category" : "app", "language" : "uk", "message" : "Additional info (english)", "translation" : "Додаткова інформація (англійською)", "_id" : { "$oid" : "5289cb7d44579889608b46d6" } }
@@ -636,7 +626,6 @@
 { "category" : "app", "language" : "ru", "message" : "Last name in English", "translation" : "Фамилия на английском", "_id" : { "$oid" : "5289cb7d44579889608b4760" } }
 { "category" : "app", "language" : "ru", "message" : "Language of the information", "translation" : "Язык информации", "_id" : { "$oid" : "5289cb7d44579889608b476e" } }
 { "category" : "app", "language" : "ru", "message" : "School name", "translation" : "Название ВУЗа", "_id" : { "$oid" : "5289cb7d44579889608b4773" } }
-{ "category" : "app", "language" : "ru", "message" : "Short name of the school name", "translation" : "Короткое названаие ВУЗа", "_id" : { "$oid" : "5289cb7d44579889608b4774" } }
 { "category" : "app", "language" : "ru", "message" : "Year", "translation" : "Год", "_id" : { "$oid" : "5289cb7d44579889608b4785" } }
 { "category" : "app", "language" : "ru", "message" : "{attr} is incorrect", "translation" : "{attr} не корректен", "_id" : { "$oid" : "5289cb7d44579889608b4792" } }
 { "category" : "app", "language" : "ru", "message" : "To manage teams, you must specify your school on the {a}profile page{/a}.", "translation" : "Для управления командами, Вы должны указать свой ВУЗ на {a}странице профиля{/a}.", "_id" : { "$oid" : "5289cb7d44579889608b479b" } }
@@ -647,8 +636,6 @@
 { "category" : "app", "language" : "ru", "message" : "Full name of university (english)", "translation" : "Полное имя ВУЗа (на английском)", "_id" : { "$oid" : "5289cb7d44579889608b47c0" } }
 { "category" : "app", "language" : "ru", "message" : "Short name of university (english)", "translation" : "Короткое имя ВУЗа (на английском)", "_id" : { "$oid" : "5289cb7d44579889608b47c1" } }
 { "category" : "app", "language" : "ru", "message" : "Name of your team", "translation" : "Имя команды", "_id" : { "$oid" : "5289cb7d44579889608b47c3" } }
-{ "category" : "app", "language" : "ru", "message" : "Full name preview", "translation" : "Предпросмотр полного имени", "_id" : { "$oid" : "5289cb7d44579889608b47c4" } }
-{ "category" : "app", "language" : "ru", "message" : "Name of your team with prefix", "translation" : "Имя команды с префиксом", "_id" : { "$oid" : "5289cb7d44579889608b47c5" } }
 { "category" : "app", "language" : "ru", "message" : "Members", "translation" : "Участники", "_id" : { "$oid" : "5289cb7d44579889608b47c6" } }
 { "category" : "app", "language" : "ru", "message" : "Save", "translation" : "Сохранить", "_id" : { "$oid" : "5289cb7d44579889608b47c7" } }
 { "category" : "app", "language" : "ru", "message" : "Teams", "translation" : "Команды", "_id" : { "$oid" : "5289cb7d44579889608b47d2" } }
@@ -670,7 +657,6 @@
 { "category" : "app", "language" : "ru", "message" : "Home phone", "translation" : "Домашний телефон", "_id" : { "$oid" : "5289cb7d44579889608b4841" } }
 { "category" : "app", "language" : "ru", "message" : "Mobile phone", "translation" : "Мобильный телефон", "_id" : { "$oid" : "5289cb7d44579889608b4843" } }
 { "category" : "app", "language" : "ru", "message" : "ACM Number", "translation" : "Номер ACM", "_id" : { "$oid" : "5289cb7d44579889608b4847" } }
-{ "category" : "app", "language" : "ru", "message" : "School short name", "translation" : "Короткое имя ВУЗа", "_id" : { "$oid" : "5289cb7d44579889608b484b" } }
 { "category" : "app", "language" : "ru", "message" : "General info", "translation" : "Основные данные", "_id" : { "$oid" : "5289cb7d44579889608b4850" } }
 { "category" : "app", "language" : "ru", "message" : "Additional info (ukrainian)", "translation" : "Доп информация (на украинском)", "_id" : { "$oid" : "5289cb7d44579889608b4851" } }
 { "category" : "app", "language" : "ru", "message" : "Additional info (english)", "translation" : "Доп. информация (на английском)", "_id" : { "$oid" : "5289cb7d44579889608b4852" } }
@@ -690,7 +676,6 @@
 { "_id" : { "$oid" : "5289cb7d44579889608b48dc" }, "category" : "app", "language" : "en", "message" : "Last name in English", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b48ea" }, "category" : "app", "language" : "en", "message" : "Language of the information", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b48ef" }, "category" : "app", "language" : "en", "message" : "School name", "translation" : "" }
-{ "_id" : { "$oid" : "5289cb7d44579889608b48f0" }, "category" : "app", "language" : "en", "message" : "Short name of the school name", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b4901" }, "category" : "app", "language" : "en", "message" : "Year", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b490e" }, "category" : "app", "language" : "en", "message" : "{attr} is incorrect", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b4917" }, "category" : "app", "language" : "en", "message" : "To manage teams, you must specify your school on the {a}profile page{/a}.", "translation" : "" }
@@ -701,8 +686,6 @@
 { "_id" : { "$oid" : "5289cb7d44579889608b493c" }, "category" : "app", "language" : "en", "message" : "Full name of university (english)", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b493d" }, "category" : "app", "language" : "en", "message" : "Short name of university (english)", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b493f" }, "category" : "app", "language" : "en", "message" : "Name of your team", "translation" : "" }
-{ "_id" : { "$oid" : "5289cb7d44579889608b4940" }, "category" : "app", "language" : "en", "message" : "Full name preview", "translation" : "" }
-{ "_id" : { "$oid" : "5289cb7d44579889608b4941" }, "category" : "app", "language" : "en", "message" : "Name of your team with prefix", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b4942" }, "category" : "app", "language" : "en", "message" : "Members", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b4943" }, "category" : "app", "language" : "en", "message" : "Save", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b494e" }, "category" : "app", "language" : "en", "message" : "Teams", "translation" : "" }
@@ -724,7 +707,6 @@
 { "_id" : { "$oid" : "5289cb7d44579889608b49bd" }, "category" : "app", "language" : "en", "message" : "Home phone", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b49bf" }, "category" : "app", "language" : "en", "message" : "Mobile phone", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b49c3" }, "category" : "app", "language" : "en", "message" : "ACM Number", "translation" : "" }
-{ "_id" : { "$oid" : "5289cb7d44579889608b49c7" }, "category" : "app", "language" : "en", "message" : "School short name", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b49cc" }, "category" : "app", "language" : "en", "message" : "General info", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b49cd" }, "category" : "app", "language" : "en", "message" : "Additional info (ukrainian)", "translation" : "" }
 { "_id" : { "$oid" : "5289cb7d44579889608b49ce" }, "category" : "app", "language" : "en", "message" : "Additional info (english)", "translation" : "" }
@@ -891,7 +873,6 @@
 { "category" : "app", "language" : "uk", "message" : "E-mail was resent successfully!", "translation" : "E-mail повідомлення успішно відіслано повторно!", "_id" : { "$oid" : "52dce3a7445798d1188b46a6" } }
 { "category" : "app", "language" : "uk", "message" : "Create a new Question", "translation" : "Створити нове питання", "_id" : { "$oid" : "52dce3a7445798d1188b46c4" } }
 { "category" : "app", "language" : "uk", "message" : "Edit Question", "translation" : "Редагувати питання", "_id" : { "$oid" : "52dce3a7445798d1188b46c5" } }
-{ "category" : "app", "language" : "uk", "message" : "List of tags", "translation" : "Лист тегов", "_id" : { "$oid" : "52dce3a7445798d1188b46c7" } }
 { "category" : "app", "language" : "uk", "message" : "Save question", "translation" : "Зберегти запитання", "_id" : { "$oid" : "52dce3a7445798d1188b46c8" } }
 { "category" : "app", "language" : "uk", "message" : "Latest Questions", "translation" : "Останні запитання", "_id" : { "$oid" : "52dce3a7445798d1188b46c9" } }
 { "category" : "app", "language" : "uk", "message" : "Ask Question", "translation" : "Запитати", "_id" : { "$oid" : "52dce3a7445798d1188b46ca" } }
@@ -922,7 +903,6 @@
 { "category" : "app", "language" : "ru", "message" : "E-mail was resent successfully!", "translation" : "E-mail сообщение было успешно отправлено повторно!", "_id" : { "$oid" : "52dce3a8445798d1188b4880" } }
 { "category" : "app", "language" : "ru", "message" : "Create a new Question", "translation" : "Создать новый вопрос", "_id" : { "$oid" : "52dce3a8445798d1188b489e" } }
 { "category" : "app", "language" : "ru", "message" : "Edit Question", "translation" : "Редактировать вопрос", "_id" : { "$oid" : "52dce3a8445798d1188b489f" } }
-{ "category" : "app", "language" : "ru", "message" : "List of tags", "translation" : "Список тэгов", "_id" : { "$oid" : "52dce3a8445798d1188b48a1" } }
 { "category" : "app", "language" : "ru", "message" : "Save question", "translation" : "Сохранить вопрос", "_id" : { "$oid" : "52dce3a8445798d1188b48a2" } }
 { "category" : "app", "language" : "ru", "message" : "Latest Questions", "translation" : "Последние вопросы", "_id" : { "$oid" : "52dce3a8445798d1188b48a3" } }
 { "category" : "app", "language" : "ru", "message" : "Ask Question", "translation" : "Задать вопрос", "_id" : { "$oid" : "52dce3a8445798d1188b48a4" } }
@@ -953,7 +933,6 @@
 { "_id" : { "$oid" : "52dce3a8445798d1188b4a5a" }, "category" : "app", "language" : "en", "message" : "E-mail was resent successfully!", "translation" : "" }
 { "_id" : { "$oid" : "52dce3a8445798d1188b4a78" }, "category" : "app", "language" : "en", "message" : "Create a new Question", "translation" : "" }
 { "_id" : { "$oid" : "52dce3a8445798d1188b4a79" }, "category" : "app", "language" : "en", "message" : "Edit Question", "translation" : "" }
-{ "_id" : { "$oid" : "52dce3a8445798d1188b4a7b" }, "category" : "app", "language" : "en", "message" : "List of tags", "translation" : "" }
 { "_id" : { "$oid" : "52dce3a8445798d1188b4a7c" }, "category" : "app", "language" : "en", "message" : "Save question", "translation" : "" }
 { "_id" : { "$oid" : "52dce3a8445798d1188b4a7d" }, "category" : "app", "language" : "en", "message" : "Latest Questions", "translation" : "" }
 { "_id" : { "$oid" : "52dce3a8445798d1188b4a7e" }, "category" : "app", "language" : "en", "message" : "Ask Question", "translation" : "" }
@@ -997,43 +976,31 @@
 { "category" : "app", "language" : "uk", "message" : "Number of stage", "translation" : "Номер етапу", "_id" : { "$oid" : "52f0ff1b445798b64e8b45cf" } }
 { "category" : "app", "language" : "uk", "message" : "Stage in which team participates", "translation" : "Етап, в якому приймала участь команда", "_id" : { "$oid" : "52f0ff1b445798b64e8b45e9" } }
 { "category" : "app", "language" : "uk", "message" : "Can increase the Stage Number by only 1.", "translation" : "Можливо збільшити номер етапу лиша на 1.", "_id" : { "$oid" : "52f0ff1b445798b64e8b45f7" } }
-{ "category" : "app", "language" : "uk", "message" : "1st Stage Results", "translation" : "Результати 1-го етапу", "_id" : { "$oid" : "52f0ff1b445798b64e8b46d9" } }
-{ "category" : "app", "language" : "uk", "message" : "2nd Stage Results", "translation" : "Результати 2-го етапу", "_id" : { "$oid" : "52f0ff1b445798b64e8b46db" } }
-{ "category" : "app", "language" : "uk", "message" : "3rd Stage Results", "translation" : "Результати 3-го етапу", "_id" : { "$oid" : "52f0ff1b445798b64e8b46dd" } }
 { "category" : "app", "language" : "uk", "message" : "stage", "translation" : "етап", "_id" : { "$oid" : "52f0ff1b445798b64e8b46eb" } }
 { "category" : "app", "language" : "uk", "message" : "Stage is completed", "translation" : "Етап завершено", "_id" : { "$oid" : "52f0ff1b445798b64e8b46ec" } }
 { "category" : "app", "language" : "uk", "message" : "Stage", "translation" : "Етап", "_id" : { "$oid" : "52f0ff1b445798b64e8b46f4" } }
 { "category" : "app", "language" : "ru", "message" : "Number of stage", "translation" : "Номер этапа", "_id" : { "$oid" : "52f0ff1b445798b64e8b47bc" } }
 { "category" : "app", "language" : "ru", "message" : "Stage in which team participates", "translation" : "Этап, в котором учавствует команда", "_id" : { "$oid" : "52f0ff1b445798b64e8b47d6" } }
 { "category" : "app", "language" : "ru", "message" : "Can increase the Stage Number by only 1.", "translation" : "Номер этапа может быть увеличен только на 1.", "_id" : { "$oid" : "52f0ff1b445798b64e8b47e4" } }
-{ "category" : "app", "language" : "ru", "message" : "1st Stage Results", "translation" : "Результаты 1-го этапа", "_id" : { "$oid" : "52f0ff1c445798b64e8b48c6" } }
-{ "category" : "app", "language" : "ru", "message" : "2nd Stage Results", "translation" : "Результаты 2-го этапа", "_id" : { "$oid" : "52f0ff1c445798b64e8b48c8" } }
-{ "category" : "app", "language" : "ru", "message" : "3rd Stage Results", "translation" : "Результаты 3-го этапа", "_id" : { "$oid" : "52f0ff1c445798b64e8b48ca" } }
 { "category" : "app", "language" : "ru", "message" : "stage", "translation" : "этап", "_id" : { "$oid" : "52f0ff1c445798b64e8b48d8" } }
 { "category" : "app", "language" : "ru", "message" : "Stage is completed", "translation" : "Этап завершен", "_id" : { "$oid" : "52f0ff1c445798b64e8b48d9" } }
 { "category" : "app", "language" : "ru", "message" : "Stage", "translation" : "Этап", "_id" : { "$oid" : "52f0ff1c445798b64e8b48e1" } }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b49a9" }, "category" : "app", "language" : "en", "message" : "Number of stage", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b49c3" }, "category" : "app", "language" : "en", "message" : "Stage in which team participates", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b49d1" }, "category" : "app", "language" : "en", "message" : "Can increase the Stage Number by only 1.", "translation" : "" }
-{ "_id" : { "$oid" : "52f0ff1c445798b64e8b4ab3" }, "category" : "app", "language" : "en", "message" : "1st Stage Results", "translation" : "" }
-{ "_id" : { "$oid" : "52f0ff1c445798b64e8b4ab5" }, "category" : "app", "language" : "en", "message" : "2nd Stage Results", "translation" : "" }
-{ "_id" : { "$oid" : "52f0ff1c445798b64e8b4ab7" }, "category" : "app", "language" : "en", "message" : "3rd Stage Results", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b4ac5" }, "category" : "app", "language" : "en", "message" : "stage", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b4ac6" }, "category" : "app", "language" : "en", "message" : "Stage is completed", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b4ace" }, "category" : "app", "language" : "en", "message" : "Stage", "translation" : "" }
 { "category" : "app", "language" : "uk", "message" : "Absolute Place", "translation" : "Абсолютне місце", "_id" : { "$oid" : "52f4a51044579838608b45d1" } }
 { "category" : "app", "language" : "uk", "message" : "Prize Place", "translation" : "Призове місце", "_id" : { "$oid" : "52f4a51044579838608b45d2" } }
-{ "category" : "app", "language" : "uk", "message" : "To upload results you have to specify your school at your {a}profile page{/a}", "translation" : "Для завантаження результатів ви повинні вказати ваш учбовий заклад на вашій {a}сторінці профіля{/a}", "_id" : { "$oid" : "52f4a51044579838608b46e4" } }
 { "category" : "app", "language" : "uk", "message" : "Absolute place", "translation" : "Абсолютне місце", "_id" : { "$oid" : "52f4a51044579838608b46ed" } }
 { "category" : "app", "language" : "uk", "message" : "Prize place", "translation" : "Призове місце", "_id" : { "$oid" : "52f4a51044579838608b46f0" } }
 { "category" : "app", "language" : "ru", "message" : "Absolute Place", "translation" : "Абсолютное место", "_id" : { "$oid" : "52f4a51044579838608b47c2" } }
 { "category" : "app", "language" : "ru", "message" : "Prize Place", "translation" : "Призовое место", "_id" : { "$oid" : "52f4a51044579838608b47c3" } }
-{ "category" : "app", "language" : "ru", "message" : "To upload results you have to specify your school at your {a}profile page{/a}", "translation" : "Для загрузки результатов вы должны указать ваше учебное заведение на вашей {a}странице профиля{/a}", "_id" : { "$oid" : "52f4a51044579838608b48d5" } }
 { "category" : "app", "language" : "ru", "message" : "Absolute place", "translation" : "Абсолютное место", "_id" : { "$oid" : "52f4a51044579838608b48de" } }
 { "category" : "app", "language" : "ru", "message" : "Prize place", "translation" : "Призовое место", "_id" : { "$oid" : "52f4a51044579838608b48e1" } }
 { "_id" : { "$oid" : "52f4a51144579838608b49b3" }, "category" : "app", "language" : "en", "message" : "Absolute Place", "translation" : "" }
 { "_id" : { "$oid" : "52f4a51144579838608b49b4" }, "category" : "app", "language" : "en", "message" : "Prize Place", "translation" : "" }
-{ "_id" : { "$oid" : "52f4a51144579838608b4ac6" }, "category" : "app", "language" : "en", "message" : "To upload results you have to specify your school at your {a}profile page{/a}", "translation" : "" }
 { "_id" : { "$oid" : "52f4a51144579838608b4acf" }, "category" : "app", "language" : "en", "message" : "Absolute place", "translation" : "" }
 { "_id" : { "$oid" : "52f4a51144579838608b4ad2" }, "category" : "app", "language" : "en", "message" : "Prize place", "translation" : "" }
 { "category" : "app", "language" : "uk", "message" : "League of a team", "translation" : "Ліга команди", "_id" : { "$oid" : "530225434457988f168b45f2" } }
@@ -1063,3 +1030,66 @@
 { "category" : "app", "language" : "ru", "message" : "Register now!", "translation" : "Зарегистрируйтесь сейчас!", "_id" : { "$oid" : "530736d4445798d1318b488f" } }
 { "_id" : { "$oid" : "530736d5445798d1318b4a7d" }, "category" : "app", "language" : "en", "message" : "Do not have an account?", "translation" : "" }
 { "_id" : { "$oid" : "530736d5445798d1318b4a7e" }, "category" : "app", "language" : "en", "message" : "Register now!", "translation" : "" }
+{ "category" : "app", "language" : "uk", "message" : "ID of the news", "translation" : "ID новини", "_id" : { "$oid" : "5326b96a44579856308b45b8" } }
+{ "category" : "app", "language" : "uk", "message" : "Image title", "translation" : "Назва фотографії", "_id" : { "$oid" : "5326b96a44579856308b45b9" } }
+{ "category" : "app", "language" : "uk", "message" : "Image extension", "translation" : "Розширення фотографії", "_id" : { "$oid" : "5326b96a44579856308b45ba" } }
+{ "category" : "app", "language" : "uk", "message" : "Is team deleted", "translation" : "Чи видалено команду", "_id" : { "$oid" : "5326b96a44579856308b45f9" } }
+{ "category" : "app", "language" : "uk", "message" : "Team name should be prefixed with short school name.", "translation" : "Ім'я команди має починатися із абревіатури вашого ВНЗ.", "_id" : { "$oid" : "5326b96a44579856308b4600" } }
+{ "category" : "app", "language" : "uk", "message" : "Team name can not consist of short school name only.", "translation" : "Ім'я команди не може містити лише абрівіатуру ВНЗ.", "_id" : { "$oid" : "5326b96a44579856308b4601" } }
+{ "category" : "app", "language" : "uk", "message" : "Not all results were saved!", "translation" : "Не всі результати було збережено!", "_id" : { "$oid" : "5326b96b44579856308b4641" } }
+{ "category" : "app", "language" : "uk", "message" : "There are more than {n} images for this news. You cannot add any more.", "translation" : "У новині міститься більше ніж {n} фотографій. Ви не можете додати більше.", "_id" : { "$oid" : "5326b96b44579856308b4642" } }
+{ "category" : "app", "language" : "uk", "message" : "Are you sure you want to delete this image?", "translation" : "Ви впевнені, что бажаєте видалити цю фотографію?", "_id" : { "$oid" : "5326b96b44579856308b466e" } }
+{ "category" : "app", "language" : "uk", "message" : "Upload images", "translation" : "Завантажити фотографії", "_id" : { "$oid" : "5326b96b44579856308b466f" } }
+{ "category" : "app", "language" : "uk", "message" : "delete", "translation" : "видалити", "_id" : { "$oid" : "5326b96b44579856308b4672" } }
+{ "category" : "app", "language" : "uk", "message" : "List of Students", "translation" : "Список студентів", "_id" : { "$oid" : "5326b96b44579856308b4681" } }
+{ "category" : "app", "language" : "uk", "message" : "School Info", "translation" : "Інформація про ВНЗ", "_id" : { "$oid" : "5326b96b44579856308b4690" } }
+{ "category" : "app", "language" : "uk", "message" : "Students", "translation" : "Студенти", "_id" : { "$oid" : "5326b96b44579856308b469e" } }
+{ "category" : "app", "language" : "uk", "message" : "Your school", "translation" : "Ваш ВНЗ", "_id" : { "$oid" : "5326b96b44579856308b46cf" } }
+{ "category" : "app", "language" : "uk", "message" : "1st Phase Results", "translation" : "Результати 1го етапу", "_id" : { "$oid" : "5326b96b44579856308b46ed" } }
+{ "category" : "app", "language" : "uk", "message" : "2nd Phase Results", "translation" : "Результати 2го етапу", "_id" : { "$oid" : "5326b96b44579856308b46ef" } }
+{ "category" : "app", "language" : "uk", "message" : "3rd Phase Results", "translation" : "Результати 3го етапу", "_id" : { "$oid" : "5326b96b44579856308b46f1" } }
+{ "category" : "app", "language" : "uk", "message" : "Are you sure you want to delete the team?", "translation" : "Ви впевнені, що бажаєте видалити цю команду?", "_id" : { "$oid" : "5326b96b44579856308b4712" } }
+{ "category" : "app", "language" : "ru", "message" : "ID of the news", "translation" : "ID новости", "_id" : { "$oid" : "5326b96b44579856308b47b7" } }
+{ "category" : "app", "language" : "ru", "message" : "Image title", "translation" : "Название фотографии", "_id" : { "$oid" : "5326b96b44579856308b47b8" } }
+{ "category" : "app", "language" : "ru", "message" : "Image extension", "translation" : "Расширение картинки", "_id" : { "$oid" : "5326b96b44579856308b47b9" } }
+{ "category" : "app", "language" : "ru", "message" : "Is team deleted", "translation" : "Удалены ли команда", "_id" : { "$oid" : "5326b96b44579856308b47f8" } }
+{ "category" : "app", "language" : "ru", "message" : "Team name should be prefixed with short school name.", "translation" : "Имя команды должно начинаться с аббривиатуры ВУЗа.", "_id" : { "$oid" : "5326b96b44579856308b47ff" } }
+{ "category" : "app", "language" : "ru", "message" : "Team name can not consist of short school name only.", "translation" : "Имя команды не может состоять только из аббривиатуры ВУЗа.", "_id" : { "$oid" : "5326b96b44579856308b4800" } }
+{ "category" : "app", "language" : "ru", "message" : "Not all results were saved!", "translation" : "Не все результаты были сохранены!", "_id" : { "$oid" : "5326b96b44579856308b4840" } }
+{ "category" : "app", "language" : "ru", "message" : "There are more than {n} images for this news. You cannot add any more.", "translation" : "В вашей новости более {n} фотографий. Вы не можете добавить больше.", "_id" : { "$oid" : "5326b96b44579856308b4841" } }
+{ "category" : "app", "language" : "ru", "message" : "Are you sure you want to delete this image?", "translation" : "Вы уверены, что хотите удалить фотографию?", "_id" : { "$oid" : "5326b96b44579856308b486d" } }
+{ "category" : "app", "language" : "ru", "message" : "Upload images", "translation" : "Загрузить фотографии", "_id" : { "$oid" : "5326b96b44579856308b486e" } }
+{ "category" : "app", "language" : "ru", "message" : "delete", "translation" : "удалить", "_id" : { "$oid" : "5326b96b44579856308b4871" } }
+{ "category" : "app", "language" : "ru", "message" : "List of Students", "translation" : "Список студентов", "_id" : { "$oid" : "5326b96b44579856308b4880" } }
+{ "category" : "app", "language" : "ru", "message" : "School Info", "translation" : "Информация о ВУЗе", "_id" : { "$oid" : "5326b96b44579856308b488f" } }
+{ "category" : "app", "language" : "ru", "message" : "Students", "translation" : "Студенты", "_id" : { "$oid" : "5326b96b44579856308b489d" } }
+{ "category" : "app", "language" : "ru", "message" : "Your school", "translation" : "Ваш ВУЗ", "_id" : { "$oid" : "5326b96b44579856308b48ce" } }
+{ "category" : "app", "language" : "ru", "message" : "1st Phase Results", "translation" : "Результаты 1го этапа", "_id" : { "$oid" : "5326b96b44579856308b48ec" } }
+{ "category" : "app", "language" : "ru", "message" : "2nd Phase Results", "translation" : "Результаты 2го этапа", "_id" : { "$oid" : "5326b96b44579856308b48ee" } }
+{ "category" : "app", "language" : "ru", "message" : "3rd Phase Results", "translation" : "Результаты 3го этапа", "_id" : { "$oid" : "5326b96b44579856308b48f0" } }
+{ "category" : "app", "language" : "ru", "message" : "Are you sure you want to delete the team?", "translation" : "Вы уверены, что хотите удалить команду?", "_id" : { "$oid" : "5326b96b44579856308b4911" } }
+{ "_id" : { "$oid" : "5326b96b44579856308b49b6" }, "category" : "app", "language" : "en", "message" : "ID of the news", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b49b7" }, "category" : "app", "language" : "en", "message" : "Image title", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b49b8" }, "category" : "app", "language" : "en", "message" : "Image extension", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b49f7" }, "category" : "app", "language" : "en", "message" : "Is team deleted", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b49fe" }, "category" : "app", "language" : "en", "message" : "Team name should be prefixed with short school name.", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b49ff" }, "category" : "app", "language" : "en", "message" : "Team name can not consist of short school name only.", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4a3f" }, "category" : "app", "language" : "en", "message" : "Not all results were saved!", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4a40" }, "category" : "app", "language" : "en", "message" : "There are more than {n} images for this news. You cannot add any more.", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4a6c" }, "category" : "app", "language" : "en", "message" : "Are you sure you want to delete this image?", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4a6d" }, "category" : "app", "language" : "en", "message" : "Upload images", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4a70" }, "category" : "app", "language" : "en", "message" : "delete", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4a7f" }, "category" : "app", "language" : "en", "message" : "List of Students", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4a8e" }, "category" : "app", "language" : "en", "message" : "School Info", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4a9c" }, "category" : "app", "language" : "en", "message" : "Students", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4acd" }, "category" : "app", "language" : "en", "message" : "Your school", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4aeb" }, "category" : "app", "language" : "en", "message" : "1st Phase Results", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4aed" }, "category" : "app", "language" : "en", "message" : "2nd Phase Results", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4aef" }, "category" : "app", "language" : "en", "message" : "3rd Phase Results", "translation" : "" }
+{ "_id" : { "$oid" : "5326b96b44579856308b4b10" }, "category" : "app", "language" : "en", "message" : "Are you sure you want to delete the team?", "translation" : "" }
+{ "category" : "app", "language" : "uk", "message" : "Filter questions by following tags", "translation" : "Фільтруйте питання за наступними тегами", "_id" : { "$oid" : "5326bcb244579891308b46e6" } }
+{ "category" : "app", "language" : "ru", "message" : "Filter questions by following tags", "translation" : "Фильтруйте вопросы по следующим тегам", "_id" : { "$oid" : "5326bcb244579891308b48e5" } }
+{ "_id" : { "$oid" : "5326bcb244579891308b4ae4" }, "category" : "app", "language" : "en", "message" : "Filter questions by following tags", "translation" : "" }
+{ "category" : "app", "language" : "uk", "message" : "To upload results you have to specify your school at your {a}profile page{/a}", "translation" : "Щоби завантажити результати, ви маєте вказати ваш ВНЗ на сторінці {a}вашого профілю{/a}", "_id" : { "$oid" : "5326be85445798e1308b46f7" } }
+{ "category" : "app", "language" : "ru", "message" : "To upload results you have to specify your school at your {a}profile page{/a}", "translation" : "Чтобы загрузить результаты, вам необходимо указать ваш ВУЗ на странице {a}вашего профиля{/a}", "_id" : { "$oid" : "5326be85445798e1308b48f6" } }
+{ "_id" : { "$oid" : "5326be85445798e1308b4af5" }, "category" : "app", "language" : "en", "message" : "To upload results you have to specify your school at your {a}profile page{/a}", "translation" : "" }
