@@ -104,8 +104,10 @@
                             </button>
                         <?php else: ?>
                             <div class="alert alert-danger">
-                                <?=\yii::t('app', 'To upload results you have to specify your school at your {a}profile page</a>',
-                                array('{a}' => '<a href="' . $this->createUrl('/user/me') . '">'))?>
+                                <?=\yii::t('app', 'To upload results you have to specify your school at your {a}profile page{/a}', array(
+                                    '{a}'   => '<a href="' . $this->createUrl('/user/me') . '">',
+                                    '{/a}'  => '</a>',
+                                ))?>
                             </div>
                         <?php endif; ?>
                     </div>
