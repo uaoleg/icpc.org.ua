@@ -98,12 +98,14 @@ class TeamController extends \web\modules\staff\ext\Controller
         // Display manage page
         else {
 
-            if (empty($school->shortNameUk) || empty($school->fullNameEn) || empty($school->shortNameEn)) {
-                $this->redirect($this->createUrl('/staff/team/schoolComplete'));
-            }
-
             // Get params
             $teamId = $this->request->getParam('id');
+
+            // If school is not complete
+            if (empty($school->shortNameUk) || empty($school->fullNameEn) || empty($school->shortNameEn)) {
+                \yii::app()->user->setFlash('teamManageId', $teamId);
+                $this->redirect($this->createUrl('schoolComplete'));
+            }
 
             // Get team
             if (isset($teamId)) {
@@ -120,7 +122,7 @@ class TeamController extends \web\modules\staff\ext\Controller
             // Get students from the school
             $allUsers = User::model()->findAllByAttributes(array(
                 'schoolId' => (string)$school->_id,
-                'type'     => User::ROLE_STUDENT
+                'type'     => User::ROLE_STUDENT,
             ));
             $allUsersIds = array();
             foreach ($allUsers as $user) {
@@ -130,7 +132,7 @@ class TeamController extends \web\modules\staff\ext\Controller
             // Get all team members for this year and from the school
             $usersInTeam = Team::model()->getCollection()->distinct('memberIds', array(
                 'year'     => (int)$team->year,
-                'schoolId' => (string)$school->_id
+                'schoolId' => (string)$school->_id,
             ));
 
             // Get all users from the school and not in the teams
@@ -147,7 +149,6 @@ class TeamController extends \web\modules\staff\ext\Controller
                 'school'    => $school,
                 'users'     => $users,
                 'team'      => $team,
-                'schoolShortNameEn' => $school->shortNameEn
             ));
 
         }
@@ -162,6 +163,7 @@ class TeamController extends \web\modules\staff\ext\Controller
 
         // Update school
         if ($this->request->isPostRequest) {
+
             // Get params
             $shortNameUk    = $this->request->getPost('shortNameUk');
             $fullNameEn     = $this->request->getPost('fullNameEn');
@@ -172,15 +174,31 @@ class TeamController extends \web\modules\staff\ext\Controller
             $school->setAttributes(array(
                 'shortNameUk'  => $shortNameUk,
                 'fullNameEn'   => $fullNameEn,
-                'shortNameEn'  => $shortNameEn
+                'shortNameEn'  => $shortNameEn,
             ), false);
             $school->save();
 
+            // Define redirect URL
+            if (!$school->hasErrors()) {
+                $teamId = \yii::app()->user->getFlash('teamManageId');
+                $urlParams = array();
+                if (!empty($teamId)) {
+                    $urlParams['id'] = $teamId;
+                }
+                $url = $this->createUrl('manage', $urlParams);
+            } else {
+                $url = '';
+            }
+
             // Render json
             $this->renderJson(array(
-                'errors' => $school->hasErrors() ? $school->getErrors() : false
+                'errors'    => $school->hasErrors() ? $school->getErrors() : false,
+                'url'       => $url,
             ));
-        } else {
+        }
+
+        // Show complete page
+        else {
             if ($school === null) {
                 $this->render('manageError', array(
                     'error' => \yii::t('app', 'To manage teams, you must specify your school on the {a}profile page{/a}.', array(
@@ -190,7 +208,7 @@ class TeamController extends \web\modules\staff\ext\Controller
                 ));
             } else {
                 $this->render('schoolComplete', array(
-                    'school' => $school
+                    'school' => $school,
                 ));
             }
         }

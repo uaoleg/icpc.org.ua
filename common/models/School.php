@@ -191,18 +191,6 @@ class School extends \common\ext\MongoDb\Document
     }
 
     /**
-     * Before validate action
-     *
-     * @return bool
-     */
-    protected function beforeValidate()
-    {
-        if (!parent::beforeValidate()) return false;
-
-        return true;
-    }
-
-    /**
      * After save action
      */
     protected function afterSave()

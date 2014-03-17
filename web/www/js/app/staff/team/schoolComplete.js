@@ -20,7 +20,7 @@ function appStaffTeamSchoolComplete() {
                 if (response.errors) {
                     $this.prop('disabled', false);
                 } else {
-                    location.href = app.baseUrl + '/staff/team/manage' ;
+                    location.href = response.url;
                 }
             }
         });

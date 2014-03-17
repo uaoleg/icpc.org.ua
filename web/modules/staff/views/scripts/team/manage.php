@@ -21,12 +21,13 @@
             <div class="panel-body form">
 
                 <div class="form-group">
-                    <p class="form-control-static"><strong><?=$team->year?></strong>&nbsp;<?=\yii::t('app', 'year')?></p>
+                    <p class="form-control-static"><strong><?=\yii::t('app', 'Year')?></strong>: <?=$team->year?></p>
                 </div>
 
                 <div class="form-group">
                     <p class="form-control-static">
-                        <?=(\yii::app()->language === 'en') ? $school->fullNameEn : $school->fullNameUk?>
+                        <strong><?=\yii::t('app', 'School')?></strong>:
+                        <?=$school->schoolName?>
                     </p>
                 </div>
 
@@ -35,8 +36,8 @@
                 <div class="form-group">
                     <label for="name"><?=\yii::t('app', 'Name of a team')?></label>
                     <input type="text" class="form-control" id="name" name="name"
-                           data-prefix="<?=\CHtml::encode($schoolShortNameEn)?>"
-                           value="<?=(!empty($team->name)) ? \CHtml::encode($team->name) : $schoolShortNameEn?>"
+                           data-prefix="<?=\CHtml::encode($school->shortNameEn)?>"
+                           value="<?=(!empty($team->name)) ? \CHtml::encode($team->name) : \CHtml::encode($school->shortNameEn)?>"
                            placeholder="<?=\yii::t('app', 'Name of your team')?>">
                 </div>
 
