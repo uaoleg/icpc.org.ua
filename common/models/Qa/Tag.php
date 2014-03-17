@@ -111,7 +111,7 @@ class Tag extends \common\ext\MongoDb\Document
         }
 
         // Convert to string
-        $this->name = trim(mb_strtolower($this->name));
+        $this->name = mb_strtolower($this->name);
 
         // Set created date
         if ($this->dateCreated == null) {

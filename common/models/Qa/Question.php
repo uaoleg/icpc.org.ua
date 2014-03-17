@@ -150,6 +150,9 @@ class Question extends \common\ext\MongoDb\Document
         $this->userId = (string)$this->userId;
 
         // Filter tags
+        if (!is_array($this->tagList)) {
+            $this->tagList = array();
+        }
         $this->tagList = array_filter(array_unique($this->tagList));
 
         // Set created date
