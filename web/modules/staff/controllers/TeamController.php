@@ -30,9 +30,17 @@ class TeamController extends \web\modules\staff\ext\Controller
      */
     public function accessRules()
     {
-        // Get team
-        $team = Team::model()->findByPk(new \MongoId($this->request->getParam('teamId')));
+        // Get params
+        $teamId = $this->request->getParam('teamId');
 
+        // Get team
+        if (!empty($teamId)) {
+            $team = Team::model()->findByPk(new \MongoId($teamId));
+        } else {
+            $team = new Team();
+        }
+
+        // Return list of rules
         return array(
             array(
                 'allow',
