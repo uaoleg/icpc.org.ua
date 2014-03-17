@@ -31,6 +31,10 @@ $main = array(
 
     'components' => array(
 
+        'archive' => array(
+            'class' => '\common\components\Archive',
+        ),
+
         'array' => array(
             'class' => '\common\components\ArrayHelper',
         ),
