@@ -24,7 +24,7 @@ class DbCommand extends \console\ext\ConsoleCommand
 
         // Archive
         echo "Archiving...\n";
-        $zipPath = $dumpPath . '.zip';
+        $zipPath = \yii::getPathOfAlias('root.dumps') . DIRECTORY_SEPARATOR . "{$name}.zip";
         \yii::app()->archive->compress($dumpPath, $zipPath);
 
         // Delete the dump
