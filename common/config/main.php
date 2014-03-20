@@ -17,6 +17,9 @@ ini_set('display_errors', YII_DEBUG);
 ini_set('display_startup_errors', YII_DEBUG);
 ini_set('session.gc_maxlifetime', SECONDS_IN_WEEK);
 
+// Set internal encoding to UTF-8
+mb_internal_encoding('UTF-8');
+
 // Path alias
 \yii::setPathOfAlias('root', realpath(__DIR__ . '/../..'));
 \yii::setPathOfAlias('common', \yii::getPathOfAlias('root.common'));
