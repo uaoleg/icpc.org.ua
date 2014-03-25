@@ -215,33 +215,7 @@ class Controller extends \CController
 
         // Check range
         if (($year < \yii::app()->params['yearFirst']) || ($year > date('Y'))) {
-            $year = 0;
-        }
-
-        // Get default value
-        if ($year === 0) {
-            $year = (int)date('Y');
-            switch ($this->id) {
-                // Find latest year with news
-                case 'news':
-                    $publishedOnly = !\yii::app()->user->checkAccess(\common\components\Rbac::OP_NEWS_CREATE);
-                    while (News::model()->scopeByLatest($this->getGeo(), $year, $publishedOnly)->count() === 0) {
-                        $year--;
-                        if ($year <= \yii::app()->params['yearFirst']) {
-                            break;
-                        }
-                    };
-                    break;
-                // Find latest year with teams
-                case 'team':
-                    while (Team::model()->countByAttributes(array('year' => $year)) === 0) {
-                        $year--;
-                        if ($year <= \yii::app()->params['yearFirst']) {
-                            break;
-                        }
-                    };
-                    break;
-            }
+            $year = date('Y');
         }
 
         // Save the year to the user's settings
