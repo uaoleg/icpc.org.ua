@@ -1,5 +1,3 @@
-<?php \yii::app()->clientScript->registerCoreScript('ckeditor'); ?>
-
 <script type="text/javascript">
     $(document).ready(function() {
         new appStaffQatagsManage();
@@ -23,10 +21,7 @@
         <textarea class="form-control"
                   name="desc"
                   id="tag-desc"
-                  placeholder="<?=\yii::t('app', 'Description')?>"
-                  style="height: 500px;">
-            <?=\CHtml::encode($tag->desc)?>
-        </textarea>
+                  placeholder="<?=\yii::t('app', 'Description')?>"><?=\CHtml::encode($tag->desc)?></textarea>
     </div>
     <div class="form-group">
         <button type="button" class="btn btn-primary save-tag btn-lg">

@@ -1,14 +1,6 @@
 function appStaffQatagsManage() {
 
     /**
-     * Init CKEditor
-     */
-    var editor = CKEDITOR.replace('tag-desc', {
-        extraPlugins: 'onchange',
-        height: '200px'
-    });
-
-    /**
      * Save tag
      */
     $('.save-tag').on('click', function(){
@@ -17,7 +9,7 @@ function appStaffQatagsManage() {
             data: {
                 id:   $('input[name=id]').val(),
                 name: $('input[name=name]').val(),
-                desc: editor.getData()
+                desc: $('textarea[name=desc]').val()
             },
             success: function(response) {
                 if (response.errors) {
