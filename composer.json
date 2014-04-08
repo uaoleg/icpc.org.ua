@@ -1,0 +1,11 @@
+{
+    "name": "uaoleg/icpc.org.ua",
+    "description": "Ukranian Collegiate Programming Contest",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.1.0",
+        "ext-gd": "*",
+        "ext-mongo": "*"
+    }
+}
