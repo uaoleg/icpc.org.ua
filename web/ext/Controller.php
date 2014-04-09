@@ -214,8 +214,8 @@ class Controller extends \CController
         $year = (int)$this->request->getParam('year', $defaultYear);
 
         // Check range
-        if (($year < \yii::app()->params['yearFirst']) || ($year > date('Y'))) {
-            $year = date('Y');
+        if (($year < (int)\yii::app()->params['yearFirst']) || ($year > (int)date('Y'))) {
+            $year = (int)date('Y');
         }
 
         // Save the year to the user's settings
