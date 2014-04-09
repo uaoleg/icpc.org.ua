@@ -94,6 +94,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->_createRole(User::ROLE_COORDINATOR_STATE, array(
             User::ROLE_USER,
             Rbac::OP_STUDENT_SET_STATUS,
+            Rbac::OP_STUDENT_VIEW_FULL,
             Rbac::OP_COACH_SET_STATUS,
             Rbac::OP_COORDINATOR_SET_STATUS,
             Rbac::OP_DOCUMENT_CREATE,
