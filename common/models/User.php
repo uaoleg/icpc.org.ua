@@ -183,7 +183,7 @@ class User extends \common\ext\MongoDb\Document
 
     /**
      * Returns if student role is approved
-     * 
+     *
      * @return bool
      */
     public function getIsApprovedStudent()
@@ -254,28 +254,33 @@ class User extends \common\ext\MongoDb\Document
     public function getInfo()
     {
         if (!isset($this->_info)) {
+            if ($this->useLanguage === 'en') {
+                $lang = 'en';
+            } else {
+                $lang = 'uk';
+            }
             if ($this->type === static::ROLE_STUDENT) {
                 $this->_info = User\InfoStudent::model()->findByAttributes(array(
                     'userId' => (string)$this->_id,
-                    'lang'   => $this->useLanguage,
+                    'lang'   => $lang,
                 ));
                 if (!isset($this->_info)) {
                     $this->_info = new User\InfoStudent();
                     $this->_info->setAttributes(array(
                         'userId'    => (string)$this->_id,
-                        'lang'      => $this->useLanguage,
+                        'lang'      => $lang,
                     ), false);
                 }
             } elseif ($this->type === static::ROLE_COACH) {
                 $this->_info = User\InfoCoach::model()->findByAttributes(array(
                     'userId' => (string)$this->_id,
-                    'lang'   => $this->useLanguage,
+                    'lang'   => $lang,
                 ));
                 if (!isset($this->_info)) {
                     $this->_info = new User\InfoCoach();
                     $this->_info->setAttributes(array(
                         'userId'    => (string)$this->_id,
-                        'lang'      => $this->useLanguage,
+                        'lang'      => $lang,
                     ), false);
                 }
             }

@@ -292,10 +292,10 @@ class UserController extends \web\ext\Controller
 
         // Full profile view attributes
         if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_STUDENT_VIEW_FULL, array('user' => $user))) {
-            $fullViewAttrs = array(
-                'phoneHome', 'phoneMobile', 'skype', 'acmNumber', 'studyField', 'speciality',
-                'faculty', 'group', 'schoolAdmissionYear', 'dateOfBirth', 'document',
-            );
+            $fullViewAttrs = $user->info->getAttributes();
+            unset($fullViewAttrs['_id']);
+            unset($fullViewAttrs['userId']);
+            unset($fullViewAttrs['lang']);
         } else {
             $fullViewAttrs = array();
         }

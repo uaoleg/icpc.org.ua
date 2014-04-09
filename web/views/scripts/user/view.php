@@ -14,10 +14,8 @@
         <?php if (count($fullViewAttrs) > 0): ?>
             <div class="row">
                 <div class="col-lg-12">
-                    <?php foreach ($fullViewAttrs as $attribute): ?>
-                        <?php if (isset($user->info->$attribute) && !empty($user->info->$attribute)): ?>
-                            <?=$user->getAttributeLabel($attribute)?>:&nbsp;<?=$user->info->$attribute?><br></br>
-                        <?php endif; ?>
+                    <?php foreach ($fullViewAttrs as $attrName => $attrValue): ?>
+                        <b><?=$user->getAttributeLabel($attrName)?></b>:&nbsp;<?=$attrValue?><br></br>
                     <?php endforeach; ?>
                 </div>
             </div>
