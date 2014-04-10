@@ -26,6 +26,21 @@
 </div>
 
 <div class="form-group">
+    <label class="col-lg-3 control-label"><?=\yii::t('app', 'T-shirt size', null, null, $lang)?></label>
+    <div class="col-lg-9">
+        <div class="btn-group" data-toggle="buttons">
+            <?php foreach($sizes as $size): ?>
+
+                <label class="btn btn-default <?=($info->tShirtSize === $size) ? 'active' : ''?>">
+                    <input type="radio" name="tShirtSize" value="<?=$size?>"><?=$size?>
+                </label>
+
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
     <label class="col-lg-3 control-label" for="acmNumber"><?=\yii::t('app', 'ACM Number', null, null, $lang)?></label>
     <div class="col-lg-9">
         <input class="form-control" id="acmNumber" name="acmNumber" type="text"

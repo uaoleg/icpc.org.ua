@@ -132,10 +132,23 @@ class UserController extends \web\ext\Controller
             $view = 'additionalEmpty';
         }
 
+        $info = $user->setUseLanguage($lang)->info;
+        $validators = $info->getValidators('tShirtSize');
+        $sizes = array();
+        foreach ($validators as $validator)
+        {
+            if ($validator instanceof \CRangeValidator)
+            {
+                $sizes = $validator->range;
+                break;
+            }
+        }
+
         // Render view
         $this->render($view, array(
-            'lang' => $lang,
-            'info' => $user->setUseLanguage($lang)->info,
+            'lang'  => $lang,
+            'info'  => $user->setUseLanguage($lang)->info,
+            'sizes' => $sizes
         ));
     }
 
@@ -184,6 +197,7 @@ class UserController extends \web\ext\Controller
         $phoneHome                = $this->request->getPost('phoneHome');
         $phoneMobile              = $this->request->getPost('phoneMobile');
         $skype                    = $this->request->getPost('skype');
+        $tShirtSize               = $this->request->getPost('tShirtSize');
         $acmnumber                = $this->request->getPost('acmNumber');
         $schoolName               = $this->request->getPost('schoolName');
         $schoolNameShort          = $this->request->getPost('schoolNameShort');
@@ -201,6 +215,7 @@ class UserController extends \web\ext\Controller
             'phoneHome'                => $phoneHome,
             'phoneMobile'              => $phoneMobile,
             'skype'                    => $skype,
+            'tShirtSize'               => $tShirtSize,
             'acmNumber'                => $acmnumber,
             'schoolName'               => $schoolName,
             'schoolNameShort'          => $schoolNameShort,
@@ -229,6 +244,7 @@ class UserController extends \web\ext\Controller
         $phoneHome                = $this->request->getPost('phoneHome');
         $phoneMobile              = $this->request->getPost('phoneMobile');
         $skype                    = $this->request->getPost('skype');
+        $tShirtSize               = $this->request->getPost('tShirtSize');
         $acmnumber                = $this->request->getPost('acmNumber');
         $schoolName               = $this->request->getPost('schoolName');
         $schoolNameShort          = $this->request->getPost('schoolNameShort');
@@ -249,6 +265,7 @@ class UserController extends \web\ext\Controller
             'phoneHome'                => $phoneHome,
             'phoneMobile'              => $phoneMobile,
             'skype'                    => $skype,
+            'tShirtSize'               => $tShirtSize,
             'acmNumber'                => $acmnumber,
             'schoolName'               => $schoolName,
             'schoolNameShort'          => $schoolNameShort,

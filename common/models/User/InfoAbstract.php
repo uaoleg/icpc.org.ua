@@ -36,6 +36,12 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public $skype;
 
     /**
+     * T-shirt size
+     * @var string
+     */
+    public $tShirtSize;
+
+    /**
      * ACM Number
      * @var string
      */
@@ -57,6 +63,7 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
             'phoneHome'                    => \yii::t('app', 'Home phone number'),
             'phoneMobile'                  => \yii::t('app', 'Mobile phone number'),
             'skype'                        => \yii::t('app', 'Skype'),
+            'tShirtSize'                   => \yii::t('app', 'T-shirt size'),
             'acmNumber'                    => \yii::t('app', 'ACM number if you have'),
         ));
     }
@@ -69,7 +76,8 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, userId', 'required'),
+            array('lang, userId, tShirtSize', 'required'),
+            array('tShirtSize', 'in', 'range' => array('XS', 'S', 'M', 'L', 'XL', 'XXL')),
             array('phone', InfoAbstract\Validator\Phone::className())
         ));
     }
@@ -124,13 +132,15 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     {
         // Copy new contacts to the other languages
         if ($this->attributeHasChanged('skype') || $this->attributeHasChanged('phoneHome') ||
-            $this->attributeHasChanged('phoneMobile') || $this->attributeHasChanged('acmNumber')
+            $this->attributeHasChanged('phoneMobile') || $this->attributeHasChanged('acmNumber') ||
+            $this->attributeHasChanged('tShirtSize')
         ) {
             $modifier = new \EMongoModifier();
             $modifier
                 ->addModifier('skype', 'set', $this->skype)
                 ->addModifier('phoneHome', 'set', $this->phoneHome)
                 ->addModifier('phoneMobile', 'set', $this->phoneMobile)
+                ->addModifier('tShirtSize', 'set', $this->tShirtSize)
                 ->addModifier('acmNumber', 'set', $this->acmNumber);
             $criteria = new \EMongoCriteria();
             $criteria
