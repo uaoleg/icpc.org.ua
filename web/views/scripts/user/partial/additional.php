@@ -17,6 +17,15 @@
 </div>
 
 <div class="form-group">
+    <label class="col-lg-3 control-label" for="dateOfBirth"><?=\yii::t('app', 'Date of birth', null, null, $lang)?> (31/12/1990)</label>
+    <div class="col-lg-9">
+        <input class="form-control" id="dateOfBirth" name="dateOfBirth" type="text"
+               value="<?=\CHtml::encode($info->dateOfBirth)?>"
+               placeholder="<?=\yii::t('app', 'Date of birth', null, null, $lang)?>" />
+    </div>
+</div>
+
+<div class="form-group">
     <label class="col-lg-3 control-label" for="skype"><?=\yii::t('app', 'Skype', null, null, $lang)?></label>
     <div class="col-lg-9">
         <input class="form-control" id="skype" name="skype" type="text"
@@ -32,7 +41,7 @@
             <?php foreach($sizes as $size): ?>
 
                 <label class="btn btn-default <?=($info->tShirtSize === $size) ? 'active' : ''?>">
-                    <input type="radio" name="tShirtSize" value="<?=$size?>"><?=$size?>
+                    <input type="radio" name="tShirtSize" value="<?=$size?>" <?=($info->tShirtSize === $size) ? 'checked' : ''?>><?=$size?>
                 </label>
 
             <?php endforeach; ?>

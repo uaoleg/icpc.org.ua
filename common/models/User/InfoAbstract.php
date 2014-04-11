@@ -18,6 +18,12 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public $lang;
 
     /**
+     * Date of birth
+     * @var string
+     */
+    public $dateOfBirth;
+
+    /**
      * Home phone number
      * @var string
      */
@@ -60,6 +66,7 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
         return array_merge(parent::attributeLabels(), array(
             'userId'                       => \yii::t('app', 'Related user ID'),
             'lang'                         => \yii::t('app', 'Language of the information'),
+            'dateOfBirth'                  => \yii::t('app', 'Date of birth'),
             'phoneHome'                    => \yii::t('app', 'Home phone number'),
             'phoneMobile'                  => \yii::t('app', 'Mobile phone number'),
             'skype'                        => \yii::t('app', 'Skype'),
@@ -76,7 +83,8 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, userId, tShirtSize', 'required'),
+            array('lang, userId, dateOfBirth, tShirtSize', 'required'),
+            array('dateOfBirth', 'date', 'format' => 'dd/mm/yyyy'),
             array('tShirtSize', 'in', 'range' => array('XS', 'S', 'M', 'L', 'XL', 'XXL')),
             array('phone', InfoAbstract\Validator\Phone::className())
         ));

@@ -12,6 +12,7 @@ function appUserAdditionalCoach(options) {
             data: {
                 language: options.lang,
 
+                dateOfBirth:              $('[name=dateOfBirth]').val(),
                 phoneHome:                $('[name=phoneHome]').val(),
                 phoneMobile:              $('[name=phoneMobile]').val(),
                 skype:                    $('[name=skype]').val(),
