@@ -116,6 +116,11 @@ class UserController extends \web\ext\Controller
      */
     public function actionAdditional()
     {
+        // Check access
+        if (\yii::app()->user->isGuest) {
+            return $this->redirect(\yii::app()->user->loginUrl);
+        }
+
         // Get params
         $lang = $this->request->getParam('lang');
         $user = \yii::app()->user->getInstance();
