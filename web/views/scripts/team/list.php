@@ -39,9 +39,7 @@
                 var filters = JSON.parse($table.getGridParam("postData").filters).rules;
                 for(var prop in filters) {
                     if (filters.hasOwnProperty(prop)) {
-                        if (filters[prop]['field'] === 'phase') {
-                            $('.btn-csv').data('phase', filters[prop]['data']);
-                        }
+                        $('.btn-csv').data(filters[prop]['field'], filters[prop]['data']);
                     }
                 }
             }
@@ -52,11 +50,33 @@
          */
         $('.btn-csv-checking-system').on('click', function(e){
             e.preventDefault();
-            location.href = '<?=$this->createUrl('/team/exportCheckingSystem')?>' + '/phase/' + $(this).closest('.btn-csv').data('phase');
+            var $btn_csv = $(this).closest('.btn-csv');
+            location.href = '<?=$this->createUrl('/team/exportCheckingSystem')?>'
+                + '/phase/' + $btn_csv.data('phase')
+                + (($btn_csv.data('name')!==undefined) ? ('/name/' + $btn_csv.data('name')) : '')
+                + (($btn_csv.data('schoolNameUk')!==undefined) ? ('/schoolNameUk/' + $btn_csv.data('schoolNameUk')) : '')
+                + (($btn_csv.data('schoolNameEn')!==undefined) ? ('/schoolNameEn/' + $btn_csv.data('schoolNameEn')) : '')
+                + (($btn_csv.data('coachNameUk')!==undefined) ? ('/coachNameUk/' + $btn_csv.data('coachNameUk')) : '')
+                + (($btn_csv.data('coachNameEn')!==undefined) ? ('/coachNameEn/' + $btn_csv.data('coachNameEn')) : '')
+                + (($btn_csv.data('state.uk')!==undefined) ? ('/state.uk/' + $btn_csv.data('state.uk')) : '')
+                + (($btn_csv.data('state.en')!==undefined) ? ('/state.en/' + $btn_csv.data('state.en')) : '')
+                + (($btn_csv.data('region.uk')!==undefined) ? ('/region.uk/' + $btn_csv.data('region.uk')) : '')
+                + (($btn_csv.data('region.en')!==undefined) ? ('/region.en/' + $btn_csv.data('region.en')) : '');
         });
         $('.btn-csv-registration').on('click', function(e){
             e.preventDefault();
-            location.href = '<?=$this->createUrl('/team/exportRegistration')?>' + '/phase/' + $(this).closest('.btn-csv').data('phase');
+            var $btn_csv = $(this).closest('.btn-csv');
+            location.href = '<?=$this->createUrl('/team/exportCheckingSystem')?>'
+                + '/phase/' + $btn_csv.data('phase')
+                + (($btn_csv.data('name')!==undefined) ? ('/name/' + $btn_csv.data('name')) : '')
+                + (($btn_csv.data('schoolNameUk')!==undefined) ? ('/schoolNameUk/' + $btn_csv.data('schoolNameUk')) : '')
+                + (($btn_csv.data('schoolNameEn')!==undefined) ? ('/schoolNameEn/' + $btn_csv.data('schoolNameEn')) : '')
+                + (($btn_csv.data('coachNameUk')!==undefined) ? ('/coachNameUk/' + $btn_csv.data('coachNameUk')) : '')
+                + (($btn_csv.data('coachNameEn')!==undefined) ? ('/coachNameEn/' + $btn_csv.data('coachNameEn')) : '')
+                + (($btn_csv.data('state.uk')!==undefined) ? ('/state.uk/' + $btn_csv.data('state.uk')) : '')
+                + (($btn_csv.data('state.en')!==undefined) ? ('/state.en/' + $btn_csv.data('state.en')) : '')
+                + (($btn_csv.data('region.uk')!==undefined) ? ('/region.uk/' + $btn_csv.data('region.uk')) : '')
+                + (($btn_csv.data('region.en')!==undefined) ? ('/region.en/' + $btn_csv.data('region.en')) : '');
         });
     });
 </script>

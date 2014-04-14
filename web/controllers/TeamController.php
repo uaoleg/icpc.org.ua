@@ -147,9 +147,26 @@ class TeamController extends \web\ext\Controller
     {
         // Get params
         $phase = \yii::app()->request->getParam('phase');
+        $params = array(
+            'name'         => \yii::app()->request->getParam('name'),
+            'schoolNameUk' => \yii::app()->request->getParam('schoolNameUk'),
+            'schoolNameEn' => \yii::app()->request->getParam('schoolNameEn'),
+            'coachNameUk'  => \yii::app()->request->getParam('coachNameUk'),
+            'coachNameEn'  => \yii::app()->request->getParam('coachNameEn'),
+            'state.uk'     => \yii::app()->request->getParam('state.uk'),
+            'state.en'     => \yii::app()->request->getParam('state.en'),
+            'region.uk'    => \yii::app()->request->getParam('region.uk'),
+            'region.en'    => \yii::app()->request->getParam('region.en'),
+        );
 
         // Get list of teams
         $criteria = new \EMongoCriteria();
+        foreach ($params as $key => $value) {
+            if (isset($value)) {
+                $regex = new \MongoRegex('/'.preg_quote($value).'/i');
+                $criteria->addCond($key, '==', $regex);
+            }
+        }
         $criteria->addCond('year', '==', (int)$this->getYear());
         $criteria->addCond('phase', '>=', (int)$phase);
         $teams = Team::model()->findAll($criteria);
@@ -169,9 +186,26 @@ class TeamController extends \web\ext\Controller
     {
         // Get params
         $phase = \yii::app()->request->getParam('phase');
+        $params = array(
+            'name'         => \yii::app()->request->getParam('name'),
+            'schoolNameUk' => \yii::app()->request->getParam('schoolNameUk'),
+            'schoolNameEn' => \yii::app()->request->getParam('schoolNameEn'),
+            'coachNameUk'  => \yii::app()->request->getParam('coachNameUk'),
+            'coachNameEn'  => \yii::app()->request->getParam('coachNameEn'),
+            'state.uk'     => \yii::app()->request->getParam('state.uk'),
+            'state.en'     => \yii::app()->request->getParam('state.en'),
+            'region.uk'    => \yii::app()->request->getParam('region.uk'),
+            'region.en'    => \yii::app()->request->getParam('region.en'),
+        );
 
         // Get list of teams
         $criteria = new \EMongoCriteria();
+        foreach ($params as $key => $value) {
+            if (isset($value)) {
+                $regex = new \MongoRegex('/'.preg_quote($value).'/i');
+                $criteria->addCond($key, '==', $regex);
+            }
+        }
         $criteria->addCond('year', '==', (int)$this->getYear());
         $criteria->addCond('phase', '>=', (int)$phase);
         $teams = Team::model()->findAll($criteria);
