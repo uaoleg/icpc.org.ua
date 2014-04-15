@@ -5,6 +5,7 @@ namespace web\controllers;
 use \common\models\School;
 use \common\models\Team;
 use \common\models\User;
+use \web\ext\WebUser;
 
 class UserController extends \web\ext\Controller
 {
@@ -213,6 +214,10 @@ class UserController extends \web\ext\Controller
         ), false);
         $info->save();
 
+        if (!$info->hasErrors()) {
+            \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, false);
+        }
+
         // Render json
         $this->renderJson(array(
             'errors' => $info->hasErrors() ? $info->getErrors() : false
@@ -263,6 +268,10 @@ class UserController extends \web\ext\Controller
             'document'            => $document,
         ), false);
         $info->save();
+
+        if (!$info->hasErrors()) {
+            \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, false);
+        }
 
         // Render json
         $this->renderJson(array(
