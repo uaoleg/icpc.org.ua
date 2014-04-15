@@ -6,6 +6,7 @@ use \common\models\User;
 
 class WebUser extends \CWebUser
 {
+    const SESSION_INFO_NOT_FULL = 'infoNotFull';
 
     /**
      * Link to User object

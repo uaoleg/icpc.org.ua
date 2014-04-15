@@ -61,6 +61,21 @@
             <div class="slogan">
                 &mdash; «<?=\yii::t('app', 'Do it with us, do it like us, do it better than us!')?>»
             </div>
+            <?php if(\yii::app()->user->getState(\web\ext\WebUser::SESSION_INFO_NOT_FULL)): ?>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="alert alert-danger text-center">
+                            <strong>
+                                <?= \yii::t('app', 'Please fill in your additional info in {uk}ukrainian{/a} and {en}english{/a} languages', array(
+                                    '{uk}' => '<a href="' . $this->createUrl('user/additional', array('lang' => 'uk')) . '">',
+                                    '{en}' => '<a href="' . $this->createUrl('user/additional', array('lang' => 'en')) . '">',
+                                    '{/a}' => '</a>'
+                                )) ?>
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
             <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
                 <div class="container-fluid">
                     <div class="navbar-header">

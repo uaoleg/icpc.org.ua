@@ -4,6 +4,7 @@ namespace web\controllers;
 
 use \common\models\School;
 use \common\models\User;
+use \web\ext\WebUser;
 
 class AuthController extends \web\ext\Controller
 {
@@ -85,7 +86,29 @@ class AuthController extends \web\ext\Controller
             $identity = new \web\ext\UserIdentity($email, $password);
             if ($identity->authenticate()) {
                 \yii::app()->user->login($identity);
-                return $this->redirect('/');
+
+                $userUk = User::model()->findByPk(new \MongoId(\yii::app()->user->getInstance()->_id));
+                $userUk->useLanguage = 'uk';
+                $infoUk = $userUk->info;
+
+                $userEn = User::model()->findByPk(new \MongoId(\yii::app()->user->getInstance()->_id));
+                $userEn->useLanguage = 'en';
+                $infoEn = $userEn->info;
+
+                switch(false) {
+                    case ($infoUk->validate()):
+                        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
+                        $this->redirect($this->createUrl('user/additional', array('lang' => 'uk')));
+                        break;
+                    case ($infoEn->validate()):
+                        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
+                        $this->redirect($this->createUrl('user/additional', array('lang' => 'en')));
+                        break;
+                    default:
+                        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, false);
+                        $this->redirect('/');
+                        break;
+                }
             } else {
                 $error = $identity->errorMessage;
             }
