@@ -61,24 +61,22 @@
             <div class="slogan">
                 &mdash; «<?=\yii::t('app', 'Do it with us, do it like us, do it better than us!')?>»
             </div>
-            <?php if(\yii::app()->user->getInstance()->type === \common\models\User::ROLE_COACH && !\yii::app()->user->getInstance()->isApprovedCoach): ?>
-                <div class="row">
-                    <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6">
+                    <?php if (!empty(\yii::app()->user->getInstance()->coordinator) && !\yii::app()->user->getInstance()->isApprovedCoordinator): ?>
                         <div class="alert alert-danger text-center">
-                            <?=\yii::t('app', 'Your coach status is not approved yet!')?>
+                            <h3><?=\yii::t('app', '<b>Warning!</b> Your coordinator status is not approved yet!')?></h3>
                         </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-            <?php if(in_array(\yii::app()->user->getInstance()->coordinator, array_values(\common\models\User::model()->getConstantList('ROLE_COORDINATOR_'))) && !\yii::app()->user->getInstance()->isApprovedCoach): ?>
-                <div class="row">
-                    <div class="col-lg-12">
+                    <?php endif; ?>
+                    <?php if ((\yii::app()->user->getInstance()->type === \common\models\User::ROLE_COACH) && (!\yii::app()->user->getInstance()->isApprovedCoach)): ?>
                         <div class="alert alert-danger text-center">
-                            <?=\yii::t('app', 'Your coordinator status is not approved yet!')?>
+                            <?=\yii::t('app', '<b>Warning!</b> Your coach status is not approved yet!')?>
                         </div>
-                    </div>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
+                <div class="col-lg-3"></div>
+            </div>
             <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
                 <div class="container-fluid">
                     <div class="navbar-header">
