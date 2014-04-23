@@ -36,6 +36,33 @@ class StudentsController extends \web\modules\staff\ext\Controller
         ));
     }
 
+    public function actionGetListJson()
+    {
+        // Get jqGrid params
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('type', '==', User::ROLE_STUDENT);
+        $jqgrid = $this->_getJqgridParams(User::model(), $criteria);
+
+        $rows = array();
+        foreach ($jqgrid['itemList'] as $user) {
+            $arrayToAdd = array(
+                'name'        => \web\widgets\user\Name::create(array('user' => $user), true),
+                'email'       => $user->email,
+                'dateCreated' => date('Y-m-d H:i:s', $user->dateCreated),
+                'isActive'    => $this->renderPartial('index/action', array('user' => $user), true)
+            );
+
+            $rows[] = $arrayToAdd;
+        }
+
+        $this->renderJson(array(
+            'page'      => $jqgrid['page'],
+            'total'     => ceil($jqgrid['totalCount'] / $jqgrid['perPage']),
+            'records'   => count($jqgrid['itemList']),
+            'rows'      => $rows,
+        ));
+    }
+
     /**
      * Set student's state
      */

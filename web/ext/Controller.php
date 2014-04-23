@@ -323,8 +323,10 @@ class Controller extends \CController
         if ($criteria === null) {
             $criteria = new \EMongoCriteria();
         }
+        if (!empty($sortName)) {
+            $criteria->sort($sortName, $sortOrder);
+        }
         $criteria
-            ->sort($sortName, $sortOrder)
             ->limit($perPage)
             ->offset(($page - 1) * $perPage);
         if ($filters) {
