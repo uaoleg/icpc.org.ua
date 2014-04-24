@@ -46,12 +46,11 @@ class StudentsController extends \web\modules\staff\ext\Controller
         $rows = array();
         foreach ($jqgrid['itemList'] as $user) {
             $arrayToAdd = array(
-                'name'        => \web\widgets\user\Name::create(array('user' => $user), true),
-                'email'       => $user->email,
-                'dateCreated' => date('Y-m-d H:i:s', $user->dateCreated),
-                'isActive'    => $this->renderPartial('index/action', array('user' => $user), true)
+                'name'              => \web\widgets\user\Name::create(array('user' => $user, 'lang' => \yii::app()->language), true),
+                'email'             => $user->email,
+                'dateCreated'       => date('Y-m-d H:i:s', $user->dateCreated),
+                'isApprovedStudent' => $this->renderPartial('index/action', array('user' => $user), true)
             );
-
             $rows[] = $arrayToAdd;
         }
 
@@ -85,13 +84,15 @@ class StudentsController extends \web\modules\staff\ext\Controller
 
         // Assign student role to the user
         if ($state) {
-            \yii::app()->authManager->assign(User::ROLE_STUDENT, $userId);
+            $user->isApprovedStudent = true;
         }
 
         // Revoke coordination roles
         else {
-            \yii::app()->authManager->revoke(User::ROLE_STUDENT, $userId);
+            $user->isApprovedStudent = false;
         }
+
+        $user->save();
     }
 
 }

@@ -8,9 +8,6 @@ namespace common\models;
  * @property-read string            $firstName
  * @property-read string            $middleName
  * @property-read string            $lastName
- * @property-read bool              $isApprovedStudent
- * @property-read bool              $isApprovedCoach
- * @property-read bool              $isApprovedCoordinator
  * @property-read School            $school
  * @property-read User\Settings     $settings
  * @property-read User\InfoAbstract $info
@@ -110,6 +107,24 @@ class User extends \common\ext\MongoDb\Document
     public $isEmailConfirmed = false;
 
     /**
+     * Is approved student
+     * @var boolean
+     */
+    public $isApprovedStudent = false;
+
+    /**
+     * Is approved coach
+     * @var boolean
+     */
+    public $isApprovedCoach = false;
+
+    /**
+     * Is approved coordinator
+     * @var boolean
+     */
+    public $isApprovedCoordinator = false;
+
+    /**
      * User's school
      * @var School
      */
@@ -179,36 +194,6 @@ class User extends \common\ext\MongoDb\Document
                 return (!empty($this->lastNameEn)) ? $this->lastNameEn : $this->lastNameUk;
                 break;
         }
-    }
-
-    /**
-     * Returns if student role is approved
-     *
-     * @return bool
-     */
-    public function getIsApprovedStudent()
-    {
-        return \yii::app()->authManager->checkAccess(static::ROLE_STUDENT, $this->_id);
-    }
-
-    /**
-     * Returns whether coach role is approved
-     *
-     * @return bool
-     */
-    public function getIsApprovedCoach()
-    {
-        return \yii::app()->authManager->checkAccess(static::ROLE_COACH, $this->_id);
-    }
-
-    /**
-     * Returns whether coordinator role is approved
-     *
-     * @return bool
-     */
-    public function getIsApprovedCoordinator()
-    {
-        return \yii::app()->authManager->checkAccess($this->coordinator, $this->_id);
     }
 
     /**
@@ -430,6 +415,37 @@ class User extends \common\ext\MongoDb\Document
             $criteria->addCond('coachId', '==', (string)$this->_id);
             Result::model()->updateAll($modifier, $criteria);
             Team::model()->updateAll($modifier, $criteria);
+        }
+
+        // If any of isApproved properties is changed need to assign or revoke role
+        if ($this->attributeHasChanged('isApprovedStudent')) {
+            if ($this->isApprovedStudent) {
+                if (!\yii::app()->authManager->checkAccess(User::ROLE_STUDENT, (string)$this->_id)) {
+                    \yii::app()->authManager->assign(User::ROLE_STUDENT, (string)$this->_id);
+                }
+            } else {
+                \yii::app()->authManager->revoke(User::ROLE_STUDENT, (string)$this->_id);
+            }
+        }
+        if ($this->attributeHasChanged('isApprovedCoach')) {
+            if ($this->isApprovedCoach) {
+                if (!\yii::app()->authManager->checkAccess(User::ROLE_COACH, (string)$this->_id)) {
+                    \yii::app()->authManager->assign(User::ROLE_COACH, (string)$this->_id);
+                }
+            } else {
+                \yii::app()->authManager->revoke(User::ROLE_COACH, (string)$this->_id);
+            }
+        }
+        if ($this->attributeHasChanged('isApprovedCoordinator')) {
+            if ($this->isApprovedCoordinator) {
+                if (!\yii::app()->authManager->checkAccess($this->coordinator, (string)$this->_id)) {
+                    \yii::app()->authManager->assign($this->coordinator, (string)$this->_id);
+                }
+            } else {
+                \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_STATE, (string)$this->_id);
+                \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_REGION, (string)$this->_id);
+                \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_UKRAINE, (string)$this->_id);
+            }
         }
 
         parent::afterSave();

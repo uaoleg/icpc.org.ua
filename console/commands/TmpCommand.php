@@ -24,7 +24,7 @@ class TmpCommand extends \console\ext\ConsoleCommand
 
     /**
      * Set isDeleted = false for all teams
-     * 
+     *
      * @version 2.2
      */
     public function actionSetTeamsNotDeleted()
@@ -32,6 +32,33 @@ class TmpCommand extends \console\ext\ConsoleCommand
         $modifier = new \EMongoModifier();
         $modifier->addModifier('isDeleted', 'set', false);
         \common\models\Team::model()->updateAll($modifier);
+        echo "\nDone";
+    }
+
+    /**
+     * Set isApproved* properties for all users
+     *
+     * @version 2.2
+     */
+    public function actionSetIsApprovedProperties()
+    {
+        $users = \common\models\User::model()->findAll();
+
+        foreach ($users as $user) {
+            echo '.';
+            if (\yii::app()->authManager->checkAccess(\common\models\User::ROLE_STUDENT, $user->_id)) {
+                $user->isApprovedStudent = true;
+            }
+            if (\yii::app()->authManager->checkAccess(\common\models\User::ROLE_COACH, $user->_id)) {
+                $user->isApprovedCoach = true;
+            }
+            if (\yii::app()->authManager->checkAccess(\common\models\User::ROLE_COORDINATOR_STATE, $user->_id) ||
+                \yii::app()->authManager->checkAccess(\common\models\User::ROLE_COORDINATOR_REGION, $user->_id) ||
+                \yii::app()->authManager->checkAccess(\common\models\User::ROLE_COORDINATOR_UKRAINE, $user->_id)) {
+                $user->isApprovedStudent = true;
+            }
+            $user->save();
+        }
         echo "\nDone";
     }
 

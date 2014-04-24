@@ -16,16 +16,20 @@
                     \yii::t('app', 'Name'),
                     \yii::t('app', 'Email'),
                     \yii::t('app', 'Registration date'),
-                    \yii::t('app', 'Action'),
+                    \yii::t('app', 'Status'),
                 )))?>,
                 colModel: [
-                    {name: 'name', index: 'name', width: 150, align: 'center', search: false, sortable: false},
+                    {name: 'name', index: 'name', width: 150, sortable: false, search: false},
                     {name: 'email', index: 'email', width: 150},
-                    {name: 'dateCreated', index: 'dateCreated', width: 50, formatter: 'date', formatoptions: {newformat: 'Y-m-d'}},
-                    {name: 'isActive', index: 'isActive', align: 'center', width: 50, stype: 'select', searchoptions: {value: "1:Active;2:Suspended"}, search: true, sortable: false},
+                    {name: 'dateCreated', index: 'dateCreated', width: 50, formatter: 'date', formatoptions: {newformat: 'Y-m-d'}, search: false},
+                    {name: 'isApprovedStudent', index: 'isApprovedStudent', align: 'center', width: 50, search: true, sortable: false, stype: 'select', searchoptions: {sopt: ['bool'], value: "-1:<?=\yii::t('app', 'All')?>;0:<?=\yii::t('app', 'Suspended')?>;1:<?=\yii::t('app', 'Active')?>"}},
                 ],
                 sortname: 'dateCreated',
                 sortorder: 'desc'
+            })
+            .jqGrid('filterToolbar', {
+                stringResult: true,
+                searchOnEnter: false
             });
 
     });
