@@ -24,16 +24,36 @@ class CoordinatorsController extends \web\modules\staff\ext\Controller
      */
     public function actionIndex()
     {
-        // Get list of coordinators
-        $criteria = new \EMongoCriteria();
-        $criteria
-            ->addCond('coordinator', '!=', null)
-            ->sort('dateCreated', \EMongoCriteria::SORT_DESC);
-        $userList = User::model()->findAll($criteria);
-
         // Render view
-        $this->render('index', array(
-            'userList' => $userList,
+        $this->render('index');
+    }
+
+    /**
+     * Method for jqGrid which returns all the coordinators
+     */
+    public function actionGetListJson()
+    {
+        // Get jqGrid params
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('coordinator', '!=', null);
+        $jqgrid = $this->_getJqgridParams(User::model(), $criteria);
+
+        $rows = array();
+        foreach ($jqgrid['itemList'] as $user) {
+            $arrayToAdd = array(
+                'name'                  => \web\widgets\user\Name::create(array('user' => $user, 'lang' => \yii::app()->language), true),
+                'email'                 => $user->email,
+                'dateCreated'           => date('Y-m-d H:i:s', $user->dateCreated),
+                'isApprovedCoordinator' => $this->renderPartial('index/action', array('user' => $user), true)
+            );
+            $rows[] = $arrayToAdd;
+        }
+
+        $this->renderJson(array(
+            'page'      => $jqgrid['page'],
+            'total'     => ceil($jqgrid['totalCount'] / $jqgrid['perPage']),
+            'records'   => count($jqgrid['itemList']),
+            'rows'      => $rows,
         ));
     }
 
