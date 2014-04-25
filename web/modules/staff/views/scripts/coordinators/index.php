@@ -1,5 +1,4 @@
 <?php
-    use \common\components\Rbac;
     use \common\models\User;
 ?>
 <?php \yii::app()->clientScript->registerCoreScript('jquery.jqgrid'); ?>
