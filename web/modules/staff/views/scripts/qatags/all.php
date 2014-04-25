@@ -29,10 +29,10 @@
     <?php foreach ($tags as $tag): ?>
     <tr class="tag-row">
         <td>
-            <?=$tag->name?>
+            <?=\CHtml::encode($tag->name)?>
         </td>
         <td>
-            <?=$tag->desc?>
+            <?=\CHtml::encode($tag->desc)?>
         </td>
         <td>
             <a href="<?=$this->createUrl('/qa/latest', array('tag' => $tag->name))?>">
