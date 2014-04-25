@@ -27,9 +27,10 @@ class Members extends \common\ext\MongoDb\Validator\AbstractValidator
         } else {
             // Check if user tries to add user who is already is some other team
             $teams = Team::model()->findAllByAttributes(array(
-                '_id' => array('$ne' => $team->_id),
-                'year' => $team->year,
-                'memberIds' => array('$in' => $team->memberIds)
+                '_id'       => array('$ne' => $team->_id),
+                'year'      => $team->year,
+                'memberIds' => array('$in' => $team->memberIds),
+                'isDeleted' => false,
             ));
             foreach ($teams as $_team) {
                 $userIds = array_intersect($team->memberIds, $_team->memberIds);
