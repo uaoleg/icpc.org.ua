@@ -147,8 +147,9 @@ class TeamController extends \web\modules\staff\ext\Controller
 
             // Get all team members for this year and from the school
             $usersInTeam = Team::model()->getCollection()->distinct('memberIds', array(
-                'year'     => (int)$team->year,
-                'schoolId' => (string)$school->_id,
+                'year'      => (int)$team->year,
+                'schoolId'  => (string)$school->_id,
+                'isDeleted' => false
             ));
 
             // Get all users from the school and not in the teams
