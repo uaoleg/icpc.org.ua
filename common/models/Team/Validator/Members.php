@@ -30,8 +30,8 @@ class Members extends \common\ext\MongoDb\Validator\AbstractValidator
                 'year' => $team->year,
                 'memberIds' => array('$in' => $team->memberIds)
             ));
-            foreach ($teams as $team) {
-                $userIds = array_intersect($team->memberIds, $this->memberIds);
+            foreach ($teams as $_team) {
+                $userIds = array_intersect($team->memberIds, $_team->memberIds);
 
                 foreach ($userIds as $userId) {
                     $user = User::model()->findByPk(new \MongoId((string)$userId));
