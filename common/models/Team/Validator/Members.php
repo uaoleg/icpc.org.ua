@@ -3,6 +3,7 @@
 namespace common\models\Team\Validator;
 
 use \common\models\Team;
+use \common\models\User;
 
 class Members extends \common\ext\MongoDb\Validator\AbstractValidator
 {
