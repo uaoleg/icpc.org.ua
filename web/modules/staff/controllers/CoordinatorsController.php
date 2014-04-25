@@ -59,15 +59,15 @@ class CoordinatorsController extends \web\modules\staff\ext\Controller
 
         // Assign coordination role to the user
         if ($state) {
-            \yii::app()->authManager->assign($user->coordinator, $userId);
+            $user->isApprovedCoordinator = true;
         }
 
         // Revoke coordination roles
         else {
-            \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_STATE, $userId);
-            \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_REGION, $userId);
-            \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_UKRAINE, $userId);
+            $user->isApprovedCoordinator = false;
         }
+
+        $user->save();
     }
 
 }

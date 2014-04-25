@@ -4,17 +4,38 @@ namespace web\ext;
 
 class Widget extends \CWidget
 {
+    /**
+     * Controller
+     * @var \CController
+     */
+    protected static $_controller;
+
+    /**
+     * Returns controller for the widget
+     * @return \CController
+     */
+    public static function controller()
+    {
+        if (static::$_controller === null) {
+            if (\yii::app()->controller !== null) {
+                static::$_controller = \yii::app()->controller;
+            } else {
+                static::$_controller = new \CController('Widget');
+            }
+        }
+        return static::$_controller;
+    }
 
     /**
      * Static method to render widget (without specifying of class name)
      *
      * @param array $properties
-     * @param type $captureOutput
+     * @param bool $captureOutput
      * @return mixed the widget instance when $captureOutput is false, or the widget output when $captureOutput is true
      */
     public static function create(array $properties = array(), $captureOutput = false)
     {
-        return \yii::app()->controller->widget(get_called_class(), $properties, $captureOutput);
+        return static::controller()->widget(get_called_class(), $properties, $captureOutput);
     }
 
     /**
@@ -25,7 +46,7 @@ class Widget extends \CWidget
      */
     public static function begin(array $properties = array())
     {
-        return \yii::app()->controller->beginWidget(get_called_class(), $properties);
+        return static::controller()->beginWidget(get_called_class(), $properties);
     }
 
     /**
@@ -36,7 +57,7 @@ class Widget extends \CWidget
      */
     public static function end($id = '')
     {
-        return \yii::app()->controller->endWidget($id);
+        return static::controller()->endWidget($id);
     }
 
     /**
@@ -60,7 +81,7 @@ class Widget extends \CWidget
      */
     public function jsonEncode($data)
     {
-        return \yii::app()->controller->jsonEncode($data);
+        return static::controller()->jsonEncode($data);
     }
 
 }

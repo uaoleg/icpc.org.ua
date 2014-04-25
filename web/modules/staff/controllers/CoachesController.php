@@ -59,13 +59,15 @@ class CoachesController extends \web\modules\staff\ext\Controller
 
         // Assign coach role to the user
         if ($state) {
-            \yii::app()->authManager->assign(User::ROLE_COACH, $userId);
+            $user->isApprovedCoach = true;
         }
 
         // Revoke coordination roles
         else {
-            \yii::app()->authManager->revoke(User::ROLE_COACH, $userId);
+            $user->isApprovedCoach = false;
         }
+
+        $user->save();
     }
 
 }
