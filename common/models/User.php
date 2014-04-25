@@ -380,14 +380,12 @@ class User extends \common\ext\MongoDb\Document
     {
         // Revoke coordination roles if it was changed
         if ((!$this->_isFirstTimeSaved) && ($this->attributeHasChanged('coordinator'))) {
-            \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_STATE, $this->_id);
-            \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_REGION, $this->_id);
-            \yii::app()->authManager->revoke(static::ROLE_COORDINATOR_UKRAINE, $this->_id);
+            $this->isApprovedCoordinator = false;
         }
 
         // Revoke coach roles if it was changed
         if ((!$this->_isFirstTimeSaved) && ($this->attributeHasChanged('type'))) {
-            \yii::app()->authManager->revoke(static::ROLE_COACH, $this->_id);
+            $this->isApprovedCoach = false;
         }
 
         // If user changed any name, info in results and teams models should be updated
