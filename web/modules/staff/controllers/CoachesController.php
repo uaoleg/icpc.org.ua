@@ -24,17 +24,8 @@ class CoachesController extends \web\modules\staff\ext\Controller
      */
     public function actionIndex()
     {
-        // Get list of coaches
-        $criteria = new \EMongoCriteria();
-        $criteria
-            ->addCond('type', '==', User::ROLE_COACH)
-            ->sort('dateCreated', \EMongoCriteria::SORT_DESC);
-        $userList = User::model()->findAll($criteria);
-
         // Render view
-        $this->render('index', array(
-            'userList' => $userList,
-        ));
+        $this->render('index');
     }
 
     /**
