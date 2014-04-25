@@ -16,7 +16,7 @@ class TmpCommand extends \console\ext\ConsoleCommand
             echo '.';
             $user->isApprovedStudent = \yii::app()->authManager->checkAccess(\common\models\User::ROLE_STUDENT, $user->_id);
             $user->isApprovedCoach = \yii::app()->authManager->checkAccess(\common\models\User::ROLE_COACH, $user->_id);
-            $user->isApprovedStudent = \yii::app()->authManager->checkAccess($user->coordinator, $user->_id);
+            $user->isApprovedCoordinator = \yii::app()->authManager->checkAccess($user->coordinator, $user->_id);
             $user->save(false);
         }
         echo "\nDone";
