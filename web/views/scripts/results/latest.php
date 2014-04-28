@@ -16,6 +16,12 @@
     </button>
 <?php endif; ?>
 
+<?php if (\yii::app()->user->checkAccess(\common\models\User::ROLE_COORDINATOR_STATE)): ?>
+    <a href="<?=$this->createUrl('/staff/reports')?>" class="btn btn-default">
+        <?=\yii::t('app', 'Reports')?>
+    </a>
+<?php endif; ?>
+
 <div class="page-header">
     <h1><?=\yii::t('app', '1st Phase Results')?></h1>
 </div>
