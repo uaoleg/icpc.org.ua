@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <?php foreach ($fullViewAttrs as $attrName => $attrValue): ?>
-                        <b><?=$user->getAttributeLabel($attrName)?></b>:&nbsp;<?=$attrValue?><br></br>
+                        <b><?=$user->getAttributeLabel($attrName)?></b>:&nbsp;<?=($attrName!=='dateOfBirth') ? $attrValue : (is_int($attrValue) ? date('d.m.Y', $attrValue) : '')?><br/><br/>
                     <?php endforeach; ?>
                 </div>
             </div>
