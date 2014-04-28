@@ -116,6 +116,11 @@ class UserController extends \web\ext\Controller
      */
     public function actionAdditional()
     {
+        // Check access
+        if (\yii::app()->user->isGuest) {
+            return $this->redirect(\yii::app()->user->loginUrl);
+        }
+
         // Get params
         $lang = $this->request->getParam('lang');
         $user = \yii::app()->user->getInstance();
@@ -132,10 +137,23 @@ class UserController extends \web\ext\Controller
             $view = 'additionalEmpty';
         }
 
+        $info = $user->setUseLanguage($lang)->info;
+        $validators = $info->getValidators('tShirtSize');
+        $sizes = array();
+        foreach ($validators as $validator)
+        {
+            if ($validator instanceof \CRangeValidator)
+            {
+                $sizes = $validator->range;
+                break;
+            }
+        }
+
         // Render view
         $this->render($view, array(
-            'lang' => $lang,
-            'info' => $user->setUseLanguage($lang)->info,
+            'lang'  => $lang,
+            'info'  => $user->setUseLanguage($lang)->info,
+            'sizes' => $sizes
         ));
     }
 
@@ -183,7 +201,9 @@ class UserController extends \web\ext\Controller
         $lang                     = $this->request->getPost('language');
         $phoneHome                = $this->request->getPost('phoneHome');
         $phoneMobile              = $this->request->getPost('phoneMobile');
+        $dateOfBirth              = $this->request->getPost('dateOfBirth');
         $skype                    = $this->request->getPost('skype');
+        $tShirtSize               = $this->request->getPost('tShirtSize');
         $acmnumber                = $this->request->getPost('acmNumber');
         $schoolName               = $this->request->getPost('schoolName');
         $schoolNameShort          = $this->request->getPost('schoolNameShort');
@@ -200,7 +220,9 @@ class UserController extends \web\ext\Controller
             'lang'                     => $lang,
             'phoneHome'                => $phoneHome,
             'phoneMobile'              => $phoneMobile,
+            'dateOfBirth'              => $dateOfBirth,
             'skype'                    => $skype,
+            'tShirtSize'               => $tShirtSize,
             'acmNumber'                => $acmnumber,
             'schoolName'               => $schoolName,
             'schoolNameShort'          => $schoolNameShort,
@@ -228,7 +250,9 @@ class UserController extends \web\ext\Controller
         $lang                     = $this->request->getPost('language');
         $phoneHome                = $this->request->getPost('phoneHome');
         $phoneMobile              = $this->request->getPost('phoneMobile');
+        $dateOfBirth              = $this->request->getPost('dateOfBirth');
         $skype                    = $this->request->getPost('skype');
+        $tShirtSize               = $this->request->getPost('tShirtSize');
         $acmnumber                = $this->request->getPost('acmNumber');
         $schoolName               = $this->request->getPost('schoolName');
         $schoolNameShort          = $this->request->getPost('schoolNameShort');
@@ -239,7 +263,7 @@ class UserController extends \web\ext\Controller
         $faculty             = $this->request->getPost('faculty');
         $group               = $this->request->getPost('group');
         $schoolAdmissionYear = $this->request->getPost('schoolAdmissionYear');
-        $dateOfBirth         = $this->request->getPost('dateOfBirth');
+        $course              = $this->request->getPost('course');
         $document            = $this->request->getPost('document');
 
         // Save additional info
@@ -248,7 +272,9 @@ class UserController extends \web\ext\Controller
             'lang'                     => $lang,
             'phoneHome'                => $phoneHome,
             'phoneMobile'              => $phoneMobile,
+            'dateOfBirth'              => $dateOfBirth,
             'skype'                    => $skype,
+            'tShirtSize'               => $tShirtSize,
             'acmNumber'                => $acmnumber,
             'schoolName'               => $schoolName,
             'schoolNameShort'          => $schoolNameShort,
@@ -259,7 +285,7 @@ class UserController extends \web\ext\Controller
             'faculty'             => $faculty,
             'group'               => $group,
             'schoolAdmissionYear' => $schoolAdmissionYear,
-            'dateOfBirth'         => $dateOfBirth,
+            'course'              => $course,
             'document'            => $document,
         ), false);
         $info->save();

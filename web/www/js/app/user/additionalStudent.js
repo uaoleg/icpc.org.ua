@@ -12,9 +12,11 @@ function appUserAdditionalStudent(options) {
             data: {
                 language: options.lang,
 
+                dateOfBirth:              $('[name=dateOfBirth]').val(),
                 phoneHome:                $('[name=phoneHome]').val(),
                 phoneMobile:              $('[name=phoneMobile]').val(),
                 skype:                    $('[name=skype]').val(),
+                tShirtSize:               $('[name=tShirtSize]:checked').val(),
                 acmNumber:                $('[name=acmNumber]').val(),
                 schoolName:               $('[name=schoolName]').val(),
                 schoolNameShort:          $('[name=schoolNameShort]').val(),
@@ -24,8 +26,9 @@ function appUserAdditionalStudent(options) {
                 speciality:          $('[name=speciality]').val(),
                 faculty:             $('[name=faculty]').val(),
                 group:               $('[name=group]').val(),
+                course:              $('[name=course]').val(),
                 schoolAdmissionYear: $('[name=schoolAdmissionYear]').val(),
-                dateOfBirth:         $('[name=dateOfBirth]').val(),
+
                 document:            $('[name=document]').val(),
             },
             success: function(response) {

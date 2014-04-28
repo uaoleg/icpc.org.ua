@@ -15,8 +15,9 @@
             <div class="panel-body">
                 <div class="form-horizontal">
                     <?php $this->renderPartial('partial/additional', array(
-                        'lang' => $lang,
-                        'info' => $info,
+                        'lang'  => $lang,
+                        'info'  => $info,
+                        'sizes' => $sizes
                     )); ?>
 
                     <div class="form-group">
