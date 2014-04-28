@@ -8,15 +8,21 @@ use \common\models\Result;
 class ReportsController extends \web\modules\staff\ext\Controller
 {
 
+    /**
+     * Main page
+     */
     public function actionIndex()
     {
+        // Render view
         $this->render('index', array('year' => $this->year));
     }
 
+    /**
+     * Report of participants
+     */
     public function actionParticipants()
     {
-        $participants = array();
-
+        // Get list of teams
         $criteria = new \EMongoCriteria();
         $criteria
             ->addCond('phase', '==', Result::PHASE_3)
@@ -24,6 +30,8 @@ class ReportsController extends \web\modules\staff\ext\Controller
             ->sort('schoolNameUk', \EMongoCriteria::SORT_ASC);
         $teams = Team::model()->findAll($criteria);
 
+        // Create list of participants
+        $participants = array();
         foreach ($teams as $team) {
             $participant = array(
                 'schoolNameUk' => $team->schoolNameUk,
@@ -37,22 +45,28 @@ class ReportsController extends \web\modules\staff\ext\Controller
             $participants[] = $participant;
         }
 
+        // Render view
         $this->layout = false;
         $this->render('participants', array(
-            'participants' => $participants
+            'participants' => $participants,
         ));
     }
 
+    /**
+     * Report of winners
+     */
     public function actionWinners()
     {
-        $winners = array();
-
+        // Get list of results
         $criteria = new \EMongoCriteria();
         $criteria
             ->addCond('phase', '==', Result::PHASE_3)
             ->addCond('year', '==', $this->year)
             ->sort('place', \EMongoCriteria::SORT_ASC);
         $results = Result::model()->findAll($criteria);
+
+        // Create list of winners
+        $winners = array();
         foreach ($results as $result) {
             $winner = array(
                 'place'      => $result->place,
@@ -61,18 +75,18 @@ class ReportsController extends \web\modules\staff\ext\Controller
                 'tasks'      => $result->total,
                 'totalTime'  => $result->penalty,
                 'members'    => array(),
-                'coach'      => null
+                'coach'      => null,
             );
-            if (isset($result->teamId)) {
-                $team = Team::model()->findByPk(new \MongoId($result->teamId));
-                foreach ($team->members as $member) {
+            if ($result->team !== null) {
+                foreach ($result->team->members as $member) {
                     $winner['members'][] = $member;
                 }
-                $winner['coach'] = $team->coach;
+                $winner['coach'] = $result->team->coach;
             }
             $winners[] = $winner;
         }
 
+        // Render view
         $this->layout = false;
         $this->render('winners', array(
             'winners' => $winners
