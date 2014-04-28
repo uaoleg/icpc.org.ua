@@ -57,6 +57,15 @@ $config = array(
                     ),
                     'depends' => array('jquery'),
                 ),
+                'bootstrap.datepicker' => array(
+                    'js' => array(
+                        'lib/bootstrap.datepicker/js/bootstrap-datepicker.js'
+                    ),
+                    'css' => array(
+                        'lib/bootstrap.datepicker/css/datepicker.css'
+                    ),
+                    'depends' => array('bootstrap')
+                ),
                 'lightbox' => array(
                     'js' => array(
                         'lib/lightbox/js/lightbox-2.6.min.js',

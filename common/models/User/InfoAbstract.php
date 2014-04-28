@@ -4,6 +4,8 @@ namespace common\models\User;
 
 abstract class InfoAbstract extends \common\ext\MongoDb\Document
 {
+    // Scenarios
+    const SC_CONSOLE_DATE_OF_BIRTH_CONVERT = 'consoleDateOfBirthConvert';
 
     /**
      * ID of the related user
@@ -83,8 +85,10 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, userId, dateOfBirth, tShirtSize', 'required'),
-            array('dateOfBirth', 'date', 'format' => 'dd/mm/yyyy'),
+            array('lang, userId, tShirtSize', 'required'),
+            array('dateOfBirth', 'required', 'except' => static::SC_CONSOLE_DATE_OF_BIRTH_CONVERT),
+            array('dateOfBirth', 'numerical', 'except' => static::SC_CONSOLE_DATE_OF_BIRTH_CONVERT),
+            array('dateOfBirth', 'numerical', 'allowEmpty' => true, 'on' => static::SC_CONSOLE_DATE_OF_BIRTH_CONVERT),
             array('tShirtSize', 'in', 'range' => array('XS', 'S', 'M', 'L', 'XL', 'XXL')),
             array('phone', InfoAbstract\Validator\Phone::className())
         ));
@@ -130,6 +134,14 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
         // Convert MongoId to string
         $this->userId = (string)$this->userId;
 
+        // Convert string date to unix timestamp
+        if (is_string($this->dateOfBirth)) {
+            $this->dateOfBirth = strtotime($this->dateOfBirth);
+            if ($this->dateOfBirth === false) {
+                $this->dateOfBirth = null;
+            }
+        }
+
         return true;
     }
 
@@ -141,7 +153,7 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
         // Copy new contacts to the other languages
         if ($this->attributeHasChanged('skype') || $this->attributeHasChanged('phoneHome') ||
             $this->attributeHasChanged('phoneMobile') || $this->attributeHasChanged('acmNumber') ||
-            $this->attributeHasChanged('tShirtSize')
+            $this->attributeHasChanged('tShirtSize') || $this->attributeHasChanged('dateOfBirth')
         ) {
             $modifier = new \EMongoModifier();
             $modifier
@@ -149,7 +161,8 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
                 ->addModifier('phoneHome', 'set', $this->phoneHome)
                 ->addModifier('phoneMobile', 'set', $this->phoneMobile)
                 ->addModifier('tShirtSize', 'set', $this->tShirtSize)
-                ->addModifier('acmNumber', 'set', $this->acmNumber);
+                ->addModifier('acmNumber', 'set', $this->acmNumber)
+                ->addModifier('dateOfBirth', 'set', $this->dateOfBirth);
             $criteria = new \EMongoCriteria();
             $criteria
                 ->addCond('userId', '==', (string)$this->userId)
