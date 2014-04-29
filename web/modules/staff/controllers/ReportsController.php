@@ -14,7 +14,7 @@ class ReportsController extends \web\modules\staff\ext\Controller
     public function actionIndex()
     {
         // Render view
-        $this->render('index', array('year' => $this->year));
+        $this->render('index', array('year' => $this->getYear()));
     }
 
     /**
@@ -26,7 +26,7 @@ class ReportsController extends \web\modules\staff\ext\Controller
         $criteria = new \EMongoCriteria();
         $criteria
             ->addCond('phase', '==', Result::PHASE_3)
-            ->addCond('year', '==', $this->year)
+            ->addCond('year', '==', $this->getYear())
             ->sort('schoolNameUk', \EMongoCriteria::SORT_ASC);
         $teams = Team::model()->findAll($criteria);
 
@@ -61,7 +61,7 @@ class ReportsController extends \web\modules\staff\ext\Controller
         $criteria = new \EMongoCriteria();
         $criteria
             ->addCond('phase', '==', Result::PHASE_3)
-            ->addCond('year', '==', $this->year)
+            ->addCond('year', '==', $this->getYear())
             ->sort('place', \EMongoCriteria::SORT_ASC);
         $results = Result::model()->findAll($criteria);
 
