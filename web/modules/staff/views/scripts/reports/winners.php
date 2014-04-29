@@ -14,42 +14,62 @@
         $cs->registerCoreScript('msie');
     }
     ?>
+    <style>
+        table > thead > tr > th {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <?php //var_dump($winners); ?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <table class="table table-striped table-hover">
+            <table width="100%" border="1">
                 <thead>
                     <tr>
-                            <th><?=\yii::t('app', 'Place')?></th>
-                            <th><?=\yii::t('app', 'Team name')?></th>
-                            <th><?=\yii::t('app', 'University full name')?></th>
-                            <th><?=\yii::t('app', 'Names of students and coach')?></th>
-                            <th><?=\yii::t('app', 'Tasks count')?></th>
-                            <th><?=\yii::t('app', 'Total time')?></th>
+                        <th><?=\yii::t('app', 'Place')?></th>
+                        <th><?=\yii::t('app', 'Team name (in english)')?></th>
+                        <th><?=\yii::t('app', 'University full name')?></th>
+                        <th colspan="2"><?=\yii::t('app', 'Full names of students and coach')?></th>
+                        <th><?=\yii::t('app', 'Tasks count')?></th>
+                        <th><?=\yii::t('app', 'Total time')?></th>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th><?=\yii::t('app', 'Ukrainian language')?></th>
+                        <th><?=\yii::t('app', 'English language')?></th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach($winners as $winner): ?>
                         <tr>
-                            <td><?=$winner['place']?></td>
-                            <td><?=$winner['teamName']?></td>
-                            <td><?=$winner['schoolName']?></td>
-                            <td>
+                            <td rowspan="<?=count($winner['members']) + 1?>" class="text-center"><?=$winner['place']?></td>
+                            <td rowspan="<?=count($winner['members']) + 1?>"><?=$winner['teamName']?></td>
+                            <td rowspan="<?=count($winner['members']) + 1?>" class="text-center"><?=$winner['schoolName']?></td>
+                            <?php if (count($winner['members'])):?>
                                 <?php for ($i = 0; $i < count($winner['members']); $i++): ?>
-                                    <?=\web\widgets\user\Name::create(array('user' => $winner['members'][$i], 'lang' => 'uk'), true)?>,
-                                    <?=\web\widgets\user\Name::create(array('user' => $winner['members'][$i], 'lang' => 'en'), true)?>;<br>
+                                    <?php $this->renderPartial('partial/winners/person', array('member'=> $winner['members'][$i], 'i' => $i)); ?>
+
+                                    <?php if ($i === 0): ?>
+                                        <td rowspan="<?=count($winner['members']) + 1?>" class="text-center"><?=$winner['tasks']?></td>
+                                        <td rowspan="<?=count($winner['members']) + 1?>" class="text-center"><?=$winner['totalTime']?></td>
+                                    <?php endif; ?>
                                 <?php endfor; ?>
-                                <?php if(isset($winner['coach'])): ?>
-                                    <strong><?=\yii::t('app', 'Coach')?>:</strong>
-                                    <?=\web\widgets\user\Name::create(array('user' => $winner['coach'], 'lang' => 'uk'), true)?>,
-                                    <?=\web\widgets\user\Name::create(array('user' => $winner['coach'], 'lang' => 'en'), true)?>;
-                                <?php endif; ?>
-                            </td>
-                            <td><?=$winner['tasks']?></td>
-                            <td><?=$winner['totalTime']?></td>
+                            <?php else: ?>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td rowspan="<?=count($winner['members']) + 1?>" class="text-center"><?=$winner['tasks']?></td>
+                                <td rowspan="<?=count($winner['members']) + 1?>" class="text-center"><?=$winner['totalTime']?></td>
+                            <?php endif; ?>
+
+                            <?php if(isset($winner['coach'])): ?>
+                                <?php $this->renderPartial('partial/winners/person', array('member'=> $winner['coach'], 'i' => true)); ?>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

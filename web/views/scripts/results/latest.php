@@ -11,15 +11,29 @@
 </div>
 
 <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_RESULT_CREATE)): ?>
-    <button type="button" class="btn btn-lg btn-primary" id="pickfiles-modal" data-toggle="modal" data-target="#uploadModal">
+    <button type="button" class="btn btn-primary" id="pickfiles-modal" data-toggle="modal" data-target="#uploadModal">
         <?=\yii::t('app', 'Upload results')?>
     </button>
 <?php endif; ?>
 
 <?php if (\yii::app()->user->checkAccess(\common\models\User::ROLE_COORDINATOR_STATE)): ?>
-    <a href="<?=$this->createUrl('/staff/reports')?>" class="btn btn-default">
-        <?=\yii::t('app', 'Reports')?>
-    </a>
+    <div class="dropdown" style="display: inline-block;">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <?=\yii::t('app', 'Reports')?> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a target="_blank" href="<?=$this->createUrl('/staff/reports/participants')?>">
+                    <?=\yii::t('app', 'Participants')?>
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="<?=$this->createUrl('/staff/reports/winners')?>">
+                    <?=\yii::t('app', 'Winners')?>
+                </a>
+            </li>
+        </ul>
+    </div>
 <?php endif; ?>
 
 <div class="page-header">
