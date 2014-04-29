@@ -23,13 +23,34 @@
         </button>
         <ul class="dropdown-menu" role="menu">
             <li>
-                <a target="_blank" href="<?=$this->createUrl('/staff/reports/participants')?>">
-                    <?=\yii::t('app', 'Participants')?>
+                <a target="_blank" href="<?=$this->createUrl('/staff/reports/participants', array('phase' => '1'))?>">
+                    <?=\yii::t('app', 'Participants (I phase)')?>
                 </a>
             </li>
             <li>
-                <a target="_blank" href="<?=$this->createUrl('/staff/reports/winners')?>">
-                    <?=\yii::t('app', 'Winners')?>
+                <a target="_blank" href="<?=$this->createUrl('/staff/reports/participants', array('phase' => '2'))?>">
+                    <?=\yii::t('app', 'Participants (II phase)')?>
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="<?=$this->createUrl('/staff/reports/participants', array('phase' => '3'))?>">
+                    <?=\yii::t('app', 'Participants (III phase)')?>
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a target="_blank" href="<?=$this->createUrl('/staff/reports/winners', array('phase' => '1'))?>">
+                    <?=\yii::t('app', 'Winners (I phase)')?>
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="<?=$this->createUrl('/staff/reports/winners', array('phase' => '2'))?>">
+                    <?=\yii::t('app', 'Winners (II phase)')?>
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="<?=$this->createUrl('/staff/reports/winners', array('phase' => '3'))?>">
+                    <?=\yii::t('app', 'Winners (III phase)')?>
                 </a>
             </li>
         </ul>
