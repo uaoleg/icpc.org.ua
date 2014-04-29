@@ -25,7 +25,7 @@ class ReportsController extends \web\modules\staff\ext\Controller
         // Get list of teams
         $criteria = new \EMongoCriteria();
         $criteria
-            ->addCond('phase', '==', Result::PHASE_3)
+            ->addCond('phase', '==', Result::PHASE_3 + 1)
             ->addCond('year', '==', $this->getYear())
             ->sort('schoolNameUk', \EMongoCriteria::SORT_ASC);
         $teams = Team::model()->findAll($criteria);
