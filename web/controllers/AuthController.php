@@ -254,21 +254,25 @@ class AuthController extends \web\ext\Controller
     {
         // Get params
         $token = \yii::app()->request->getParam('token');
-        if (empty($token)) {
-            $this->httpException(400);
-        }
 
         // Confirm email
-        $emailConfirmation = User\EmailConfirmation::model()->findByPk(new \MongoId($token));
+        try {
+            $emailConfirmation = User\EmailConfirmation::model()->findByPk(new \MongoId($token));
+        } catch (\Exception $e) {
+            $success = false;
+        }
         if ($emailConfirmation !== null) {
             $user = User::model()->findByPk(new \MongoId($emailConfirmation->userId));
             $user->isEmailConfirmed = true;
             $user->save();
             $emailConfirmation->delete();
+            $success = true;
+        } else {
+            $success = false;
         }
 
         // Render view
-        $this->render('emailConfirm');
+        $this->render('emailConfirm', array('success' => $success));
     }
 
     /**
