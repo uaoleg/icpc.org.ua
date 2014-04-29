@@ -185,7 +185,7 @@
                     </li>
                     <li>
                         <span class="img-layout-mail-24"></span>
-                        <a href="mailto:info@icpc.org.ua" class="inline">info@icpc.org.ua</a>
+                        <?php \web\widgets\Mailto::create(array('email' => 'info@icpc.org.ua', 'attr' => array('class'=>'inline'))); ?>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

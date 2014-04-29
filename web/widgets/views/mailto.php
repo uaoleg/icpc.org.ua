@@ -1,0 +1,1 @@
+<a href="<?=$email?>"<?=$attributes?>><?=$title?></a>
