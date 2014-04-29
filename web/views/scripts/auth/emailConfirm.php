@@ -5,7 +5,7 @@
                 <?=\yii::t('app', 'Something went wrong!')?>
             </div>
             <div class="panel-body">
-                <?=\yii::t('app', 'Please check the link provided in the confirmation email')?>
+                <?=\yii::t('app', 'Please, check the link provided in the confirmation email')?>
             </div>
         </div>
     </div>
