@@ -258,6 +258,8 @@ class AuthController extends \web\ext\Controller
             $this->httpException(400);
         }
 
+        $success = false;
+
         // Confirm email
         $emailConfirmation = User\EmailConfirmation::model()->findByPk(new \MongoId($token));
         if ($emailConfirmation !== null) {
@@ -265,10 +267,11 @@ class AuthController extends \web\ext\Controller
             $user->isEmailConfirmed = true;
             $user->save();
             $emailConfirmation->delete();
+            $success = true;
         }
 
         // Render view
-        $this->render('emailConfirm');
+        $this->render('emailConfirm', array('success' => $success));
     }
 
     /**
