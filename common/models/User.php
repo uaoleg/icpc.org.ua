@@ -374,20 +374,31 @@ class User extends \common\ext\MongoDb\Document
     }
 
     /**
-     * After save action
+     * Before save action
+     *
+     * @return bool
      */
-    protected function afterSave()
+    protected function beforeSave()
     {
         // Revoke coordination roles if it was changed
-        if ((!$this->_isFirstTimeSaved) && ($this->attributeHasChanged('coordinator'))) {
+        if ((!$this->getIsNewRecord()) && ($this->attributeHasChanged('coordinator'))) {
             $this->isApprovedCoordinator = false;
         }
 
         // Revoke coach roles if it was changed
-        if ((!$this->_isFirstTimeSaved) && ($this->attributeHasChanged('type'))) {
+        if ((!$this->getIsNewRecord()) && ($this->attributeHasChanged('type'))) {
             $this->isApprovedCoach = false;
         }
 
+        return parent::beforeSave();
+    }
+
+
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
         // If user changed any name, info in results and teams models should be updated
         $initialUser = new static();
         $initialUser->setAttributes($this->_initialAttributes, false);
