@@ -14,46 +14,63 @@
             $cs->registerCoreScript('msie');
         }
     ?>
+    <style>
+        table > thead > tr > th {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <table class="table table-striped table-hover">
+                <table width="100%" border="1">
                     <thead>
                         <tr>
                             <th>№</th>
-                            <th><?=\yii::t('app', 'University full name, team name')?></th>
-                            <th><?=\yii::t('app', 'Full names of students and coach')?></th>
+                            <th><?=\yii::t('app', 'University full name (ukrainian and english), team name')?></th>
+                            <th colspan="2"><?=\yii::t('app', 'Full names of students and coach')?></th>
                             <th><?=\yii::t('app', 'E-mail')?></th>
-                            <th><?=\yii::t('app', 'Phone number')?></th>
+                            <th><?=\yii::t('app', 'Phone number (mobile, home, work)')?></th>
                             <th><?=\yii::t('app', 'T-shirt size')?></th>
                             <th><?=\yii::t('app', 'Year of birth')?></th>
                             <th><?=\yii::t('app', 'Admission year')?></th>
                             <th><?=\yii::t('app', 'Year')?></th>
+                        </tr>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                            <th><?=\yii::t('app', 'Ukrainian language')?></th>
+                            <th><?=\yii::t('app', 'English language')?></th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $i = 1; ?>
                         <?php foreach($participants as $participant): ?>
                             <tr>
-                                <td><?=$i++?></td>
-                                <td><?=$participant['schoolNameUk']?></td>
+                                <td rowspan="4"><?=$i++?></td>
+                                <td rowspan="4">
+                                    <p>
+                                        <?=$participant['schoolNameUk']?><br/><br/>
+                                        <?=$participant['schoolNameEn']?><br/><br/>
+                                        <strong><?=$participant['teamName']?></strong>
+                                    </p>
+                                </td>
                                 <?php $this->renderPartial('partial/participants/person', array('member'=> $participant['members'][0])); ?>
                             </tr>
                             <tr>
-                                <td>&nbsp;</td>
-                                <td><?=$participant['schoolNameEn']?></td>
                                 <?php $this->renderPartial('partial/participants/person', array('member'=> $participant['members'][1])); ?>
                             </tr>
                             <tr>
-                                <td>&nbsp;</td>
-                                <td><strong><?=$participant['teamName']?></strong></td>
                                 <?php $this->renderPartial('partial/participants/person', array('member'=> $participant['members'][2])); ?>
                             </tr>
                             <tr>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
                                 <?php $this->renderPartial('partial/participants/person', array('member'=> $participant['coach'])); ?>
                             </tr>
                         <?php endforeach; ?>
