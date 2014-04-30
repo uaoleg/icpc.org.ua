@@ -18,6 +18,8 @@ class Controller extends \CController
      */
     const JQGRID_OPERATION_DATERANGE = 'dr';
     const JQGRID_OPERATION_GREATER_OR_EQUAL = 'ge';
+    const JQGRID_OPERATION_EQUAL_BOOL = 'bool';
+    const JQGRID_OPERATION_EQUAL_BOOL_DATA_NONE = '-1';
 
     /**
      * Nav active items
@@ -323,8 +325,10 @@ class Controller extends \CController
         if ($criteria === null) {
             $criteria = new \EMongoCriteria();
         }
+        if (!empty($sortName)) {
+            $criteria->sort($sortName, $sortOrder);
+        }
         $criteria
-            ->sort($sortName, $sortOrder)
             ->limit($perPage)
             ->offset(($page - 1) * $perPage);
         if ($filters) {
@@ -348,6 +352,10 @@ class Controller extends \CController
                     $criteria->addCond($filter->field, '<=', $endDate);
                 } elseif ($filter->op === static::JQGRID_OPERATION_GREATER_OR_EQUAL) {
                     $criteria->addCond($filter->field, '>=', (int)$filter->data);
+                } elseif ($filter->op === static::JQGRID_OPERATION_EQUAL_BOOL) {
+                    if ($filter->data !== static::JQGRID_OPERATION_EQUAL_BOOL_DATA_NONE) {
+                        $criteria->addCond($filter->field, '==', (bool)$filter->data);
+                    }
                 } else {
                     $regex = new \MongoRegex('/'.preg_quote($filter->data).'/i');
                     $criteria->addCond($filter->field, '==', $regex);

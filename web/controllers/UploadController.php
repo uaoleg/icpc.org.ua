@@ -148,8 +148,17 @@ class UploadController extends \web\ext\Controller
             $teamName = $tr->find('.st_team', 0)->plaintext;
             $team = Team::model()->findByAttributes(array(
                 'name' => new \MongoRegex('/^' . preg_quote($teamName) . '$/i'),
-                'year' => date('Y'),
+                'year' => (int)date('Y'),
             ));
+
+            // Check team geo to match
+            if ($team !== null) {
+                if (($team->school->state !== $geo)
+                        && ($team->school->region !== $geo)
+                        && ($team->school->country !== $geo)) {
+                    continue;
+                }
+            }
 
             // Parse tasks tries and time
             $tasksTries = $tasksTime = array();

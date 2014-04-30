@@ -61,6 +61,22 @@
             <div class="slogan">
                 &mdash; «<?=\yii::t('app', 'Do it with us, do it like us, do it better than us!')?>»
             </div>
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6">
+                    <?php if (!empty(\yii::app()->user->getInstance()->coordinator) && !\yii::app()->user->getInstance()->isApprovedCoordinator): ?>
+                        <div class="alert alert-danger text-center">
+                            <?=\yii::t('app', '<b>Warning!</b> Your coordinator status is not approved yet!')?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ((\yii::app()->user->getInstance()->type === \common\models\User::ROLE_COACH) && (!\yii::app()->user->getInstance()->isApprovedCoach)): ?>
+                        <div class="alert alert-danger text-center">
+                            <?=\yii::t('app', '<b>Warning!</b> Your coach status is not approved yet!')?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="col-lg-3"></div>
+            </div>
             <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -169,7 +185,7 @@
                     </li>
                     <li>
                         <span class="img-layout-mail-24"></span>
-                        <a href="mailto:info@icpc.org.ua" class="inline">info@icpc.org.ua</a>
+                        <?php \web\widgets\Mailto::create(array('email' => 'info@icpc.org.ua', 'attr' => array('class'=>'inline'))); ?>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

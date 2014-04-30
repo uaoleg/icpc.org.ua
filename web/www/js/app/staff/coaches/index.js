@@ -1,15 +1,14 @@
 function appStaffCoachesIndex() {
 
     // Set coach state
-    $('.btn.coach-state').on('click', function() {
-        var $this = $(this),
-            $td = $this.closest('td');
-        $('.btn.coach-state', $td).removeClass('hide');
+    $(document).on('click', '.btn.coach-state', function() {
+        var $this = $(this);
+        $this.siblings('.btn.coach-state').removeClass('hide');
         $this.addClass('hide');
         $.ajax({
             url: app.baseUrl + '/staff/coaches/setState',
             data: {
-                userId: $(this).closest('tr').data('id'),
+                userId: $this.data('uid'),
                 state: $this.data('state')
             }
         });

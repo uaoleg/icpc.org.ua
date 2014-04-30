@@ -24,16 +24,36 @@ class CoachesController extends \web\modules\staff\ext\Controller
      */
     public function actionIndex()
     {
-        // Get list of coaches
-        $criteria = new \EMongoCriteria();
-        $criteria
-            ->addCond('type', '==', User::ROLE_COACH)
-            ->sort('dateCreated', \EMongoCriteria::SORT_DESC);
-        $userList = User::model()->findAll($criteria);
-
         // Render view
-        $this->render('index', array(
-            'userList' => $userList,
+        $this->render('index');
+    }
+
+    /**
+     * Method for jqGrid which returns all the coaches
+     */
+    public function actionGetListJson()
+    {
+        // Get jqGrid params
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('type', '==', User::ROLE_COACH);
+        $jqgrid = $this->_getJqgridParams(User::model(), $criteria);
+
+        $rows = array();
+        foreach ($jqgrid['itemList'] as $user) {
+            $arrayToAdd = array(
+                'name'            => \web\widgets\user\Name::create(array('user' => $user, 'lang' => \yii::app()->language), true),
+                'email'           => $user->email,
+                'dateCreated'     => date('Y-m-d H:i:s', $user->dateCreated),
+                'isApprovedCoach' => $this->renderPartial('index/action', array('user' => $user), true)
+            );
+            $rows[] = $arrayToAdd;
+        }
+
+        $this->renderJson(array(
+            'page'      => $jqgrid['page'],
+            'total'     => ceil($jqgrid['totalCount'] / $jqgrid['perPage']),
+            'records'   => count($jqgrid['itemList']),
+            'rows'      => $rows,
         ));
     }
 
@@ -59,13 +79,15 @@ class CoachesController extends \web\modules\staff\ext\Controller
 
         // Assign coach role to the user
         if ($state) {
-            \yii::app()->authManager->assign(User::ROLE_COACH, $userId);
+            $user->isApprovedCoach = true;
         }
 
         // Revoke coordination roles
         else {
-            \yii::app()->authManager->revoke(User::ROLE_COACH, $userId);
+            $user->isApprovedCoach = false;
         }
+
+        $user->save();
     }
 
 }

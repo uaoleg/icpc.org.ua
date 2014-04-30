@@ -29,16 +29,16 @@ class InfoStudent extends InfoAbstract
     public $group;
 
     /**
+     * University course
+     * @var int
+     */
+    public $course;
+
+    /**
      * Year of admission to University
      * @var int
      */
     public $schoolAdmissionYear;
-
-    /**
-     * Date of birth
-     * @var string
-     */
-    public $dateOfBirth;
 
     /**
      * Student document serial number
@@ -63,7 +63,7 @@ class InfoStudent extends InfoAbstract
             'faculty'              => \yii::t('app', 'Faculty of study'),
             'group'                => \yii::t('app', 'Group'),
             'schoolAdmissionYear'  => \yii::t('app', 'Year of admission to University'),
-            'dateOfBirth'          => \yii::t('app', 'Date of birth'),
+            'course'               => \yii::t('app', 'Course'),
             'document'             => \yii::t('app', 'Document serial number')
         ));
     }
@@ -76,7 +76,8 @@ class InfoStudent extends InfoAbstract
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('studyField, speciality, faculty, group, schoolAdmissionYear, dateOfBirth, document', 'required'),
+            array('studyField, speciality, faculty, group, schoolAdmissionYear, document, course', 'required'),
+            array('course', 'numerical', 'min' => 1, 'max' => 4)
         ));
     }
 

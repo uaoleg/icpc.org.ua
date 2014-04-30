@@ -15,8 +15,9 @@
             <div class="panel-body">
                 <div class="form-horizontal">
                     <?php $this->renderPartial('partial/additional', array(
-                        'lang' => $lang,
-                        'info' => $info,
+                        'lang'  => $lang,
+                        'info'  => $info,
+                        'sizes' => $sizes
                     )); ?>
 
                     <div class="form-group">
@@ -60,11 +61,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 control-label" for="dateOfBirth"><?=\yii::t('app', 'Date of birth', null, null, $lang)?></label>
+                        <label class="col-lg-3 control-label" for="course"><?=\yii::t('app', 'Course', null, null, $lang)?></label>
                         <div class="col-lg-9">
-                            <input class="form-control" id="dateOfBirth" name="dateOfBirth" type="text"
-                                   value="<?=\CHtml::encode($info->dateOfBirth)?>"
-                                   placeholder="<?=\yii::t('app', 'Date of birth', null, null, $lang)?>" />
+                            <input class="form-control" id="course" name="course" type="text"
+                                   value="<?=\CHtml::encode($info->course)?>"
+                                   placeholder="<?=\yii::t('app', 'Course', null, null, $lang)?>" />
                         </div>
                     </div>
                     <div class="form-group">
