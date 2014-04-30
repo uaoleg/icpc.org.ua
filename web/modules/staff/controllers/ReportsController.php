@@ -2,19 +2,26 @@
 
 namespace web\modules\staff\controllers;
 
-use \common\models\Team;
 use \common\models\Result;
 
 class ReportsController extends \web\modules\staff\ext\Controller
 {
 
     /**
-     * Main page
+     * All the rules of access to methods of this controller
+     * @return array
      */
-    public function actionIndex()
+    public function accessRules()
     {
-        // Render view
-        $this->render('index', array('year' => $this->getYear()));
+        return array(
+            array(
+                'allow',
+                'roles' => array(\common\models\User::ROLE_COORDINATOR_STATE),
+            ),
+            array(
+                'deny',
+            )
+        );
     }
 
     /**
@@ -22,25 +29,25 @@ class ReportsController extends \web\modules\staff\ext\Controller
      */
     public function actionParticipants()
     {
-        $phase = \yii::app()->request->getParam('phase', 1);
+        // Get params
+        $phase = (int)\yii::app()->request->getParam('phase');
         $geo   = \yii::app()->request->getParam('geo');
-        $year  = \yii::app()->request->getParam('year');
+        $year  = (int)\yii::app()->request->getParam('year');
 
         // Get list of results
         $criteria = new \EMongoCriteria();
         $criteria
-            ->addCond('phase', '==', $phase + 1)
+            ->addCond('phase', '==', $phase)
             ->addCond('geo', '==', $geo)
-            ->addCond('year', '==', (int)$year)
+            ->addCond('year', '==', $year)
             ->sort('schoolNameUk', \EMongoCriteria::SORT_ASC);
         $results = Result::model()->findAll($criteria);
 
         // Get teams
         $teams = array();
         foreach ($results as $result) {
-            $team = $result->getTeam();
-            if (isset($team)) {
-                $teams[] = $team;
+            if ($result->team !== null) {
+                $teams[] = $result->team;
             }
         }
 
@@ -60,7 +67,7 @@ class ReportsController extends \web\modules\staff\ext\Controller
         }
 
         // Render view
-        $this->layout = false;
+        $this->layout = 'report';
         $this->render('participants', array(
             'participants' => $participants,
         ));
@@ -71,9 +78,9 @@ class ReportsController extends \web\modules\staff\ext\Controller
      */
     public function actionWinners()
     {
-        $phase = \yii::app()->request->getParam('phase', 1);
+        $phase = (int)\yii::app()->request->getParam('phase');
         $geo   = \yii::app()->request->getParam('geo');
-        $year  = \yii::app()->request->getParam('year');
+        $year  = (int)\yii::app()->request->getParam('year');
 
         // Get list of results
         $criteria = new \EMongoCriteria();
@@ -106,7 +113,7 @@ class ReportsController extends \web\modules\staff\ext\Controller
         }
 
         // Render view
-        $this->layout = false;
+        $this->layout = 'report';
         $this->render('winners', array(
             'winners' => $winners
         ));

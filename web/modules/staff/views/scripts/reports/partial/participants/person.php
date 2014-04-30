@@ -6,8 +6,13 @@
 </td>
 <td><?=$member->email?></td>
 <td>
-    <?=\yii::t('app', 'м.:')?><?=$member->info->phoneMobile?><br>
-    <?=\yii::t('app', 'д.:')?><?=$member->info->phoneHome?>
+    <?php if (!empty($member->info->phoneMobile)): ?>
+        <?=\yii::t('app', 'Mobile phone')?>:<?=$member->info->phoneMobile?>
+        <br />
+    <?php endif; ?>
+    <?php if (!empty($member->info->phoneMobile)): ?>
+        <?=\yii::t('app', 'Home phone')?>:<?=$member->info->phoneHome?>
+    <?php endif; ?>
 </td>
 <td><?=$member->info->tShirtSize?></td>
 <td><?=array_pop(explode('/', $member->info->dateOfBirth))?></td>
