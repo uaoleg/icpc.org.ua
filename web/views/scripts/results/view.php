@@ -70,6 +70,25 @@
 
 <div class="page-header">
     <h1><?=$header?> <small><?=$year?>, <?=\yii::t('app', 'stage')?> <?=$phase?></small></h1>
+    <?php if (\yii::app()->user->checkAccess(\common\models\User::ROLE_COORDINATOR_STATE)): ?>
+        <div class="dropdown">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <?=\yii::t('app', 'Reports')?> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li>
+                    <a target="_blank" href="<?=$this->createUrl('/staff/reports/participants', array('phase' => $phase, 'year' => $year, 'geo' => $geo))?>">
+                        <?=\yii::t('app', 'Participants')?>
+                    </a>
+                </li>
+                <li>
+                    <a target="_blank" href="<?=$this->createUrl('/staff/reports/winners', array('phase' => $phase, 'year' => $year, 'geo' => $geo))?>">
+                        <?=\yii::t('app', 'Winners')?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    <?php endif; ?>
 </div>
 
 <table id="results" style="width: 100%;"></table>
