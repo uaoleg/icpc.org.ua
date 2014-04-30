@@ -23,12 +23,15 @@ class ReportsController extends \web\modules\staff\ext\Controller
     public function actionParticipants()
     {
         $phase = \yii::app()->request->getParam('phase', 1);
+        $geo   = \yii::app()->request->getParam('geo');
+        $year  = \yii::app()->request->getParam('year');
 
         // Get list of teams
         $criteria = new \EMongoCriteria();
         $criteria
             ->addCond('phase', '==', $phase + 1)
-            ->addCond('year', '==', $this->getYear())
+            ->addCond('geo', '==', $geo)
+            ->addCond('year', '==', $year)
             ->sort('schoolNameUk', \EMongoCriteria::SORT_ASC);
         $teams = Team::model()->findAll($criteria);
 
@@ -60,12 +63,15 @@ class ReportsController extends \web\modules\staff\ext\Controller
     public function actionWinners()
     {
         $phase = \yii::app()->request->getParam('phase', 1);
+        $geo   = \yii::app()->request->getParam('geo');
+        $year  = \yii::app()->request->getParam('year');
 
         // Get list of results
         $criteria = new \EMongoCriteria();
         $criteria
             ->addCond('phase', '==', $phase)
-            ->addCond('year', '==', $this->getYear())
+            ->addCond('geo', '==', $geo)
+            ->addCond('year', '==', $year)
             ->sort('place', \EMongoCriteria::SORT_ASC);
         $results = Result::model()->findAll($criteria);
 
@@ -73,7 +79,7 @@ class ReportsController extends \web\modules\staff\ext\Controller
         $winners = array();
         foreach ($results as $result) {
             $winner = array(
-                'place'      => $result->place,
+                'place'      => $result->placeText,
                 'teamName'   => $result->teamName,
                 'schoolName' => $result->schoolNameUk,
                 'tasks'      => $result->total,

@@ -76,12 +76,12 @@
             </button>
             <ul class="dropdown-menu" role="menu">
                 <li>
-                    <a target="_blank" href="<?=$this->createUrl('/staff/reports/participants', array('phase' => $phase))?>">
+                    <a target="_blank" href="<?=$this->createUrl('/staff/reports/participants', array('phase' => $phase, 'year' => $year, 'geo' => $geo))?>">
                         <?=\yii::t('app', 'Participants')?>
                     </a>
                 </li>
                 <li>
-                    <a target="_blank" href="<?=$this->createUrl('/staff/reports/winners', array('phase' => $phase))?>">
+                    <a target="_blank" href="<?=$this->createUrl('/staff/reports/winners', array('phase' => $phase, 'year' => $year, 'geo' => $geo))?>">
                         <?=\yii::t('app', 'Winners')?>
                     </a>
                 </li>
