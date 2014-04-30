@@ -16,47 +16,6 @@
     </button>
 <?php endif; ?>
 
-<?php if (\yii::app()->user->checkAccess(\common\models\User::ROLE_COORDINATOR_STATE)): ?>
-    <div class="dropdown" style="display: inline-block;">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            <?=\yii::t('app', 'Reports')?> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-            <li>
-                <a target="_blank" href="<?=$this->createUrl('/staff/reports/participants', array('phase' => '1'))?>">
-                    <?=\yii::t('app', 'Participants (I phase)')?>
-                </a>
-            </li>
-            <li>
-                <a target="_blank" href="<?=$this->createUrl('/staff/reports/participants', array('phase' => '2'))?>">
-                    <?=\yii::t('app', 'Participants (II phase)')?>
-                </a>
-            </li>
-            <li>
-                <a target="_blank" href="<?=$this->createUrl('/staff/reports/participants', array('phase' => '3'))?>">
-                    <?=\yii::t('app', 'Participants (III phase)')?>
-                </a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a target="_blank" href="<?=$this->createUrl('/staff/reports/winners', array('phase' => '1'))?>">
-                    <?=\yii::t('app', 'Winners (I phase)')?>
-                </a>
-            </li>
-            <li>
-                <a target="_blank" href="<?=$this->createUrl('/staff/reports/winners', array('phase' => '2'))?>">
-                    <?=\yii::t('app', 'Winners (II phase)')?>
-                </a>
-            </li>
-            <li>
-                <a target="_blank" href="<?=$this->createUrl('/staff/reports/winners', array('phase' => '3'))?>">
-                    <?=\yii::t('app', 'Winners (III phase)')?>
-                </a>
-            </li>
-        </ul>
-    </div>
-<?php endif; ?>
-
 <div class="page-header">
     <h1><?=\yii::t('app', '1st Phase Results')?></h1>
 </div>
