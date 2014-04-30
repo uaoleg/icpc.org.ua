@@ -40,7 +40,7 @@
                     title: false
                 },
                 scroll: false,
-                rowNum: 100,
+                rowNum: 1000,
                 sortname: 'place',
                 sortorder: 'asc',
                 shrinkToFit: false,
