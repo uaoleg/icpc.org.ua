@@ -16,14 +16,16 @@
         bootbox.setDefaults({
             animate: false
         });
-        $('.btn[data-confirm]').on('click', function() {
-            var $this = $(this);
-            bootbox.confirm($this.data('confirm'), function(confirmed) {
-                if (confirmed) {
-                    $this.trigger('confirmed');
-                }
+        $(document).on('bootboxconfirm', function() {
+            $('.btn[data-confirm], a[data-confirm]').on('click', function() {
+                var $this = $(this);
+                bootbox.confirm($this.data('confirm'), function(confirmed) {
+                    if (confirmed) {
+                        $this.trigger('confirmed');
+                    }
+                });
             });
-        });
+        }).trigger('bootboxconfirm');
 
         // Disable labels
         $(':disabled').closest('label').addClass('disabled');

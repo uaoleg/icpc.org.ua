@@ -156,18 +156,10 @@ class ResultsController extends \web\ext\Controller
         // Fill rows
         $rows = array();
         foreach ($jqgrid['itemList'] as $result) {
-            if (($result->team !== null) && (!$result->team->isDeleted)) {
-                $teamName =
-                    '<a href="' . $this->createUrl('/team/view', array('id' => $result->teamId)). '">' .
-                        $result->teamName .
-                    '</a>';
-            } else {
-                $teamName = $result->teamName;
-            }
             $arrayToAdd = array(
                 'id'                        => (string)$result->_id,
                 'place'                     => $this->renderPartial('view/place', array('result' => $result), true),
-                'teamName'                  => $teamName,
+                'teamName'                  => $this->renderPartial('view/teamName', array('result' => $result), true),
                 'schoolName'.ucfirst($lang) => $result->schoolName,
                 'coachName'.ucfirst($lang)  => $result->coachName,
                 'total'                     => $result->total,

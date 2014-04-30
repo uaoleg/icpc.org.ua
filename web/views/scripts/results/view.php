@@ -49,6 +49,7 @@
                 },
                 loadComplete: function() {
                     $('[rel=tooltip]').tooltip();
+                    $(document).trigger('bootboxconfirm');
                     $('.results-phase-completed').trigger('changed');
                 }
             })
