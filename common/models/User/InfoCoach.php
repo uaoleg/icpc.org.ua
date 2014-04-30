@@ -2,7 +2,7 @@
 
 namespace common\models\User;
 
-class InfoCoach extends InfoAbstract
+class InfoCoach extends Info
 {
 
     /**

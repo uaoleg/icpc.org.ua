@@ -5,12 +5,12 @@ namespace common\models;
 /**
  * User
  *
- * @property-read string            $firstName
- * @property-read string            $middleName
- * @property-read string            $lastName
- * @property-read School            $school
- * @property-read User\Settings     $settings
- * @property-read User\InfoAbstract $info
+ * @property-read string        $firstName
+ * @property-read string        $middleName
+ * @property-read string        $lastName
+ * @property-read School        $school
+ * @property-read User\Settings $settings
+ * @property-read User\Info     $info
  */
 class User extends \common\ext\MongoDb\Document
 {
@@ -138,7 +138,7 @@ class User extends \common\ext\MongoDb\Document
 
     /**
      * User's additional info
-     * @var User\InfoAbstract
+     * @var User\Info
      */
     protected $_info;
 
@@ -234,11 +234,11 @@ class User extends \common\ext\MongoDb\Document
     /**
      * Returns user's additional info
      *
-     * @return User\InfoAbstract
+     * @return User\Info
      */
     public function getInfo()
     {
-        if (!isset($this->_info)) {
+        if ($this->_info === null) {
             if ($this->useLanguage === 'en') {
                 $lang = 'en';
             } else {
@@ -249,7 +249,7 @@ class User extends \common\ext\MongoDb\Document
                     'userId' => (string)$this->_id,
                     'lang'   => $lang,
                 ));
-                if (!isset($this->_info)) {
+                if ($this->_info === null) {
                     $this->_info = new User\InfoStudent();
                     $this->_info->setAttributes(array(
                         'userId'    => (string)$this->_id,
@@ -261,8 +261,20 @@ class User extends \common\ext\MongoDb\Document
                     'userId' => (string)$this->_id,
                     'lang'   => $lang,
                 ));
-                if (!isset($this->_info)) {
+                if ($this->_info === null) {
                     $this->_info = new User\InfoCoach();
+                    $this->_info->setAttributes(array(
+                        'userId'    => (string)$this->_id,
+                        'lang'      => $lang,
+                    ), false);
+                }
+            } else {
+                $this->_info = User\Info::model()->findByAttributes(array(
+                    'userId' => (string)$this->_id,
+                    'lang'   => $lang,
+                ));
+                if ($this->_info === null) {
+                    $this->_info = new User\Info();
                     $this->_info->setAttributes(array(
                         'userId'    => (string)$this->_id,
                         'lang'      => $lang,

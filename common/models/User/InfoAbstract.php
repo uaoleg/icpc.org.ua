@@ -2,7 +2,7 @@
 
 namespace common\models\User;
 
-abstract class InfoAbstract extends \common\ext\MongoDb\Document
+class Info extends \common\ext\MongoDb\Document
 {
 
     /**
@@ -86,7 +86,7 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
             array('lang, userId, dateOfBirth, tShirtSize', 'required'),
             array('dateOfBirth', 'date', 'format' => 'dd/mm/yyyy'),
             array('tShirtSize', 'in', 'range' => array('XS', 'S', 'M', 'L', 'XL', 'XXL')),
-            array('phone', InfoAbstract\Validator\Phone::className())
+            array('phone', Info\Validator\Phone::className())
         ));
     }
 
