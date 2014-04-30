@@ -1,7 +1,7 @@
 <?php
-namespace common\models\User\InfoAbstract\Validator;
+namespace common\models\User\Info\Validator;
 
-use \common\models\User\InfoAbstract;
+use \common\models\User\Info;
 
 class Phone extends \common\ext\MongoDb\Validator\AbstractValidator
 {
@@ -9,8 +9,8 @@ class Phone extends \common\ext\MongoDb\Validator\AbstractValidator
     /**
      * Validate role assigned to user
      *
-     * @param InfoAbstract $userInfo
-     * @param string       $attribute
+     * @param Info      $userInfo
+     * @param string    $attribute
      */
     public function validateAttribute($userInfo, $attribute)
     {
@@ -21,5 +21,5 @@ class Phone extends \common\ext\MongoDb\Validator\AbstractValidator
             $this->addError($userInfo, 'phoneMobile', $errorMessage);
         }
     }
-    
+
 }

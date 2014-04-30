@@ -2,7 +2,7 @@
 
 namespace common\models\User;
 
-class InfoStudent extends InfoAbstract
+class InfoStudent extends Info
 {
 
     /**
