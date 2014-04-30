@@ -26,14 +26,23 @@ class ReportsController extends \web\modules\staff\ext\Controller
         $geo   = \yii::app()->request->getParam('geo');
         $year  = \yii::app()->request->getParam('year');
 
-        // Get list of teams
+        // Get list of results
         $criteria = new \EMongoCriteria();
         $criteria
             ->addCond('phase', '==', $phase + 1)
             ->addCond('geo', '==', $geo)
-            ->addCond('year', '==', $year)
+            ->addCond('year', '==', (int)$year)
             ->sort('schoolNameUk', \EMongoCriteria::SORT_ASC);
-        $teams = Team::model()->findAll($criteria);
+        $results = Result::model()->findAll($criteria);
+
+        // Get teams
+        $teams = array();
+        foreach ($results as $result) {
+            $team = $result->getTeam();
+            if (isset($team)) {
+                $teams[] = $team;
+            }
+        }
 
         // Create list of participants
         $participants = array();

@@ -28,21 +28,16 @@
             <table width="100%" border="1">
                 <thead>
                     <tr>
-                        <th><?=\yii::t('app', 'Place')?></th>
-                        <th><?=\yii::t('app', 'Team name (in english)')?></th>
-                        <th><?=\yii::t('app', 'University full name')?></th>
+                        <th rowspan="2"><?=\yii::t('app', 'Place')?></th>
+                        <th rowspan="2"><?=\yii::t('app', 'Team name (in english)')?></th>
+                        <th rowspan="2"><?=\yii::t('app', 'University full name')?></th>
                         <th colspan="2"><?=\yii::t('app', 'Full names of students and coach')?></th>
-                        <th><?=\yii::t('app', 'Tasks count')?></th>
-                        <th><?=\yii::t('app', 'Total time')?></th>
+                        <th rowspan="2"><?=\yii::t('app', 'Tasks count')?></th>
+                        <th rowspan="2"><?=\yii::t('app', 'Total time')?></th>
                     </tr>
                     <tr>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
                         <th><?=\yii::t('app', 'Ukrainian language')?></th>
                         <th><?=\yii::t('app', 'English language')?></th>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>

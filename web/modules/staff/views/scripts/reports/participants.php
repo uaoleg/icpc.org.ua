@@ -27,27 +27,19 @@
                 <table width="100%" border="1">
                     <thead>
                         <tr>
-                            <th>№</th>
-                            <th><?=\yii::t('app', 'University full name (ukrainian and english), team name')?></th>
+                            <th rowspan="2">№</th>
+                            <th rowspan="2"><?=\yii::t('app', 'University full name (ukrainian and english), team name')?></th>
                             <th colspan="2"><?=\yii::t('app', 'Full names of students and coach')?></th>
-                            <th><?=\yii::t('app', 'E-mail')?></th>
-                            <th><?=\yii::t('app', 'Phone number (mobile, home, work)')?></th>
-                            <th><?=\yii::t('app', 'T-shirt size')?></th>
-                            <th><?=\yii::t('app', 'Year of birth')?></th>
-                            <th><?=\yii::t('app', 'Admission year')?></th>
-                            <th><?=\yii::t('app', 'Year')?></th>
+                            <th rowspan="2"><?=\yii::t('app', 'E-mail')?></th>
+                            <th rowspan="2"><?=\yii::t('app', 'Phone number (mobile, home, work)')?></th>
+                            <th rowspan="2"><?=\yii::t('app', 'T-shirt size')?></th>
+                            <th rowspan="2"><?=\yii::t('app', 'Year of birth')?></th>
+                            <th rowspan="2"><?=\yii::t('app', 'Admission year')?></th>
+                            <th rowspan="2"><?=\yii::t('app', 'Year')?></th>
                         </tr>
                         <tr>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;</th>
                             <th><?=\yii::t('app', 'Ukrainian language')?></th>
                             <th><?=\yii::t('app', 'English language')?></th>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
