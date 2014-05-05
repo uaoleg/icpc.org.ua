@@ -103,6 +103,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_NEWS_CREATE,
             Rbac::OP_NEWS_UPDATE,
             Rbac::OP_RESULT_CREATE,
+            Rbac::OP_RESULT_TEAM_DELETE,
             Rbac::OP_TEAM_EXPORT,
             Rbac::OP_TEAM_LEAGUE_UPDATE,
             Rbac::OP_TEAM_PHASE_UPDATE,
@@ -227,6 +228,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
     protected function _operationsResult()
     {
         $this->auth->createOperation(Rbac::OP_RESULT_CREATE, 'Create result');
+        $this->auth->createOperation(Rbac::OP_RESULT_TEAM_DELETE, 'Delete team result');
     }
 
     /**

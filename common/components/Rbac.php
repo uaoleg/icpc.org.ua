@@ -26,6 +26,7 @@ class Rbac extends \CApplicationComponent
     const OP_NEWS_READ              = 'newsRead';
     const OP_NEWS_UPDATE            = 'newsUpdate';
     const OP_RESULT_CREATE          = 'resultCreate';
+    const OP_RESULT_TEAM_DELETE     = 'resultTeamDelete';
     const OP_STUDENT_VIEW_FULL      = 'studentViewFull';
     const OP_STUDENT_SET_STATUS     = 'studentSetStatus';
     const OP_TEAM_CREATE            = 'teamCreate';

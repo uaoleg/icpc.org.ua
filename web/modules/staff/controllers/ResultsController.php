@@ -17,6 +17,11 @@ class ResultsController extends \web\modules\staff\ext\Controller
         return array(
             array(
                 'allow',
+                'actions' => array('teamdelete'),
+                'roles' => array(Rbac::OP_RESULT_TEAM_DELETE),
+            ),
+            array(
+                'allow',
                 'actions' => array('prizeplaceupdate'),
                 'roles' => array(Rbac::OP_RESULT_CREATE),
             ),
@@ -24,6 +29,23 @@ class ResultsController extends \web\modules\staff\ext\Controller
                 'deny',
             )
         );
+    }
+
+    /**
+     * Remove team from results
+     */
+    public function actionTeamDelete()
+    {
+        // Get param
+        $id = $this->request->getParam('id');
+
+        // Get result of the team
+        $result = Result::model()->findByPk(new \MongoId($id));
+
+        // Delete result
+        if ($result !== null) {
+            $result->delete();
+        }
     }
 
     /**

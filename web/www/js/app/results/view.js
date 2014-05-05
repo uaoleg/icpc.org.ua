@@ -1,6 +1,26 @@
 function appResultsView() {
 
     /**
+     * Remove team
+     */
+    $(document).on('click', '.js-remove-team', function() {
+        return false;
+    }).on('confirmed', '.js-remove-team', function() {
+        var $row = $(this).closest('.jqgrow');
+        $('td', $row).css('opacity', OPACITY_DISABLED);
+        $.ajax({
+            url: app.baseUrl + '/staff/results/teamDelete',
+            data: {
+                id: $row.prop('id')
+            },
+            success: function() {
+                $('#results').jqGrid('delRowData', $row.prop('id'));
+            }
+        });
+        return false;
+    });
+
+    /**
      * Mark team as completed phase
      */
     $(document).on('change', '.results-phase-completed', function() {

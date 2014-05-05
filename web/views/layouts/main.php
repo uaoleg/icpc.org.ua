@@ -66,7 +66,7 @@
                 <div class="col-lg-6">
                     <?php if (!empty(\yii::app()->user->getInstance()->coordinator) && !\yii::app()->user->getInstance()->isApprovedCoordinator): ?>
                         <div class="alert alert-danger text-center">
-                            <h3><?=\yii::t('app', '<b>Warning!</b> Your coordinator status is not approved yet!')?></h3>
+                            <?=\yii::t('app', '<b>Warning!</b> Your coordinator status is not approved yet!')?>
                         </div>
                     <?php endif; ?>
                     <?php if ((\yii::app()->user->getInstance()->type === \common\models\User::ROLE_COACH) && (!\yii::app()->user->getInstance()->isApprovedCoach)): ?>
@@ -185,7 +185,7 @@
                     </li>
                     <li>
                         <span class="img-layout-mail-24"></span>
-                        <a href="mailto:info@icpc.org.ua" class="inline">info@icpc.org.ua</a>
+                        <?php \web\widgets\Mailto::create(array('email' => 'info@icpc.org.ua', 'attr' => array('class'=>'inline'))); ?>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
