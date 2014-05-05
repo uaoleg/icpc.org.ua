@@ -562,6 +562,10 @@ class User extends \common\ext\MongoDb\Document
             $team->save();
         }
 
+        // Delete all question and answers related to this user
+        Qa\Question::model()->deleteAll($criteria);
+        Qa\Answer::model()->deleteAll($criteria);
+
         parent::afterDelete();
     }
 
