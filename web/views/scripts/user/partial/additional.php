@@ -28,7 +28,7 @@
     <label class="col-lg-3 control-label" for="dateOfBirth"><?=\yii::t('app', 'Date of birth', null, null, $lang)?></label>
     <div class="col-lg-9">
         <input class="form-control" id="dateOfBirth" name="dateOfBirth" type="text"
-               value="<?=(is_int($info->dateOfBirth)) ? date('d.m.Y', $info->dateOfBirth) : ''?>"
+               value="<?=(is_int($info->dateOfBirth)) ? date('Y-m-d', $info->dateOfBirth) : ''?>"
                placeholder="<?=\yii::t('app', 'Date of birth', null, null, $lang)?>" />
     </div>
 </div>

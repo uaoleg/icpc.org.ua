@@ -2,7 +2,8 @@ function appUserAdditionalGeneral() {
 
     // Activate datepicker
     $('#dateOfBirth').datepicker({
-        format: 'dd.mm.yyyy',
+        format: 'yyyy-mm-dd',
         weekStart: 1
     });
+
 }

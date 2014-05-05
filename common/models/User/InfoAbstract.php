@@ -4,8 +4,6 @@ namespace common\models\User;
 
 abstract class InfoAbstract extends \common\ext\MongoDb\Document
 {
-    // Scenarios
-    const SC_CONSOLE_DATE_OF_BIRTH_CONVERT = 'consoleDateOfBirthConvert';
 
     /**
      * ID of the related user
@@ -85,10 +83,7 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, userId, tShirtSize', 'required'),
-            array('dateOfBirth', 'required', 'except' => static::SC_CONSOLE_DATE_OF_BIRTH_CONVERT),
-            array('dateOfBirth', 'numerical', 'except' => static::SC_CONSOLE_DATE_OF_BIRTH_CONVERT),
-            array('dateOfBirth', 'numerical', 'allowEmpty' => true, 'on' => static::SC_CONSOLE_DATE_OF_BIRTH_CONVERT),
+            array('lang, dateOfBirth, userId, tShirtSize', 'required'),
             array('tShirtSize', 'in', 'range' => array('XS', 'S', 'M', 'L', 'XL', 'XXL')),
             array('phone', InfoAbstract\Validator\Phone::className())
         ));
@@ -129,8 +124,6 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
      */
     protected function beforeValidate()
     {
-        if (!parent::beforeValidate()) return false;
-
         // Convert MongoId to string
         $this->userId = (string)$this->userId;
 
@@ -142,7 +135,7 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
             }
         }
 
-        return true;
+        return parent::beforeValidate();
     }
 
     /**
@@ -169,6 +162,8 @@ abstract class InfoAbstract extends \common\ext\MongoDb\Document
                 ->addCond('lang', '!=', $this->lang);
             static::model()->updateAll($modifier, $criteria);
         }
+
+        parent::afterSave();
     }
 
 
