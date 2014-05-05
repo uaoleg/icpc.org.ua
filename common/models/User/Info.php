@@ -83,8 +83,7 @@ class Info extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, userId, dateOfBirth, tShirtSize', 'required'),
-            array('dateOfBirth', 'date', 'format' => 'dd/mm/yyyy'),
+            array('lang, dateOfBirth, userId, tShirtSize', 'required'),
             array('tShirtSize', 'in', 'range' => array('XS', 'S', 'M', 'L', 'XL', 'XXL')),
             array('phone', Info\Validator\Phone::className())
         ));
@@ -125,12 +124,18 @@ class Info extends \common\ext\MongoDb\Document
      */
     protected function beforeValidate()
     {
-        if (!parent::beforeValidate()) return false;
-
         // Convert MongoId to string
         $this->userId = (string)$this->userId;
 
-        return true;
+        // Convert string date to unix timestamp
+        if (is_string($this->dateOfBirth)) {
+            $this->dateOfBirth = strtotime($this->dateOfBirth);
+            if ($this->dateOfBirth === false) {
+                $this->dateOfBirth = null;
+            }
+        }
+
+        return parent::beforeValidate();
     }
 
     /**
@@ -141,7 +146,7 @@ class Info extends \common\ext\MongoDb\Document
         // Copy new contacts to the other languages
         if ($this->attributeHasChanged('skype') || $this->attributeHasChanged('phoneHome') ||
             $this->attributeHasChanged('phoneMobile') || $this->attributeHasChanged('acmNumber') ||
-            $this->attributeHasChanged('tShirtSize')
+            $this->attributeHasChanged('tShirtSize') || $this->attributeHasChanged('dateOfBirth')
         ) {
             $modifier = new \EMongoModifier();
             $modifier
@@ -149,13 +154,16 @@ class Info extends \common\ext\MongoDb\Document
                 ->addModifier('phoneHome', 'set', $this->phoneHome)
                 ->addModifier('phoneMobile', 'set', $this->phoneMobile)
                 ->addModifier('tShirtSize', 'set', $this->tShirtSize)
-                ->addModifier('acmNumber', 'set', $this->acmNumber);
+                ->addModifier('acmNumber', 'set', $this->acmNumber)
+                ->addModifier('dateOfBirth', 'set', $this->dateOfBirth);
             $criteria = new \EMongoCriteria();
             $criteria
                 ->addCond('userId', '==', (string)$this->userId)
                 ->addCond('lang', '!=', $this->lang);
             static::model()->updateAll($modifier, $criteria);
         }
+
+        parent::afterSave();
     }
 
 

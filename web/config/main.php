@@ -33,6 +33,15 @@ $config = array(
                     ),
                     'depends' => array('jquery'),
                 ),
+                'bootstrap.datepicker' => array(
+                    'js' => array(
+                        'lib/bootstrap.datepicker/js/bootstrap-datepicker.js'
+                    ),
+                    'css' => array(
+                        'lib/bootstrap.datepicker/css/datepicker.css'
+                    ),
+                    'depends' => array('bootstrap'),
+                ),
                 'ckeditor' => array(
                     'js' => array(
                         'lib/ckeditor-4.2/ckeditor.js',
