@@ -1,4 +1,5 @@
 <?php use common\models\User; ?>
+<?php \yii::app()->clientScript->registerCoreScript('plupload'); ?>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -142,6 +143,23 @@
                                 </div>
                             </div>
 
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-2">
+                                <?=\web\widgets\user\Photo::create(array('photo' => $user->photo), true)?>
+                            </div>
+                            <div class="col-lg-10" id="uploadContainer">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary btn-sm" id="uploadPickfiles">
+                                        <?=\yii::t('app', 'Choose avatar')?>
+                                    </button>
+                                    <span class="document-origin-filename"></span>
+                                    <div class="help-block"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

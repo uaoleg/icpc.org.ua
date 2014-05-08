@@ -1,5 +1,10 @@
 function appUserMe() {
 
+    var self = this;
+
+    // Init uploader
+    self.initUploader();
+
     /**
      * Init Select2
      */
@@ -117,9 +122,74 @@ function appUserMe() {
                 if (response.errors) {
                     $this.prop('disabled', false);
                 } else {
-                    location.href = app.baseUrl + '/user/me';
+//                    location.href = app.baseUrl + '/user/me';
                 }
             }
         });
     });
 }
+
+/**
+ * Init uploader
+ */
+appUserMe.prototype.initUploader = function () {
+
+    var self = this;
+
+    self.uploader = new plupload.Uploader(pluploadHelpersSettings({
+        browse_button:    'uploadPickfiles',
+        container:        'uploadContainer',
+        url:              app.baseUrl + '/upload/photo'
+    }));
+
+    self.uploader.init();
+
+    self.uploader.bind('FilesAdded', function(up, files) {
+        $('#uploadPickfiles')
+            .prop('disabled', true)
+            .closest('.form-group')
+            .removeClass('has-error')
+            .find('.help-block').text('');
+        $.each(files, function(i, file) {
+            $('.document-origin-filename').text(file.name);
+        });
+//        self.onchange();
+        self.uploader.start();
+
+        up.refresh(); // Reposition Flash/Silverlight
+    });
+
+    self.uploader.bind('BeforeUpload', function (up, file) {
+        var fileExt = file.name.split('.').pop();
+        up.settings.multipart_params.uniqueName = $.fn.uniqueId() + '.' + fileExt;
+    });
+
+    self.uploader.bind('UploadProgress', function(up, file) {
+        $('#' + file.id + " b").html(file.percent + "%");
+    });
+
+    self.uploader.bind('Error', function(up, err) {
+        $('#uploadPickfiles')
+            .prop('disabled', false)
+            .closest('.form-group')
+            .addClass('has-error')
+            .find('.help-block').text(err.message);
+        up.refresh(); // Reposition Flash/Silverlight
+    });
+
+    self.uploader.bind('FileUploaded', function(up, file, res) {
+        var response = JSON.parse(res.response);
+        if (response.errors) {
+            $('.help-block')
+                .text(response.message)
+                .closest('.form-group')
+                .addClass('has-error');
+        } else {
+            $('#uploadPickfiles').prop('disabled', false);
+
+            $('.user_me__photo').prop('src', app.baseUrl + '/user/photo/id/' + response.photoId + '.jpg');
+//            location.href = app.baseUrl + '/user/me';
+        }
+
+    });
+};

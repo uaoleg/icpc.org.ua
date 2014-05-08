@@ -111,6 +111,31 @@ class UserController extends \web\ext\Controller
         }
     }
 
+    public function actionPhoto()
+    {
+        // Get params
+        $imageId = mb_substr($this->request->getParam('id'), 0, 24);
+
+        // Get document
+        $image = User\Photo::model()->findByPk(new \MongoId($imageId));
+        if ($image === null) {
+            $this->httpException(404);
+        }
+
+        // Send headers
+        header('Content-type: image/jpeg');
+        header('Cache-Control: public, max-age=' . SECONDS_IN_YEAR . ', pre-check=' . SECONDS_IN_YEAR);
+        header('Pragma: public');
+        header('Expires: ' . gmdate(DATE_RFC1123, time() + SECONDS_IN_YEAR));
+        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+            header('HTTP/1.1 304 Not Modified');
+            exit;
+        }
+
+        // Send content
+        echo $image->file->getBytes();
+    }
+
     /**
      * Page with additional information
      */

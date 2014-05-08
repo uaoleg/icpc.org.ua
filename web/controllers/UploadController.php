@@ -282,6 +282,40 @@ class UploadController extends \web\ext\Controller
     }
 
     /**
+     * Upload user's profile photo
+     */
+    public function actionPhoto()
+    {
+        $userId = \yii::app()->user->id;
+        $user = User::model()->findByPk(new \MongoId($userId));
+
+        // Process file
+        $uploadedFile = $this->_processFile();
+        if (!$uploadedFile) {
+            return;
+        }
+
+        // Delete old photo if it exists
+        if ($user->photo !== null) {
+            $user->photo->delete();
+        }
+
+        // Create document
+        $photo = new User\Photo();
+        $photo->setAttributes(array(
+            'fileName' => mb_strtolower($this->request->getParam('uniqueName')),
+            'userId'   => $userId,
+        ), false);
+        $photo->save();
+        $this->_linkUploadedFile($photo, $uploadedFile);
+
+        $this->renderJson(array(
+            'errors' => false,
+            'photoId' => (string)$photo->_id
+        ));
+    }
+
+    /**
      * Get upload dir
      *
      * @return string
