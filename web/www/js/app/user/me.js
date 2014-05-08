@@ -122,7 +122,7 @@ function appUserMe() {
                 if (response.errors) {
                     $this.prop('disabled', false);
                 } else {
-//                    location.href = app.baseUrl + '/user/me';
+                    location.href = app.baseUrl + '/user/me';
                 }
             }
         });
