@@ -1,5 +1,8 @@
 <div class="row">
-    <div class="col-lg-8 col-lg-offset-2">
+    <div class="col-lg-2">
+        <?=\web\widgets\user\Photo::create(array('photo' => $user->photo), true)?>
+    </div>
+    <div class="col-lg-8">
         <h3>
             <?=\web\widgets\user\Name::create(array('user' => $user), true)?>
         </h3>
