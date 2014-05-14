@@ -233,7 +233,22 @@ class UserController extends \web\ext\Controller
             'phoneWork'     => $phoneWork,
             'fax'           => $fax
         ), false);
+        $infoClone = clone $info;
         $info->save();
+
+        // If new info has errors we still need to save correct fields
+        if ($info->hasErrors()) {
+            $changes = $info->attributesChanges();
+
+            foreach ($changes['final'] as $key => $value) {
+                if ($info->hasErrors($key)) {
+                    $infoClone->$key = $changes['initial'][$key];
+                }
+            }
+
+            $infoClone->save(false);
+            unset($infoClone);
+        }
 
         // Render json
         $this->renderJson(array(
@@ -288,7 +303,22 @@ class UserController extends \web\ext\Controller
             'course'              => $course,
             'document'            => $document,
         ), false);
+        $infoClone = clone $info;
         $info->save();
+
+        // If new info has errors we still need to save correct fields
+        if ($info->hasErrors()) {
+            $changes = $info->attributesChanges();
+
+            foreach ($changes['final'] as $key => $value) {
+                if ($info->hasErrors($key)) {
+                    $infoClone->$key = $changes['initial'][$key];
+                }
+            }
+
+            $infoClone->save(false);
+            unset($infoClone);
+        }
 
         // Render json
         $this->renderJson(array(
