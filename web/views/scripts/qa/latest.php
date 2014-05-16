@@ -23,9 +23,12 @@
             <?=\yii::t('app', '{n} answer|{n} answers', $question->answerCount)?>
         </h2>
         <p>
-            <span class="text-muted"><em>
-                <?php \web\widgets\user\Name::create(array('user' => $question->user)) ?>,
-            </em></span>
+            <span class="text-muted">
+                <em>
+                    <a href="<?=$this->createUrl('/user/view', array('id' => $question->user->_id))?>">
+                        <?php \web\widgets\user\Name::create(array('user' => $question->user)); ?></a>,
+                </em>
+            </span>
             <span class="text-muted"><?=date('Y-m-d H:i:s', $question->dateCreated)?></span>
         </p>
         <div>

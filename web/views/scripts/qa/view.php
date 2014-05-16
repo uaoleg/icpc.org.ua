@@ -18,7 +18,10 @@
 </h2>
 
 <p>
-    <em><?php \web\widgets\user\Name::create(array('user' => $question->user)); ?></em>,
+    <em>
+        <a href="<?=$this->createUrl('/user/view', array('id' => $question->user->_id))?>">
+            <?php \web\widgets\user\Name::create(array('user' => $question->user)); ?></a>,
+    </em>
     <span class="text-muted"><?=date('Y-m-d H:i:s', $question->dateCreated)?></span>
 </p>
 
