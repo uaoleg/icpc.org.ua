@@ -74,6 +74,15 @@
                             <?=\yii::t('app', '<b>Warning!</b> Your coach status is not approved yet!')?>
                         </div>
                     <?php endif; ?>
+                    <?php if (\yii::app()->user->getState(\web\ext\WebUser::SESSION_INFO_NOT_FULL)): ?>
+                        <div class="alert alert-danger text-center">
+                            <?= \yii::t('app', 'Please fill in your additional info in {uk}ukrainian{/a} and {en}english{/a} languages', array(
+                                '{uk}' => '<a href="' . $this->createUrl('user/additional', array('lang' => 'uk')) . '">',
+                                '{en}' => '<a href="' . $this->createUrl('user/additional', array('lang' => 'en')) . '">',
+                                '{/a}' => '</a>'
+                            )) ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <div class="col-lg-3"></div>
             </div>
