@@ -213,10 +213,7 @@ class UserController extends \web\ext\Controller
             'fax'           => $fax
         ), false);
         $info->save();
-
-        if (!$info->hasErrors()) {
-            \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, false);
-        }
+        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, $info->hasErrors());
 
         // Render json
         $this->renderJson(array(
@@ -268,10 +265,7 @@ class UserController extends \web\ext\Controller
             'document'            => $document,
         ), false);
         $info->save();
-
-        if (!$info->hasErrors()) {
-            \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, false);
-        }
+        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, $info->hasErrors());
 
         // Render json
         $this->renderJson(array(

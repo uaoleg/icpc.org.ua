@@ -87,15 +87,15 @@ class AuthController extends \web\ext\Controller
             if ($identity->authenticate()) {
                 \yii::app()->user->login($identity);
 
-                $userUk = User::model()->findByPk(new \MongoId(\yii::app()->user->getInstance()->_id));
+                $userUk = User::model()->findByPk(new \MongoId(\yii::app()->user->id));
                 $userUk->useLanguage = 'uk';
                 $infoUk = $userUk->info;
 
-                $userEn = User::model()->findByPk(new \MongoId(\yii::app()->user->getInstance()->_id));
+                $userEn = User::model()->findByPk(new \MongoId(\yii::app()->user->id));
                 $userEn->useLanguage = 'en';
                 $infoEn = $userEn->info;
 
-                switch(false) {
+                switch (false) {
                     case ($infoUk->validate()):
                         \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
                         $this->redirect($this->createUrl('user/additional', array('lang' => 'uk')));

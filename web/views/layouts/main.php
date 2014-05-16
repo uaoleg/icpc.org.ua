@@ -61,7 +61,7 @@
             <div class="slogan">
                 &mdash; «<?=\yii::t('app', 'Do it with us, do it like us, do it better than us!')?>»
             </div>
-            <?php if(\yii::app()->user->getState(\web\ext\WebUser::SESSION_INFO_NOT_FULL)): ?>
+            <?php if (\yii::app()->user->getState(\web\ext\WebUser::SESSION_INFO_NOT_FULL)): ?>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="alert alert-danger text-center">
