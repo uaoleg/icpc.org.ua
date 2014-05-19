@@ -169,6 +169,10 @@ class Answer extends \common\ext\MongoDb\Document
     {
         // Recount answers for the related question
         if ($this->_isFirstTimeSaved) {
+
+            // send an email notification about new answer
+            \yii::app()->cli->runCommand('email', 'newAnswerNotify', array('answerId' => (string)$this->_id), array(), true);
+
             $this->question->answerCount = $this->countByAttributes(array(
                 'questionId' => $this->questionId,
             ));

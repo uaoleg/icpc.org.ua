@@ -106,6 +106,7 @@ $main = array(
 
         'request' => array(
             'class' => '\web\ext\HttpRequest',
+            'hostInfo' => 'http://icpc.org.ua'
         ),
 
         'session' => array(

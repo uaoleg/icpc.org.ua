@@ -163,4 +163,19 @@ class Question extends \common\ext\MongoDb\Document
         return true;
     }
 
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
+        if ($this->_isFirstTimeSaved) {
+
+            // send an email notification about new question
+            \yii::app()->cli->runCommand('email', 'newQuestionNotify', array('questionId' => (string)$this->_id), array(), true);
+        }
+
+        parent::afterSave();
+    }
+
+
 }
