@@ -62,16 +62,29 @@
                 &mdash; «<?=\yii::t('app', 'Do it with us, do it like us, do it better than us!')?>»
             </div>
             <div class="row">
-                <div class="col-lg-3"></div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 col-lg-offset-3">
                     <?php if (!empty(\yii::app()->user->getInstance()->coordinator) && !\yii::app()->user->getInstance()->isApprovedCoordinator): ?>
                         <div class="alert alert-danger text-center">
-                            <?=\yii::t('app', '<b>Warning!</b> Your coordinator status is not approved yet!')?>
+                            <?=\yii::t('app', '<b>Warning!</b> Your coordinator status is not approved yet!')?><br/>
+                            <?php if (!is_null(\yii::app()->user->getInstance()->approver)): ?>
+                                <?=\yii::t('app', '{a}{person}{/a} can approve you status', array(
+                                    '{a}' => '<a href="' . $this->createUrl('/user/view', array('id' => \yii::app()->user->getInstance()->approver->_id)) . '">',
+                                    '{person}' => \web\widgets\user\Name::create(array('user' => \yii::app()->user->getInstance()->approver), true),
+                                    '{/a}' => '</a>'
+                                ))?>
+                            <?php endif; ?>
                         </div>
                     <?php endif; ?>
                     <?php if ((\yii::app()->user->getInstance()->type === \common\models\User::ROLE_COACH) && (!\yii::app()->user->getInstance()->isApprovedCoach)): ?>
                         <div class="alert alert-danger text-center">
-                            <?=\yii::t('app', '<b>Warning!</b> Your coach status is not approved yet!')?>
+                            <?=\yii::t('app', '<b>Warning!</b> Your coach status is not approved yet!')?><br/>
+                            <?php if (!is_null(\yii::app()->user->getInstance()->approver)): ?>
+                                <?=\yii::t('app', '{a}{person}{/a} can approve you status', array(
+                                    '{a}' => '<a href="' . $this->createUrl('/user/view', array('id' => \yii::app()->user->getInstance()->approver->_id)) . '">',
+                                    '{person}' => \web\widgets\user\Name::create(array('user' => \yii::app()->user->getInstance()->approver), true),
+                                    '{/a}' => '</a>'
+                                ))?>
+                            <?php endif; ?>
                         </div>
                     <?php endif; ?>
                     <?php if (\yii::app()->user->getState(\web\ext\WebUser::SESSION_INFO_NOT_FULL)): ?>
@@ -84,7 +97,6 @@
                         </div>
                     <?php endif; ?>
                 </div>
-                <div class="col-lg-3"></div>
             </div>
             <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
                 <div class="container-fluid">
