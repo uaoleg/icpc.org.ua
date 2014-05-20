@@ -12,6 +12,7 @@ use \common\models\Team;
  */
 class Controller extends \CController
 {
+    private $_pageTitle;
 
     /*
      * Search operation names for different field types
@@ -373,6 +374,28 @@ class Controller extends \CController
             'itemList'  => $itemList,
             'totalCount'=> $totalCount,
         );
+    }
+
+    /**
+     * @return string the page title. Defaults to the controller name and the action name.
+     */
+    public function getPageTitle()
+    {
+        if ($this->_pageTitle !== null) {
+            return $this->_pageTitle;
+        } else {
+            $name=ucfirst(basename($this->getId()));
+            if($this->getAction()!==null && strcasecmp($this->getAction()->getId(),$this->defaultAction)) {
+                return $this->_pageTitle = ucfirst($this->getAction()->getId()).' '.$name.' - '. \yii::app()->name;
+            } else {
+                return $this->_pageTitle = $name.' - '.\yii::app()->name;
+            }
+        }
+    }
+
+    public function setPageTitle($value)
+    {
+        $this->_pageTitle=$value;
     }
 
 }
