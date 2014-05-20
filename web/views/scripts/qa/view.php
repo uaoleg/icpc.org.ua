@@ -1,4 +1,7 @@
-<?php \yii::app()->clientScript->registerCoreScript('ckeditor'); ?>
+<?php
+    \yii::app()->clientScript->registerCoreScript('ckeditor');
+    $this->pageTitle = \yii::t('app', '{question} - {app}', array('{app}' => \yii::app()->name, '{question}' => $question->title));
+?>
 
 <script type="text/javascript">
     $(document).ready(function() {
