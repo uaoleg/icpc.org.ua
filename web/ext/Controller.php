@@ -12,6 +12,11 @@ use \common\models\Team;
  */
 class Controller extends \CController
 {
+
+    /**
+     * Page title
+     * @var string
+     */
     private $_pageTitle;
 
     /*
@@ -377,7 +382,9 @@ class Controller extends \CController
     }
 
     /**
-     * @return string Page title
+     * Returns page title
+     *
+     * @return string
      */
     public function getPageTitle()
     {
@@ -395,6 +402,7 @@ class Controller extends \CController
 
     /**
      * Sets the page title
+     * 
      * @param string $value
      */
     public function setPageTitle($value)
