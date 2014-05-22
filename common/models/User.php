@@ -144,12 +144,6 @@ class User extends \common\ext\MongoDb\Document
     protected $_info;
 
     /**
-     * A user who can approve coach/coordinator status of this user
-     * @var User
-     */
-    protected $_approver;
-
-    /**
      * Returns first name in appropriate language
      *
      * @return string
@@ -299,18 +293,17 @@ class User extends \common\ext\MongoDb\Document
      */
     public function getApprover()
     {
-        if ($this->_approver === null) {
-
+        $key = 'user' . (string)$this->_id . 'approver';
+        if (!\yii::app()->cache->get($key)) {
+            $criteria = new \EMongoCriteria();
             // Get approver for coordinator
             if (!empty($this->coordinator) && !$this->isApprovedCoordinator) {
                 switch ($this->coordinator) {
                     case static::ROLE_COORDINATOR_REGION:
                     case static::ROLE_COORDINATOR_UKRAINE:
-                        $criteria = new \EMongoCriteria();
                         $criteria
                             ->addCond('isApprovedCoordinator', '==', true)
                             ->addCond('coordinator', '==', static::ROLE_COORDINATOR_UKRAINE);
-                        $this->_approver = User::model()->find($criteria);
                         break;
                     case static::ROLE_COORDINATOR_STATE:
                         $schoolIds = School::model()->getCollection()->distinct('_id', array(
@@ -320,12 +313,10 @@ class User extends \common\ext\MongoDb\Document
                         foreach ($schoolIds as $schoolId) {
                             $ids[] = (string)$schoolId;
                         }
-                        $criteria = new \EMongoCriteria();
                         $criteria
                             ->addCond('isApprovedCoordinator', '==', true)
                             ->addCond('coordinator', '==', static::ROLE_COORDINATOR_REGION)
                             ->addCond('schoolId', 'in', $ids);
-                        $this->_approver = User::model()->find($criteria);
                         break;
                 }
             }
@@ -339,15 +330,14 @@ class User extends \common\ext\MongoDb\Document
                 foreach ($schoolIds as $schoolId) {
                     $ids[] = (string)$schoolId;
                 }
-                $criteria = new \EMongoCriteria();
                 $criteria
                     ->addCond('isApprovedCoordinator', '==', true)
                     ->addCond('coordinator', '==', static::ROLE_COORDINATOR_STATE)
                     ->addCond('schoolId', 'in', $ids);
-                $this->_approver = User::model()->find($criteria);
             }
+            \yii::app()->cache->set($key, User::model()->find($criteria), SECONDS_IN_HOUR);
         }
-        return $this->_approver;
+        return \yii::app()->cache->get($key);
     }
 
     /**
