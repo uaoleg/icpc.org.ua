@@ -102,6 +102,10 @@ class UploadController extends \web\ext\Controller
         $html = $parser->str_get_html($uploadedFile->getBytes());
         $uploadedFile->delete();
 
+        $finalUrlParameters = array(
+            'year' => date('Y')
+        );
+
         // Define phase and check access
         $school = \yii::app()->user->getInstance()->school;
         switch ($geo) {
@@ -110,23 +114,28 @@ class UploadController extends \web\ext\Controller
                     $this->httpException(403);
                 }
                 $phase = Result::PHASE_1;
+                $finalUrlParameters['state'] = $geo;
                 break;
             case ($school->region):
                 if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION)) {
                     $this->httpException(403);
                 }
+                $finalUrlParameters['region'] = $geo;
                 $phase = Result::PHASE_2;
                 break;
             case ($school->country):
                 if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE)) {
                     $this->httpException(403);
                 }
+                $finalUrlParameters['country'] = $geo;
                 $phase = Result::PHASE_3;
                 break;
             default:
                 $this->httpException(404);
                 break;
         }
+
+        $finalUrlParameters['phase'] = $phase;
 
         // Delete old version of results
         $criteria = new \EMongoCriteria();
@@ -209,6 +218,7 @@ class UploadController extends \web\ext\Controller
 
         $this->renderJson(array(
             'errors' => false,
+            'url' => $this->createUrl('/results/view', $finalUrlParameters)
         ));
     }
 
