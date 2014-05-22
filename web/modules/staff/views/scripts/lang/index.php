@@ -1,6 +1,6 @@
 <?php
     \yii::app()->clientScript->registerCoreScript('jquery.jqgrid');
-    $this->pageTitle = \yii::t('app', '{app} - Languages', array('{app}' => \yii::app()->name));
+    $this->pageTitle = \yii::t('app', 'Languages - {app}', array('{app}' => \yii::app()->name));
 ?>
 
 <script type="text/javascript">
