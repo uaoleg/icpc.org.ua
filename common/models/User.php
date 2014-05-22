@@ -294,10 +294,14 @@ class User extends \common\ext\MongoDb\Document
 
     /**
      * Returns user who can approve this user's coach/coordinator status
+     *
+     * @return User
      */
     public function getApprover()
     {
         if ($this->_approver === null) {
+
+            // Get approver for coordinator
             if (!empty($this->coordinator) && !$this->isApprovedCoordinator) {
                 switch ($this->coordinator) {
                     case static::ROLE_COORDINATOR_REGION:
@@ -308,42 +312,38 @@ class User extends \common\ext\MongoDb\Document
                             ->addCond('coordinator', '==', static::ROLE_COORDINATOR_UKRAINE);
                         $this->_approver = User::model()->find($criteria);
                         break;
-
                     case static::ROLE_COORDINATOR_STATE:
                         $schoolIds = School::model()->getCollection()->distinct('_id', array(
-                            'region' => $this->school->region
+                            'region' => $this->school->region,
                         ));
-
                         $ids = array();
                         foreach ($schoolIds as $schoolId) {
                             $ids[] = (string)$schoolId;
                         }
-
                         $criteria = new \EMongoCriteria();
                         $criteria
                             ->addCond('isApprovedCoordinator', '==', true)
                             ->addCond('coordinator', '==', static::ROLE_COORDINATOR_REGION)
                             ->addCond('schoolId', 'in', $ids);
-
                         $this->_approver = User::model()->find($criteria);
                         break;
                 }
-            } elseif (($this->type === static::ROLE_COACH) && (!$this->isApprovedCoach)) {
+            }
+
+            // Get approver for coach
+            elseif (($this->type === static::ROLE_COACH) && (!$this->isApprovedCoach)) {
                 $schoolIds = School::model()->getCollection()->distinct('_id', array(
                     'region' => $this->school->region
                 ));
-
                 $ids = array();
                 foreach ($schoolIds as $schoolId) {
                     $ids[] = (string)$schoolId;
                 }
-
                 $criteria = new \EMongoCriteria();
                 $criteria
                     ->addCond('isApprovedCoordinator', '==', true)
                     ->addCond('coordinator', '==', static::ROLE_COORDINATOR_STATE)
                     ->addCond('schoolId', 'in', $ids);
-
                 $this->_approver = User::model()->find($criteria);
             }
         }

@@ -67,10 +67,10 @@
                         <div class="alert alert-danger text-center">
                             <?=\yii::t('app', '<b>Warning!</b> Your coordinator status is not approved yet!')?><br/>
                             <?php if (!is_null(\yii::app()->user->getInstance()->approver)): ?>
-                                <?=\yii::t('app', '{a}{person}{/a} can approve you status', array(
-                                    '{a}' => '<a href="' . $this->createUrl('/user/view', array('id' => \yii::app()->user->getInstance()->approver->_id)) . '">',
-                                    '{person}' => \web\widgets\user\Name::create(array('user' => \yii::app()->user->getInstance()->approver), true),
-                                    '{/a}' => '</a>'
+                                <?=\yii::t('app', '{a}{person}{/a} can approve your status.', array(
+                                    '{a}'       => '<a href="' . $this->createUrl('/user/view', array('id' => \yii::app()->user->getInstance()->approver->_id)) . '">',
+                                    '{person}'  => \web\widgets\user\Name::create(array('user' => \yii::app()->user->getInstance()->approver), true),
+                                    '{/a}'      => '</a>'
                                 ))?>
                             <?php endif; ?>
                         </div>
@@ -79,10 +79,10 @@
                         <div class="alert alert-danger text-center">
                             <?=\yii::t('app', '<b>Warning!</b> Your coach status is not approved yet!')?><br/>
                             <?php if (!is_null(\yii::app()->user->getInstance()->approver)): ?>
-                                <?=\yii::t('app', '{a}{person}{/a} can approve you status', array(
-                                    '{a}' => '<a href="' . $this->createUrl('/user/view', array('id' => \yii::app()->user->getInstance()->approver->_id)) . '">',
-                                    '{person}' => \web\widgets\user\Name::create(array('user' => \yii::app()->user->getInstance()->approver), true),
-                                    '{/a}' => '</a>'
+                                <?=\yii::t('app', '{a}{person}{/a} can approve your status.', array(
+                                    '{a}'       => '<a href="' . $this->createUrl('/user/view', array('id' => \yii::app()->user->getInstance()->approver->_id)) . '">',
+                                    '{person}'  => \web\widgets\user\Name::create(array('user' => \yii::app()->user->getInstance()->approver), true),
+                                    '{/a}'      => '</a>'
                                 ))?>
                             <?php endif; ?>
                         </div>
