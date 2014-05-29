@@ -12,6 +12,7 @@ namespace common\models;
  * @property-read User\Settings $settings
  * @property-read User\Info     $info
  * @property-read User          $approver
+ * @property-read User\Photo    $photo
  */
 class User extends \common\ext\MongoDb\Document
 {
@@ -142,6 +143,12 @@ class User extends \common\ext\MongoDb\Document
      * @var User\Info
      */
     protected $_info;
+
+    /**
+     * User's profile photo
+     * @var User\Photo
+     */
+    protected $_photo;
 
     /**
      * Returns first name in appropriate language
@@ -338,6 +345,21 @@ class User extends \common\ext\MongoDb\Document
             $this->cache->set($key, User::model()->find($criteria), SECONDS_IN_HOUR);
         }
         return $this->cache->get($key);
+    }
+
+    /**
+     * Returns user's photo
+     *
+     * @return User\Photo
+     */
+    public function getPhoto()
+    {
+        if ($this->_photo === null) {
+            $this->_photo = User\Photo::model()->findByAttributes(array(
+                'userId' => (string)$this->_id,
+            ));
+        }
+        return $this->_photo;
     }
 
     /**

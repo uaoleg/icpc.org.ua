@@ -220,6 +220,7 @@ class UploadController extends \web\ext\Controller
         ));
 
         if ($imagesCount < News::MAX_IMAGES_COUNT) {
+
             // Process file
             $uploadedFile = $this->_processFile();
             if (!$uploadedFile) {
@@ -244,10 +245,10 @@ class UploadController extends \web\ext\Controller
                 )
             );
 
-            // delete previous file
+            // Delete previous file
             $uploadedFile->delete();
 
-            // create a new scaled and converted file
+            // Create a new scaled and converted file
             $newUploadedFile = new UploadedFile();
             $newUploadedFile->setAttributes(array(
                 'filename' => $filePath . '/' . $fileName,
@@ -262,7 +263,7 @@ class UploadController extends \web\ext\Controller
 
             $this->_linkUploadedFile($image, $newUploadedFile);
 
-            // delete temporary files
+            // Delete temporary files
             unlink($filePath . '/' . $fileName);
             if (file_exists($filePath . '/' . $newFileName)) {
                 unlink($filePath . '/' . $newFileName);
@@ -279,6 +280,76 @@ class UploadController extends \web\ext\Controller
                     array('{n}' => News::MAX_IMAGES_COUNT))
             ));
         }
+    }
+
+    /**
+     * Upload user's profile photo
+     */
+    public function actionPhoto()
+    {
+        // Get current user
+        $userId = \yii::app()->user->id;
+        $user = User::model()->findByPk(new \MongoId($userId));
+
+        // Process file
+        $uploadedFile = $this->_processFile();
+        if (!$uploadedFile) {
+            return;
+        }
+
+        $filePath = \yii::getPathOfAlias('common.runtime');
+        $fileName = array_pop(explode('/', $uploadedFile->filename));
+        $file = fopen($filePath . '/' . $fileName, 'w');
+        fwrite($file, $uploadedFile->getBytes());
+        fclose($file);
+
+        $newFileName = array_shift(explode('.', $fileName)) . '.jpg';
+        \yii::app()->image->scale(
+            $filePath . '/' . $fileName,
+            $filePath . '/' . $newFileName,
+            array(
+                'max_width' => 2000,
+                'max_height' => 2000,
+                'min_width' => 100,
+                'min_height' => 100,
+            )
+        );
+
+        // Delete previous file
+        $uploadedFile->delete();
+
+        // Create a new scaled and converted file
+        $newUploadedFile = new UploadedFile();
+        $newUploadedFile->setAttributes(array(
+            'filename' => $filePath . '/' . $fileName,
+        ), false);
+        $newUploadedFile->save();
+
+        // Delete old photo if it exists
+        if ($user->photo !== null) {
+            $user->photo->delete();
+        }
+
+        // Create document
+        $photo = new User\Photo();
+        $photo->setAttributes(array(
+            'fileName' => mb_strtolower($this->request->getParam('uniqueName')),
+            'userId'   => $userId,
+        ), false);
+        $photo->save();
+        $this->_linkUploadedFile($photo, $newUploadedFile);
+
+        // Delete temporary files
+        unlink($filePath . '/' . $fileName);
+        if (file_exists($filePath . '/' . $newFileName)) {
+            unlink($filePath . '/' . $newFileName);
+        }
+
+        // Render json
+        $this->renderJson(array(
+            'errors' => false,
+            'photoId' => (string)$photo->_id
+        ));
     }
 
     /**
