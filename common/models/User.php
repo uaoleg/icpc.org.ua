@@ -293,8 +293,8 @@ class User extends \common\ext\MongoDb\Document
      */
     public function getApprover()
     {
-        $key = 'user' . (string)$this->_id . 'approver';
-        if (!\yii::app()->cache->get($key)) {
+        $key = 'approver';
+        if (!$this->cache->get($key)) {
             $criteria = new \EMongoCriteria();
             // Get approver for coordinator
             if (!empty($this->coordinator) && !$this->isApprovedCoordinator) {
@@ -335,9 +335,9 @@ class User extends \common\ext\MongoDb\Document
                     ->addCond('coordinator', '==', static::ROLE_COORDINATOR_STATE)
                     ->addCond('schoolId', 'in', $ids);
             }
-            \yii::app()->cache->set($key, User::model()->find($criteria), SECONDS_IN_HOUR);
+            $this->cache->set($key, User::model()->find($criteria), SECONDS_IN_HOUR);
         }
-        return \yii::app()->cache->get($key);
+        return $this->cache->get($key);
     }
 
     /**
