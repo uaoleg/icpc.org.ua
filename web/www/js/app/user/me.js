@@ -187,8 +187,7 @@ appUserMe.prototype.initUploader = function () {
         } else {
             $('#uploadPickfiles').prop('disabled', false);
 
-            $('.user_me__photo').prop('src', app.baseUrl + '/user/photo/id/' + response.photoId + '.jpg');
-//            location.href = app.baseUrl + '/user/me';
+            $('.js-user-photo').prop('src', app.baseUrl + '/user/photo/id/' + response.photoId + '.jpg');
         }
 
     });

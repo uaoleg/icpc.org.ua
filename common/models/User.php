@@ -301,7 +301,7 @@ class User extends \common\ext\MongoDb\Document
     {
         if ($this->_photo === null) {
             $this->_photo = User\Photo::model()->findByAttributes(array(
-                'userId' => (string)$this->_id
+                'userId' => (string)$this->_id,
             ));
         }
         return $this->_photo;

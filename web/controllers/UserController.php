@@ -111,6 +111,9 @@ class UserController extends \web\ext\Controller
         }
     }
 
+    /**
+     * Upload avatar
+     */
     public function actionPhoto()
     {
         // Get params
@@ -129,7 +132,7 @@ class UserController extends \web\ext\Controller
         header('Expires: ' . gmdate(DATE_RFC1123, time() + SECONDS_IN_YEAR));
         if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
             header('HTTP/1.1 304 Not Modified');
-            exit;
+            \yii::app()->end();
         }
 
         // Send content

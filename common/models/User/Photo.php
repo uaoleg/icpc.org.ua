@@ -6,6 +6,7 @@ use \common\models\UploadedFile;
 
 class Photo extends \common\ext\MongoDb\Document
 {
+
     /**
      * Image title
      * @var string
@@ -25,16 +26,8 @@ class Photo extends \common\ext\MongoDb\Document
     protected $_file;
 
     /**
-     * This returns the name of the collection for this class
-     * @return string
-     */
-    public function getCollectionName()
-    {
-        return 'user.images';
-    }
-
-    /**
      * Returns related file
+     *
      * @return UploadedFile
      */
     public function getFile()
@@ -65,6 +58,7 @@ class Photo extends \common\ext\MongoDb\Document
 
     /**
      * Define attribute rules
+     *
      * @return array
      */
     public function rules()
@@ -72,6 +66,29 @@ class Photo extends \common\ext\MongoDb\Document
         return array_merge(parent::rules(), array(
             array('userId, fileName', 'required')
         ));
+    }
+
+    /**
+     * This returns the name of the collection for this class
+     *
+     * @return string
+     */
+    public function getCollectionName()
+    {
+        return 'user.photo';
+    }
+
+    /**
+     * Before validate action
+     *
+     * @return bool
+     */
+    protected function beforeValidate()
+    {
+        // Convert MongoId to string
+        $this->userId = (string)$this->userId;
+
+        return parent::beforeValidate();
     }
 
 }

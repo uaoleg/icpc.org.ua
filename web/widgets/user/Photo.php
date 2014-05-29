@@ -8,7 +8,7 @@ class Photo extends \web\ext\Widget
 {
     /**
      * Photo
-     * @var User\Image
+     * @var User\Photo
      */
     public $photo;
 
@@ -17,9 +17,11 @@ class Photo extends \web\ext\Widget
      */
     public function run()
     {
-        $photoUrl = '';
+        // Define photo URL
         if ($this->photo !== null) {
             $photoUrl = $this->createUrl('/user/photo', array('id' => $this->photo->_id)) . '.jpg';
+        } else {
+            $photoUrl = \yii::app()->theme->baseUrl . '/images/user/photo-256.png';
         }
 
         // Render view

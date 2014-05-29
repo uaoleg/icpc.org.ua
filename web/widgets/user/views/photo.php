@@ -1,1 +1,1 @@
-<img src="<?=$photoUrl?>" width="100%" alt="" class="user_me__photo"/>
+<img src="<?=$photoUrl?>" width="100%" alt="" class="js-user-photo"/>

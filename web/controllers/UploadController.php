@@ -220,6 +220,7 @@ class UploadController extends \web\ext\Controller
         ));
 
         if ($imagesCount < News::MAX_IMAGES_COUNT) {
+
             // Process file
             $uploadedFile = $this->_processFile();
             if (!$uploadedFile) {
@@ -244,10 +245,10 @@ class UploadController extends \web\ext\Controller
                 )
             );
 
-            // delete previous file
+            // Delete previous file
             $uploadedFile->delete();
 
-            // create a new scaled and converted file
+            // Create a new scaled and converted file
             $newUploadedFile = new UploadedFile();
             $newUploadedFile->setAttributes(array(
                 'filename' => $filePath . '/' . $fileName,
@@ -262,7 +263,7 @@ class UploadController extends \web\ext\Controller
 
             $this->_linkUploadedFile($image, $newUploadedFile);
 
-            // delete temporary files
+            // Delete temporary files
             unlink($filePath . '/' . $fileName);
             if (file_exists($filePath . '/' . $newFileName)) {
                 unlink($filePath . '/' . $newFileName);
@@ -286,6 +287,7 @@ class UploadController extends \web\ext\Controller
      */
     public function actionPhoto()
     {
+        // Get current user
         $userId = \yii::app()->user->id;
         $user = User::model()->findByPk(new \MongoId($userId));
 
@@ -294,7 +296,6 @@ class UploadController extends \web\ext\Controller
         if (!$uploadedFile) {
             return;
         }
-        // ======================================================
 
         $filePath = \yii::getPathOfAlias('common.runtime');
         $fileName = array_pop(explode('/', $uploadedFile->filename));
@@ -314,16 +315,16 @@ class UploadController extends \web\ext\Controller
             )
         );
 
-        // delete previous file
+        // Delete previous file
         $uploadedFile->delete();
 
-        // create a new scaled and converted file
+        // Create a new scaled and converted file
         $newUploadedFile = new UploadedFile();
         $newUploadedFile->setAttributes(array(
             'filename' => $filePath . '/' . $fileName,
         ), false);
         $newUploadedFile->save();
-//        die;
+
         // Delete old photo if it exists
         if ($user->photo !== null) {
             $user->photo->delete();
@@ -338,13 +339,13 @@ class UploadController extends \web\ext\Controller
         $photo->save();
         $this->_linkUploadedFile($photo, $newUploadedFile);
 
-        // delete temporary files
+        // Delete temporary files
         unlink($filePath . '/' . $fileName);
         if (file_exists($filePath . '/' . $newFileName)) {
             unlink($filePath . '/' . $newFileName);
         }
-        // ======================================================
 
+        // Render json
         $this->renderJson(array(
             'errors' => false,
             'photoId' => (string)$photo->_id
