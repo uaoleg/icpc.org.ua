@@ -91,7 +91,9 @@ class UploadController extends \web\ext\Controller
         }
 
         // Get params
-        $geo = $this->request->getParam('geo');
+        $geo    = $this->request->getParam('geo');
+        $year   = (int)date('Y');
+        $resultsViewParams = array('year' => $year);
 
         // Import HTML DOM Parser
         \yii::import('common.lib.HtmlDomParser.*');
@@ -110,28 +112,32 @@ class UploadController extends \web\ext\Controller
                     $this->httpException(403);
                 }
                 $phase = Result::PHASE_1;
+                $resultsViewParams['state'] = $geo;
                 break;
             case ($school->region):
                 if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION)) {
                     $this->httpException(403);
                 }
+                $resultsViewParams['region'] = $geo;
                 $phase = Result::PHASE_2;
                 break;
             case ($school->country):
                 if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE)) {
                     $this->httpException(403);
                 }
+                $resultsViewParams['country'] = $geo;
                 $phase = Result::PHASE_3;
                 break;
             default:
                 $this->httpException(404);
                 break;
         }
+        $resultsViewParams['phase'] = $phase;
 
         // Delete old version of results
         $criteria = new \EMongoCriteria();
         $criteria
-            ->addCond('year', '==', (int)date('Y'))
+            ->addCond('year', '==', $year)
             ->addCond('geo', '==', $geo);
         Result::model()->deleteAll($criteria);
 
@@ -148,7 +154,7 @@ class UploadController extends \web\ext\Controller
             $teamName = $tr->find('.st_team', 0)->plaintext;
             $team = Team::model()->findByAttributes(array(
                 'name' => new \MongoRegex('/^' . preg_quote($teamName) . '$/i'),
-                'year' => (int)date('Y'),
+                'year' => $year,
             ));
 
             // Check team geo to match
@@ -184,7 +190,7 @@ class UploadController extends \web\ext\Controller
                 // Create result
                 $result = new Result();
                 $result->setAttributes(array(
-                    'year'      => date('Y'),
+                    'year'      => $year,
                     'phase'     => $phase,
                     'geo'       => $geo,
                     'place'     => $place,
@@ -209,6 +215,7 @@ class UploadController extends \web\ext\Controller
 
         $this->renderJson(array(
             'errors' => false,
+            'url' => $this->createUrl('/results/view', $resultsViewParams)
         ));
     }
 
