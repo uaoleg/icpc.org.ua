@@ -167,16 +167,19 @@ class Answer extends \common\ext\MongoDb\Document
      */
     protected function afterSave()
     {
-        // Recount answers for the related question
         if ($this->_isFirstTimeSaved) {
 
-            // send an email notification about new answer
-            \yii::app()->cli->runCommand('email', 'newAnswerNotify', array('answerId' => (string)$this->_id), array(), true);
+            // Send an email notification about new answer
+            \yii::app()->cli->runCommand('email', 'newAnswerNotify', array(
+                'answerId' => (string)$this->_id,
+            ), array(), true);
 
+            // Recount answers for the related question
             $this->question->answerCount = $this->countByAttributes(array(
                 'questionId' => $this->questionId,
             ));
             $this->question->save();
+            
         }
 
         parent::afterSave();
