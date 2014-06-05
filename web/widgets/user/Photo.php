@@ -19,14 +19,14 @@ class Photo extends \web\ext\Widget
     {
         // Define photo URL
         if ($this->photo !== null) {
-            $photoUrl = $this->createUrl('/user/photo', array('id' => $this->photo->_id)) . '.jpg';
+            $photoUrl = $this->createUrl('/user/photo', array('id' => $this->photo->_id));
         } else {
             $photoUrl = \yii::app()->theme->baseUrl . '/images/user/photo-256.png';
         }
 
         // Render view
         $this->render('photo', array(
-            'photoUrl' => $photoUrl
+            'photoUrl' => $photoUrl,
         ));
     }
 }
