@@ -19,7 +19,9 @@
         </h1>
         <h3><?=$team->year?></h3>
         <strong><?=\yii::t('app', 'Coach')?></strong>:
-        <?php \web\widgets\user\Name::create(array('user' => $coach)); ?>
+        <a href="<?=$this->createUrl('/user/view', array('id' => $coach->_id))?>">
+            <?php \web\widgets\user\Name::create(array('user' => $coach)); ?>
+        </a>
         <br />
         <strong><?=\yii::t('app', 'School')?></strong>:
         <?=\CHtml::encode($team->school->fullNameUk)?>
@@ -29,13 +31,13 @@
                 <strong><?=\yii::t('app', 'League')?></strong>:
                 <div class="btn-group">
                     <a href="<?=$this->createUrl('/staff/team/leagueUpdate', array(
-                        'team'      => (string)$team->_id,
+                        'team'      => $team->_id,
                         'league'    => \common\models\Team::LEAGUE_I,
                     ))?>" class="btn btn-default <?=($team->league === \common\models\Team::LEAGUE_I) ? 'active' : ''?>">
                         <?=\common\models\Team::LEAGUE_I?>
                     </a>
                     <a href="<?=$this->createUrl('/staff/team/leagueUpdate', array(
-                        'team'      => (string)$team->_id,
+                        'team'      => $team->_id,
                         'league'    => \common\models\Team::LEAGUE_II,
                     ))?>" class="btn btn-default <?= ($team->league === \common\models\Team::LEAGUE_II) ? 'active' : ''?>">
                         <?=\common\models\Team::LEAGUE_II?>
@@ -52,7 +54,7 @@
         <ul>
             <?php foreach ($members as $member): ?>
             <li>
-                <a href="<?=$this->createUrl('/user/view', array('id' => (string)$member->_id))?>">
+                <a href="<?=$this->createUrl('/user/view', array('id' => $member->_id))?>">
                     <?php \web\widgets\user\Name::create(array('user' => $member)); ?>
                 </a>
             </li>
