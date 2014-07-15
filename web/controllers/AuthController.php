@@ -315,12 +315,22 @@ class AuthController extends \web\ext\Controller
         $schoolId       = $this->request->getPost('schoolId');
         $rulesAgree     = (bool)$this->request->getPost('rulesAgree');
 
+        // Hidden params (might be imported from icpc.baylor.edu)
+        $firstNameEn = $this->request->getPost('firstNameEn');
+        $lastNameEn  = $this->request->getPost('lastNameEn');
+        $acmId       = $this->request->getPost('acmId');
+        $phoneHome   = $this->request->getPost('phoneHome');
+        $phoneMobile = $this->request->getPost('phoneMobile');
+        $tshirtSize   = $this->request->getPost('shirtSize');
+
         // Set attributes
         $user = new User();
         $user->setAttributes(array(
             'firstNameUk'   => $firstNameUk,
             'middleNameUk'  => $middleNameUk,
             'lastNameUk'    => $lastNameUk,
+            'firstNameEn'   => $firstNameEn,
+            'lastNameEn'    => $lastNameEn,
             'email'         => $email,
             'type'          => $type,
             'coordinator'   => $coordinator,
@@ -384,6 +394,17 @@ class AuthController extends \web\ext\Controller
                     'lang'  => $this->request->cookies['language']->value,
                 ), false);
                 $settings->save();
+
+                // Save user additional info
+                $info = $user->info;
+                $info->setAttributes(array(
+                    'acmNumber'   => $acmId,
+                    'phoneHome'   => $phoneHome,
+                    'phoneMobile' => $phoneMobile,
+                    'tShirtSize'  => $tshirtSize,
+                ), false);
+                $info->save();
+
 
                 // Authenticate user
                 $identity = new \web\ext\UserIdentity($email, $password);
