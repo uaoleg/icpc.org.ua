@@ -25,11 +25,11 @@ $config = array(
             'packages' => array(
                 'bootstrap' => array(
                     'js' => array(
-                        'lib/bootstrap-3.1.1/js/bootstrap.min.js',
+                        'lib/bootstrap-3.2.0/js/bootstrap.min.js',
                         'lib/bootbox-4.2.0/bootbox.min.js',
                     ),
                     'css' => array(
-                        'lib/bootstrap-3.1.1/css/bootstrap.min.css',
+                        'lib/bootstrap-3.2.0/css/bootstrap.min.css',
                     ),
                     'depends' => array('jquery'),
                 ),
