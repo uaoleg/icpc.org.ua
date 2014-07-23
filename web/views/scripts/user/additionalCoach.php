@@ -33,7 +33,8 @@
                         <div class="col-lg-9">
                             <input class="form-control" id="officeAddress" name="officeAddress" type="text"
                                    value="<?=\CHtml::encode($info->officeAddress)?>"
-                                   placeholder="<?=\yii::t('app', 'Office address', null, null, $lang)?>" />
+                                   placeholder="<?=\yii::t('app', 'Office address', null, null, $lang)?>"
+                                   data-baylor-officeAddress="" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -56,6 +57,7 @@
                     <div class="form-group">
                         <div class="col-lg-9 col-lg-offset-3">
                             <button type="submit" class="btn btn-lg btn-primary btn-save"><?=\yii::t('app', 'Save')?></button>
+                            <?php \web\widgets\user\Baylor::create(); ?>
                         </div>
                     </div>
 

@@ -80,6 +80,7 @@
                     <div class="form-group">
                         <div class="col-lg-9 col-lg-offset-3">
                             <button type="submit" class="btn btn-lg btn-primary btn-save"><?=\yii::t('app', 'Save')?></button>
+                            <?php \web\widgets\user\Baylor::create(); ?>
                         </div>
                     </div>
 

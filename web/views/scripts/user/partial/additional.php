@@ -11,7 +11,7 @@
     <div class="col-lg-9">
         <input class="form-control" id="phoneHome" name="phoneHome" type="text"
                value="<?=\CHtml::encode($info->phoneHome)?>"
-               placeholder="<?=\yii::t('app', 'Home phone number', null, null, $lang)?>" />
+               placeholder="<?=\yii::t('app', 'Home phone number', null, null, $lang)?>" data-baylor-phoneHome="" />
     </div>
 </div>
 
@@ -20,7 +20,7 @@
     <div class="col-lg-9">
         <input class="form-control" id="phoneMobile" name="phoneMobile" type="text"
                value="<?=\CHtml::encode($info->phoneMobile)?>"
-               placeholder="<?=\yii::t('app', 'Mobile phone number', null, null, $lang)?>" />
+               placeholder="<?=\yii::t('app', 'Mobile phone number', null, null, $lang)?>" data-baylor-phoneMobile="" />
     </div>
 </div>
 
@@ -62,6 +62,7 @@
     <div class="col-lg-9">
         <input class="form-control" id="acmNumber" name="acmNumber" type="text"
                value="<?=\CHtml::encode($info->acmNumber)?>"
-               placeholder="<?=\yii::t('app', 'ACM Number', null, null, $lang)?>" />
+               placeholder="<?=\yii::t('app', 'ACM Number', null, null, $lang)?>"
+               data-baylor-acmId="" />
     </div>
 </div>
