@@ -3,6 +3,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
+        // Custom formatter for jqGrid
         function coachShowLink(cellvalue, options, rowObject) {
             if (cellvalue !== null) {
                 return '<a href="<?=$this->createUrl('/user/view', array('id' => ''))?>/' + rowObject.coachId + '">' + cellvalue + '</a>'
