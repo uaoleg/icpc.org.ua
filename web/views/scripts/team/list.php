@@ -3,6 +3,14 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
+        function coachShowLink(cellvalue, options, rowObject) {
+            if (cellvalue !== null) {
+                return '<a href="<?=$this->createUrl('/user/view', array('id' => ''))?>/' + rowObject.coachId + '">' + cellvalue + '</a>'
+            } else {
+                return '';
+            }
+        }
+
         var $table = $('#team-list');
         $table.jqGrid({
             url: '<?=$this->createUrl('/team/GetTeamListJson')?>',
@@ -19,7 +27,7 @@
             colModel: [
                 {name: 'name', index: 'name', width: 20, formatter: 'showlink', formatoptions:{baseLinkUrl:'/team/view'}},
                 {name: 'schoolName<?=ucfirst($lang)?>', index: 'schoolName<?=ucfirst($lang)?>', width: 20},
-                {name: 'coachName<?=ucfirst($lang)?>', index: 'coachName<?=ucfirst($lang)?>', width: 15},
+                {name: 'coachName<?=ucfirst($lang)?>', index: 'coachName<?=ucfirst($lang)?>', width: 15, formatter: coachShowLink},
                 {name: 'members', index: 'members', width: 40, search: false},
                 {name: 'state', index: 'state.<?=\yii::app()->language?>', width: 15, search: true},
                 {name: 'region', index: 'region.<?=\yii::app()->language?>', width: 10, search: true},
