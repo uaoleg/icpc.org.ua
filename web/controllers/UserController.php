@@ -414,12 +414,17 @@ class UserController extends \web\ext\Controller
                     'firstName'     => trim($html->find('[id="tabs:piForm:ropifirstName"]', 0)->plaintext),
                     'lastName'      => trim($html->find('[id="tabs:piForm:ropilastName"]', 0)->plaintext),
                     'shirtSize'     => trim($html->find('[id="tabs:piForm:pishirtSizeView"]', 0)->plaintext),
-                    'acmId'         => trim($html->find('[id="tabs:piForm:ropiacmId"]', 0)->plaintext),
                     'phoneHome'     => trim($html->find('[id="tabs:contactForm:roextendedvoice"]', 0)->plaintext),
                     'phoneMobile'   => trim($html->find('[id="tabs:contactForm:roextendedemergencyPhone"]', 0)->plaintext),
                     'officeAddress' => trim($html->find('[id="tabs:contactForm:roaddressaddressLine1"]', 0)->plaintext),
                     'email'         => trim($html->find('[id="tabs:piForm:piusernameView"]', 0)->plaintext),
                 );
+
+                $acmId = $html->find('[id="tabs:piForm:ropiacmId"]', 0);
+                if (!is_null($acmId)) {
+                    $data['acmId'] = trim($acmId->plaintext);
+                }
+
                 unlink($cookiesFile);
 
                 $this->renderJson(array(
