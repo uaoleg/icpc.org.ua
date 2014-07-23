@@ -48,35 +48,17 @@
         /**
          * Export teams
          */
-        $('.btn-csv-checking-system').on('click', function(e){
+        $('.js-csv-checking-system').on('click', function(e){
             e.preventDefault();
             var $btn_csv = $(this).closest('.btn-csv');
             location.href = '<?=$this->createUrl('/team/exportCheckingSystem')?>'
-                + '/phase/' + $btn_csv.data('phase')
-                + (($btn_csv.data('name')!==undefined) ? ('/name/' + $btn_csv.data('name')) : '')
-                + (($btn_csv.data('schoolNameUk')!==undefined) ? ('/schoolNameUk/' + $btn_csv.data('schoolNameUk')) : '')
-                + (($btn_csv.data('schoolNameEn')!==undefined) ? ('/schoolNameEn/' + $btn_csv.data('schoolNameEn')) : '')
-                + (($btn_csv.data('coachNameUk')!==undefined) ? ('/coachNameUk/' + $btn_csv.data('coachNameUk')) : '')
-                + (($btn_csv.data('coachNameEn')!==undefined) ? ('/coachNameEn/' + $btn_csv.data('coachNameEn')) : '')
-                + (($btn_csv.data('state.uk')!==undefined) ? ('/state.uk/' + $btn_csv.data('state.uk')) : '')
-                + (($btn_csv.data('state.en')!==undefined) ? ('/state.en/' + $btn_csv.data('state.en')) : '')
-                + (($btn_csv.data('region.uk')!==undefined) ? ('/region.uk/' + $btn_csv.data('region.uk')) : '')
-                + (($btn_csv.data('region.en')!==undefined) ? ('/region.en/' + $btn_csv.data('region.en')) : '');
+                + '/phase/' + $btn_csv.data('phase');
         });
-        $('.btn-csv-registration').on('click', function(e){
+        $('.js-csv-registration').on('click', function(e){
             e.preventDefault();
             var $btn_csv = $(this).closest('.btn-csv');
             location.href = '<?=$this->createUrl('/team/exportCheckingSystem')?>'
-                + '/phase/' + $btn_csv.data('phase')
-                + (($btn_csv.data('name')!==undefined) ? ('/name/' + $btn_csv.data('name')) : '')
-                + (($btn_csv.data('schoolNameUk')!==undefined) ? ('/schoolNameUk/' + $btn_csv.data('schoolNameUk')) : '')
-                + (($btn_csv.data('schoolNameEn')!==undefined) ? ('/schoolNameEn/' + $btn_csv.data('schoolNameEn')) : '')
-                + (($btn_csv.data('coachNameUk')!==undefined) ? ('/coachNameUk/' + $btn_csv.data('coachNameUk')) : '')
-                + (($btn_csv.data('coachNameEn')!==undefined) ? ('/coachNameEn/' + $btn_csv.data('coachNameEn')) : '')
-                + (($btn_csv.data('state.uk')!==undefined) ? ('/state.uk/' + $btn_csv.data('state.uk')) : '')
-                + (($btn_csv.data('state.en')!==undefined) ? ('/state.en/' + $btn_csv.data('state.en')) : '')
-                + (($btn_csv.data('region.uk')!==undefined) ? ('/region.uk/' + $btn_csv.data('region.uk')) : '')
-                + (($btn_csv.data('region.en')!==undefined) ? ('/region.en/' + $btn_csv.data('region.en')) : '');
+                + '/phase/' + $btn_csv.data('phase');
         });
     });
 </script>
@@ -99,8 +81,8 @@
                 <?=\yii::t('app', 'Export to CSV')?> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="#" class="btn-csv-checking-system"><?=\yii::t('app', 'For checking system')?></a></li>
-                <li><a href="#" class="btn-csv-registration"><?=\yii::t('app', 'For registration')?></a></li>
+                <li><a href="#" class="js-csv-checking-system"><?=\yii::t('app', 'For checking system')?></a></li>
+                <li><a href="#" class="js-csv-registration"><?=\yii::t('app', 'For registration')?></a></li>
             </ul>
         </div>
     <?php endif; ?>

@@ -111,6 +111,7 @@ class TeamController extends \web\ext\Controller
 
         // Fill rows
         $rows = array();
+        $idsToRemember = array();
         foreach ($jqgrid['itemList'] as $team) {
             $members = $team->members;
             $members_arr = array();
@@ -118,6 +119,8 @@ class TeamController extends \web\ext\Controller
                 $members_arr[] = \web\widgets\user\Name::create(array('user' => $member), true);
             }
             $members_str = implode(', ', $members_arr);
+
+            $idsToRemember[] = (string)$team->_id;
             $rows[] = array(
                 'id'                            => (string)$team->_id,
                 'name'                          => $team->name,
@@ -130,6 +133,8 @@ class TeamController extends \web\ext\Controller
                 'phase'                         => $team->phase,
             );
         }
+
+        \yii::app()->user->setState('teamIdsForImport', $idsToRemember);
 
         // Render json
         $this->renderJson(array(
@@ -147,28 +152,15 @@ class TeamController extends \web\ext\Controller
     {
         // Get params
         $phase = \yii::app()->request->getParam('phase');
-        $params = array(
-            'name'         => \yii::app()->request->getParam('name'),
-            'schoolNameUk' => \yii::app()->request->getParam('schoolNameUk'),
-            'schoolNameEn' => \yii::app()->request->getParam('schoolNameEn'),
-            'coachNameUk'  => \yii::app()->request->getParam('coachNameUk'),
-            'coachNameEn'  => \yii::app()->request->getParam('coachNameEn'),
-            'state.uk'     => \yii::app()->request->getParam('state.uk'),
-            'state.en'     => \yii::app()->request->getParam('state.en'),
-            'region.uk'    => \yii::app()->request->getParam('region.uk'),
-            'region.en'    => \yii::app()->request->getParam('region.en'),
-        );
+        $teamIds = \yii::app()->user->getState('teamIdsForImport');
+
+        $teamIds = array_map(function($id) {
+            return new \MongoId($id);
+        }, $teamIds);
 
         // Get list of teams
         $criteria = new \EMongoCriteria();
-        foreach ($params as $key => $value) {
-            if (isset($value)) {
-                $regex = new \MongoRegex('/'.preg_quote($value).'/i');
-                $criteria->addCond($key, '==', $regex);
-            }
-        }
-        $criteria->addCond('year', '==', (int)$this->getYear());
-        $criteria->addCond('phase', '>=', (int)$phase);
+        $criteria->addCond('_id', 'in', $teamIds);
         $teams = Team::model()->findAll($criteria);
 
         // Render CSV
@@ -186,28 +178,15 @@ class TeamController extends \web\ext\Controller
     {
         // Get params
         $phase = \yii::app()->request->getParam('phase');
-        $params = array(
-            'name'         => \yii::app()->request->getParam('name'),
-            'schoolNameUk' => \yii::app()->request->getParam('schoolNameUk'),
-            'schoolNameEn' => \yii::app()->request->getParam('schoolNameEn'),
-            'coachNameUk'  => \yii::app()->request->getParam('coachNameUk'),
-            'coachNameEn'  => \yii::app()->request->getParam('coachNameEn'),
-            'state.uk'     => \yii::app()->request->getParam('state.uk'),
-            'state.en'     => \yii::app()->request->getParam('state.en'),
-            'region.uk'    => \yii::app()->request->getParam('region.uk'),
-            'region.en'    => \yii::app()->request->getParam('region.en'),
-        );
+        $teamIds = \yii::app()->user->getState('teamIdsForImport');
+
+        $teamIds = array_map(function($id) {
+            return new \MongoId($id);
+        }, $teamIds);
 
         // Get list of teams
         $criteria = new \EMongoCriteria();
-        foreach ($params as $key => $value) {
-            if (isset($value)) {
-                $regex = new \MongoRegex('/'.preg_quote($value).'/i');
-                $criteria->addCond($key, '==', $regex);
-            }
-        }
-        $criteria->addCond('year', '==', (int)$this->getYear());
-        $criteria->addCond('phase', '>=', (int)$phase);
+        $criteria->addCond('_id', 'in', $teamIds);
         $teams = Team::model()->findAll($criteria);
 
         // Render CSV
