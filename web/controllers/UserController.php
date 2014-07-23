@@ -369,6 +369,7 @@ class UserController extends \web\ext\Controller
 
     /**
      * Action that parses info from icpc.baylor.edu
+     *
      * @throws \CHttpException
      */
     public function actionBaylor()
@@ -433,16 +434,14 @@ class UserController extends \web\ext\Controller
                     )
                 ));
             }
-
-
-
-
         } else {
             $this->httpException(404);
         }
     }
 
     /**
+     * Set headers for requests on icpc.baylor.edu
+     *
      * @param CurlRequest $curl
      * @param $cookies
      * @return CurlRequest
@@ -466,4 +465,5 @@ class UserController extends \web\ext\Controller
                 CURLOPT_COOKIEJAR => $cookies
             ));
     }
+
 }

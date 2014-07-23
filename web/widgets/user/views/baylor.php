@@ -4,8 +4,13 @@
     });
 </script>
 
-<button type="button" class="btn btn-default btn-import-info" data-toggle="modal" data-target="#baylor-modal">
-    <?=\yii::t('app', 'Import from icpc.baylor.edu')?>
+<button type="button"
+        class="btn btn-lg btn-warning"
+        title="<?=\yii::t('app', 'Import from icpc.baylor.edu')?>"
+        rel="tooltip"
+        data-toggle="modal"
+        data-target="#baylor-modal">
+    <span class="glyphicon glyphicon-cloud-download"></span>
 </button>
 
 <div class="modal fade" id="baylor-modal">
