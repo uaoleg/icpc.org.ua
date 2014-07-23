@@ -41,6 +41,7 @@ class CoordinatorsController extends \web\modules\staff\ext\Controller
         $rows = array();
         foreach ($jqgrid['itemList'] as $user) {
             $arrayToAdd = array(
+                'id'                    => (string)$user->_id,
                 'name'                  => \web\widgets\user\Name::create(array('user' => $user, 'lang' => \yii::app()->language), true),
                 'email'                 => $user->email,
                 'dateCreated'           => date('Y-m-d H:i:s', $user->dateCreated),
