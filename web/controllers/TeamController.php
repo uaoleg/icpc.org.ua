@@ -134,7 +134,8 @@ class TeamController extends \web\ext\Controller
             );
         }
 
-        \yii::app()->user->setState('teamIdsForImport', $idsToRemember);
+        // Save filtered IDs for export
+        \yii::app()->user->setState('teamIdsForExport', $idsToRemember);
 
         // Render json
         $this->renderJson(array(
@@ -152,7 +153,7 @@ class TeamController extends \web\ext\Controller
     {
         // Get params
         $phase = \yii::app()->request->getParam('phase');
-        $teamIds = \yii::app()->user->getState('teamIdsForImport');
+        $teamIds = \yii::app()->user->getState('teamIdsForExport');
 
         $teamIds = array_map(function($id) {
             return new \MongoId($id);
@@ -178,7 +179,7 @@ class TeamController extends \web\ext\Controller
     {
         // Get params
         $phase = \yii::app()->request->getParam('phase');
-        $teamIds = \yii::app()->user->getState('teamIdsForImport');
+        $teamIds = \yii::app()->user->getState('teamIdsForExport');
 
         $teamIds = array_map(function($id) {
             return new \MongoId($id);

@@ -45,21 +45,6 @@
             }
         });
 
-        /**
-         * Export teams
-         */
-        $('.js-csv-checking-system').on('click', function(e){
-            e.preventDefault();
-            var $btn_csv = $(this).closest('.btn-csv');
-            location.href = '<?=$this->createUrl('/team/exportCheckingSystem')?>'
-                + '/phase/' + $btn_csv.data('phase');
-        });
-        $('.js-csv-registration').on('click', function(e){
-            e.preventDefault();
-            var $btn_csv = $(this).closest('.btn-csv');
-            location.href = '<?=$this->createUrl('/team/exportCheckingSystem')?>'
-                + '/phase/' + $btn_csv.data('phase');
-        });
     });
 </script>
 
@@ -81,8 +66,8 @@
                 <?=\yii::t('app', 'Export to CSV')?> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="#" class="js-csv-checking-system"><?=\yii::t('app', 'For checking system')?></a></li>
-                <li><a href="#" class="js-csv-registration"><?=\yii::t('app', 'For registration')?></a></li>
+                <li><a href="<?=$this->createUrl('/team/exportCheckingSystem')?>"><?=\yii::t('app', 'For checking system')?></a></li>
+                <li><a href="<?=$this->createUrl('/team/exportRegistration')?>"><?=\yii::t('app', 'For registration')?></a></li>
             </ul>
         </div>
     <?php endif; ?>
