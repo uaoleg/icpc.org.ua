@@ -152,7 +152,6 @@ class TeamController extends \web\ext\Controller
     public function actionExportCheckingSystem()
     {
         // Get params
-        $phase = \yii::app()->request->getParam('phase');
         $teamIds = \yii::app()->user->getState('teamIdsForExport');
 
         $teamIds = array_map(function($id) {
@@ -165,7 +164,7 @@ class TeamController extends \web\ext\Controller
         $teams = Team::model()->findAll($criteria);
 
         // Render CSV
-        $this->renderCsv($teams, "icpc_teams_cs_{$this->getYear()}_{$phase}.csv", function($team) {
+        $this->renderCsv($teams, "icpc_teams_cs_{$this->getYear()}.csv", function($team) {
             return array(
                 $team->name, $team->school->fullNameUk, $team->school->shortNameUk, $team->coachNameUk
             );
@@ -178,7 +177,6 @@ class TeamController extends \web\ext\Controller
     public function actionExportRegistration()
     {
         // Get params
-        $phase = \yii::app()->request->getParam('phase');
         $teamIds = \yii::app()->user->getState('teamIdsForExport');
 
         $teamIds = array_map(function($id) {
@@ -191,7 +189,7 @@ class TeamController extends \web\ext\Controller
         $teams = Team::model()->findAll($criteria);
 
         // Render CSV
-        $this->renderCsv($teams, "icpc_teams_r_{$this->getYear()}_{$phase}.csv", function($team) {
+        $this->renderCsv($teams, "icpc_teams_r_{$this->getYear()}.csv", function($team) {
             $arrayToPut = array(
                 $team->name, $team->school->fullNameUk, $team->school->shortNameUk, $team->coachNameUk
             );
