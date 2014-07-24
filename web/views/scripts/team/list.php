@@ -39,25 +39,12 @@
                 var filters = JSON.parse($table.getGridParam("postData").filters).rules;
                 for(var prop in filters) {
                     if (filters.hasOwnProperty(prop)) {
-                        if (filters[prop]['field'] === 'phase') {
-                            $('.btn-csv').data('phase', filters[prop]['data']);
-                        }
+                        $('.btn-csv').data(filters[prop]['field'], filters[prop]['data']);
                     }
                 }
             }
         });
 
-        /**
-         * Export teams
-         */
-        $('.btn-csv-checking-system').on('click', function(e){
-            e.preventDefault();
-            location.href = '<?=$this->createUrl('/team/exportCheckingSystem')?>' + '/phase/' + $(this).closest('.btn-csv').data('phase');
-        });
-        $('.btn-csv-registration').on('click', function(e){
-            e.preventDefault();
-            location.href = '<?=$this->createUrl('/team/exportRegistration')?>' + '/phase/' + $(this).closest('.btn-csv').data('phase');
-        });
     });
 </script>
 
@@ -79,8 +66,8 @@
                 <?=\yii::t('app', 'Export to CSV')?> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="#" class="btn-csv-checking-system"><?=\yii::t('app', 'For checking system')?></a></li>
-                <li><a href="#" class="btn-csv-registration"><?=\yii::t('app', 'For registration')?></a></li>
+                <li><a href="<?=$this->createUrl('/team/exportCheckingSystem')?>"><?=\yii::t('app', 'For checking system')?></a></li>
+                <li><a href="<?=$this->createUrl('/team/exportRegistration')?>"><?=\yii::t('app', 'For registration')?></a></li>
             </ul>
         </div>
     <?php endif; ?>

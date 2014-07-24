@@ -111,6 +111,7 @@ class TeamController extends \web\ext\Controller
 
         // Fill rows
         $rows = array();
+        $idsToRemember = array();
         foreach ($jqgrid['itemList'] as $team) {
             $members = $team->members;
             $members_arr = array();
@@ -118,6 +119,8 @@ class TeamController extends \web\ext\Controller
                 $members_arr[] = \web\widgets\user\Name::create(array('user' => $member), true);
             }
             $members_str = implode(', ', $members_arr);
+
+            $idsToRemember[] = (string)$team->_id;
             $rows[] = array(
                 'id'                            => (string)$team->_id,
                 'name'                          => $team->name,
@@ -130,6 +133,9 @@ class TeamController extends \web\ext\Controller
                 'phase'                         => $team->phase,
             );
         }
+
+        // Save filtered IDs for export
+        \yii::app()->user->setState('teamIdsForExport', $idsToRemember);
 
         // Render json
         $this->renderJson(array(
@@ -146,16 +152,19 @@ class TeamController extends \web\ext\Controller
     public function actionExportCheckingSystem()
     {
         // Get params
-        $phase = \yii::app()->request->getParam('phase');
+        $teamIds = \yii::app()->user->getState('teamIdsForExport');
+
+        $teamIds = array_map(function($id) {
+            return new \MongoId($id);
+        }, $teamIds);
 
         // Get list of teams
         $criteria = new \EMongoCriteria();
-        $criteria->addCond('year', '==', (int)$this->getYear());
-        $criteria->addCond('phase', '>=', (int)$phase);
+        $criteria->addCond('_id', 'in', $teamIds);
         $teams = Team::model()->findAll($criteria);
 
         // Render CSV
-        $this->renderCsv($teams, "icpc_teams_cs_{$this->getYear()}_{$phase}.csv", function($team) {
+        $this->renderCsv($teams, "icpc_teams_cs_{$this->getYear()}.csv", function($team) {
             return array(
                 $team->name, $team->school->fullNameUk, $team->school->shortNameUk, $team->coachNameUk
             );
@@ -168,16 +177,19 @@ class TeamController extends \web\ext\Controller
     public function actionExportRegistration()
     {
         // Get params
-        $phase = \yii::app()->request->getParam('phase');
+        $teamIds = \yii::app()->user->getState('teamIdsForExport');
+
+        $teamIds = array_map(function($id) {
+            return new \MongoId($id);
+        }, $teamIds);
 
         // Get list of teams
         $criteria = new \EMongoCriteria();
-        $criteria->addCond('year', '==', (int)$this->getYear());
-        $criteria->addCond('phase', '>=', (int)$phase);
+        $criteria->addCond('_id', 'in', $teamIds);
         $teams = Team::model()->findAll($criteria);
 
         // Render CSV
-        $this->renderCsv($teams, "icpc_teams_r_{$this->getYear()}_{$phase}.csv", function($team) {
+        $this->renderCsv($teams, "icpc_teams_r_{$this->getYear()}.csv", function($team) {
             $arrayToPut = array(
                 $team->name, $team->school->fullNameUk, $team->school->shortNameUk, $team->coachNameUk
             );
