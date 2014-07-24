@@ -4,7 +4,11 @@ namespace common\models\User;
 
 class Info extends \common\ext\MongoDb\Document
 {
-    const SC_EXCEPT_EMPTY = 'exceptEmpty';
+
+    /**
+     * Scenarios
+     */
+    const SC_ALLOW_EMPTY = 'allowEmpty';
 
     /**
      * ID of the related user
@@ -84,9 +88,9 @@ class Info extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, dateOfBirth, userId, tShirtSize', 'required', 'except' => static::SC_EXCEPT_EMPTY),
+            array('lang, dateOfBirth, userId, tShirtSize', 'required', 'except' => static::SC_ALLOW_EMPTY),
             array('tShirtSize', 'in', 'range' => array('XS', 'S', 'M', 'L', 'XL', 'XXL')),
-            array('phone', Info\Validator\Phone::className(), 'except' => static::SC_EXCEPT_EMPTY)
+            array('phone', Info\Validator\Phone::className(), 'except' => static::SC_ALLOW_EMPTY)
         ));
     }
 

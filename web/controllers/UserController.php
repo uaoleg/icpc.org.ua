@@ -233,7 +233,7 @@ class UserController extends \web\ext\Controller
             'phoneWork'     => $phoneWork,
             'fax'           => $fax
         ), false);
-        $info->scenario = User\InfoCoach::SC_EXCEPT_EMPTY;
+        $info->scenario = User\InfoCoach::SC_ALLOW_EMPTY;
         $info->save();
 
         $info->scenario = '';
@@ -292,7 +292,7 @@ class UserController extends \web\ext\Controller
             'course'              => $course,
             'document'            => $document,
         ), false);
-        $info->scenario = User\InfoStudent::SC_EXCEPT_EMPTY;
+        $info->scenario = User\InfoStudent::SC_ALLOW_EMPTY;
         $info->save();
 
         $info->scenario = '';
