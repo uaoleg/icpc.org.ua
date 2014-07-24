@@ -259,8 +259,10 @@ class ConsoleCommand extends \CConsoleCommand
 	 *
 	 * @param string $action the action name
 	 * @param array $params the parameters to be passed to the action method.
+     * @param int $exitCode the application exit code returned by the action method.
+	 * @return int application exit code (return value is available since version 1.1.11)
 	 */
-	protected function afterAction($action,$params)
+	protected function afterAction($action, $params, $exitCode = 0)
 	{
         echo "\n\n";
 	}
