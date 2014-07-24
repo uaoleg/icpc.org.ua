@@ -126,6 +126,7 @@ class TeamController extends \web\ext\Controller
                 'name'                          => $team->name,
                 'schoolName' . ucfirst($lang)   => $team->schoolName,
                 'coachName' . ucfirst($lang)    => $team->coachName,
+                'coachId'                       => $team->coachId,
                 'members'                       => $members_str,
                 'year'                          => $team->year,
                 'state'                         => $team->getStateLabel(),
