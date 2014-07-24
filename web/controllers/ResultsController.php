@@ -160,6 +160,7 @@ class ResultsController extends \web\ext\Controller
                 'id'                        => (string)$result->_id,
                 'place'                     => $this->renderPartial('view/place', array('result' => $result), true),
                 'teamName'                  => $this->renderPartial('view/teamName', array('result' => $result), true),
+                'coachId'                   => $result->coachId,
                 'schoolName'.ucfirst($lang) => $result->schoolName,
                 'coachName'.ucfirst($lang)  => $result->coachName,
                 'total'                     => $result->total,

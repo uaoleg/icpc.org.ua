@@ -7,6 +7,15 @@
 
         new appResultsView();
 
+        // Custom formatter for jqGrid
+        function coachShowLink(cellvalue, options, rowObject) {
+            if (cellvalue !== null) {
+                return '<a href="<?=$this->createUrl('/user/view', array('id' => ''))?>/' + rowObject.coachId + '">' + cellvalue + '</a>'
+            } else {
+                return '';
+            }
+        }
+
         $('#results')
             .jqGrid({
                 url: '<?=$this->createUrl('/results/GetResultsListJson')?>',
@@ -22,7 +31,7 @@
                 colModel: [
                     {name: 'place', index: 'place', width: 60, align: 'center', search: false, frozen: true},
                     {name: 'teamName', index: 'teamName', width: 150, frozen: true},
-                    {name: 'coachName<?=ucfirst(\yii::app()->language)?>', index: 'coachName<?=ucfirst(\yii::app()->language)?>', width: 175, frozen: true},
+                    {name: 'coachName<?=ucfirst(\yii::app()->language)?>', index: 'coachName<?=ucfirst(\yii::app()->language)?>', width: 175, frozen: true, formatter: coachShowLink},
                     {name: 'schoolName<?=ucfirst(\yii::app()->language)?>', index: 'schoolName<?=ucfirst(\yii::app()->language)?>', width: 250, frozen: true},
                     {name: 'total', index: 'total', width: 50, search: false, align: 'center', frozen: true},
                     {name: 'penalty', index: 'penalty', width: 50, search: false, align: 'center', frozen: true},
