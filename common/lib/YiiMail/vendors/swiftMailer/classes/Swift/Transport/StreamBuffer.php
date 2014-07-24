@@ -23,22 +23,25 @@ class Swift_Transport_StreamBuffer
   extends Swift_ByteStream_AbstractFilterableInputStream
   implements Swift_Transport_IoBuffer
 {
-  
+
+  /** Sequence */
+  protected $_sequence;
+
   /** A primary socket */
   private $_stream;
-  
+
   /** The input stream */
   private $_in;
-  
+
   /** The output stream */
   private $_out;
-  
+
   /** Buffer initialization parameters */
   private $_params = array();
-  
+
   /** The ReplacementFilterFactory */
   private $_replacementFactory;
-  
+
   /** Translations performed on data being streamed into the buffer */
   private $_translations = array();
   
@@ -51,7 +54,7 @@ class Swift_Transport_StreamBuffer
   {
     $this->_replacementFactory = $replacementFactory;
   }
-  
+
   /**
    * Perform any initialization needed, using the given $params.
    * Parameters will vary depending upon the type of IoBuffer used.
@@ -71,7 +74,7 @@ class Swift_Transport_StreamBuffer
         break;
     }
   }
-  
+
   /**
    * Set an individual param on the buffer (e.g. switching to SSL).
    * @param string $param
@@ -99,7 +102,7 @@ class Swift_Transport_StreamBuffer
     }
     $this->_params[$param] = $value;
   }
-  
+
   /**
    * Perform any shutdown logic needed.
    */
@@ -124,7 +127,7 @@ class Swift_Transport_StreamBuffer
     $this->_out = null;
     $this->_in = null;
   }
-  
+
   /**
    * Set an array of string replacements which should be made on data written
    * to the buffer.  This could replace LF with CRLF for example.
@@ -140,7 +143,7 @@ class Swift_Transport_StreamBuffer
         unset($this->_translations[$search]);
       }
     }
-    
+
     foreach ($replacements as $search => $replace)
     {
       if (!isset($this->_translations[$search]))
@@ -152,7 +155,7 @@ class Swift_Transport_StreamBuffer
       }
     }
   }
-  
+
   /**
    * Get a line of output (including any CRLF).
    * The $sequence number comes from any writes and may or may not be used
@@ -168,7 +171,7 @@ class Swift_Transport_StreamBuffer
       return $line;
     }
   }
-  
+
   /**
    * Reads $length bytes from the stream into a string and moves the pointer
    * through the stream by $length. If less bytes exist than are requested the
@@ -185,14 +188,14 @@ class Swift_Transport_StreamBuffer
       return $ret;
     }
   }
-  
+
   /** Not implemented */
   public function setReadPointer($byteOffset)
   {
   }
-  
+
   // -- Protected methods
-  
+
   /** Flush the stream contents */
   protected function _flush()
   {
@@ -201,7 +204,7 @@ class Swift_Transport_StreamBuffer
       fflush($this->_in);
     }
   }
-  
+
   /** Write this bytes to the stream */
   protected function _commit($bytes)
   {
@@ -211,9 +214,9 @@ class Swift_Transport_StreamBuffer
       return ++$this->_sequence;
     }
   }
-  
+
   // -- Private methods
-  
+
   /**
    * Establishes a connection to a remote server.
    * @access private
@@ -248,7 +251,7 @@ class Swift_Transport_StreamBuffer
     $this->_in =& $this->_stream;
     $this->_out =& $this->_stream;
   }
-  
+
   /**
    * Opens a process for input/output.
    * @access private
@@ -272,5 +275,5 @@ class Swift_Transport_StreamBuffer
     $this->_in =& $pipes[0];
     $this->_out =& $pipes[1];
   }
-  
+
 }
