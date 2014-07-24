@@ -6,6 +6,11 @@ class Info extends \common\ext\MongoDb\Document
 {
 
     /**
+     * Scenarios
+     */
+    const SC_ALLOW_EMPTY = 'allowEmpty';
+
+    /**
      * ID of the related user
      * @var string
      */
@@ -83,9 +88,9 @@ class Info extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('lang, dateOfBirth, userId, tShirtSize', 'required'),
+            array('lang, dateOfBirth, userId, tShirtSize', 'required', 'except' => static::SC_ALLOW_EMPTY),
             array('tShirtSize', 'in', 'range' => array('XS', 'S', 'M', 'L', 'XL', 'XXL')),
-            array('phone', Info\Validator\Phone::className())
+            array('phone', Info\Validator\Phone::className(), 'except' => static::SC_ALLOW_EMPTY)
         ));
     }
 

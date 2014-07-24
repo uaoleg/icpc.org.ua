@@ -76,7 +76,7 @@ class InfoStudent extends Info
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('studyField, speciality, faculty, group, schoolAdmissionYear, document, course', 'required'),
+            array('studyField, speciality, faculty, group, schoolAdmissionYear, document, course', 'required', 'except' => static::SC_ALLOW_EMPTY),
             array('course', 'numerical', 'min' => 1, 'max' => 4)
         ));
     }

@@ -264,8 +264,12 @@ class UserController extends \web\ext\Controller
             'phoneWork'     => $phoneWork,
             'fax'           => $fax
         ), false);
+        $info->scenario = User\InfoCoach::SC_ALLOW_EMPTY;
         $info->save();
         \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, $info->hasErrors());
+
+        $info->scenario = '';
+        $info->validate();
 
         // Render json
         $this->renderJson(array(
@@ -320,8 +324,12 @@ class UserController extends \web\ext\Controller
             'course'              => $course,
             'document'            => $document,
         ), false);
+        $info->scenario = User\InfoStudent::SC_ALLOW_EMPTY;
         $info->save();
         \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, $info->hasErrors());
+
+        $info->scenario = '';
+        $info->validate();
 
         // Render json
         $this->renderJson(array(
