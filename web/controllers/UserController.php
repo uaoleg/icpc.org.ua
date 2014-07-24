@@ -418,26 +418,30 @@ class UserController extends \web\ext\Controller
 
             $header = $html->find('#header', 0);
             if (!is_null($header)) {
-                $data = array(
-                    'firstName'     => trim($html->find('[id="tabs:piForm:ropifirstName"]', 0)->plaintext),
-                    'lastName'      => trim($html->find('[id="tabs:piForm:ropilastName"]', 0)->plaintext),
-                    'shirtSize'     => trim($html->find('[id="tabs:piForm:pishirtSizeView"]', 0)->plaintext),
-                    'phoneHome'     => trim($html->find('[id="tabs:contactForm:roextendedvoice"]', 0)->plaintext),
-                    'phoneMobile'   => trim($html->find('[id="tabs:contactForm:roextendedemergencyPhone"]', 0)->plaintext),
-                    'officeAddress' => trim($html->find('[id="tabs:contactForm:roaddressaddressLine1"]', 0)->plaintext),
-                    'email'         => trim($html->find('[id="tabs:piForm:piusernameView"]', 0)->plaintext),
+                $baylorInfo = array();
+                $info = array(
+                    'firstName'     => '[id="tabs:piForm:ropifirstName"]',
+                    'lastName'      => '[id="tabs:piForm:ropilastName"]',
+                    'shirtSize'     => '[id="tabs:piForm:pishirtSizeView"]',
+                    'phoneHome'     => '[id="tabs:contactForm:roextendedvoice"]',
+                    'phoneMobile'   => '[id="tabs:contactForm:roextendedemergencyPhone"]',
+                    'officeAddress' => '[id="tabs:contactForm:roaddressaddressLine1"]',
+                    'email'         => '[id="tabs:piForm:piusernameView"]',
+                    'acmId'         => '[id="tabs:piForm:ropiacmId"]',
                 );
 
-                $acmId = $html->find('[id="tabs:piForm:ropiacmId"]', 0);
-                if (!is_null($acmId)) {
-                    $data['acmId'] = trim($acmId->plaintext);
+                foreach ($info as $key => $value) {
+                    $datum = $html->find($value, 0);
+                    if (!is_null($datum)) {
+                        $baylorInfo[$key] = trim($datum->plaintext);
+                    }
                 }
 
                 unlink($cookiesFile);
 
                 $this->renderJson(array(
                     'errors' => false,
-                    'data' => $data
+                    'data' => $baylorInfo
                 ));
             } else {
                 $this->renderJson(array(
