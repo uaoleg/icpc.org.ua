@@ -24,9 +24,6 @@ class Swift_Transport_StreamBuffer
   implements Swift_Transport_IoBuffer
 {
 
-  /** Sequence */
-  protected $_sequence;
-
   /** A primary socket */
   private $_stream;
 
@@ -44,7 +41,7 @@ class Swift_Transport_StreamBuffer
 
   /** Translations performed on data being streamed into the buffer */
   private $_translations = array();
-  
+
   /**
    * Create a new StreamBuffer using $replacementFactory for transformations.
    * @param Swift_ReplacementFilterFactory $replacementFactory
