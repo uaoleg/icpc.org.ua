@@ -12,7 +12,7 @@
             if (cellvalue !== null) {
                 return '<a href="<?=$this->createUrl('/user/view', array('id' => ''))?>/' + rowObject.coachId + '">' + cellvalue + '</a>'
             } else {
-                return '22';
+                return '';
             }
         }
 
