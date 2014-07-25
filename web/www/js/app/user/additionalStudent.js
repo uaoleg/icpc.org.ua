@@ -3,7 +3,7 @@ function appUserAdditionalStudent(options) {
     /**
      * Save button handler
      */
-    $('.btn-save').on('click', function(){
+    $('.js-save').on('click', function(){
         var $this = $(this),
             $form = $this.closest('.form-horizontal');
         $this.prop('disabled', true);

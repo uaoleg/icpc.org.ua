@@ -25,21 +25,26 @@
                     <?= \yii::t('app', 'We promise we will not save any of the data!') ?>
                 </p>
                 <div class="form-group">
-                    <label for="baylor-modal__email">Email</label>
+                    <label for="baylor-modal__email"><?=\yii::t('app', 'Email')?></label>
                     <input type="email" class="form-control" id="baylor-modal__email"
                            value="<?=(\yii::app()->user->getState('baylor_email', false))?:''?>" />
                 </div>
                 <div class="form-group">
-                    <label for="baylor-modal__password">Пароль</label>
+                    <label for="baylor-modal__password"><?=\yii::t('app', 'Password')?></label>
                     <input type="password" class="form-control" id="baylor-modal__password" />
                 </div>
                 <div class="progress progress-striped active hide">
                     <div class="progress-bar" role="progressbar" style="width: 100%"></div>
                 </div>
-                <div class="alert alert-danger hide"><?= \yii::t('app', 'Email or password is invalid') ?></div>
+                <div class="js-baylor-error-creds alert alert-danger hide">
+                    <?=\yii::t('app', 'Email or password is invalid')?>
+                </div>
+                <div class="js-baylor-error-unknown alert alert-danger hide">
+                    <?=\yii::t('app', 'Uknown import error. Please, try again later')?>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-lg btn-primary btn-baylor-import"><?=\yii::t('app', 'Import')?></button>
+                <button type="button" class="btn btn-lg btn-primary js-baylor-import"><?=\yii::t('app', 'Import')?></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

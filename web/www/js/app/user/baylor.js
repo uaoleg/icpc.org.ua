@@ -3,9 +3,11 @@ function appUserBaylor() {
     var $modal = $('#baylor-modal'),
         $inputs = $('input', $modal);
 
-    $('.btn-baylor-import').on('click', function() {
+    $('.js-baylor-import').on('click', function() {
 
-        var $progress = $('.progress', $modal).removeClass('hide');
+        var $this = $(this),
+            $progress = $('.progress', $modal).removeClass('hide');
+        $this.prop('disabled', true);
         $inputs.prop('disabled', true);
         $('.alert-danger', $modal).addClass('hide');
 
@@ -16,10 +18,8 @@ function appUserBaylor() {
                 password: $('#baylor-modal__password').val()
             },
             success: function(response) {
-                $progress.addClass('hide');
                 if (response.errors) {
-                    $('.alert-danger', $modal).removeClass('hide');
-                    $inputs.prop('disabled', false);
+                    $('.js-baylor-error-creds', $modal).removeClass('hide');
                 } else {
                     $modal.modal('hide');
 
@@ -35,8 +35,17 @@ function appUserBaylor() {
                         .prop('checked', true)
                         .parent('label')
                         .addClass('active');
-                }
 
+                    $('.js-save').click();
+                }
+            },
+            error: function() {
+                $('.js-baylor-error-unknown', $modal).removeClass('hide');
+            },
+            complete: function() {
+                $progress.addClass('hide');
+                $this.prop('disabled', false);
+                $inputs.prop('disabled', false);
             }
         });
 
