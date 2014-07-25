@@ -56,7 +56,7 @@ class InfoCoach extends Info
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('position, officeAddress, phoneWork', 'required'),
+            array('position, officeAddress, phoneWork', 'required', 'except' => static::SC_ALLOW_EMPTY),
         ));
     }
 

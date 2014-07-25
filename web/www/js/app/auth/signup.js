@@ -127,6 +127,12 @@ function appAuthSignup() {
         $.ajax({
             url: app.baseUrl + '/auth/signup',
             data: {
+                firstNameEn:    $('[name=firstNameEn]').val(),
+                lastNameEn:     $('[name=lastNameEn]').val(),
+                phoneHome:      $('[name=phoneHome]').val(),
+                phoneMobile:    $('[name=phoneMobile]').val(),
+                acmId:          $('[name=acmId]').val(),
+                shirtSize:      $('[name=shirtSize]').val(),
                 firstNameUk:    $('.form-group .form-control[name=firstNameUk]').val(),
                 middleNameUk:   $('.form-group .form-control[name=middleNameUk]').val(),
                 lastNameUk:     $('.form-group .form-control[name=lastNameUk]').val(),

@@ -37,6 +37,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         /**
          * Create operations
          */
+        $this->_operationsUser();
         $this->_operationsStudent();
         $this->_operationsCoach();
         $this->_operationsCoordinator();
@@ -86,6 +87,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_TEAM_CREATE,
             Rbac::OP_TEAM_UPDATE,
             Rbac::OP_TEAM_DELETE,
+            Rbac::OP_USER_READ_EMAIL,
         ));
 
         /**
@@ -111,6 +113,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_QA_ANSWER_UPDATE,
             Rbac::OP_QA_TAG_CREATE,
             Rbac::OP_QA_TAG_UPDATE,
+            Rbac::OP_USER_READ_EMAIL,
         ));
 
         /**
@@ -164,6 +167,14 @@ class RbacCommand extends \console\ext\ConsoleCommand
                 $authItem->addChild($operation);
             }
         }
+    }
+
+    /**
+     * User operations
+     */
+    protected function _operationsUser()
+    {
+        $this->auth->createOperation(Rbac::OP_USER_READ_EMAIL, 'View user email');
     }
 
     /**

@@ -11,6 +11,8 @@ namespace common\models;
  * @property-read School        $school
  * @property-read User\Settings $settings
  * @property-read User\Info     $info
+ * @property-read User          $approver
+ * @property-read User\Photo    $photo
  */
 class User extends \common\ext\MongoDb\Document
 {
@@ -141,6 +143,12 @@ class User extends \common\ext\MongoDb\Document
      * @var User\Info
      */
     protected $_info;
+
+    /**
+     * User's profile photo
+     * @var User\Photo
+     */
+    protected $_photo;
 
     /**
      * Returns first name in appropriate language
@@ -283,6 +291,75 @@ class User extends \common\ext\MongoDb\Document
             }
         }
         return $this->_info;
+    }
+
+    /**
+     * Returns user who can approve this user's coach/coordinator status
+     *
+     * @return User
+     */
+    public function getApprover()
+    {
+        $key = 'approver';
+        if (!$this->cache->get($key)) {
+            $criteria = new \EMongoCriteria();
+            // Get approver for coordinator
+            if (!empty($this->coordinator) && !$this->isApprovedCoordinator) {
+                switch ($this->coordinator) {
+                    case static::ROLE_COORDINATOR_REGION:
+                    case static::ROLE_COORDINATOR_UKRAINE:
+                        $criteria
+                            ->addCond('isApprovedCoordinator', '==', true)
+                            ->addCond('coordinator', '==', static::ROLE_COORDINATOR_UKRAINE);
+                        break;
+                    case static::ROLE_COORDINATOR_STATE:
+                        $schoolIds = School::model()->getCollection()->distinct('_id', array(
+                            'region' => $this->school->region,
+                        ));
+                        $ids = array();
+                        foreach ($schoolIds as $schoolId) {
+                            $ids[] = (string)$schoolId;
+                        }
+                        $criteria
+                            ->addCond('isApprovedCoordinator', '==', true)
+                            ->addCond('coordinator', '==', static::ROLE_COORDINATOR_REGION)
+                            ->addCond('schoolId', 'in', $ids);
+                        break;
+                }
+            }
+
+            // Get approver for coach
+            elseif (($this->type === static::ROLE_COACH) && (!$this->isApprovedCoach)) {
+                $schoolIds = School::model()->getCollection()->distinct('_id', array(
+                    'region' => $this->school->region
+                ));
+                $ids = array();
+                foreach ($schoolIds as $schoolId) {
+                    $ids[] = (string)$schoolId;
+                }
+                $criteria
+                    ->addCond('isApprovedCoordinator', '==', true)
+                    ->addCond('coordinator', '==', static::ROLE_COORDINATOR_STATE)
+                    ->addCond('schoolId', 'in', $ids);
+            }
+            $this->cache->set($key, User::model()->find($criteria), SECONDS_IN_HOUR);
+        }
+        return $this->cache->get($key);
+    }
+
+    /**
+     * Returns user's photo
+     *
+     * @return User\Photo
+     */
+    public function getPhoto()
+    {
+        if ($this->_photo === null) {
+            $this->_photo = User\Photo::model()->findByAttributes(array(
+                'userId' => (string)$this->_id,
+            ));
+        }
+        return $this->_photo;
     }
 
     /**
@@ -561,6 +638,10 @@ class User extends \common\ext\MongoDb\Document
             $team->memberIds = array_diff($team->memberIds, (array)$userId);
             $team->save();
         }
+
+        // Delete all question and answers related to this user
+        Qa\Question::model()->deleteAll($criteria);
+        Qa\Answer::model()->deleteAll($criteria);
 
         parent::afterDelete();
     }

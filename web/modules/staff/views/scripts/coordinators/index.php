@@ -18,7 +18,7 @@
                     \yii::t('app', 'Status'),
                 )))?>,
                 colModel: [
-                    {name: 'name', index: 'name', width: 150, sortable: false, search: false},
+                    {name: 'name', index: 'name', width: 150, sortable: false, search: false, formatter: 'showlink', formatoptions: {baseLinkUrl: '/user/view'}},
                     {name: 'email', index: 'email', width: 150},
                     {name: 'dateCreated', index: 'dateCreated', width: 50, formatter: 'date', formatoptions: {newformat: 'Y-m-d'}, search: false},
                     {name: 'isApprovedCoordinator', index: 'isApprovedCoordinator', align: 'center', width: 50, search: true, sortable: false, stype: 'select', searchoptions: {sopt: ['bool'], value: "-1:<?=\yii::t('app', 'All')?>;0:<?=\yii::t('app', 'Suspended')?>;1:<?=\yii::t('app', 'Active')?>"}},

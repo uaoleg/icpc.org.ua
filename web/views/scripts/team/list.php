@@ -3,6 +3,15 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
+        // Custom formatter for jqGrid
+        function coachShowLink(cellvalue, options, rowObject) {
+            if (cellvalue !== null) {
+                return '<a href="<?=$this->createUrl('/user/view', array('id' => ''))?>/' + rowObject.coachId + '">' + cellvalue + '</a>'
+            } else {
+                return '';
+            }
+        }
+
         var $table = $('#team-list');
         $table.jqGrid({
             url: '<?=$this->createUrl('/team/GetTeamListJson')?>',
@@ -19,7 +28,7 @@
             colModel: [
                 {name: 'name', index: 'name', width: 20, formatter: 'showlink', formatoptions:{baseLinkUrl:'/team/view'}},
                 {name: 'schoolName<?=ucfirst($lang)?>', index: 'schoolName<?=ucfirst($lang)?>', width: 20},
-                {name: 'coachName<?=ucfirst($lang)?>', index: 'coachName<?=ucfirst($lang)?>', width: 15},
+                {name: 'coachName<?=ucfirst($lang)?>', index: 'coachName<?=ucfirst($lang)?>', width: 15, formatter: coachShowLink},
                 {name: 'members', index: 'members', width: 40, search: false},
                 {name: 'state', index: 'state.<?=\yii::app()->language?>', width: 15, search: true},
                 {name: 'region', index: 'region.<?=\yii::app()->language?>', width: 10, search: true},
@@ -39,25 +48,12 @@
                 var filters = JSON.parse($table.getGridParam("postData").filters).rules;
                 for(var prop in filters) {
                     if (filters.hasOwnProperty(prop)) {
-                        if (filters[prop]['field'] === 'phase') {
-                            $('.btn-csv').data('phase', filters[prop]['data']);
-                        }
+                        $('.btn-csv').data(filters[prop]['field'], filters[prop]['data']);
                     }
                 }
             }
         });
 
-        /**
-         * Export teams
-         */
-        $('.btn-csv-checking-system').on('click', function(e){
-            e.preventDefault();
-            location.href = '<?=$this->createUrl('/team/exportCheckingSystem')?>' + '/phase/' + $(this).closest('.btn-csv').data('phase');
-        });
-        $('.btn-csv-registration').on('click', function(e){
-            e.preventDefault();
-            location.href = '<?=$this->createUrl('/team/exportRegistration')?>' + '/phase/' + $(this).closest('.btn-csv').data('phase');
-        });
     });
 </script>
 
@@ -79,8 +75,8 @@
                 <?=\yii::t('app', 'Export to CSV')?> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a href="#" class="btn-csv-checking-system"><?=\yii::t('app', 'For checking system')?></a></li>
-                <li><a href="#" class="btn-csv-registration"><?=\yii::t('app', 'For registration')?></a></li>
+                <li><a href="<?=$this->createUrl('/team/exportCheckingSystem')?>"><?=\yii::t('app', 'For checking system')?></a></li>
+                <li><a href="<?=$this->createUrl('/team/exportRegistration')?>"><?=\yii::t('app', 'For registration')?></a></li>
             </ul>
         </div>
     <?php endif; ?>

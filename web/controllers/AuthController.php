@@ -4,6 +4,7 @@ namespace web\controllers;
 
 use \common\models\School;
 use \common\models\User;
+use \web\ext\WebUser;
 
 class AuthController extends \web\ext\Controller
 {
@@ -85,7 +86,29 @@ class AuthController extends \web\ext\Controller
             $identity = new \web\ext\UserIdentity($email, $password);
             if ($identity->authenticate()) {
                 \yii::app()->user->login($identity);
-                return $this->redirect('/');
+
+                $userUk = User::model()->findByPk(new \MongoId(\yii::app()->user->id));
+                $userUk->useLanguage = 'uk';
+                $infoUk = $userUk->info;
+
+                $userEn = User::model()->findByPk(new \MongoId(\yii::app()->user->id));
+                $userEn->useLanguage = 'en';
+                $infoEn = $userEn->info;
+
+                switch (false) {
+                    case ($infoUk->validate()):
+                        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
+                        $this->redirect($this->createUrl('user/additional', array('lang' => 'uk')));
+                        break;
+                    case ($infoEn->validate()):
+                        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
+                        $this->redirect($this->createUrl('user/additional', array('lang' => 'en')));
+                        break;
+                    default:
+                        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, false);
+                        $this->redirect('/');
+                        break;
+                }
             } else {
                 $error = $identity->errorMessage;
             }
@@ -292,12 +315,22 @@ class AuthController extends \web\ext\Controller
         $schoolId       = $this->request->getPost('schoolId');
         $rulesAgree     = (bool)$this->request->getPost('rulesAgree');
 
+        // Hidden params (might be imported from icpc.baylor.edu)
+        $firstNameEn = $this->request->getPost('firstNameEn');
+        $lastNameEn  = $this->request->getPost('lastNameEn');
+        $acmId       = $this->request->getPost('acmId');
+        $phoneHome   = $this->request->getPost('phoneHome');
+        $phoneMobile = $this->request->getPost('phoneMobile');
+        $tshirtSize   = $this->request->getPost('shirtSize');
+
         // Set attributes
         $user = new User();
         $user->setAttributes(array(
             'firstNameUk'   => $firstNameUk,
             'middleNameUk'  => $middleNameUk,
             'lastNameUk'    => $lastNameUk,
+            'firstNameEn'   => $firstNameEn,
+            'lastNameEn'    => $lastNameEn,
             'email'         => $email,
             'type'          => $type,
             'coordinator'   => $coordinator,
@@ -361,6 +394,17 @@ class AuthController extends \web\ext\Controller
                     'lang'  => $this->request->cookies['language']->value,
                 ), false);
                 $settings->save();
+
+                // Save user additional info
+                $info = $user->info;
+                $info->setAttributes(array(
+                    'acmNumber'   => $acmId,
+                    'phoneHome'   => $phoneHome,
+                    'phoneMobile' => $phoneMobile,
+                    'tShirtSize'  => $tshirtSize,
+                ), false);
+                $info->save();
+
 
                 // Authenticate user
                 $identity = new \web\ext\UserIdentity($email, $password);

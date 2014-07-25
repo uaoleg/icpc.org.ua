@@ -10,8 +10,8 @@ defined('APP_ENV_PROD') or define('APP_ENV_PROD', 'production');
 $appEnv = isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : APP_ENV_DEV;
 defined('APP_ENV') or define('APP_ENV', $appEnv);
 
-$yii = __DIR__ . '/../common/lib/yii/yii.php';
-require_once($yii);
+require_once __DIR__ . '/../common/lib/yii/yii.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $commonConfig = require_once(__DIR__ . '/../common/config/main.php');
 $appConfig = require_once(__DIR__ . '/config/main.php');

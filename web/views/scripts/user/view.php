@@ -1,5 +1,8 @@
 <div class="row">
-    <div class="col-lg-8 col-lg-offset-2">
+    <div class="col-lg-2">
+        <?=\web\widgets\user\Photo::create(array('photo' => $user->photo), true)?>
+    </div>
+    <div class="col-lg-8">
         <h3>
             <?=\web\widgets\user\Name::create(array('user' => $user), true)?>
         </h3>
@@ -11,11 +14,17 @@
             <?php endif; ?>
         </h4>
 
+        <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_USER_READ_EMAIL)): ?>
+            <b><?=$user->getAttributeLabel('email')?></b>:&nbsp;<?php \web\widgets\Mailto::create(array('email' => $user->email)); ?>
+            <br/><br/>
+        <?php endif; ?>
+
         <?php if (count($fullViewAttrs) > 0): ?>
             <div class="row">
                 <div class="col-lg-12">
                     <?php foreach ($fullViewAttrs as $attrName => $attrValue): ?>
-                        <b><?=$user->getAttributeLabel($attrName)?></b>:&nbsp;<?=$attrValue?><br></br>
+                        <b><?=$user->info->getAttributeLabel($attrName)?></b>:&nbsp;<?=($attrName!=='dateOfBirth') ? $attrValue : (is_int($attrValue) ? date('Y-m-d', $attrValue) : '')?>
+                        <br /><br />
                     <?php endforeach; ?>
                 </div>
             </div>

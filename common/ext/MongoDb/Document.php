@@ -12,6 +12,7 @@ namespace common\ext\MongoDb;
  *
  * @property boolean $isNewRecord
  * @property string  $useLanguage
+ * @property-read \common\models\Cache $cache
  */
 abstract class Document extends \EMongoDocument
 {
@@ -38,7 +39,6 @@ abstract class Document extends \EMongoDocument
      */
     protected $_useLanguage;
 
-
     /**
      * Sets language to use for multilang properties
      *
@@ -62,6 +62,16 @@ abstract class Document extends \EMongoDocument
             $this->_useLanguage = \yii::app()->language;
         }
         return $this->_useLanguage;
+    }
+
+    /**
+     * Returns cache entity
+     *
+     * @return \common\models\Cache
+     */
+    public function getCache()
+    {
+        return new \common\models\Cache($this);
     }
 
     /**

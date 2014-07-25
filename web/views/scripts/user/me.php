@@ -1,4 +1,5 @@
-<?php use common\models\User; ?>
+<?php use \common\models\User; ?>
+<?php \yii::app()->clientScript->registerCoreScript('plupload'); ?>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -17,6 +18,25 @@
                 <div class="form-horizontal">
 
                     <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-2">
+                                <?=\web\widgets\user\Photo::create(array('photo' => $user->photo), true)?>
+                            </div>
+                            <div class="col-lg-10" id="uploadContainer">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary btn-sm" id="uploadPickfiles">
+                                        <?=\yii::t('app', 'Upload photo')?>
+                                    </button>
+                                    <span class="document-origin-filename"></span>
+                                    <div class="help-block"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
                         <label class="col-lg-2 control-label"><?=\yii::t('app', 'First name')?></label>
                         <div class="col-lg-5">
                             <div class="form-group">
@@ -31,7 +51,8 @@
                             <div class="form-group">
                                 <div class="input-group">
                                 <input type="text" class="form-control" id="firstNameEn" name="firstNameEn"
-                                       value="<?=\CHtml::encode($user->firstNameEn)?>" placeholder="First name (english)">
+                                       value="<?=\CHtml::encode($user->firstNameEn)?>" placeholder="First name (english)"
+                                       data-baylor-firstName="">
                                 <span class="input-group-addon"><span class="img-language-en-16"></span></span>
                                 </div>
                             </div>
@@ -58,9 +79,7 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                     <div class="row">
                         <label class="col-lg-2 control-label"><?=\yii::t('app', 'Last name')?></label>
                         <div class="col-lg-5">
@@ -76,7 +95,8 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="lastNameEn" name="lastNameEn"
-                                           value="<?=\CHtml::encode($user->lastNameEn)?>" placeholder="Last name (english)">
+                                           value="<?=\CHtml::encode($user->lastNameEn)?>" placeholder="Last name (english)"
+                                           data-baylor-lastName="">
                                     <span class="input-group-addon"><span class="img-language-en-16"></span></span>
                                 </div>
                             </div>
@@ -149,6 +169,7 @@
                         <div class="form-group">
                             <div class="col-lg-9 col-lg-offset-2">
                                 <button type="submit" class="btn btn-lg btn-primary btn-save-info"><?=\yii::t('app', 'Save')?></button>
+                                <?php \web\widgets\user\Baylor::create(); ?>
                             </div>
                         </div>
                     </div>

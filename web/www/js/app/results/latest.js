@@ -74,7 +74,7 @@ appResultsLatest.prototype.initUploader = function () {
                 .closest('.form-group')
                 .addClass('has-error');
         } else {
-            location.href = app.baseUrl + '/results';
+            location.href = response.url || app.baseUrl + '/results';
         }
 
     });

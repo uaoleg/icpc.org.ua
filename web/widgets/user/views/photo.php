@@ -1,0 +1,1 @@
+<img src="<?=$photoUrl?>" width="100%" alt="" class="js-user-photo"/>

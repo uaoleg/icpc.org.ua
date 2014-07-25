@@ -91,7 +91,9 @@ class UploadController extends \web\ext\Controller
         }
 
         // Get params
-        $geo = $this->request->getParam('geo');
+        $geo    = $this->request->getParam('geo');
+        $year   = (int)date('Y');
+        $resultsViewParams = array('year' => $year);
 
         // Import HTML DOM Parser
         \yii::import('common.lib.HtmlDomParser.*');
@@ -110,28 +112,32 @@ class UploadController extends \web\ext\Controller
                     $this->httpException(403);
                 }
                 $phase = Result::PHASE_1;
+                $resultsViewParams['state'] = $geo;
                 break;
             case ($school->region):
                 if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_REGION)) {
                     $this->httpException(403);
                 }
+                $resultsViewParams['region'] = $geo;
                 $phase = Result::PHASE_2;
                 break;
             case ($school->country):
                 if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE)) {
                     $this->httpException(403);
                 }
+                $resultsViewParams['country'] = $geo;
                 $phase = Result::PHASE_3;
                 break;
             default:
                 $this->httpException(404);
                 break;
         }
+        $resultsViewParams['phase'] = $phase;
 
         // Delete old version of results
         $criteria = new \EMongoCriteria();
         $criteria
-            ->addCond('year', '==', (int)date('Y'))
+            ->addCond('year', '==', $year)
             ->addCond('geo', '==', $geo);
         Result::model()->deleteAll($criteria);
 
@@ -148,7 +154,7 @@ class UploadController extends \web\ext\Controller
             $teamName = $tr->find('.st_team', 0)->plaintext;
             $team = Team::model()->findByAttributes(array(
                 'name' => new \MongoRegex('/^' . preg_quote($teamName) . '$/i'),
-                'year' => (int)date('Y'),
+                'year' => $year,
             ));
 
             // Check team geo to match
@@ -184,7 +190,7 @@ class UploadController extends \web\ext\Controller
                 // Create result
                 $result = new Result();
                 $result->setAttributes(array(
-                    'year'      => date('Y'),
+                    'year'      => $year,
                     'phase'     => $phase,
                     'geo'       => $geo,
                     'place'     => $place,
@@ -209,6 +215,7 @@ class UploadController extends \web\ext\Controller
 
         $this->renderJson(array(
             'errors' => false,
+            'url' => $this->createUrl('/results/view', $resultsViewParams)
         ));
     }
 
@@ -220,6 +227,7 @@ class UploadController extends \web\ext\Controller
         ));
 
         if ($imagesCount < News::MAX_IMAGES_COUNT) {
+
             // Process file
             $uploadedFile = $this->_processFile();
             if (!$uploadedFile) {
@@ -244,10 +252,10 @@ class UploadController extends \web\ext\Controller
                 )
             );
 
-            // delete previous file
+            // Delete previous file
             $uploadedFile->delete();
 
-            // create a new scaled and converted file
+            // Create a new scaled and converted file
             $newUploadedFile = new UploadedFile();
             $newUploadedFile->setAttributes(array(
                 'filename' => $filePath . '/' . $fileName,
@@ -262,7 +270,7 @@ class UploadController extends \web\ext\Controller
 
             $this->_linkUploadedFile($image, $newUploadedFile);
 
-            // delete temporary files
+            // Delete temporary files
             unlink($filePath . '/' . $fileName);
             if (file_exists($filePath . '/' . $newFileName)) {
                 unlink($filePath . '/' . $newFileName);
@@ -279,6 +287,76 @@ class UploadController extends \web\ext\Controller
                     array('{n}' => News::MAX_IMAGES_COUNT))
             ));
         }
+    }
+
+    /**
+     * Upload user's profile photo
+     */
+    public function actionPhoto()
+    {
+        // Get current user
+        $userId = \yii::app()->user->id;
+        $user = User::model()->findByPk(new \MongoId($userId));
+
+        // Process file
+        $uploadedFile = $this->_processFile();
+        if (!$uploadedFile) {
+            return;
+        }
+
+        $filePath = \yii::getPathOfAlias('common.runtime');
+        $fileName = array_pop(explode('/', $uploadedFile->filename));
+        $file = fopen($filePath . '/' . $fileName, 'w');
+        fwrite($file, $uploadedFile->getBytes());
+        fclose($file);
+
+        $newFileName = array_shift(explode('.', $fileName)) . '.jpg';
+        \yii::app()->image->scale(
+            $filePath . '/' . $fileName,
+            $filePath . '/' . $newFileName,
+            array(
+                'max_width' => 2000,
+                'max_height' => 2000,
+                'min_width' => 100,
+                'min_height' => 100,
+            )
+        );
+
+        // Delete previous file
+        $uploadedFile->delete();
+
+        // Create a new scaled and converted file
+        $newUploadedFile = new UploadedFile();
+        $newUploadedFile->setAttributes(array(
+            'filename' => $filePath . '/' . $fileName,
+        ), false);
+        $newUploadedFile->save();
+
+        // Delete old photo if it exists
+        if ($user->photo !== null) {
+            $user->photo->delete();
+        }
+
+        // Create document
+        $photo = new User\Photo();
+        $photo->setAttributes(array(
+            'fileName' => mb_strtolower($this->request->getParam('uniqueName')),
+            'userId'   => $userId,
+        ), false);
+        $photo->save();
+        $this->_linkUploadedFile($photo, $newUploadedFile);
+
+        // Delete temporary files
+        unlink($filePath . '/' . $fileName);
+        if (file_exists($filePath . '/' . $newFileName)) {
+            unlink($filePath . '/' . $newFileName);
+        }
+
+        // Render json
+        $this->renderJson(array(
+            'errors' => false,
+            'photoId' => (string)$photo->_id
+        ));
     }
 
     /**

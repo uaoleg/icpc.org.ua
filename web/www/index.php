@@ -23,6 +23,7 @@ switch (APP_ENV) {
 
 // Define Yii
 require_once __DIR__ . '/../../common/lib/yii/YiiBase.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 class Yii extends YiiBase {
     /**
      * @static

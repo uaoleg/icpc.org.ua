@@ -1,0 +1,59 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "606b55b6e356e1160ff896f6333aaea6",
+    "packages": [
+        {
+            "name": "anlutro/curl",
+            "version": "0.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/anlutro/php-curl.git",
+                "reference": "eba669595a6ad688b27b07e021f25c2072a1b1c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/anlutro/php-curl/zipball/eba669595a6ad688b27b07e021f25c2072a1b1c8",
+                "reference": "eba669595a6ad688b27b07e021f25c2072a1b1c8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "anlutro\\cURL": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Lutro",
+                    "email": "anlutro@gmail.com"
+                }
+            ],
+            "description": "Simple OOP cURL wrapper.",
+            "time": "2014-04-03 06:28:24"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "platform": {
+        "php": ">=5.3.0",
+        "ext-gd": "*",
+        "ext-mongo": "*"
+    },
+    "platform-dev": []
+}

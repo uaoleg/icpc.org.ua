@@ -13,6 +13,12 @@
         </div>
         <div class="panel-body">
             <div class="form-horizontal col-lg-offset-1 col-lg-10">
+                <input type="hidden" name="firstNameEn" data-baylor-firstName="" />
+                <input type="hidden" name="lastNameEn" data-baylor-lastName="" />
+                <input type="hidden" name="acmId" data-baylor-acmId="" />
+                <input type="hidden" name="phoneHome" data-baylor-phoneHome="" />
+                <input type="hidden" name="phoneMobile" data-baylor-phoneMobile="" />
+                <input type="hidden" name="shirtSize" data-baylor-shirtSize="" />
                 <div class="form-group">
                     <input type="text" class="form-control" name="firstNameUk"
                            value="<?=\CHtml::encode($user->firstNameUk)?>"
@@ -31,7 +37,8 @@
                 <div class="form-group">
                         <input type="email" class="form-control" name="email"
                                value="<?=\CHtml::encode($user->email)?>"
-                               placeholder="<?=$user->getAttributeLabel('email')?>">
+                               placeholder="<?=$user->getAttributeLabel('email')?>"
+                               data-baylor-email="">
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" name="password"
@@ -101,6 +108,7 @@
                     <button type="submit" class="signup btn btn-primary btn-lg">
                         <?=\yii::t('app', 'Sign up')?>
                     </button>
+                    <?php \web\widgets\user\Baylor::create(); ?>
                 </div>
             </div>
         </div>
