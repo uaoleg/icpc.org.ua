@@ -75,7 +75,7 @@ function appUserMe() {
     /**
      * Save button info handler
      */
-    $('.btn-save-info').on('click', function() {
+    $('.js-save').on('click', function() {
         var $this = $(this),
             $form = $this.closest('.form-horizontal');
         $this.prop('disabled', true);
