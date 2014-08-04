@@ -22,9 +22,14 @@ function appUserBaylor() {
                     $('.js-baylor-error-creds', $modal).removeClass('hide');
                 } else {
                     $modal.modal('hide');
+                    $('.js-baylor-panel').removeClass('hide');
 
                     $.each(response.data, function(key, value) {
                         $('[data-baylor-' + key + ']').val(value);
+                        $('[data-baylor-' + key + '-text]')
+                            .removeClass('hide')
+                            .find('p')
+                            .text(value);
                     });
 
                     $('input[name=tShirtSize]')
