@@ -16,14 +16,23 @@ class AuthController extends \web\ext\Controller
      */
     protected function _checkRecaptcha()
     {
-        $challengeField = $this->request->getParam('recaptcha_challenge_field');
-        $responseField  = $this->request->getParam('recaptcha_response_field');
-        $errorMessage   = \yii::t('app', 'The recaptcha code is incorrect.');
+        // Get params
+        $challengeField     = $this->request->getParam('recaptcha_challenge_field');
+        $responseField      = $this->request->getParam('recaptcha_response_field');
+        $errorMessage       = \yii::t('app', 'The recaptcha code is incorrect.');
+        $recaptchaIgnore    = (bool)$this->request->getParam('recaptchaIgnore', false);
 
+        // Return "true" if not production environment
+        if ((APP_ENV !== APP_ENV_PROD) && ($recaptchaIgnore)) {
+            return true;
+        }
+
+        // Return error if some params are empty
         if (($responseField === null) || ($challengeField === null)) {
             return $errorMessage;
         }
 
+        // Check recaptcha answer
         \yii::import('common.lib.recaptcha.reCAPTCHA.recaptchalib', true);
         $response = recaptcha_check_answer(
             \yii::app()->params['recaptcha']['privateKey'],
@@ -31,7 +40,6 @@ class AuthController extends \web\ext\Controller
             $challengeField,
             $responseField
         );
-
         if ($response->is_valid) {
             return true;
         } else {
