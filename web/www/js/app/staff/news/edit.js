@@ -87,7 +87,13 @@ appStaffNewsEdit.prototype.initUploader = function () {
     self.uploader = new plupload.Uploader(pluploadHelpersSettings({
         browse_button:    'uploadNewsImages',
         container:        'uploadImagesContainer',
-        url:              app.baseUrl + '/upload/images'
+        url:              app.baseUrl + '/upload/images',
+        filters: {
+            mime_types: [
+                { title : "Image files", extensions : "jpg,png" }
+            ]
+        }
+
     }));
 
     self.uploader.init();
