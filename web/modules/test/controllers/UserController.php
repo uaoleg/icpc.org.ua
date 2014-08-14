@@ -13,11 +13,12 @@ class UserController extends \web\modules\test\ext\Controller
     public function actionDelete()
     {
         // Get params
-        $email = \yii::app()->request->getDelete('email');
+        $email      = \yii::app()->request->getDelete('email');
+        $minLength  = 3;
 
         // Check length
-        if (mb_strlen($email) < 3) {
-            echo \yii::t('app', 'Email length should be 3 symbols or more.');
+        if (mb_strlen($email) < $minLength) {
+            echo \yii::t('app', 'Email length should be {n} symbols or more.', $minLength);
             return;
         }
 
