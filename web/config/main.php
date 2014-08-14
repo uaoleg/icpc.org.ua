@@ -139,6 +139,11 @@ $config = array(
             'controllerNamespace'   => 'web\modules\staff\controllers',
         ),
 
+        'test' => array(
+            'class'                 => '\web\modules\test\TestModule',
+            'controllerNamespace'   => 'web\modules\test\controllers',
+        ),
+
     ),
 
     // Application-level parameters that can be accessed
