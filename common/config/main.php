@@ -81,8 +81,8 @@ $main = array(
             'transportOptions' => array(
                 'host'     => 'smtp.mandrillapp.com',
                 'port'     => 587,
-                'username' => 'ua.oleg@gmail.com',
-                'password' => 'mkanRspYdB4JlOs_EQmoeQ',
+                'username' => '',
+                'password' => '',
             ),
         ),
 
