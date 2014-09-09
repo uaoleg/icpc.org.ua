@@ -53,7 +53,7 @@ When user go to additional tab /en
 Then user should see filled fields
 
 Scenario: As user i want to be able to see warrning messages about empty fields if user doesn't enrer any info.
-Given the user is signed in with stuone@mailinator.com 123456
+Given the user is signed in with stuthree@mailinator.com 123456
 When user go to user profile
 When user go to additional tab /en
 And click save button
