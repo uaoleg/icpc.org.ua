@@ -12,6 +12,7 @@ import com.dataart.steps.UserRegistrationSteps;
 import com.dataart.steps.UserTeamSteps;
 import com.dataart.utils.CheckGmail;
 import com.dataart.utils.Vars;
+import java.awt.AWTException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -89,7 +90,7 @@ public class GeneralSteps {
 	@When("the user enters name: $userName and password: $password and click the 'login' button")
 	public void whenTheUserEnterLoginAndPassword(String userName,
 			String password) {
-		user.enter(userName, password);
+		user.enter(userName, password);                
 		user.click_login_button();
 
 	}
@@ -545,6 +546,7 @@ public class GeneralSteps {
 	public void userClicksontheDocsLinkandChoosesRegulationItem() {
 		userdoc.click_Docs_and_choose_Regulations();
 	}
+        
 
 	@Then("user is on the Regulations Docs page")
 	public void userisontheRegulationsDocsPage() {
@@ -562,7 +564,7 @@ public class GeneralSteps {
 	}
 
 	@Then("user clicks on the top document's title")
-	public void userClicksontheTopDocumentLink() {
+	public void userClicksontheTopDocumentLink() throws AWTException {
 		userdoc.first_doc_link_click();
 	}
 
@@ -643,5 +645,78 @@ public class GeneralSteps {
 	public void userClickOnCreateAnewTeamButton() {
 		userteam.user_click_on_create_a_new_team_button();
 	}
+        
+        @Then("user clicks on the Upload Doc button in Regulation section")
+	public void userClickOnUploadRegulationDocButton() {
+		userdoc.upload_regulation_doc_button_click();
+	}
+        
+        @Then("user clicks on the Upload Doc button in Guidance section")
+	public void userClickOnUploadGuidanceDocButton() {
+		userdoc.upload_guidance_doc_button_click();
+	}
+        
+        @Then("user fills all the fields")
+	public void userFillsAllTheFields() {
+		userdoc.fills_all_the_fields();
+	}
+        
+        @Then("user chooses file and uploads it")
+	public void userChoosesFileandUploadsIt() throws AWTException {
+		userdoc.upload_file_and_click_Save_Document_button();
+	}
+        
+        @Then("user is able to see document in the list")
+	public void seeifDocumentIsintheList() {
+		userdoc.is_document_in_the_list();
+	}
+        
+        @Then("user clicks on Delete button near the first doc in the list")
+	public void userClicksOnDeleteButton() {
+		userdoc.delete_first_doc_button_click();
+	}
+        
+        @Then("user confirms deleting")
+	public void userConfirmsDeleting() {
+		userdoc.cofirm_deleting_of_the_doc();
+	}
+        
+        @Then("user can see that document is deleted from the list")
+	public void userCanSeeNoDocInList() {
+		userdoc.is_document_not_in_the_list();
+	}
+        
+        @Then("user clicks on the Edit button near the first document in the list")
+	public void userClicksOnTheEditButton() {
+		userdoc.edit_first_doc_button_click();
+	}
+        
+        @Then("user fills all fields with new correct information")
+	public void userFillsAllTheFieldsWithNewInformation() {
+		userdoc.fills_all_the_fields_with_new_information();
+	}
+        
+        @Then("user chooses Guidance item on dropdown list")
+	public void userchoosesGuidanceItemInDocTypeMenu() {
+		userdoc.click_Docs_and_choose_Guidance_in_Edit_Menu();
+	}
+        
+        @Then("user chooses Regulations item on dropdown list")
+	public void userchoosesRegulationsItemInDocTypeMenu() {
+		userdoc.click_Docs_and_choose_Regulations_in_Edit_Menu();
+	}
+        
+        @Then("user clicks on Save Document button")
+	public void userClicksonSaveDocumentButton() {
+		userdoc.click_Save_Document_Button();
+	}
+        
+        @Then("user can see document with new info in fields in the list")
+	public void userCanSeeEdittedDocInTheList() {
+		userdoc.find_Editted_Doc_in_the_LIST();
+	}
+        
+        
+        
 
 }
