@@ -1,0 +1,5 @@
+firstName,MIDDLENAME,LASTNAME,EMAIL,PASSWORD,passwordRepeat,ROLE,SCHOOL
+Fillip,Fillipovich,Filman, Den1234@mail.ru,qweqwe,qweqwe,coordinator_region,дн
+Michael,Michailovish,Ivanovich,Denf12@ukr.net,qweasd,qweasd,coordinator_state,ак
+Dima,Petrenko,Leontievich,Denf12@ukr.net,123123,123123,coordinator_ukraine,ек
+Petr,Petrenko,Sergeevich,Denf12@ukr.net,123123,123123,student,пр
