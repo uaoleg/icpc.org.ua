@@ -22,6 +22,7 @@ public class UserLoginSteps extends ScenarioSteps {
 	public void enter(String userName, String password) {
 
 		loginPage.enterLoginAndPassword(userName, password);
+                
 	}
 
 	@Step
