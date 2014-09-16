@@ -25,6 +25,10 @@ public class User {
 	private String enterYearField;
 	private String courseField;
 	private String serialField;
+        private String positionField;
+        private String officeAddress;
+        private String phoneWork;
+        private String fax;
 
 	public String getFirstNameField() {
 		return firstNameField;
@@ -185,5 +189,38 @@ public class User {
 	public void setSerialField(String serialField) {
 		this.serialField = serialField;
 	}
+        
+        public String getPositionField() {
+		return positionField;
+	}
+
+	public void setPositionField(String positionField) {
+		this.positionField = positionField;
+	}
+        
+        public String getOfficeaddressField() {
+		return officeAddress;
+	}
+
+	public void setofficeAddressField(String officeAddress) {
+		this.officeAddress = officeAddress;
+	}
+        
+        public String getPhoneworkField() {
+		return phoneWork;
+	}
+
+	public void setPhoneworkField(String phoneWork) {
+		this.phoneWork = phoneWork;
+	}
+        
+         public String getFaxField() {
+		return fax;
+	}
+
+	public void setFaxField(String fax) {
+		this.fax = fax;
+	}
+
 
 }

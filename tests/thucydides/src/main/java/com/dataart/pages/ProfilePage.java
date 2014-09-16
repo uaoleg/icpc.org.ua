@@ -39,8 +39,8 @@ public class ProfilePage extends PageObject{
 	public WebElementFacade phoneHome;
 	@FindBy(id="phoneMobile")
 	public WebElementFacade phoneMobile;
-	@FindBy(id="dateOfBirth")
-	public WebElementFacade dateOfBirth;
+	@FindBy(xpath="//input[@id='dateOfBirth'][@class='form-control']")
+	public WebElement dateOfBirth;
 	@FindBy(id="skype")
 	public WebElementFacade skype;
 	@FindBy(id="acmNumber")
@@ -61,7 +61,15 @@ public class ProfilePage extends PageObject{
 	public WebElementFacade document;
 	@FindBy(css=".help-block")
 	public List<WebElement> warrningList;
-	
+        @FindBy(id="position")
+	public WebElementFacade position;
+        @FindBy(id="officeAddress")
+	public WebElementFacade officeAddress;
+        @FindBy(id="phoneWork")
+	public WebElementFacade phoneWork;
+        @FindBy(id="fax")
+	public WebElementFacade fax;
+      
 	
 	public void cleanAdditionalFields(){
 		phoneHome.clear();
@@ -69,13 +77,17 @@ public class ProfilePage extends PageObject{
 		dateOfBirth.clear();
 		skype.clear();
 		acmNumber.clear();
-		studyField.clear();
-		speciality.clear();
-		faculty.clear();
-		group.clear();
-		schoolAdmissionYear.clear();
-		course.clear();
-		document.clear();
+                position.clear();
+                officeAddress.clear();
+                phoneWork.clear();
+                fax.clear();
+		//studyField.clear();
+		//speciality.clear();
+		//faculty.clear();
+		//group.clear();
+		//schoolAdmissionYear.clear();
+		//course.clear();
+		//document.clear();
 		
 	}
 	
