@@ -64,7 +64,7 @@ public class LoginPage extends PageObject {
 
 	public static final String GITHUB_PAGE_TITLE = "uaoleg/icpc.org.ua · GitHub";
 
-	public static final String TWITTER_PAGE_TITLE = "icpc.org.ua (IcpcOrgUa) on Twitter";
+	public static final String TWITTER_PAGE_TITLE = "icpc.org.ua (IcpcOrgUa) | Twitter";
 
 	public static final String MAILTO_LINK_TEXT = "info@icpc.org.ua";
         
