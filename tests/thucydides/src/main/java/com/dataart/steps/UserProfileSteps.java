@@ -8,6 +8,7 @@ import net.thucydides.core.steps.ScenarioSteps;
 import com.dataart.model.User;
 import com.dataart.pages.ProfilePage;
 import com.dataart.utils.Vars;
+import org.openqa.selenium.By;
 
 public class UserProfileSteps extends ScenarioSteps{
 
@@ -67,13 +68,18 @@ public class UserProfileSteps extends ScenarioSteps{
 		additionalInfo.setBirthdayField("2001-05-15");
 		additionalInfo.setSkypeField("myskype");
 		additionalInfo.setAcmField("123123213AC");
-		additionalInfo.setDistrictField("IT");
-		additionalInfo.setOcupationField("developer");
-		additionalInfo.setFacultyField("Information technology");
-		additionalInfo.setGroupField("KS-03");
-		additionalInfo.setSchool("1985");
-		additionalInfo.setCourseField("2");
-		additionalInfo.setSerialField("AK564646456");
+                additionalInfo.setPositionField("engineer");
+                additionalInfo.setofficeAddressField("12 AC Belleview Bay");
+                additionalInfo.setPhoneworkField("223322223");
+                additionalInfo.setFaxField("333222333");
+                
+//		additionalInfo.setDistrictField("IT");
+//		additionalInfo.setOcupationField("developer");
+//		additionalInfo.setFacultyField("Information technology");
+//		additionalInfo.setGroupField("KS-03");
+//		additionalInfo.setSchool("1985");
+//		additionalInfo.setCourseField("2");
+//		additionalInfo.setSerialField("AK564646456");
 		//clean fiels
 		profilePage.cleanAdditionalFields();
 		
@@ -83,13 +89,22 @@ public class UserProfileSteps extends ScenarioSteps{
 		profilePage.typeInto(profilePage.dateOfBirth, additionalInfo.getBirthdayField());
 		profilePage.typeInto(profilePage.skype, additionalInfo.getSkypeField());
 		profilePage.typeInto(profilePage.acmNumber, additionalInfo.getAcmField());
-		profilePage.typeInto(profilePage.studyField, additionalInfo.getDistrictField());
-		profilePage.typeInto(profilePage.speciality, additionalInfo.getOcupationField());
-		profilePage.typeInto(profilePage.faculty, additionalInfo.getFacultyField());
-		profilePage.typeInto(profilePage.group,additionalInfo.getGroupField());
-		profilePage.typeInto(profilePage.schoolAdmissionYear, additionalInfo.getSchool());
-		profilePage.typeInto(profilePage.course, additionalInfo.getCourseField());
-		profilePage.typeInto(profilePage.document,additionalInfo.getSerialField());
+                profilePage.typeInto(profilePage.position, additionalInfo.getPositionField());
+		profilePage.typeInto(profilePage.phoneMobile, additionalInfo.getMobilePhoneField());
+		profilePage.typeInto(profilePage.dateOfBirth, additionalInfo.getBirthdayField());
+		profilePage.typeInto(profilePage.skype, additionalInfo.getSkypeField());
+		profilePage.typeInto(profilePage.acmNumber, additionalInfo.getAcmField());
+                profilePage.typeInto(profilePage.position, additionalInfo.getPositionField());
+                profilePage.typeInto(profilePage.officeAddress, additionalInfo.getOfficeaddressField());
+                profilePage.typeInto(profilePage.phoneWork, additionalInfo.getPhoneworkField());
+                profilePage.typeInto(profilePage.fax, additionalInfo.getFaxField());
+//		profilePage.typeInto(profilePage.studyField, additionalInfo.getDistrictField());
+//		profilePage.typeInto(profilePage.speciality, additionalInfo.getOcupationField());
+//		profilePage.typeInto(profilePage.faculty, additionalInfo.getFacultyField());
+//		profilePage.typeInto(profilePage.group,additionalInfo.getGroupField());
+//		profilePage.typeInto(profilePage.schoolAdmissionYear, additionalInfo.getSchool());
+//		profilePage.typeInto(profilePage.course, additionalInfo.getCourseField());
+//		profilePage.typeInto(profilePage.document,additionalInfo.getSerialField());
 		
 	}
 	@Step
@@ -104,13 +119,17 @@ public class UserProfileSteps extends ScenarioSteps{
 		Assert.assertEquals(additionalInfo.getBirthdayField(), profilePage.dateOfBirth.getAttribute("value"));
 		Assert.assertEquals(additionalInfo.getSkypeField(), profilePage.skype.getAttribute("value"));
 		Assert.assertEquals(additionalInfo.getAcmField(), profilePage.acmNumber.getAttribute("value"));
-		Assert.assertEquals(additionalInfo.getDistrictField(), profilePage.studyField.getAttribute("value"));
-		Assert.assertEquals(additionalInfo.getOcupationField(), profilePage.speciality.getAttribute("value"));
-		Assert.assertEquals(additionalInfo.getFacultyField(), profilePage.faculty.getAttribute("value"));
-		Assert.assertEquals(additionalInfo.getGroupField(), profilePage.group.getAttribute("value"));
-		Assert.assertEquals(additionalInfo.getSchool(), profilePage.schoolAdmissionYear.getAttribute("value"));
-		Assert.assertEquals(additionalInfo.getCourseField(), profilePage.course.getAttribute("value"));
-		Assert.assertEquals(additionalInfo.getSerialField(), profilePage.document.getAttribute("value"));
+                Assert.assertEquals(additionalInfo.getPositionField(), profilePage.position.getAttribute("value"));
+		Assert.assertEquals(additionalInfo.getOfficeaddressField(), profilePage.officeAddress.getAttribute("value"));
+		Assert.assertEquals(additionalInfo.getPhoneworkField(), profilePage.phoneWork.getAttribute("value"));
+		Assert.assertEquals(additionalInfo.getFaxField(), profilePage.fax.getAttribute("value"));               
+//		Assert.assertEquals(additionalInfo.getDistrictField(), profilePage.studyField.getAttribute("value"));
+//		Assert.assertEquals(additionalInfo.getOcupationField(), profilePage.speciality.getAttribute("value"));
+//		Assert.assertEquals(additionalInfo.getFacultyField(), profilePage.faculty.getAttribute("value"));
+//		Assert.assertEquals(additionalInfo.getGroupField(), profilePage.group.getAttribute("value"));
+//		Assert.assertEquals(additionalInfo.getSchool(), profilePage.schoolAdmissionYear.getAttribute("value"));
+//		Assert.assertEquals(additionalInfo.getCourseField(), profilePage.course.getAttribute("value"));
+//		Assert.assertEquals(additionalInfo.getSerialField(), profilePage.document.getAttribute("value"));
 	}
 	@Step
 	public void user_should_see_warrning_messages_about_blank_fields(){

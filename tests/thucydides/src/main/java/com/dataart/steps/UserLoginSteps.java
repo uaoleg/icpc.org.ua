@@ -107,7 +107,7 @@ public class UserLoginSteps extends ScenarioSteps {
 	@Step
 	public void verify_Twitter_page() {
 		loginPage.goToNewWindow();
-		//waitABit(5000);
+		waitABit(5000);
 		loginPage.waitForTitleToAppear(LoginPage.TWITTER_PAGE_TITLE);
 		Assert.assertEquals(LoginPage.TWITTER_PAGE_TITLE,loginPage.getPageTitle());
 	}
