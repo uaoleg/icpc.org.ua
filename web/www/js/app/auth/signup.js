@@ -144,7 +144,8 @@ function appAuthSignup() {
                 coordinator:    $('.form-group .btn.active [name=coordinator]').val(),
                 rulesAgree:     $('.form-group [name=rulesAgree]').is(':checked') ? 1 : 0,
                 recaptcha_challenge_field: $('#recaptcha_challenge_field').val(),
-                recaptcha_response_field:  $('#recaptcha_response_field').val()
+                recaptcha_response_field:  $('#recaptcha_response_field').val(),
+                recaptchaIgnore:           $('.form-group [name=recaptchaIgnore]').is(':checked') ? 1 : 0
             },
             success: function(response) {
                 appShowErrors(response.errors, $form);

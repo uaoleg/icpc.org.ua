@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="4" passed="4">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="5941" started-at="2014-09-09T13:39:52Z" finished-at="2014-09-09T13:39:57Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="5941" started-at="2014-09-09T13:39:52Z" finished-at="2014-09-09T13:39:57Z">
+      <class name="test.JsonServiceTest">
+        <test-method status="PASS" signature="ImportTest()[pri:0, instance:test.JsonServiceTest@2d6a9952]" name="ImportTest" duration-ms="3900" started-at="2014-09-09T16:39:52Z" finished-at="2014-09-09T16:39:55Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- ImportTest -->
+        <test-method status="PASS" signature="getResultsJsonTest()[pri:0, instance:test.JsonServiceTest@2d6a9952]" name="getResultsJsonTest" duration-ms="95" started-at="2014-09-09T16:39:55Z" finished-at="2014-09-09T16:39:56Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResultsJsonTest -->
+        <test-method status="PASS" signature="registrationNegativeTest()[pri:0, instance:test.JsonServiceTest@2d6a9952]" name="registrationNegativeTest" duration-ms="71" started-at="2014-09-09T16:39:56Z" finished-at="2014-09-09T16:39:56Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- registrationNegativeTest -->
+        <test-method status="PASS" signature="registrationTest()[pri:0, instance:test.JsonServiceTest@2d6a9952]" name="registrationTest" duration-ms="1860" started-at="2014-09-09T16:39:56Z" finished-at="2014-09-09T16:39:57Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- registrationTest -->
+      </class> <!-- test.JsonServiceTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
