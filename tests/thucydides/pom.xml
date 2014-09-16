@@ -13,7 +13,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<thucydides.version>0.9.262</thucydides.version>
 		<thucydides.jbehave.version>0.9.262</thucydides.jbehave.version>
-		<webdriver.driver>chrome</webdriver.driver>
+		<webdriver.driver>firefox</webdriver.driver>
 
 	</properties>
 

@@ -39,7 +39,7 @@ public class UserDocsSteps extends ScenarioSteps {
 	@Step
 	public void click_Docs_and_choose_Regulations() {
 		Actions builder = new Actions(getDriver());
-		builder.moveToElement(docsPage.docsLink).build().perform();
+		builder.moveToElement(docsPage.docsLink).click().perform();
 		waitABit(1000);
 		docsPage.element(docsPage.docsLink).waitUntilVisible();
 		waitABit(1000);
@@ -50,7 +50,7 @@ public class UserDocsSteps extends ScenarioSteps {
 	@Step
 	public void click_Docs_and_choose_Guidance() {
 		Actions builder = new Actions(getDriver());
-		builder.moveToElement(docsPage.docsLink).build().perform();
+		builder.moveToElement(docsPage.docsLink).click().perform();
 		waitABit(1000);
 		docsPage.element(docsPage.docsLink).waitUntilVisible();
 		waitABit(1000);
