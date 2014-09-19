@@ -280,6 +280,7 @@ class Team extends \common\ext\MongoDb\Document
             array('name, year, phase, coachId, coachNameUk, coachNameEn, schoolId, schoolNameUk, schoolNameEn,
                    memberIds, state, region', 'required'),
             array('name', Team\Validator\Name::className()),
+            array('name', Team\Validator\Unique::className()),
             array('year', 'numerical',
                 'integerOnly'   => true,
                 'min'           => (int)\yii::app()->params['yearFirst'],
