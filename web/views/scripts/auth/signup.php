@@ -129,23 +129,23 @@
             </div>
             <div class="panel-body">
                 <div class="form-group hide" data-baylor-firstName-text="">
-                    <label>First name (english)</label>
+                    <label><?=$user->getAttributeLabel('firstNameEn')?></label>
                     <p class="form-control-static"></p>
                 </div>
                 <div class="form-group hide" data-baylor-lastName-text="">
-                    <label>Last name (english)</label>
+                    <label><?=$user->getAttributeLabel('lastNameEn')?></label>
                     <p class="form-control-static"></p>
                 </div>
                 <div class="form-group hide" data-baylor-acmId-text="">
-                    <label><?=\yii::t('app', 'ACM Number', null, null, 'en')?></label>
+                    <label><?=$user->getAttributeLabel('acmNumber')?></label>
                     <p class="form-control-static"></p>
                 </div>
                 <div class="form-group hide" data-baylor-phoneHome-text="">
-                    <label><?=\yii::t('app', 'Home phone', null, null, 'en')?></label>
+                    <label><?=$user->getAttributeLabel('phoneHome')?></label>
                     <p class="form-control-static"></p>
                 </div>
                 <div class="form-group hide" data-baylor-phoneMobile-text="">
-                    <label><?=\yii::t('app', 'Mobile phone', null, null, 'en')?></label>
+                    <label><?=$user->getAttributeLabel('phoneMobile')?></label>
                     <p class="form-control-static"></p>
                 </div>
             </div>
