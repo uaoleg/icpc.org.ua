@@ -116,7 +116,10 @@ class TeamController extends \web\ext\Controller
             $members = $team->members;
             $members_arr = array();
             foreach ($members as $member) {
-                $members_arr[] = \web\widgets\user\Name::create(array('user' => $member), true);
+                $members_arr[] =
+                    '<a href="' . $this->createUrl('/user/view', array('id' => (string)$member->_id)) . '">' .
+                    \web\widgets\user\Name::create(array('user' => $member), true) .
+                    '</a>';
             }
             $members_str = implode(', ', $members_arr);
 
