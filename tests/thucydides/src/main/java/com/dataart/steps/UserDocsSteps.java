@@ -169,6 +169,7 @@ public class UserDocsSteps extends ScenarioSteps {
 
 
 		docsPage.saveDocumentButton.click();
+                waitABit(5000);
 
 	}
 
