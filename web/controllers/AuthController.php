@@ -95,24 +95,20 @@ class AuthController extends \web\ext\Controller
                 $userEn->useLanguage = 'en';
                 $infoEn = $userEn->info;
 
-                if (\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE)) {
-                    \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, false);
-                    $this->redirect('/');
-                } else {
-                    switch (false) {
-                        case ($infoUk->validate()):
-                            \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
-                            $this->redirect($this->createUrl('user/additional', array('lang' => 'uk')));
-                            break;
-                        case ($infoEn->validate()):
-                            \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
-                            $this->redirect($this->createUrl('user/additional', array('lang' => 'en')));
-                            break;
-                        default:
-                            \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, false);
-                            $this->redirect('/');
-                            break;
-                    }
+                switch (false) {
+                    case (!!\yii::app()->user->getInstance()->type):
+                    default:
+                        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, false);
+                        $this->redirect('/');
+                        break;
+                    case ($infoUk->validate()):
+                        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
+                        $this->redirect($this->createUrl('user/additional', array('lang' => 'uk')));
+                        break;
+                    case ($infoEn->validate()):
+                        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
+                        $this->redirect($this->createUrl('user/additional', array('lang' => 'en')));
+                        break;
                 }
             } else {
                 $error = $identity->errorMessage;
