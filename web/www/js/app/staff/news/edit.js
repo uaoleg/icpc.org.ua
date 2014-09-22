@@ -90,7 +90,7 @@ appStaffNewsEdit.prototype.initUploader = function () {
         url:              app.baseUrl + '/upload/images',
         filters: {
             mime_types: [
-                { title : "Image files", extensions : "jpg,png" }
+                { title : "Image files", extensions : "jpg,jpeg,png" }
             ]
         }
 

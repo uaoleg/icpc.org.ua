@@ -142,7 +142,7 @@ appUserMe.prototype.initUploader = function () {
         url:              app.baseUrl + '/upload/photo',
         filters: {
             mime_types: [
-                { title : "Image files", extensions : "jpg,png" }
+                { title : "Image files", extensions : "jpg,jpeg,png" }
             ]
         }
     }));
