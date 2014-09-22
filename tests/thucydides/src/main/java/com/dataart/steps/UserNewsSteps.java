@@ -19,7 +19,10 @@ public class UserNewsSteps extends ScenarioSteps {
 	NewsPage newsPage;
 	News news = new News();		
 			
-	
+	@Step
+	public void the_user_is_on_the_news_page(){
+		newsPage.open();
+	}
 	@Step
 	public void user_go_to_news_menu() {
 		newsPage.goToNews();
@@ -128,4 +131,10 @@ public class UserNewsSteps extends ScenarioSteps {
 	Assert.assertEquals(news.getTitle(),newsPage.getNewsTitle());
 	Assert.assertEquals(news.getBody(),newsPage.getNewsBody());
 	}
+        @Step
+	public void user_click_on_the_team_link(){
+		newsPage.teamLink.click();
+		waitABit(500);
+	}
+        
 }

@@ -52,6 +52,8 @@ public class NewsPage extends PageObject {
 	public List<WebElement> editList;
 	@FindBy(xpath = "//h2[@class='news-title']/a[contains(@href,'/news/view')]")
 	public List<WebElement> titleNewsList;
+        @FindBy(xpath="//*[@href='/team/list']")
+	public WebElementFacade teamLink;
 
 	public void goToNews() {
 		mainMenuList.get(0).click();

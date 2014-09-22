@@ -641,10 +641,10 @@ public class GeneralSteps {
 
 	}
 
-	@When("user click on create a new team button")
-	public void userClickOnCreateAnewTeamButton() {
-		userteam.user_click_on_create_a_new_team_button();
-	}
+//	@When("user click on create a new team button")
+//	public void userClickOnCreateAnewTeamButton() {
+//		userteam.user_click_on_create_a_new_team_button();
+//	}
         
         @Then("user clicks on the Upload Doc button in Regulation section")
 	public void userClickOnUploadRegulationDocButton() {
@@ -716,7 +716,62 @@ public class GeneralSteps {
 		userdoc.find_Editted_Doc_in_the_LIST();
 	}
         
+        @Given("the user is on the News page")
+        public void userisontheNewsPage(){
+            usernews.the_user_is_on_the_news_page();
+        }
         
+        @When("user clicks on the Team link")
+	public void userClicksontheTeamLink() {
+		usernews.user_click_on_the_team_link();
+	}
+        
+        @Then("user should be sent to Team page")
+	public void userVerifiyisontheTeamPage() {
+		userteam.verify_is_on_the_Team_Page();
+	}
+        
+        @When("user click on Export to CSV button and chooses For checking system item")
+	public void userChoosesForCheckingSystemItem() {
+		userteam.click_Export_to_CSV_and_Choose_For_Checking_System();
+	}
+        
+        @Then("user is able to download for checking system csv doc")
+	public void userisAbletoDownloadforCheckingSystemCSVDoc() throws MalformedURLException,
+			IOException {
+		Assert.assertEquals(200, userteam.is_Exported_For_checking_system_doc_avaible_by_URL());
+	}
+        
+        @When("user click on Export to CSV button and chooses For registration item")
+	public void userChoosesForRegistrationItem() {
+		userteam.click_Export_to_CSV_and_Choose_For_Registration();
+	}
+        
+        @Then("user is able to download for registration csv doc")
+	public void userisAbletoDownloadforRegistrationCSVDoc() throws MalformedURLException,
+			IOException {
+		Assert.assertEquals(200, userteam.is_Exported_For_Registration_doc_avaible_by_URL());
+	}
+        
+        @When("user click on create a new team button")
+	public void userClicksonCreateTeamButton() {
+		userteam.user_Clicks_on_Create_Team_Button();
+	}
+        
+        @Then("user enter team name")
+	public void userEntersTeamName(){
+		userteam.user_Enters_Team_Name();
+	}
+        
+        @Then("user enter team members")
+	public void userEntersTeamMembers(){
+		userteam.adding_New_Students_to_Team();
+	}
+        
+        @Then("user click save button")
+	public void userClicksSaveTeamButton(){
+		userteam.user_Clicks_Save_Team_Button();
+	}
         
 
 }
