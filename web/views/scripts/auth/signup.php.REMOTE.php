@@ -92,12 +92,6 @@
                                 'language'  => 'en_EN',
                                 'theme'     => 'white',
                             )); ?>
-                            <?php if (APP_ENV !== APP_ENV_PROD): ?>
-                                <label>
-                                    <input type="checkbox" name="recaptchaIgnore" />
-                                    <?=\yii::t('app', 'Ignore recaptcha')?>
-                                </label>
-                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="form-group">
