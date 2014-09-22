@@ -124,6 +124,9 @@
 
     <div class="col-lg-3">
         <div class="panel panel-default js-baylor-panel hide">
+            <div class="panel-heading">
+                <h3 class="panel-title"><?=\yii::t('app', 'Data from icpc.baylor.edu')?></h3>
+            </div>
             <div class="panel-body">
                 <div class="form-group hide" data-baylor-firstName-text="">
                     <label>First name (english)</label>
