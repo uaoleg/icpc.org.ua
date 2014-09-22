@@ -46,7 +46,7 @@ public class DocsPage extends PageObject {
 	@FindBy(xpath = "//*[@id='pickfiles']")
 	public WebElement chooseFileButton;
 
-	@FindBy(xpath = "//button[@type='submit']")
+	@FindBy(xpath = "//*[@type='submit']")
 	public WebElement saveDocumentButton;
 
 	@FindBy(xpath = "html/body/div[2]/div/div[5]/div[2]/button")
