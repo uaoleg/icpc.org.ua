@@ -17,9 +17,11 @@
 <?php foreach($questions as $question): ?>
     <div>
         <h2>
-            <a href="<?=$this->createUrl('view', array(
-                'id' => $question->_id,
-            ))?>"><?=\CHtml::encode($question->title)?></a>,
+            <div class="ellipsis">
+                <a href="<?=$this->createUrl('view', array(
+                    'id' => $question->_id,
+                ))?>"><?=\CHtml::encode($question->title)?></a>,
+            </div>
             <?=\yii::t('app', '{n} answer|{n} answers', $question->answerCount)?>
         </h2>
         <p>
