@@ -104,6 +104,11 @@ class AuthController extends \web\ext\Controller
                 $infoEn = $userEn->info;
 
                 switch (false) {
+                    case (!!\yii::app()->user->getInstance()->type):
+                    default:
+                        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, false);
+                        $this->redirect('/');
+                        break;
                     case ($infoUk->validate()):
                         \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
                         $this->redirect($this->createUrl('user/additional', array('lang' => 'uk')));
@@ -111,10 +116,6 @@ class AuthController extends \web\ext\Controller
                     case ($infoEn->validate()):
                         \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
                         $this->redirect($this->createUrl('user/additional', array('lang' => 'en')));
-                        break;
-                    default:
-                        \yii::app()->user->setState(WebUser::SESSION_INFO_NOT_FULL, false);
-                        $this->redirect('/');
                         break;
                 }
             } else {
