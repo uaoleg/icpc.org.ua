@@ -49,12 +49,18 @@ class Yii extends YiiBase {
  * @property-read \web\ext\HttpRequest              $request
  * @property-read \web\ext\WebUser                  $user
  */
-abstract class WebApplication extends CApplication
+class WebApplication extends CWebApplication
 {
-    // This is fake class only for autocomplete
+
+    /**
+     * Core language - "en" or "uk, but not "ru", etc.
+     * @var string
+     */
+    public $languageCore;
+
 }
 
 // Launch application
-$app = \yii::createWebApplication(__DIR__ . '/../config/main.php');
+$app = \yii::createApplication('WebApplication', __DIR__ . '/../config/main.php');
 $app->log;
 $app->run();

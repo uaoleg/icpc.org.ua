@@ -123,11 +123,6 @@ class ResultsController extends \web\ext\Controller
             $usedLetters[] = $allLetters[$i];
         }
 
-        $lang = \yii::app()->language;
-        if ($lang === 'ru') {
-            $lang = 'uk';
-        }
-
         // Render view
         $this->render('view', array(
             'geo'         => $geo,
@@ -137,7 +132,7 @@ class ResultsController extends \web\ext\Controller
             'results'     => $results,
             'tasksCount'  => $tasksCount,
             'usedLetters' => $usedLetters,
-            'lang'        => $lang
+            'lang'        => \yii::app()->languageCore,
         ));
     }
 
