@@ -81,6 +81,17 @@ class Controller extends \CController
             \yii::app()->language = $this->request->cookies['language']->value;
         }
 
+        // Set core language
+        switch (\yii::app()->language) {
+            case 'en':
+            case 'uk':
+                \yii::app()->languageCore = \yii::app()->language;
+                break;
+            default:
+                \yii::app()->languageCore = 'uk';
+                break;
+        }
+
         //  Include language file for Select2
         switch (\yii::app()->language) {
             case 'uk':
@@ -402,7 +413,7 @@ class Controller extends \CController
 
     /**
      * Sets the page title
-     * 
+     *
      * @param string $value
      */
     public function setPageTitle($value)

@@ -247,10 +247,14 @@ class User extends \common\ext\MongoDb\Document
     public function getInfo()
     {
         if ($this->_info === null) {
-            if ($this->useLanguage === 'en') {
-                $lang = 'en';
-            } else {
-                $lang = 'uk';
+            switch ($this->useLanguage) {
+                case 'en':
+                case 'uk':
+                    $lang = $this->useLanguage;
+                    break;
+                default:
+                    $lang = 'uk';
+                    break;
             }
             if ($this->type === static::ROLE_STUDENT) {
                 $this->_info = User\InfoStudent::model()->findByAttributes(array(
