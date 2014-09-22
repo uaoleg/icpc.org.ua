@@ -5,7 +5,8 @@ namespace common\models\Team\Validator;
 use \common\ext\MongoDb\Validator\AbstractValidator;
 use \common\models\Team;
 
-class Unique extends AbstractValidator {
+class Unique extends AbstractValidator
+{
 
     /**
      * Validate name
@@ -28,7 +29,10 @@ class Unique extends AbstractValidator {
         ));
 
         if ($team2 !== null) {
-            $this->addError($team, $attribute, \yii::t('app', 'Team with this name already exists for this year'));
+            $this->addError($team, $attribute, \yii::t('app', 'Team "{name}" already exists for year {year}', array(
+                '{name}' => $name,
+                '{year}' => $year,
+            )));
         }
 
     }
