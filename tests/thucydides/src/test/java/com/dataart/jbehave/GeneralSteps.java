@@ -773,5 +773,10 @@ public class GeneralSteps {
 		userteam.user_Clicks_Save_Team_Button();
 	}
         
+        @Then("user should see created team in the table")
+        public void userShouldSeeTeamInTable(){
+            userteam.is_Team_in_Table();
+        }
+        
 
 }

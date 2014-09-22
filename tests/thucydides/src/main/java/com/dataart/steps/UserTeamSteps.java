@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
+import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 
 public class UserTeamSteps extends ScenarioSteps{
@@ -123,7 +124,7 @@ public class UserTeamSteps extends ScenarioSteps{
         
         @Step
         public void user_Enters_Team_Name(){
-            teamPage.teamNameField.sendKeys("testteam");
+            teamPage.teamNameField.sendKeys(TeamPage.Team_Name);
         }
         
         @Step
@@ -139,12 +140,19 @@ public class UserTeamSteps extends ScenarioSteps{
 			Robot robot = new Robot();
 			robot.keyPress(KeyEvent.VK_ENTER);
 			robot.keyRelease(KeyEvent.VK_ENTER);
-			waitABit(500);
+			waitABit(2000);
 			robot.keyPress(KeyEvent.VK_ENTER);
 			robot.keyRelease(KeyEvent.VK_ENTER);
-                        waitABit(500);
+                        waitABit(2000);
 			robot.keyPress(KeyEvent.VK_ENTER);
 			robot.keyRelease(KeyEvent.VK_ENTER);
+                        waitABit(2000);
+                        robot.keyPress(KeyEvent.VK_ENTER);
+			robot.keyRelease(KeyEvent.VK_ENTER);
+                        waitABit(2000);
+                        robot.keyPress(KeyEvent.VK_ENTER);
+			robot.keyRelease(KeyEvent.VK_ENTER);
+                        waitABit(2000);
 		} catch (AWTException ex) {
 			Logger.getLogger(UserDocsSteps.class.getName()).log(Level.SEVERE,
 					null, ex);
@@ -169,7 +177,8 @@ public class UserTeamSteps extends ScenarioSteps{
                 
 	}
         @Step
-       public void is_Team_in_Table(){    
+       public void is_Team_in_Table(){  
+           getDriver().findElement(By.xpath(TeamPage.TEAM_NAME_IN_TABLE)).isDisplayed();
 
         }
 		

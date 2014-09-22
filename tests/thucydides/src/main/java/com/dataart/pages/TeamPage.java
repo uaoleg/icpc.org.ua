@@ -30,8 +30,18 @@ public class TeamPage  extends PageObject{
 	public WebElementFacade secondStudentOption;
         @FindBy(xpath="html/body/div[5]/ul/li[3]/div")
 	public WebElementFacade thirdStudentOption;
+        @FindBy(xpath="//td[@title='testteam']")
+	public WebElementFacade teamNameinTable;
 
         
-        public final static String TEAMS_PAGE_TITLE = "Team - ICPC";
+        public final static String TEAMS_PAGE_TITLE = "Team - ICPC";        
+        public final static String Team_Name = teamNameGenerator();
+        public final static String TEAM_NAME_IN_TABLE = "//td[@title='YNC" + Team_Name +"']";
+        
+        public static String teamNameGenerator(){            
+             String teamName = "testteam" + (int) (Math.random()*1000 + 1);
+             return teamName;
+        }
+        
 	
 }
