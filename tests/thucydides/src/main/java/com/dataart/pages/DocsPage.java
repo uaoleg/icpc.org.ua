@@ -43,7 +43,7 @@ public class DocsPage extends PageObject {
 	@FindBy(xpath = "//select[@name='type']")
 	public WebElement docTypeDropdown;
 
-	@FindBy(xpath = "//button[@id='pickfiles']")
+	@FindBy(xpath = "//*[@id='pickfiles']")
 	public WebElement chooseFileButton;
 
 	@FindBy(xpath = "//button[@type='submit']")
