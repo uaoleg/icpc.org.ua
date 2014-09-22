@@ -31,8 +31,8 @@
                 colModel: [
                     {name: 'place', index: 'place', width: 60, align: 'center', search: false, frozen: true},
                     {name: 'teamName', index: 'teamName', width: 150, frozen: true},
-                    {name: 'coachName<?=ucfirst(\yii::app()->language)?>', index: 'coachName<?=ucfirst(\yii::app()->language)?>', width: 175, frozen: true, formatter: coachShowLink},
-                    {name: 'schoolName<?=ucfirst(\yii::app()->language)?>', index: 'schoolName<?=ucfirst(\yii::app()->language)?>', width: 250, frozen: true},
+                    {name: 'coachName<?=ucfirst($lang)?>', index: 'coachName<?=ucfirst($lang)?>', width: 175, frozen: true, formatter: coachShowLink},
+                    {name: 'schoolName<?=ucfirst($lang)?>', index: 'schoolName<?=ucfirst($lang)?>', width: 250, frozen: true},
                     {name: 'total', index: 'total', width: 50, search: false, align: 'center', frozen: true},
                     {name: 'penalty', index: 'penalty', width: 50, search: false, align: 'center', frozen: true},
                     <?php foreach ($usedLetters as $letter): ?>
