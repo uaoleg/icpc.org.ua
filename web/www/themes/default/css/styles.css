@@ -3,6 +3,7 @@
     Basic styles
     Document
     News
+    Staff - Qa Tags
 
 */
 
@@ -108,4 +109,11 @@ transform: rotate(-90deg);
 
 .news .news-title {
     margin-bottom: 0;
+}
+
+/* Staff - Qa Tags
+----------------------------------------------------------------------------- */
+
+.qatags__manage-table {
+    table-layout: fixed;
 }
