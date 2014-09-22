@@ -6,8 +6,6 @@ use \common\models\School;
 use \common\models\Team;
 use \common\models\User;
 use \web\ext\WebUser;
-use \anlutro\cURL\cURL as Curl;
-use \anlutro\cURL\Request as CurlRequest;
 
 class UserController extends \web\ext\Controller
 {
