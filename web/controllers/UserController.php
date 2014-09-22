@@ -6,8 +6,6 @@ use \common\models\School;
 use \common\models\Team;
 use \common\models\User;
 use \web\ext\WebUser;
-use \anlutro\cURL\cURL as Curl;
-use \anlutro\cURL\Request as CurlRequest;
 
 class UserController extends \web\ext\Controller
 {
@@ -389,98 +387,12 @@ class UserController extends \web\ext\Controller
 
             \yii::app()->user->setState('baylor_email', $email);
 
-            $data = array(
-                'login' => 'login',
-                'login:registerScreenSize' => '',
-                'login:loginButtons' => 'Log in',
-                'login:loginButtonsScreenSize' => '1863',
-                'javax.faces.ViewState' => '-7305149916852225329:-5521534327342265186',
-                'login:username' => $email,
-                'login:password' => $password
-            );
+            $response = \yii::app()->baylor->import($email, $password);
 
-            $cookiesFile = \yii::getPathOfAlias('common.runtime') . '/' . uniqid('', true);
-
-            $curl = new Curl;
-
-            $postCurl = $curl->newRequest('post', 'https://icpc.baylor.edu/login', $data);
-            $getCurl = $curl->newRequest('get', 'https://icpc.baylor.edu/private/profile');
-
-            $postQuery = $this->_setBaylorHeadersAndOptions($postCurl, $cookiesFile)->send();
-
-            $response = $this->_setBaylorHeadersAndOptions($getCurl, $cookiesFile)->send();
-
-            // Import HTML DOM Parser
-            \yii::import('common.lib.HtmlDomParser.*');
-            require_once('HtmlDomParser.php');
-            $parser = new \Sunra\PhpSimple\HtmlDomParser();
-            $html = $parser->str_get_html($response->body);
-
-            $header = $html->find('#header', 0);
-            if (!is_null($header)) {
-                $baylorInfo = array();
-                $info = array(
-                    'firstName'     => '[id="tabs:piForm:ropifirstName"]',
-                    'lastName'      => '[id="tabs:piForm:ropilastName"]',
-                    'shirtSize'     => '[id="tabs:piForm:pishirtSizeView"]',
-                    'phoneHome'     => '[id="tabs:contactForm:roextendedvoice"]',
-                    'phoneMobile'   => '[id="tabs:contactForm:roextendedemergencyPhone"]',
-                    'officeAddress' => '[id="tabs:contactForm:roaddressaddressLine1"]',
-                    'email'         => '[id="tabs:piForm:piusernameView"]',
-                    'acmId'         => '[id="tabs:piForm:ropiacmId"]',
-                );
-
-                foreach ($info as $key => $value) {
-                    $datum = $html->find($value, 0);
-                    if (!is_null($datum)) {
-                        $baylorInfo[$key] = trim($datum->plaintext);
-                    }
-                }
-
-                unlink($cookiesFile);
-
-                $this->renderJson(array(
-                    'errors' => false,
-                    'data' => $baylorInfo
-                ));
-            } else {
-                $this->renderJson(array(
-                    'errors' => array(
-                        'baylor-modal__email' => 'WRONG',
-                        'baylor-modal__password' => 'WRONG',
-                    )
-                ));
-            }
+            $this->renderJson($response);
         } else {
             $this->httpException(404);
         }
-    }
-
-    /**
-     * Set headers for requests on icpc.baylor.edu
-     *
-     * @param CurlRequest $curl
-     * @param $cookies
-     * @return CurlRequest
-     */
-    protected function _setBaylorHeadersAndOptions(CurlRequest $curl, $cookies)
-    {
-        return $curl
-            ->setHeader('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36')
-            ->setHeader('Accept', 'ext/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8')
-            ->setHeader('Accept-Language', 'en-US,en;q=0.8,ru;q=0.6,uk;q=0.4')
-            ->setHeader('Cache-Control', 'max-age=0')
-            ->setHeader('Connection', 'keep-alive')
-            ->setHeader('Content-Type', 'application/x-www-form-urlencoded')
-            ->setHeader('Host', 'icpc.baylor.edu')
-            ->setHeader('Origin', 'https://icpc.baylor.edu')
-            ->setHeader('Referer', 'https://icpc.baylor.edu/login')
-            ->setOptions(array(
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_COOKIEFILE => $cookies,
-                CURLOPT_COOKIEJAR => $cookies
-            ));
     }
 
 }

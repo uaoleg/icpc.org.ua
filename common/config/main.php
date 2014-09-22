@@ -48,6 +48,10 @@ $main = array(
             'showErrors'    => YII_DEBUG,
         ),
 
+        'baylor' => array(
+            'class' => '\common\components\Baylor'
+        ),
+
         'cache' => array(
             'class'         => 'common.lib.yii.caching.CMemCache',
             'useMemcached'  => false,

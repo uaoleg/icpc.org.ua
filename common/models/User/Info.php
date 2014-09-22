@@ -69,14 +69,14 @@ class Info extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'userId'                       => \yii::t('app', 'Related user ID'),
-            'lang'                         => \yii::t('app', 'Language of the information'),
-            'dateOfBirth'                  => \yii::t('app', 'Date of birth'),
-            'phoneHome'                    => \yii::t('app', 'Home phone number'),
-            'phoneMobile'                  => \yii::t('app', 'Mobile phone number'),
-            'skype'                        => \yii::t('app', 'Skype'),
-            'tShirtSize'                   => \yii::t('app', 'T-shirt size'),
-            'acmNumber'                    => \yii::t('app', 'ACM number if you have'),
+            'userId'        => \yii::t('app', 'Related user ID'),
+            'lang'          => \yii::t('app', 'Language of the information'),
+            'dateOfBirth'   => \yii::t('app', 'Date of birth'),
+            'phoneHome'     => \yii::t('app', 'Home phone number'),
+            'phoneMobile'   => \yii::t('app', 'Mobile phone number'),
+            'skype'         => \yii::t('app', 'Skype'),
+            'tShirtSize'    => \yii::t('app', 'T-shirt size'),
+            'acmNumber'     => \yii::t('app', 'ACM number'),
         ));
     }
 

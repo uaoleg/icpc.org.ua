@@ -38,6 +38,7 @@ class Yii extends YiiBase {
  * @property-read \common\components\ArrayHelper    $array
  * @property-read \common\components\Archive        $archive
  * @property-read \common\ext\MongoDb\Auth\Manager  $authManager
+ * @property-read \common\components\Baylor         $baylor
  * @property-read \common\components\Cli            $cli
  * @property-read \CClientScript                    $clientScript
  * @property-read \common\components\ErrorHandler   $errorHandler
