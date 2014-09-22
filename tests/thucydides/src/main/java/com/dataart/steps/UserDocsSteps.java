@@ -162,13 +162,14 @@ public class UserDocsSteps extends ScenarioSteps {
                 waitABit(5000);
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
-                //waitABit(1000);
-                getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+                waitABit(5000);
+               // getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
                 WebDriverWait waiting = new WebDriverWait(getDriver(), 30, 1000);
                 waiting.until(ExpectedConditions.presenceOfElementLocated(By.xpath(DocsPage.SAVE_DOCUMENT_BUTTON_XPATH)));
 
 
 		docsPage.saveDocumentButton.click();
+                waitABit(5000);
 
 	}
 
