@@ -156,10 +156,10 @@ public class UserDocsSteps extends ScenarioSteps {
 		// robot.keyRelease(KeyEvent.VK_ENTER);
 		robot.keyPress(KeyEvent.VK_CONTROL);
 		robot.keyPress(KeyEvent.VK_V);
-                waitABit(1000);
+                waitABit(5000);
 		robot.keyRelease(KeyEvent.VK_CONTROL);
 		robot.keyRelease(KeyEvent.VK_V);
-                waitABit(1000);
+                waitABit(5000);
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
                 //waitABit(1000);
