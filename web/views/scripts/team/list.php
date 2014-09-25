@@ -37,6 +37,7 @@
             sortname: 'teamname',
             sortorder: 'asc',
             autowidth: true,
+            shrinkToFit: true,
             beforeSelectRow: function() {
                 return false;
             }
