@@ -406,6 +406,7 @@
 { "category" : "app", "language" : "uk", "message" : "Home phone number", "translation" : "Домашній телефон", "_id" : { "$oid" : "5260e6a9445798b6048b45d9" } }
 { "category" : "app", "language" : "uk", "message" : "Mobile phone number", "translation" : "Мобільній телефон", "_id" : { "$oid" : "5260e6a9445798b6048b45da" } }
 { "category" : "app", "language" : "uk", "message" : "Skype", "translation" : "Skype", "_id" : { "$oid" : "5260e6a9445798b6048b45db" } }
+{ "category" : "app", "language" : "uk", "message" : "ACM number if you have", "translation" : "Номер ACM", "_id" : { "$oid" : "5260e6a9445798b6048b45dc" } }
 { "category" : "app", "language" : "uk", "message" : "Position", "translation" : "Посада", "_id" : { "$oid" : "5260e6a9445798b6048b45dd" } }
 { "category" : "app", "language" : "uk", "message" : "Office address", "translation" : "Робоча адреса", "_id" : { "$oid" : "5260e6a9445798b6048b45de" } }
 { "category" : "app", "language" : "uk", "message" : "Work phone number", "translation" : "Робочий телефон", "_id" : { "$oid" : "5260e6a9445798b6048b45df" } }
@@ -439,6 +440,7 @@
 { "category" : "app", "language" : "ru", "message" : "Home phone number", "translation" : "Домашний телефон", "_id" : { "$oid" : "5260e6a9445798b6048b46d4" } }
 { "category" : "app", "language" : "ru", "message" : "Mobile phone number", "translation" : "Мобильный телефон", "_id" : { "$oid" : "5260e6a9445798b6048b46d5" } }
 { "category" : "app", "language" : "ru", "message" : "Skype", "translation" : "Skype", "_id" : { "$oid" : "5260e6a9445798b6048b46d6" } }
+{ "category" : "app", "language" : "ru", "message" : "ACM number if you have", "translation" : "Номер ACM", "_id" : { "$oid" : "5260e6a9445798b6048b46d7" } }
 { "category" : "app", "language" : "ru", "message" : "Position", "translation" : "Должность", "_id" : { "$oid" : "5260e6a9445798b6048b46d8" } }
 { "category" : "app", "language" : "ru", "message" : "Office address", "translation" : "Рабочий адрес", "_id" : { "$oid" : "5260e6a9445798b6048b46d9" } }
 { "category" : "app", "language" : "ru", "message" : "Work phone number", "translation" : "Рабочий телефон", "_id" : { "$oid" : "5260e6a9445798b6048b46da" } }
@@ -472,6 +474,7 @@
 { "_id" : { "$oid" : "5260e6a9445798b6048b47cf" }, "category" : "app", "language" : "en", "message" : "Home phone number", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47d0" }, "category" : "app", "language" : "en", "message" : "Mobile phone number", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47d1" }, "category" : "app", "language" : "en", "message" : "Skype", "translation" : "" }
+{ "_id" : { "$oid" : "5260e6a9445798b6048b47d2" }, "category" : "app", "language" : "en", "message" : "ACM number if you have", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47d3" }, "category" : "app", "language" : "en", "message" : "Position", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47d4" }, "category" : "app", "language" : "en", "message" : "Office address", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47d5" }, "category" : "app", "language" : "en", "message" : "Work phone number", "translation" : "" }
@@ -965,16 +968,19 @@
 { "category" : "app", "language" : "uk", "message" : "Stage in which team participates", "translation" : "Етап, в якому приймала участь команда", "_id" : { "$oid" : "52f0ff1b445798b64e8b45e9" } }
 { "category" : "app", "language" : "uk", "message" : "Can increase the Stage Number by only 1.", "translation" : "Можливо збільшити номер етапу лиша на 1.", "_id" : { "$oid" : "52f0ff1b445798b64e8b45f7" } }
 { "category" : "app", "language" : "uk", "message" : "stage", "translation" : "етап", "_id" : { "$oid" : "52f0ff1b445798b64e8b46eb" } }
+{ "category" : "app", "language" : "uk", "message" : "Stage is completed", "translation" : "Етап завершено", "_id" : { "$oid" : "52f0ff1b445798b64e8b46ec" } }
 { "category" : "app", "language" : "uk", "message" : "Stage", "translation" : "Етап", "_id" : { "$oid" : "52f0ff1b445798b64e8b46f4" } }
 { "category" : "app", "language" : "ru", "message" : "Number of stage", "translation" : "Номер этапа", "_id" : { "$oid" : "52f0ff1b445798b64e8b47bc" } }
 { "category" : "app", "language" : "ru", "message" : "Stage in which team participates", "translation" : "Этап, в котором учавствует команда", "_id" : { "$oid" : "52f0ff1b445798b64e8b47d6" } }
 { "category" : "app", "language" : "ru", "message" : "Can increase the Stage Number by only 1.", "translation" : "Номер этапа может быть увеличен только на 1.", "_id" : { "$oid" : "52f0ff1b445798b64e8b47e4" } }
 { "category" : "app", "language" : "ru", "message" : "stage", "translation" : "этап", "_id" : { "$oid" : "52f0ff1c445798b64e8b48d8" } }
+{ "category" : "app", "language" : "ru", "message" : "Stage is completed", "translation" : "Этап завершен", "_id" : { "$oid" : "52f0ff1c445798b64e8b48d9" } }
 { "category" : "app", "language" : "ru", "message" : "Stage", "translation" : "Этап", "_id" : { "$oid" : "52f0ff1c445798b64e8b48e1" } }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b49a9" }, "category" : "app", "language" : "en", "message" : "Number of stage", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b49c3" }, "category" : "app", "language" : "en", "message" : "Stage in which team participates", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b49d1" }, "category" : "app", "language" : "en", "message" : "Can increase the Stage Number by only 1.", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b4ac5" }, "category" : "app", "language" : "en", "message" : "stage", "translation" : "" }
+{ "_id" : { "$oid" : "52f0ff1c445798b64e8b4ac6" }, "category" : "app", "language" : "en", "message" : "Stage is completed", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b4ace" }, "category" : "app", "language" : "en", "message" : "Stage", "translation" : "" }
 { "category" : "app", "language" : "uk", "message" : "Absolute Place", "translation" : "Абсолютне місце", "_id" : { "$oid" : "52f4a51044579838608b45d1" } }
 { "category" : "app", "language" : "uk", "message" : "Prize Place", "translation" : "Призове місце", "_id" : { "$oid" : "52f4a51044579838608b45d2" } }
@@ -1159,38 +1165,38 @@
 { "_id" : { "$oid" : "5360ce8844579854328b4b7e" }, "category" : "app", "language" : "en", "message" : "Remove team from this table of results", "translation" : "" }
 { "_id" : { "$oid" : "5360ce8844579854328b4b7f" }, "category" : "app", "language" : "en", "message" : "Are you sure you want to delete the team from results?", "translation" : "" }
 { "_id" : { "$oid" : "5360ce8844579854328b4b80" }, "category" : "app", "language" : "en", "message" : "remove", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b4586" }, "category" : "app", "language" : "uk", "message" : "Given cache owner is not an object.", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b4633" }, "category" : "app", "language" : "uk", "message" : "ID of a user", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b463b" }, "category" : "app", "language" : "uk", "message" : "A new question was created!", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b463c" }, "category" : "app", "language" : "uk", "message" : "A new answer to your question was posted!", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b4670" }, "category" : "app", "language" : "uk", "message" : "Languages - {app}", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b46bb" }, "category" : "app", "language" : "uk", "message" : "{a}{person}{/a} can approve your status.", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b46be" }, "category" : "app", "language" : "uk", "message" : "Please fill in your additional info in {uk}ukrainian{/a} and {en}english{/a} languages", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b46d1" }, "category" : "app", "language" : "uk", "message" : "To your question here {link} a new answer was posted!", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b46d2" }, "category" : "app", "language" : "uk", "message" : "A new question was raised!", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b46d3" }, "category" : "app", "language" : "uk", "message" : "Here is the link:", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b4714" }, "category" : "app", "language" : "uk", "message" : "{question} - {app}", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b476d" }, "category" : "app", "language" : "uk", "message" : "Upload photo", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b479c" }, "category" : "app", "language" : "uk", "message" : "Import from icpc.baylor.edu", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b479e" }, "category" : "app", "language" : "uk", "message" : "We promise we will not save any of the data!", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b47a2" }, "category" : "app", "language" : "uk", "message" : "Uknown import error. Please, try again later", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b47a3" }, "category" : "app", "language" : "uk", "message" : "Import", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b47c5" }, "category" : "app", "language" : "ru", "message" : "Given cache owner is not an object.", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b4872" }, "category" : "app", "language" : "ru", "message" : "ID of a user", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b487a" }, "category" : "app", "language" : "ru", "message" : "A new question was created!", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b487b" }, "category" : "app", "language" : "ru", "message" : "A new answer to your question was posted!", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b48af" }, "category" : "app", "language" : "ru", "message" : "Languages - {app}", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b48fa" }, "category" : "app", "language" : "ru", "message" : "{a}{person}{/a} can approve your status.", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b48fd" }, "category" : "app", "language" : "ru", "message" : "Please fill in your additional info in {uk}ukrainian{/a} and {en}english{/a} languages", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b4910" }, "category" : "app", "language" : "ru", "message" : "To your question here {link} a new answer was posted!", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b4911" }, "category" : "app", "language" : "ru", "message" : "A new question was raised!", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b4912" }, "category" : "app", "language" : "ru", "message" : "Here is the link:", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b4953" }, "category" : "app", "language" : "ru", "message" : "{question} - {app}", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b49ac" }, "category" : "app", "language" : "ru", "message" : "Upload photo", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b49db" }, "category" : "app", "language" : "ru", "message" : "Import from icpc.baylor.edu", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b49dd" }, "category" : "app", "language" : "ru", "message" : "We promise we will not save any of the data!", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b49e1" }, "category" : "app", "language" : "ru", "message" : "Uknown import error. Please, try again later", "translation" : "" }
-{ "_id" : { "$oid" : "53e38dcc445798556c8b49e2" }, "category" : "app", "language" : "ru", "message" : "Import", "translation" : "" }
+{ "category" : "app", "language" : "uk", "message" : "Given cache owner is not an object.", "translation" : "Даний власник кешу не є об'єктом.", "_id" : { "$oid" : "53e38dcc445798556c8b4586" } }
+{ "category" : "app", "language" : "uk", "message" : "ID of a user", "translation" : "ID користувача", "_id" : { "$oid" : "53e38dcc445798556c8b4633" } }
+{ "category" : "app", "language" : "uk", "message" : "A new question was created!", "translation" : "Було створено нове питання!", "_id" : { "$oid" : "53e38dcc445798556c8b463b" } }
+{ "category" : "app", "language" : "uk", "message" : "A new answer to your question was posted!", "translation" : "Була дана нова відповідь на ваше запитання!", "_id" : { "$oid" : "53e38dcc445798556c8b463c" } }
+{ "category" : "app", "language" : "uk", "message" : "Languages - {app}", "translation" : "Мови - {app}", "_id" : { "$oid" : "53e38dcc445798556c8b4670" } }
+{ "category" : "app", "language" : "uk", "message" : "{a}{person}{/a} can approve your status.", "translation" : "{a}{person}{/a} може підтвердити ваш статус.", "_id" : { "$oid" : "53e38dcc445798556c8b46bb" } }
+{ "category" : "app", "language" : "uk", "message" : "Please fill in your additional info in {uk}ukrainian{/a} and {en}english{/a} languages", "translation" : "Будь ласка, заповніть вашу додаткову інформацію {uk}українською{/a} та {en}англійською{/a} мовами", "_id" : { "$oid" : "53e38dcc445798556c8b46be" } }
+{ "category" : "app", "language" : "uk", "message" : "To your question here {link} a new answer was posted!", "translation" : "Було дано нову відповідь на ваше запитання! {link}", "_id" : { "$oid" : "53e38dcc445798556c8b46d1" } }
+{ "category" : "app", "language" : "uk", "message" : "A new question was raised!", "translation" : "Було задано нове питання!", "_id" : { "$oid" : "53e38dcc445798556c8b46d2" } }
+{ "category" : "app", "language" : "uk", "message" : "Here is the link:", "translation" : "Посилання тут:", "_id" : { "$oid" : "53e38dcc445798556c8b46d3" } }
+{ "category" : "app", "language" : "uk", "message" : "{question} - {app}", "translation" : "{question} - {app}", "_id" : { "$oid" : "53e38dcc445798556c8b4714" } }
+{ "category" : "app", "language" : "uk", "message" : "Upload photo", "translation" : "Завантажити фото", "_id" : { "$oid" : "53e38dcc445798556c8b476d" } }
+{ "category" : "app", "language" : "uk", "message" : "Import from icpc.baylor.edu", "translation" : "Імпортувати з icpc.baylor.edu", "_id" : { "$oid" : "53e38dcc445798556c8b479c" } }
+{ "category" : "app", "language" : "uk", "message" : "We promise we will not save any of the data!", "translation" : "Ми обіцяємо не зберігати ці данні!", "_id" : { "$oid" : "53e38dcc445798556c8b479e" } }
+{ "category" : "app", "language" : "uk", "message" : "Uknown import error. Please, try again later", "translation" : "Невідома помилка. Будь ласка, спробуйте ще пізніше", "_id" : { "$oid" : "53e38dcc445798556c8b47a2" } }
+{ "category" : "app", "language" : "uk", "message" : "Import", "translation" : "Імпортувати", "_id" : { "$oid" : "53e38dcc445798556c8b47a3" } }
+{ "category" : "app", "language" : "ru", "message" : "Given cache owner is not an object.", "translation" : "Данный владелец кеша не является объектом.", "_id" : { "$oid" : "53e38dcc445798556c8b47c5" } }
+{ "category" : "app", "language" : "ru", "message" : "ID of a user", "translation" : "ID пользователя", "_id" : { "$oid" : "53e38dcc445798556c8b4872" } }
+{ "category" : "app", "language" : "ru", "message" : "A new question was created!", "translation" : "Был задан новый вопрос!", "_id" : { "$oid" : "53e38dcc445798556c8b487a" } }
+{ "category" : "app", "language" : "ru", "message" : "A new answer to your question was posted!", "translation" : "Был опубликован новый ответ на ваш вопрос!", "_id" : { "$oid" : "53e38dcc445798556c8b487b" } }
+{ "category" : "app", "language" : "ru", "message" : "Languages - {app}", "translation" : "Языки - {app}", "_id" : { "$oid" : "53e38dcc445798556c8b48af" } }
+{ "category" : "app", "language" : "ru", "message" : "{a}{person}{/a} can approve your status.", "translation" : "{a}{person}{/a} может подвердить ваш статус.", "_id" : { "$oid" : "53e38dcc445798556c8b48fa" } }
+{ "category" : "app", "language" : "ru", "message" : "Please fill in your additional info in {uk}ukrainian{/a} and {en}english{/a} languages", "translation" : "Пожалуйста, заполните вашу дополнительную информацию на {uk}украинсокм{/a} и {en}английском{/a} языках", "_id" : { "$oid" : "53e38dcc445798556c8b48fd" } }
+{ "category" : "app", "language" : "ru", "message" : "To your question here {link} a new answer was posted!", "translation" : "На ваш вопрос был дан новый ответ! {link}", "_id" : { "$oid" : "53e38dcc445798556c8b4910" } }
+{ "category" : "app", "language" : "ru", "message" : "A new question was raised!", "translation" : "Был задан новый вопрос!", "_id" : { "$oid" : "53e38dcc445798556c8b4911" } }
+{ "category" : "app", "language" : "ru", "message" : "Here is the link:", "translation" : "Ссылка здесь:", "_id" : { "$oid" : "53e38dcc445798556c8b4912" } }
+{ "category" : "app", "language" : "ru", "message" : "{question} - {app}", "translation" : "{question} - {app}", "_id" : { "$oid" : "53e38dcc445798556c8b4953" } }
+{ "category" : "app", "language" : "ru", "message" : "Upload photo", "translation" : "Загрузить фото", "_id" : { "$oid" : "53e38dcc445798556c8b49ac" } }
+{ "category" : "app", "language" : "ru", "message" : "Import from icpc.baylor.edu", "translation" : "Импортировать с icpc.baylor.edu", "_id" : { "$oid" : "53e38dcc445798556c8b49db" } }
+{ "category" : "app", "language" : "ru", "message" : "We promise we will not save any of the data!", "translation" : "Мы обещаем, что не сохрнаним эти данные", "_id" : { "$oid" : "53e38dcc445798556c8b49dd" } }
+{ "category" : "app", "language" : "ru", "message" : "Uknown import error. Please, try again later", "translation" : "Неизвестная ошибка импорта. Пожалуйста, попробуйте позже", "_id" : { "$oid" : "53e38dcc445798556c8b49e1" } }
+{ "category" : "app", "language" : "ru", "message" : "Import", "translation" : "Импортировать", "_id" : { "$oid" : "53e38dcc445798556c8b49e2" } }
 { "_id" : { "$oid" : "53e38dcc445798556c8b4a04" }, "category" : "app", "language" : "en", "message" : "Given cache owner is not an object.", "translation" : "" }
 { "_id" : { "$oid" : "53e38dcc445798556c8b4ab1" }, "category" : "app", "language" : "en", "message" : "ID of a user", "translation" : "" }
 { "_id" : { "$oid" : "53e38dcc445798556c8b4ab9" }, "category" : "app", "language" : "en", "message" : "A new question was created!", "translation" : "" }
@@ -1207,27 +1213,9 @@
 { "_id" : { "$oid" : "53e38dcc445798556c8b4c1c" }, "category" : "app", "language" : "en", "message" : "We promise we will not save any of the data!", "translation" : "" }
 { "_id" : { "$oid" : "53e38dcc445798556c8b4c20" }, "category" : "app", "language" : "en", "message" : "Uknown import error. Please, try again later", "translation" : "" }
 { "_id" : { "$oid" : "53e38dcc445798556c8b4c21" }, "category" : "app", "language" : "en", "message" : "Import", "translation" : "" }
-{ "_id" : { "$oid" : "53f6dda6445798ff4e8b46b8" }, "category" : "app", "language" : "uk", "message" : "Email length should be {n} symbols or more.", "translation" : "" }
-{ "_id" : { "$oid" : "53f6dda6445798ff4e8b46fe" }, "category" : "app", "language" : "uk", "message" : "Ignore recaptcha", "translation" : "" }
-{ "_id" : { "$oid" : "53f6dda6445798ff4e8b48f9" }, "category" : "app", "language" : "ru", "message" : "Email length should be {n} symbols or more.", "translation" : "" }
-{ "_id" : { "$oid" : "53f6dda6445798ff4e8b493f" }, "category" : "app", "language" : "ru", "message" : "Ignore recaptcha", "translation" : "" }
+{ "category" : "app", "language" : "uk", "message" : "Email length should be {n} symbols or more.", "translation" : "Довжина email має бути не меншною ніж {n} символів", "_id" : { "$oid" : "53f6dda6445798ff4e8b46b8" } }
+{ "category" : "app", "language" : "uk", "message" : "Ignore recaptcha", "translation" : "Ігнорувати recaptcha", "_id" : { "$oid" : "53f6dda6445798ff4e8b46fe" } }
+{ "category" : "app", "language" : "ru", "message" : "Email length should be {n} symbols or more.", "translation" : "Длинна email должна быть не менее {n} символов.", "_id" : { "$oid" : "53f6dda6445798ff4e8b48f9" } }
+{ "category" : "app", "language" : "ru", "message" : "Ignore recaptcha", "translation" : "Игнорировать recaptcha", "_id" : { "$oid" : "53f6dda6445798ff4e8b493f" } }
 { "_id" : { "$oid" : "53f6dda6445798ff4e8b4b3a" }, "category" : "app", "language" : "en", "message" : "Email length should be {n} symbols or more.", "translation" : "" }
 { "_id" : { "$oid" : "53f6dda6445798ff4e8b4b80" }, "category" : "app", "language" : "en", "message" : "Ignore recaptcha", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2573bda4d8250000bd" }, "category" : "app", "language" : "uk", "message" : "Is team out of a competition", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2573bda4d8250000c9" }, "category" : "app", "language" : "uk", "message" : "Team \"{name}\" already exists for year {year}", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2573bda4d8250000e7" }, "category" : "app", "language" : "uk", "message" : "ACM number", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2573bda4d825000176" }, "category" : "app", "language" : "uk", "message" : "Out of competition", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2573bda4d8250001c7" }, "category" : "app", "language" : "uk", "message" : "Data from icpc.baylor.edu", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2573bda4d8250001fb" }, "category" : "app", "language" : "uk", "message" : "Proceeded to the next stage", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2673bda4d825000304" }, "category" : "app", "language" : "ru", "message" : "Is team out of a competition", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2673bda4d825000310" }, "category" : "app", "language" : "ru", "message" : "Team \"{name}\" already exists for year {year}", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2673bda4d82500032e" }, "category" : "app", "language" : "ru", "message" : "ACM number", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2773bda4d8250003bd" }, "category" : "app", "language" : "ru", "message" : "Out of competition", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2773bda4d82500040e" }, "category" : "app", "language" : "ru", "message" : "Data from icpc.baylor.edu", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2773bda4d825000442" }, "category" : "app", "language" : "ru", "message" : "Proceeded to the next stage", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2773bda4d82500054b" }, "category" : "app", "language" : "en", "message" : "Is team out of a competition", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2873bda4d825000557" }, "category" : "app", "language" : "en", "message" : "Team \"{name}\" already exists for year {year}", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2873bda4d825000575" }, "category" : "app", "language" : "en", "message" : "ACM number", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2873bda4d825000604" }, "category" : "app", "language" : "en", "message" : "Out of competition", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2873bda4d825000655" }, "category" : "app", "language" : "en", "message" : "Data from icpc.baylor.edu", "translation" : "" }
-{ "_id" : { "$oid" : "54292b2873bda4d825000689" }, "category" : "app", "language" : "en", "message" : "Proceeded to the next stage", "translation" : "" }
