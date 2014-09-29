@@ -29,7 +29,7 @@ class TmpCommand extends \console\ext\ConsoleCommand
     /**
      * Set isOutOfCompetition to false to all existing teams
      *
-     * @version 3.1
+     * @version 3.2
      */
     public function actionSetOutOfCompetitionTeamProperty()
     {
