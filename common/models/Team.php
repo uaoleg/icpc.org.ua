@@ -349,6 +349,7 @@ class Team extends \common\ext\MongoDb\Document
         $this->coachId = (string)$this->coachId;
         $this->schoolId = (string)$this->schoolId;
 
+		// Conver to bool
         $this->isOutOfCompetition = (bool)$this->isOutOfCompetition;
 
         // Set coach name and school name properties
