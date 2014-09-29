@@ -116,4 +116,29 @@ class SchoolCommand extends \console\ext\ConsoleCommand
         echo "\nSUCCESS! Parsed and saved.";
     }
 
+    /**
+     * Add schools that are out of competition
+     * @throws CException
+     */
+    public function actionAddOutOfCompetitionSchools()
+    {
+        $states = State::model()->getConstantList('NAME_');
+        foreach ($states as $state) {
+            $nameEn = 'Out of competition - ' . \yii::t('app', State::model()->getAttributeLabel($state, 'name'), array(), null, 'en');
+            $nameUk = 'Поза конкурсом - ' . \yii::t('app', State::model()->getAttributeLabel($state, 'name'), array(), null, 'uk');
+            $school = new School();
+            $school->setAttributes(array(
+                'fullNameEn'  => $nameEn,
+                'fullNameUk'  => $nameUk,
+                'shortNameEn' => $nameEn,
+                'shortNameUk' => $nameUk,
+                'state'       => $state,
+                'region'      => State::get($state)->region->name
+            ));
+            $school->save();
+            echo "{$nameEn}\n";
+        }
+
+    }
+
 }
