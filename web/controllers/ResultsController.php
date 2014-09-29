@@ -131,7 +131,8 @@ class ResultsController extends \web\ext\Controller
             'phase'       => $phase,
             'results'     => $results,
             'tasksCount'  => $tasksCount,
-            'usedLetters' => $usedLetters
+            'usedLetters' => $usedLetters,
+            'lang'        => \yii::app()->languageCore,
         ));
     }
 
@@ -143,7 +144,7 @@ class ResultsController extends \web\ext\Controller
         // Get params
         $year   = (int)$this->request->getParam('year');
         $geo    = $this->request->getParam('geo');
-        $lang   = \yii::app()->language;
+        $lang   = \yii::app()->languageCore;
 
         // Get jqGrid params
         $criteria = new \EMongoCriteria();

@@ -62,7 +62,7 @@ class TeamController extends \web\ext\Controller
             'user'          => \yii::app()->user->getInstance(),
             'year'          => $year,
             'teamsCount'    => $teamsCount,
-            'lang'          => (\yii::app()->language === 'en') ? 'en' : 'uk'
+            'lang'          => \yii::app()->languageCore,
         ));
     }
 
@@ -102,7 +102,7 @@ class TeamController extends \web\ext\Controller
      */
     public function actionGetTeamListJson()
     {
-        $lang = (\yii::app()->language === 'en') ? 'en' : 'uk';
+        $lang = \yii::app()->languageCore;
 
         // Get jqGrid params
         $criteria = new \EMongoCriteria();
@@ -116,7 +116,10 @@ class TeamController extends \web\ext\Controller
             $members = $team->members;
             $members_arr = array();
             foreach ($members as $member) {
-                $members_arr[] = \web\widgets\user\Name::create(array('user' => $member), true);
+                $members_arr[] =
+                    '<a href="' . $this->createUrl('/user/view', array('id' => (string)$member->_id)) . '">' .
+                    \web\widgets\user\Name::create(array('user' => $member), true) .
+                    '</a>';
             }
             $members_str = implode(', ', $members_arr);
 

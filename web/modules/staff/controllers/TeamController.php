@@ -80,9 +80,10 @@ class TeamController extends \web\modules\staff\ext\Controller
         if ($this->request->isPostRequest) {
 
             // Get params
-            $teamId         = $this->request->getPost('teamId');
-            $teamName       = $this->request->getPost('name');
-            $memberIds      = $this->request->getPost('memberIds');
+            $teamId             = $this->request->getPost('teamId');
+            $teamName           = $this->request->getPost('name');
+            $memberIds          = $this->request->getPost('memberIds');
+            $isOutOfCompetition = $this->request->getPost('isOutOfCompetition');
 
             // Get team
             if (!empty($teamId)) {
@@ -96,10 +97,11 @@ class TeamController extends \web\modules\staff\ext\Controller
 
             // Update team
             $team->setAttributes(array(
-                'name'      => $teamName,
-                'coachId'   => \yii::app()->user->id,
-                'schoolId'  => $school->_id,
-                'memberIds' => $memberIds,
+                'name'               => $teamName,
+                'coachId'            => \yii::app()->user->id,
+                'schoolId'           => $school->_id,
+                'memberIds'          => $memberIds,
+                'isOutOfCompetition' => $isOutOfCompetition
             ), false);
 
             $team->save();

@@ -17,9 +17,10 @@ function appStaffTeamManage(options)
         $.ajax({
             url: app.baseUrl + '/staff/team/manage',
             data: {
-                teamId:    options.teamId,
-                name:      $('[name=name]').val(),
-                memberIds: $('[name=memberIds]').val()
+                teamId:             options.teamId,
+                name:               $('[name=name]').val(),
+                memberIds:          $('[name=memberIds]').val(),
+                isOutOfCompetition: $('[name=isOutOfCompetition]').is(':checked') ? 1 : 0
             },
             success: function(response) {
                 appShowErrors(response.errors, $form);

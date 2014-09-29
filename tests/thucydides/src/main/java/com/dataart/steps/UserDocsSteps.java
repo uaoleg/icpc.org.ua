@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import junit.framework.Assert;
@@ -39,7 +40,7 @@ public class UserDocsSteps extends ScenarioSteps {
 	@Step
 	public void click_Docs_and_choose_Regulations() {
 		Actions builder = new Actions(getDriver());
-		builder.moveToElement(docsPage.docsLink).build().perform();
+		builder.moveToElement(docsPage.docsLink).click().perform();
 		waitABit(1000);
 		docsPage.element(docsPage.docsLink).waitUntilVisible();
 		waitABit(1000);
@@ -50,7 +51,7 @@ public class UserDocsSteps extends ScenarioSteps {
 	@Step
 	public void click_Docs_and_choose_Guidance() {
 		Actions builder = new Actions(getDriver());
-		builder.moveToElement(docsPage.docsLink).build().perform();
+		builder.moveToElement(docsPage.docsLink).click().perform();
 		waitABit(1000);
 		docsPage.element(docsPage.docsLink).waitUntilVisible();
 		waitABit(1000);
@@ -118,21 +119,22 @@ public class UserDocsSteps extends ScenarioSteps {
 	@Step
 	public void upload_regulation_doc_button_click() {
 		docsPage.uploadRegulationDocButton.click();
-		waitABit(3000);
+		waitABit(1000);
 	}
 
 	@Step
 	public void upload_guidance_doc_button_click() {
 		docsPage.uploadGuidanceDocButton.click();
-		waitABit(3000);
+		waitABit(1000);
 	}
 
 	@Step
 	public void fills_all_the_fields() {
 		docsPage.titleInputField.sendKeys("testtitle");
 		docsPage.descriptionInputField.sendKeys("testdescription");
+                //waitABit(1000);
 		docsPage.chooseFileButton.click();
-		waitABit(3000);
+		waitABit(1000);
 
 	}
 
@@ -150,16 +152,24 @@ public class UserDocsSteps extends ScenarioSteps {
 		StringSelection ss = new StringSelection("C:\\TestDoc.doc");
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
 		Robot robot = new Robot();
-		// robot.keyPress(KeyEvent.VK_ENTER);
+		 //robot.keyPress(KeyEvent.VK_ENTER);
 		// robot.keyRelease(KeyEvent.VK_ENTER);
 		robot.keyPress(KeyEvent.VK_CONTROL);
 		robot.keyPress(KeyEvent.VK_V);
+                waitABit(5000);
 		robot.keyRelease(KeyEvent.VK_CONTROL);
 		robot.keyRelease(KeyEvent.VK_V);
+                waitABit(5000);
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
+                waitABit(5000);
+               // getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+                WebDriverWait waiting = new WebDriverWait(getDriver(), 30, 1000);
+                waiting.until(ExpectedConditions.presenceOfElementLocated(By.xpath(DocsPage.SAVE_DOCUMENT_BUTTON_XPATH)));
+
 
 		docsPage.saveDocumentButton.click();
+                waitABit(5000);
 
 	}
 

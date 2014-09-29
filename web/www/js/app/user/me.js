@@ -139,7 +139,12 @@ appUserMe.prototype.initUploader = function () {
     self.uploader = new plupload.Uploader(pluploadHelpersSettings({
         browse_button:    'uploadPickfiles',
         container:        'uploadContainer',
-        url:              app.baseUrl + '/upload/photo'
+        url:              app.baseUrl + '/upload/photo',
+        filters: {
+            mime_types: [
+                { title : "Image files", extensions : "jpg,jpeg,png" }
+            ]
+        }
     }));
 
     self.uploader.init();
