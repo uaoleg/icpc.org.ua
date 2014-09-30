@@ -11,13 +11,18 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<thucydides.version>0.9.262</thucydides.version>
-		<thucydides.jbehave.version>0.9.262</thucydides.jbehave.version>
+		<thucydides.version>0.9.268</thucydides.version>
+		<thucydides.jbehave.version>0.9.268</thucydides.jbehave.version>
 		<webdriver.driver>firefox</webdriver.driver>
 
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>2.43.1</version>
+		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-client</artifactId>
@@ -63,18 +68,18 @@
 			<artifactId>lambdaj</artifactId>
 			<version>2.3.3</version>
 		</dependency>
-	 <dependency>
-	  <groupId>antlr</groupId>
-	  <artifactId>antlr</artifactId>
-	  <version>2.7.7</version>
-	  <type>jar</type>
-	 </dependency>
-	 <dependency>
-	  <groupId>org.yaml</groupId>
-	  <artifactId>snakeyaml</artifactId>
-	  <version>1.6</version>
-	  <type>jar</type>
-	 </dependency>
+		<dependency>
+			<groupId>antlr</groupId>
+			<artifactId>antlr</artifactId>
+			<version>2.7.7</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>1.6</version>
+			<type>jar</type>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

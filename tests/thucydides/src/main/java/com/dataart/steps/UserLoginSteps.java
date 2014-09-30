@@ -3,6 +3,7 @@ package com.dataart.steps;
 import org.junit.Assert;
 
 import com.dataart.pages.LoginPage;
+import com.dataart.utils.Vars;
 
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.annotations.StepGroup;
@@ -108,8 +109,10 @@ public class UserLoginSteps extends ScenarioSteps {
 	public void verify_Twitter_page() {
 		loginPage.goToNewWindow();
 		waitABit(5000);
-		loginPage.waitForTitleToAppear(LoginPage.TWITTER_PAGE_TITLE);
-		Assert.assertEquals(LoginPage.TWITTER_PAGE_TITLE,loginPage.getPageTitle());
+		
+		//loginPage.waitForTitleToAppear(LoginPage.TWITTER_PAGE_TITLE);
+		//Assert.assertEquals(LoginPage.TWITTER_PAGE_TITLE,loginPage.getPageTitle());
+		Assert.assertEquals(Vars.TWITER_PAGE_URL,loginPage.getPageUrl());
 	}
 
 	@Step

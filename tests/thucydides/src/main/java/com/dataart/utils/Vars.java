@@ -14,7 +14,8 @@ public interface Vars {
 	final String NOT_BLANK_MESSAGE="Name cannot be blank.";
 	final String ASK_QA_TITLE="Ask Qa - ICPC";
 	final String BAYLOR_SITE="http://acc.icpc.org.ua/user/baylor";	
-        final String LOGIN_PAGE_TITLE = "Auth - ICPC";
+    final String LOGIN_PAGE_TITLE = "Auth - ICPC";
+    final String TWITER_PAGE_URL = "https://twitter.com/IcpcOrgUa";    
 	
 	
 }
