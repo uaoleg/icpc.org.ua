@@ -672,7 +672,7 @@ public class GeneralSteps {
 	}
         
         @Then("user clicks on Delete button near the first doc in the list")
-	public void userClicksOnDeleteButton() {
+	public void userClicksOnDeleteButton() throws IOException {
 		userdoc.delete_first_doc_button_click();
 	}
         
@@ -682,7 +682,7 @@ public class GeneralSteps {
 	}
         
         @Then("user can see that document is deleted from the list")
-	public void userCanSeeNoDocInList() {
+	public void userCanSeeNoDocInList() throws IOException {
 		userdoc.is_document_not_in_the_list();
 	}
         

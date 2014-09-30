@@ -1,9 +1,13 @@
 package com.dataart.pages;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import net.thucydides.core.annotations.DefaultUrl;
 import net.thucydides.core.annotations.findby.FindBy;
 import net.thucydides.core.pages.PageObject;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -16,7 +20,7 @@ public class DocsPage extends PageObject {
 	@FindBy(xpath = "//a[@href='/docs/regulations']")
 	public WebElement regulationsDocsMenuItem;
 
-	@FindBy(xpath = "//*[@href='/docs/guidance'][contains(text(), 'Guidance')]")
+	@FindBy(xpath = "//*[@href='/docs/guidance']")
 	public WebElement guidanceDocsMenuItem;
 
 	@FindBy(xpath = "//a[@class='document-title']")
@@ -49,7 +53,7 @@ public class DocsPage extends PageObject {
 	@FindBy(xpath = "//*[@type='submit']")
 	public WebElement saveDocumentButton;
 
-	@FindBy(xpath = "html/body/div[2]/div/div[5]/div[2]/button")
+	@FindBy(xpath = "html/body/div[2]/div/table[1]/tbody/tr/td[2]/button")
 	public WebElement deleteFirstDocButton;
 
 	@FindBy(xpath = "html/body/div[2]/div/div[5]/div[2]/a[2]")
@@ -77,8 +81,18 @@ public class DocsPage extends PageObject {
 
 	public final static String SAVE_DOCUMENT_BUTTON_XPATH = "//button[@type='submit']";
 
-	public final static String FIRST_DOCUMENT_LINK_XPATH = "html/body/div[2]/div/div[5]/div[2]/a[1]";
+	public final static String FIRST_DOCUMENT_LINK_XPATH = "html/body/div[2]/div/table[1]/tbody/tr/td[2]/a[1]";
 
 	public final static String DOC_WITH_PRESET_DESCRIPTION_XPATH = "//p[contains(text(),'testdesc')]";
+        
+        public final static String DOCS_TITLES_GENERAL_XPATH = "//a[@class='document-title']";
+        
+        public void getFirsDocTitle() throws IOException{
+            String t = getDriver().findElements(By.xpath(DOCS_TITLES_GENERAL_XPATH)).get(0).getText();           
+            FileWriter fileWriter = new FileWriter("src\\test\\resources\\buff.txt");
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(t);
+            bufferedWriter.close();
+        }
 
 }
