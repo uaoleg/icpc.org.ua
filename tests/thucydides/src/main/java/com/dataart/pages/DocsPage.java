@@ -26,7 +26,7 @@ public class DocsPage extends PageObject {
 	@FindBy(xpath = "//a[@class='document-title']")
 	public WebElement docsTitlesGeneralXpath;
 
-	@FindBy(xpath = "html/body/div[2]/div/div[5]/div[2]/a[1]")
+	@FindBy(xpath = "html/body/div[2]/div/table[1]/tbody/tr/td[2]/a[1]")
 	public WebElement firstDocLink;
 
 	@FindBy(xpath = "//li[contains(@class,'dropdown')]/a[@class='dropdown-toggle']")
@@ -56,7 +56,7 @@ public class DocsPage extends PageObject {
 	@FindBy(xpath = "html/body/div[2]/div/table[1]/tbody/tr/td[2]/button")
 	public WebElement deleteFirstDocButton;
 
-	@FindBy(xpath = "html/body/div[2]/div/div[5]/div[2]/a[2]")
+	@FindBy(xpath = "html/body/div[2]/div/table[1]/tbody/tr/td[2]/a[2]")
 	public WebElement editFirstDocButton;
 
 	@FindBy(xpath = "//select[@class='form-control'][@name='type']")
