@@ -7,7 +7,10 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -182,7 +185,8 @@ public class UserDocsSteps extends ScenarioSteps {
 	}
 
 	@Step
-	public void delete_first_doc_button_click() {
+	public void delete_first_doc_button_click() throws IOException {
+                docsPage.getFirsDocTitle();
 		docsPage.deleteFirstDocButton.click();
 	}
 
@@ -202,10 +206,21 @@ public class UserDocsSteps extends ScenarioSteps {
 	}
 
 	@Step
-	public void is_document_not_in_the_list() {
+	public void is_document_not_in_the_list() throws FileNotFoundException, IOException {
 		String s = getDriver().findElement(
 				By.xpath(DocsPage.FIRST_DOCUMENT_LINK_XPATH)).getText();
-		Assert.assertNotSame(s, "testtitle");
+                FileReader r = new FileReader("src\\test\\resources\\buff.txt");
+           
+                BufferedReader bfr = new BufferedReader(r);
+                String x ="";
+                
+                while((x = bfr.readLine()) != null){
+                System.out.println(x);
+                
+                    }
+                
+                
+		Assert.assertNotSame(s, x);
 	}
 
 	@Step
