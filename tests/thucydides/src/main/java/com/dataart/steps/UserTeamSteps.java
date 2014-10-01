@@ -10,14 +10,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 
 public class UserTeamSteps extends ScenarioSteps{
 	TeamPage teamPage;
+        private String tmp;
 	@Step
 	public void the_user_is_on_the_teams_page(){
 		teamPage.open();
@@ -36,10 +37,9 @@ public class UserTeamSteps extends ScenarioSteps{
 		Actions builder = new Actions(getDriver());
 		builder.moveToElement(teamPage.exportDropdownList).click().perform();
 		waitABit(1000);
-		teamPage.element(teamPage.exportForTrackingSystemItem).waitUntilVisible();
+		teamPage.element(teamPage.exportForCheckingSystemItem).waitUntilVisible();
 		waitABit(1000);
-//		builder.moveToElement(teamPage.exportForTrackingSystemItem).click()
-//				.perform();
+		
 	}
         
         @Step
@@ -49,31 +49,14 @@ public class UserTeamSteps extends ScenarioSteps{
 		waitABit(1000);
 		teamPage.element(teamPage.exportForRegistrationItem).waitUntilVisible();
 		waitABit(1000);
-//		builder.moveToElement(teamPage.exportForTrackingSystemItem).click()
-//				.perform();
+
 	}
         
         @Step
 	public int is_Exported_For_checking_system_doc_avaible_by_URL() throws MalformedURLException,
 			IOException {
-		// String USER_AGENT = "Mozilla/5.0";
-		// URL u = new URL(el.getAttribute("href"));
-		// System.out.println(u);
-		// HttpURLConnection huc = (HttpURLConnection) u.openConnection();
-		// huc.setRequestMethod("GET");
-		// huc.setRequestProperty("User-Agent", USER_AGENT);
-		// huc.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-		// huc.setDoOutput(true);
-		// DataOutputStream wr = new DataOutputStream(huc.getOutputStream());
-		// wr.flush();
-		// wr.close();
-		//
-		// int responseCode = huc.getResponseCode();
-		// System.out.println("\nSending 'GET' request to URL : " + u);
-		// // System.out.println("Post parameters : " + urlParameters);
-		// System.out.println("Response Code : " + responseCode);
-		// return responseCode;
-		URL u = new URL(teamPage.exportForTrackingSystemItem.getAttribute("href"));
+
+		URL u = new URL(teamPage.exportForCheckingSystemItem.getAttribute("href"));
                 System.out.println(u);
 		HttpURLConnection huc = (HttpURLConnection) u.openConnection();
 		huc.setRequestMethod("GET");
@@ -88,23 +71,7 @@ public class UserTeamSteps extends ScenarioSteps{
         @Step
 	public int is_Exported_For_Registration_doc_avaible_by_URL() throws MalformedURLException,
 			IOException {
-		// String USER_AGENT = "Mozilla/5.0";
-		// URL u = new URL(el.getAttribute("href"));
-		// System.out.println(u);
-		// HttpURLConnection huc = (HttpURLConnection) u.openConnection();
-		// huc.setRequestMethod("GET");
-		// huc.setRequestProperty("User-Agent", USER_AGENT);
-		// huc.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-		// huc.setDoOutput(true);
-		// DataOutputStream wr = new DataOutputStream(huc.getOutputStream());
-		// wr.flush();
-		// wr.close();
-		//
-		// int responseCode = huc.getResponseCode();
-		// System.out.println("\nSending 'GET' request to URL : " + u);
-		// // System.out.println("Post parameters : " + urlParameters);
-		// System.out.println("Response Code : " + responseCode);
-		// return responseCode;
+
 		URL u = new URL(teamPage.exportForRegistrationItem.getAttribute("href"));
                 System.out.println(u);
 		HttpURLConnection huc = (HttpURLConnection) u.openConnection();
@@ -157,23 +124,7 @@ public class UserTeamSteps extends ScenarioSteps{
 			Logger.getLogger(UserDocsSteps.class.getName()).log(Level.SEVERE,
 					null, ex);
 		}
-                Actions builder = new Actions(getDriver());
-//                
-//		builder.moveToElement(teamPage.addStudentsField).click().perform();
-//		waitABit(500);
-//		teamPage.element(teamPage.firstStudentOption).waitUntilVisible();
-//                builder.moveToElement(teamPage.firstStudentOption).click().perform();
-//		waitABit(500);
-//                builder.moveToElement(teamPage.addStudentsField).click().perform();
-//                teamPage.element(teamPage.secondStudentOption).waitUntilVisible();
-//                builder.moveToElement(teamPage.secondStudentOption).click().perform();
-//                waitABit(500);
-//                builder.moveToElement(teamPage.addStudentsField).click().perform();
-//                teamPage.element(teamPage.thirdStudentOption).waitUntilVisible();
-//                builder.moveToElement(teamPage.thirdStudentOption).click().perform();
-//                waitABit(500);
-//		builder.moveToElement(teamPage.exportForTrackingSystemItem).click()
-//				.perform();
+
                 
 	}
         @Step
@@ -181,6 +132,74 @@ public class UserTeamSteps extends ScenarioSteps{
            getDriver().findElement(By.xpath(TeamPage.TEAM_NAME_IN_TABLE)).isDisplayed();
 
         }
+       
+       @Step
+       public void user_Clicks_on_Created_Team(){
+           teamPage.teamNameinTable.click();
+       }
+       
+       @Step
+       public void user_Clicks_on_Delete_Button_and_Confirms_Delete(){
+           teamPage.deleteTeamButton.click();
+           waitABit(2000);
+           try {
+			Robot robot = new Robot();
+			robot.keyPress(KeyEvent.VK_ENTER);
+			robot.keyRelease(KeyEvent.VK_ENTER);
+			waitABit(2000);
+			
+		} catch (AWTException ex) {
+			Logger.getLogger(UserDocsSteps.class.getName()).log(Level.SEVERE,
+					null, ex);
+		}
+           
+       }
+       
+       @Step
+       public void team_is_not_in_the_List(){
+           Assert.assertTrue(getDriver().findElements(By.xpath(TeamPage.TEAM_NAME_IN_TABLE)).isEmpty());
+       }
+       
+       @Step
+       public void choose_First_Team_in_List(){
+           tmp = getDriver().findElements(By.xpath(TeamPage.TEAM_NAME_IN_TABLE_GENERAL_XPATH)).get(0).getText();
+           getDriver().findElements(By.xpath(TeamPage.TEAM_NAME_IN_TABLE_GENERAL_XPATH)).get(0).click();
+       }
+       
+       @Step
+       public void is_on_the_Team_Profile_Page(){
+           Assert.assertEquals(TeamPage.TEAMS_PROFILE_PAGE_TITLE, getDriver().getTitle());
+           getDriver().findElement(By.xpath("//h1[contains(text(), '"+ tmp +"')]")).isDisplayed();
+           tmp = null;
+       }
+       
+       @Step
+       public void choose_First_Coach_Name_in_List(){
+           tmp = getDriver().findElements(By.xpath(TeamPage.COACH_NAME_IN_TABLE_GENERAL_XPATH)).get(0).getText();
+           getDriver().findElements(By.xpath(TeamPage.COACH_NAME_IN_TABLE_GENERAL_XPATH)).get(0).click();
+       }
+       
+       @Step
+       public void is_on_the_Coach_Profile_Page(){
+           Assert.assertEquals(TeamPage.USER_PROFILE_PAGE_TITLE, getDriver().getTitle());
+           getDriver().findElement(By.xpath("//h3[contains(text(), '"+ tmp +"')]")).isDisplayed();
+           tmp = null;
+       }
+       
+       @Step
+       public void choose_First_Student_Name_in_List(){
+           tmp = getDriver().findElements(By.xpath(TeamPage.STUDENTS_NAME_IN_TABLE_GENERAL_XPATH)).get(0).getText();
+           getDriver().findElements(By.xpath(TeamPage.STUDENTS_NAME_IN_TABLE_GENERAL_XPATH)).get(0).click();
+       }
+       
+       @Step
+       public void is_on_the_Student_Profile_Page(){
+           Assert.assertEquals(TeamPage.USER_PROFILE_PAGE_TITLE, getDriver().getTitle());
+           getDriver().findElement(By.xpath("//h3[contains(text(), '"+ tmp +"')]")).isDisplayed();
+           tmp = null;
+       }
+       
+
 		
 	}
         

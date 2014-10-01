@@ -13,11 +13,9 @@ import com.dataart.steps.UserTeamSteps;
 import com.dataart.utils.CheckGmail;
 import com.dataart.utils.Vars;
 import java.awt.AWTException;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
-
 import junit.framework.Assert;
 import net.thucydides.core.annotations.ManagedPages;
 import net.thucydides.core.annotations.Steps;
@@ -26,6 +24,7 @@ import static net.thucydides.core.steps.StepData.withTestDataFrom;
 import net.thucydides.core.steps.StepFactory;
 import static net.thucydides.core.webdriver.ThucydidesWebDriverSupport.getDriver;
 
+import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
@@ -86,6 +85,11 @@ public class GeneralSteps {
 		CheckGmail.deleteConfirmationMail(Vars.GMAIL_EMAIL, Vars.GMAIL_PASS);
 
 	}
+        
+        @AfterScenario
+        public void endOver(){
+            
+        }
 
 	@When("the user enters name: $userName and password: $password and click the 'login' button")
 	public void whenTheUserEnterLoginAndPassword(String userName,
@@ -778,5 +782,49 @@ public class GeneralSteps {
             userteam.is_Team_in_Table();
         }
         
+        @When("user clicks on earlier created team name")
+	public void userClicksonEarlierCreatedTeamName() {
+		userteam.user_Clicks_on_Created_Team();
+	}
+        
+        @Then("user clicks on delete button and confirms deletion")
+        public void userClicksonDeleteButtonandConfirmsDelete(){
+            userteam.user_Clicks_on_Delete_Button_and_Confirms_Delete();
+        }
+        
+        @Then("user can see that team is deleted from the list")
+        public void userCanSeeThatTeamIsDeletedFromList(){
+            userteam.team_is_not_in_the_List();
+        }
+        
+        @When("user clicks on first team in the list")
+	public void userClicksonFirstTeamNameinList() {
+		userteam.choose_First_Team_in_List();
+	}
+        
+        @Then("user is on the profile page of the team")
+        public void userisonProfilePageoftheTeam(){
+            userteam.is_on_the_Team_Profile_Page();
+        }
+        
+        @When("user clicks on first coach name in the list")
+	public void userClicksonFirstCoachNameinList() {
+		userteam.choose_First_Coach_Name_in_List();
+	}
+        
+        @Then("user is on the profile page of the coach")
+        public void userisonProfilePageofCoach(){
+            userteam.is_on_the_Coach_Profile_Page();
+        }
+        
+        @When("user clicks on first student name in the list")
+	public void userClicksonFirstStudentNameinList() {
+		userteam.choose_First_Student_Name_in_List();
+	}
+        
+        @Then("user is on the profile page of the student")
+        public void userisonProfilePageofStudent(){
+            userteam.is_on_the_Student_Profile_Page();
+        }
 
 }
