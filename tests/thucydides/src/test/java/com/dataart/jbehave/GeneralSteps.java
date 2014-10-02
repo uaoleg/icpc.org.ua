@@ -826,5 +826,25 @@ public class GeneralSteps {
         public void userisonProfilePageofStudent(){
             userteam.is_on_the_Student_Profile_Page();
         }
+        
+        @When("user enters team name in sorting field")
+	public void userEntersTeamNameinSortingField() {
+		userteam.input_Team_Name_for_Sorting();
+	}
+        
+        @Then("user can see table sorted by this team name")
+        public void userCanSeeTableSortedByChosenTeamName(){
+            userteam.is_Team_Table_is_Sorted_by_Team_Name();
+        }
+        
+        @When("user enters university name in sorting field")
+	public void userEntersUniversityNameinSortingField() {
+		userteam.input_University_Name_for_Sorting();
+	}
+        
+        @Then("user can see table sorted by this university name")
+        public void userCanSeeTableSortedByChosenUniversityName(){
+            userteam.is_Team_Table_is_Sorted_by_University_Name();
+        }
 
 }

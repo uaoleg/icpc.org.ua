@@ -36,6 +36,10 @@ public class TeamPage  extends PageObject{
 	public WebElementFacade deleteTeamButton;
         @FindBy(xpath="//button[@class='btn btn-default dropdown-toggle']")
 	public WebElementFacade downloadTeamlistDropdown;
+        @FindBy(xpath="//input[@id='gs_name']")
+	public WebElementFacade teamNameSortTextfield;
+        @FindBy(xpath="//input[starts-with(@id, 'gs_schoolName')]")
+	public WebElementFacade universityNameSortTextfield;
         
         
 
@@ -49,6 +53,7 @@ public class TeamPage  extends PageObject{
         public final static String TEAM_NAME_IN_TABLE_GENERAL_XPATH = "//td[@aria-describedby='team-list_name']/a";
         public final static String COACH_NAME_IN_TABLE_GENERAL_XPATH = "//td[@aria-describedby='team-list_coachNameEn']/a";
         public final static String STUDENTS_NAME_IN_TABLE_GENERAL_XPATH = "//td[@aria-describedby='team-list_members']/a";
+        public final static String UNIVERSITY_NAME_IN_TABLE_GENERAL_XPATH = "//td[starts-with(@aria-describedby, 'team-list_schoolName')]";
         
         
         public static String teamNameGenerator(){            

@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 public class UserTeamSteps extends ScenarioSteps{
@@ -197,6 +199,36 @@ public class UserTeamSteps extends ScenarioSteps{
            Assert.assertEquals(TeamPage.USER_PROFILE_PAGE_TITLE, getDriver().getTitle());
            getDriver().findElement(By.xpath("//h3[contains(text(), '"+ tmp +"')]")).isDisplayed();
            tmp = null;
+       }
+       
+       @Step
+       public void input_Team_Name_for_Sorting(){
+           String s = getDriver().findElements(By.xpath(TeamPage.TEAM_NAME_IN_TABLE_GENERAL_XPATH)).get(0).getText();
+           teamPage.teamNameSortTextfield.sendKeys(s);
+           waitABit(1000);
+       }
+       
+       @Step
+       public void is_Team_Table_is_Sorted_by_Team_Name(){
+           Assert.assertEquals(getDriver().findElements(By.xpath(TeamPage.TEAM_NAME_IN_TABLE_GENERAL_XPATH)).size(), 1);
+       }
+       
+       @Step
+       public void input_University_Name_for_Sorting(){
+           tmp = getDriver().findElements(By.xpath(TeamPage.UNIVERSITY_NAME_IN_TABLE_GENERAL_XPATH)).get(0).getText();
+           teamPage.universityNameSortTextfield.sendKeys(tmp);
+           waitABit(1000);
+       }
+       
+       @Step
+       public void is_Team_Table_is_Sorted_by_University_Name(){
+           List<WebElement> l = getDriver().findElements(By.xpath(TeamPage.UNIVERSITY_NAME_IN_TABLE_GENERAL_XPATH));
+           
+           for (WebElement a : l){
+              if( !a.getText().equals(tmp)){
+                  throw new AssertionError("Element get: " +a.getText()+" but should be" + tmp);
+              }
+           }
        }
        
 

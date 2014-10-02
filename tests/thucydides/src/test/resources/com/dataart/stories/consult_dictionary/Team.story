@@ -55,3 +55,13 @@ Given the user is signed in with coa1@mailinator.com 123456
 Given the user is on the Teams page
 When user clicks on first student name in the list
 Then user is on the profile page of the student
+
+Scenario: As a user i want to be able to sort teams in list by team name
+Given the user is on the Teams page
+When user enters team name in sorting field
+Then user can see table sorted by this team name
+
+Scenario: As a user i want to be able to sort teams in list by university name
+Given the user is on the Teams page
+When user enters university name in sorting field
+Then user can see table sorted by this university name
