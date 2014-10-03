@@ -52,7 +52,7 @@ public class UserQASteps extends ScenarioSteps {
 	}
 	@Step
 	public void user_click_save_button(){
-		
+		waitABit(2000);
 		qaPage.clickOn(qaPage.saveButton);
 	}
 	@Step
