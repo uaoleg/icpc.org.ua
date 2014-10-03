@@ -19,6 +19,8 @@ Given the user is signed in with myicpctest@gmail.com 123myicpctest
 When user move to general info tab
 Then user should see status Approved
 
+
+
 Scenario: As user i want to be able to see warrning message (Not approved) when a new coache is not activated after registration
 Given the user is on the Registration page
 When user enter all correct credentials coach

@@ -21,6 +21,9 @@ public class ManageUserPage extends PageObject {
 	
 	@FindBy(css=".label.col-md-4.col-md-offset-4.label-success")
 	public WebElement approvedStatus;
+	
+	@FindBy(css=".label.col-md-4.col-md-offset-4.label-warning")
+	public WebElement notapprovedStatus;
 
 	// The code below is a sample how to use html table in thucydides!
 	/*
