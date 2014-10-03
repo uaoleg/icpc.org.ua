@@ -1,6 +1,7 @@
 package com.dataart.jbehave;
 
 import com.dataart.pages.LoginPage;
+import com.dataart.steps.ManageUserSteps;
 import com.dataart.steps.UserDocsSteps;
 import com.dataart.steps.UserImportSteps;
 import com.dataart.steps.UserLoginSteps;
@@ -11,11 +12,14 @@ import com.dataart.steps.UserQASteps;
 import com.dataart.steps.UserRegistrationSteps;
 import com.dataart.steps.UserTeamSteps;
 import com.dataart.utils.CheckGmail;
+import com.dataart.utils.DBClean;
 import com.dataart.utils.Vars;
+
 import java.awt.AWTException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
+
 import junit.framework.Assert;
 import net.thucydides.core.annotations.ManagedPages;
 import net.thucydides.core.annotations.Steps;
@@ -62,6 +66,9 @@ public class GeneralSteps {
 	UserDocsSteps userdoc;
 	@Steps
 	UserTeamSteps userteam;
+	
+	@Steps
+	ManageUserSteps manageuser;
 
 	@Given("the user is on the Login page")
 	public void givenTheUserIsOnTheLoginPage() {
@@ -83,7 +90,7 @@ public class GeneralSteps {
 		pages.getDriver().manage().timeouts()
 				.implicitlyWait(15, TimeUnit.SECONDS);
 		CheckGmail.deleteConfirmationMail(Vars.GMAIL_EMAIL, Vars.GMAIL_PASS);
-
+		
 	}
         
         @AfterScenario
@@ -243,9 +250,9 @@ public class GeneralSteps {
 		userreg.user_should_see_DBerror_message(message);
 	}
 
-	@When("user enter all correct credentials")
-	public void userEnterAllCorrectCredentials() {
-		userreg.user_enter_all_correct_credentials();
+	@When("user enter all correct credentials $role")
+	public void userEnterAllCorrectCredentials(String role) {
+		userreg.user_enter_all_correct_credentials(role);
 	}
 
 	@When("user check his emailbox $email $password and click on the confirmation link")
@@ -826,6 +833,7 @@ public class GeneralSteps {
         public void userisonProfilePageofStudent(){
             userteam.is_on_the_Student_Profile_Page();
         }
+
         
         @When("user enters team name in sorting field")
 	public void userEntersTeamNameinSortingField() {
@@ -845,6 +853,21 @@ public class GeneralSteps {
         @Then("user can see table sorted by this university name")
         public void userCanSeeTableSortedByChosenUniversityName(){
             userteam.is_Team_Table_is_Sorted_by_University_Name();
+        }
+
+
+        @When("user go to menu Coaches")
+        public void userGoToMenuCoaches(){
+        	manageuser.user_go_to_menu_Coaches();
+        }
+        @When("user click Activate on the first item from the list")
+        public void userClickActivateOnTheFirstItemFromTheList(){
+        	manageuser.user_click_activate_on_the_first_item_from_the_list();
+        }
+        
+        @Then("user should see status $status")
+        public void userShouldSeeStatus(String status){
+        	manageuser.user_should_see_status(status);
         }
 
 }

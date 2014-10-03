@@ -88,8 +88,8 @@ public class UserRegistrationSteps extends ScenarioSteps {
 	}
 
 	@Step
-	public void user_enter_all_correct_credentials() {
-		registrationPage.userEnterAllCorrectCredentials();
+	public void user_enter_all_correct_credentials(String role) {
+		registrationPage.userEnterAllCorrectCredentials(role);
 	}
 
 	@Step

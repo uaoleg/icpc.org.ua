@@ -240,7 +240,7 @@ public class RegistrationPage extends PageObject {
 		return errorDBmessage.getText();
 	}
 
-	public void userEnterAllCorrectCredentials() {
+	public void userEnterAllCorrectCredentials(String studentRoleField) {
 		//clean DB
 		try {
 			DBClean.deleteEmailFromDB("email=myicpc");
@@ -256,7 +256,7 @@ public class RegistrationPage extends PageObject {
 		user.setEmailField("myicpctest@gmail.com");
 		user.setPasswordField("123myicpctest");
 		user.setPasswordRepeatField("123myicpctest");
-		user.setRole("student");
+		user.setRole(studentRoleField);
 		user.setSchool("дн");
 
 		$(firstName).type(user.getFirstNameField());
@@ -265,6 +265,27 @@ public class RegistrationPage extends PageObject {
 		$(email).type(user.getEmailField());
 		$(password).type(user.getPasswordField());
 		$(passwordRepeat).type(user.getPasswordRepeatField());
+		
+		// choose different roles
+				if (studentRoleField.equals("student")) {
+
+				} else if (studentRoleField.equals("coach")) {
+					userrole.get(1).click();
+
+				} else if (studentRoleField.equals("coordinator_ukraine")) {
+					coordinatorRole.click();
+					coordinatorList.get(0).click();
+				} else if (studentRoleField.equals("coordinator_region")) {
+
+					coordinatorRole.click();
+					coordinatorList.get(1).click();
+				} else if (studentRoleField.equals("coordinator_state")) {
+
+					coordinatorRole.click();
+					coordinatorList.get(2).click();
+				}
+		
+		
 		Actions builder = new Actions(getDriver());
 		builder.moveToElement(schoolList).click().build().perform();
 		$(getDriver().findElement(By.xpath("//*[@id='select2-drop']//input")))
