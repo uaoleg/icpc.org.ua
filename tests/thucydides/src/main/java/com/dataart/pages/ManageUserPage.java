@@ -29,6 +29,15 @@ public class ManageUserPage extends PageObject {
 	public WebElementFacade emailSearchField;
 	@FindBy(xpath ="//td[@aria-describedby='staff__coaches_list_email']")
 	public WebElement emailCell;
+	@FindBy(xpath="//td[@aria-describedby='staff__coaches_list_name']/a")
+	public WebElement nameCell;
+	@FindBy(css=".col-lg-8>h3")
+	public WebElement userName;
+	@FindBy(css=".col-lg-8>h4")
+	public WebElement userUniver;
+	@FindBy(css=".col-lg-8>a")
+	public WebElement userEmail;
+	
 
 	// The code below is a sample how to use html table in thucydides!
 	/*

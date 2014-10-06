@@ -1,11 +1,13 @@
 package com.dataart.steps;
 
-import junit.framework.Assert;
 
+
+import org.junit.Assert;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.dataart.pages.ManageUserPage;
+import com.dataart.utils.Vars;
 
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
@@ -56,6 +58,21 @@ public class ManageUserSteps extends ScenarioSteps {
 		Assert.assertEquals(email, manageUser.emailCell.getText());
 	}
 	
-	
+	@Step
+	public void user_click_on_the_name(){
+			
+		manageUser.waitFor(ExpectedConditions.elementToBeClickable(manageUser.nameCell));
+		manageUser.clickOn(manageUser.nameCell);
+	}
+	@Step
+	public void user_should_see_corespondent_information_about_himself() {
+
+		manageUser.waitFor(ExpectedConditions.textToBePresentInElement(manageUser.userName, Vars.ADMINSNAME));
+		
+		Assert.assertEquals(Vars.ADMINSNAME, manageUser.userName.getText());
+		Assert.assertEquals(Vars.ADMINSUNIV, manageUser.userUniver.getText());
+		Assert.assertEquals(Vars.ADMINSEMAIL, manageUser.userEmail.getText());
+		
+	}
 
 }

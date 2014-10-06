@@ -878,5 +878,13 @@ public class GeneralSteps {
         public void userShouldSeeCorrectSearchResultInTheTable(String email){
         	manageuser.user_should_see_correct_search_result_in_the_table(email);
         }
+        @When("user click on the name")
+        public void userClickOnTheName(){
+        	manageuser.user_click_on_the_name();
+        }
+        @Then("user should see corespondent information about himself")
+        public void userShouldSeeCorespondentInformationAboutHimself(){
+        	manageuser.user_should_see_corespondent_information_about_himself();
+        }
 
 }

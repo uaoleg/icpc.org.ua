@@ -16,6 +16,8 @@ public interface Vars {
 	final String BAYLOR_SITE="http://acc.icpc.org.ua/user/baylor";	
     final String LOGIN_PAGE_TITLE = "Auth - ICPC";
     final String TWITER_PAGE_URL = "https://twitter.com/IcpcOrgUa";    
-	
+    final String ADMINSNAME = "Alexey ог Plekhanov";
+    final String ADMINSUNIV = "Dnipro National University";
+    final String ADMINSEMAIL = "admin@icpc.org.ua";
 	
 }
