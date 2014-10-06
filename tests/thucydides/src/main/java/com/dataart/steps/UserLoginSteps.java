@@ -21,14 +21,15 @@ public class UserLoginSteps extends ScenarioSteps {
 
 	@Step
 	public void enter(String userName, String password) {
-
+		waitABit(1000);
 		loginPage.enterLoginAndPassword(userName, password);
                 
 	}
 
 	@Step
 	public void click_login_button() {
-
+		waitABit(1000);
+		
 		loginPage.clickLogin();
 
 	}
@@ -128,7 +129,8 @@ public class UserLoginSteps extends ScenarioSteps {
 	@StepGroup
 	public void the_user_is_signed_in_with(String userName, String password){
 		is_on_the_login_page();
-		enter(userName,password);		
+		enter(userName,password);
+		waitABit(1000);
 		click_login_button();
 	}
 	@Step

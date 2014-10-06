@@ -73,8 +73,8 @@ public class LoginPage extends PageObject {
 
 	public void enterLoginAndPassword(String userName, String password) {
 
-		$(userNameTextField).sendKeys(userName);
-		//
+		$(userNameTextField).sendKeys(userName);		
+		waitABit(500);
 		$(passwordTextField).sendKeys(password);
 
 	}
