@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.thucydides.core.annotations.findby.FindBy;
 import net.thucydides.core.pages.PageObject;
+import net.thucydides.core.pages.WebElementFacade;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -24,6 +25,10 @@ public class ManageUserPage extends PageObject {
 	
 	@FindBy(css=".label.col-md-4.col-md-offset-4.label-warning")
 	public WebElement notapprovedStatus;
+	@FindBy(id="gs_email")
+	public WebElementFacade emailSearchField;
+	@FindBy(xpath ="//td[@aria-describedby='staff__coaches_list_email']")
+	public WebElement emailCell;
 
 	// The code below is a sample how to use html table in thucydides!
 	/*

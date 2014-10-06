@@ -869,5 +869,14 @@ public class GeneralSteps {
         public void userShouldSeeStatus(String status){
         	manageuser.user_should_see_status(status);
         }
+        @When("user enter into search field $email")
+        public void userEnterIntoSearchField(String email){
+        	manageuser.user_enter_into_search_field(email);
+        }
+        
+        @Then("user should see correct search result in the table $email")
+        public void userShouldSeeCorrectSearchResultInTheTable(String email){
+        	manageuser.user_should_see_correct_search_result_in_the_table(email);
+        }
 
 }

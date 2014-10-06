@@ -3,6 +3,7 @@ package com.dataart.steps;
 import junit.framework.Assert;
 
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.dataart.pages.ManageUserPage;
 
@@ -42,5 +43,19 @@ public class ManageUserSteps extends ScenarioSteps {
 		}
 
 	}
+	@Step
+	public void user_enter_into_search_field(String email){
+		manageUser.waitFor(ExpectedConditions.elementToBeClickable(manageUser.emailSearchField));
+		manageUser.typeInto(manageUser.emailSearchField, email);
+		manageUser.waitFor(ExpectedConditions.textToBePresentInElement(manageUser.emailCell, email));
+	}
+	@Step
+	public void user_should_see_correct_search_result_in_the_table(String email){
+		
+		
+		Assert.assertEquals(email, manageUser.emailCell.getText());
+	}
+	
+	
 
 }
