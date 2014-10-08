@@ -20,7 +20,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
-import junit.framework.Assert;
+
+
 import net.thucydides.core.annotations.ManagedPages;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.pages.Pages;
@@ -33,6 +34,7 @@ import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 
@@ -885,6 +887,11 @@ public class GeneralSteps {
         @Then("user should see corespondent information about himself")
         public void userShouldSeeCorespondentInformationAboutHimself(){
         	manageuser.user_should_see_corespondent_information_about_himself();
+        }
+        
+        @When("user upload a new photo")
+        public void userUploadANewPhoto(){
+        	userprofile.user_upload_a_new_photo();
         }
 
 }

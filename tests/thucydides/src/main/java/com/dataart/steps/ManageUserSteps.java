@@ -54,7 +54,7 @@ public class ManageUserSteps extends ScenarioSteps {
 	@Step
 	public void user_should_see_correct_search_result_in_the_table(String email){
 		
-		
+		manageUser.waitFor(ExpectedConditions.textToBePresentInElement(manageUser.emailCell, email));
 		Assert.assertEquals(email, manageUser.emailCell.getText());
 	}
 	
