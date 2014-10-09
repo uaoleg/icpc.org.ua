@@ -3,4 +3,3 @@
 !--When user move to general info tab
 !--When user upload a new photo
 !--Then user should see uploaded photo
-

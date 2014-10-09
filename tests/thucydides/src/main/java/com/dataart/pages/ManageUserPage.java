@@ -19,25 +19,26 @@ public class ManageUserPage extends PageObject {
 
 	@FindBy(id = "staff__coaches_list")
 	public WebElement userTable;
-	
-	@FindBy(css=".label.col-md-4.col-md-offset-4.label-success")
+
+	@FindBy(css = ".label.col-md-4.col-md-offset-4.label-success")
 	public WebElement approvedStatus;
-	
-	@FindBy(css=".label.col-md-4.col-md-offset-4.label-warning")
+
+	@FindBy(css = ".label.col-md-4.col-md-offset-4.label-warning")
 	public WebElement notapprovedStatus;
-	@FindBy(id="gs_email")
+	@FindBy(id = "gs_email")
 	public WebElementFacade emailSearchField;
-	@FindBy(xpath ="//td[@aria-describedby='staff__coaches_list_email']")
+	@FindBy(xpath = "//td[@aria-describedby='staff__coaches_list_email']")
 	public WebElement emailCell;
-	@FindBy(xpath="//td[@aria-describedby='staff__coaches_list_name']/a")
+	@FindBy(xpath = "//td[@aria-describedby='staff__coaches_list_name']/a")
 	public WebElement nameCell;
-	@FindBy(css=".col-lg-8>h3")
+	@FindBy(css = ".col-lg-8>h3")
 	public WebElement userName;
-	@FindBy(css=".col-lg-8>h4")
+	@FindBy(css = ".col-lg-8>h4")
 	public WebElement userUniver;
-	@FindBy(css=".col-lg-8>a")
+	@FindBy(css = ".col-lg-8>a")
 	public WebElement userEmail;
-	
+	@FindBy(id = "gs_isApprovedCoach")
+	public WebElement selectStatus;
 
 	// The code below is a sample how to use html table in thucydides!
 	/*
@@ -100,4 +101,31 @@ public class ManageUserPage extends PageObject {
 			}
 
 	}
+
+	public boolean checkUserStatus(String status) {
+
+		if (status.equals("Activate")) {
+
+			List<WebElement> FieldList = getDriver().findElements(
+					By.xpath("//td[4]/div/button[1]"));
+
+			for (WebElement col : FieldList)
+
+				if (col.getText().equals(status)) {
+					return true;
+				}
+
+		} else if(status.equals("Suspend")) {
+			List<WebElement> FieldList = getDriver().findElements(
+					By.xpath("//td[4]/div/button[2]"));
+
+			for (WebElement col : FieldList)
+
+				if (col.getText().equals(status)) {
+					return true;
+				}
+		}
+		return false;
+	}
+
 }
