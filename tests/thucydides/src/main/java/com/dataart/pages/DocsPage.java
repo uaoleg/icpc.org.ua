@@ -70,6 +70,9 @@ public class DocsPage extends PageObject {
 
 	@FindBy(xpath = "//p[contains(text(),'testdesc')]")
 	public WebElement docWithPresetSescription;
+        
+        @FindBy(xpath = "//*[@class='form-horizontal clearfix']//*[@id='container']//input[@type='file']")
+	public WebElement uploadedDocPathInputField;
 
 	public final static String REGULATIONS_DOCS_PAGE_TITLE = "Docs - ICPC";
 

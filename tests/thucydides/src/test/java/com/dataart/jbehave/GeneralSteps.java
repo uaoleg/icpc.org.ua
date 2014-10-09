@@ -675,7 +675,7 @@ public class GeneralSteps {
 	}
         
         @Then("user chooses file and uploads it")
-	public void userChoosesFileandUploadsIt() throws AWTException {
+	public void userChoosesFileandUploadsIt() throws AWTException, IOException {
 		userdoc.upload_file_and_click_Save_Document_button();
 	}
         
