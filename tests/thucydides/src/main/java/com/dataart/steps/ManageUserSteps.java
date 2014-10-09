@@ -74,5 +74,18 @@ public class ManageUserSteps extends ScenarioSteps {
 		Assert.assertEquals(Vars.ADMINSEMAIL, manageUser.userEmail.getText());
 		
 	}
-
+	
+	@Step
+	public void user_chooses_from_drop_down_menu_Active(String item){
+		
+		manageUser.waitFor(ExpectedConditions.elementToBeClickable(manageUser.selectStatus));
+		manageUser.selectFromDropdown(manageUser.selectStatus, item);
+		manageUser.waitFor(ExpectedConditions.textToBePresentInElement(manageUser.selectStatus, item));
+	}
+	@Step
+	public void user_should_see_only_users_with_button(String item){
+		manageUser.waitFor(ExpectedConditions.elementToBeClickable(manageUser.selectStatus));
+		Assert.assertTrue(manageUser.checkUserStatus(item));
+		
+	}
 }

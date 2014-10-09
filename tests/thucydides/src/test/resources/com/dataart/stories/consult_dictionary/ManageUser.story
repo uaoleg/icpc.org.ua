@@ -42,3 +42,15 @@ When user enter into search field admin@icpc.org.ua
 Then user should see correct search result in the table admin@icpc.org.ua
 When user click on the name
 Then user should see corespondent information about himself
+
+Scenario: As admin i want to be able to select only Active users from the table
+Given the user is signed in with admin@icpc.org.ua e3r4t5
+When user go to menu Coaches
+When user chooses from drop down menu Active
+Then user should see only users with button Suspend
+
+Scenario: As admin i want to be able to select only Suspended users from the table
+Given the user is signed in with admin@icpc.org.ua e3r4t5
+When user go to menu Coaches
+When user chooses from drop down menu Suspended
+Then user should see only users with button Activate

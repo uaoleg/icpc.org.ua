@@ -893,5 +893,13 @@ public class GeneralSteps {
         public void userUploadANewPhoto(){
         	userprofile.user_upload_a_new_photo();
         }
+        @When("user chooses from drop down menu $item")
+        public void userChoosesFromDropDownMenuActive(String item){
+        	manageuser.user_chooses_from_drop_down_menu_Active(item);
+        }
+        @Then("user should see only users with button $item")
+        public void userShouldSeeOnlyUsersWithButtonSuspend(String item){
+        	manageuser.user_should_see_only_users_with_button(item);
+        }
 
 }
