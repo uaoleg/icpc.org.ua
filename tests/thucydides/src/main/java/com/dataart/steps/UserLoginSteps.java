@@ -3,6 +3,7 @@ package com.dataart.steps;
 import org.junit.Assert;
 
 import com.dataart.pages.LoginPage;
+import com.dataart.utils.Vars;
 
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.annotations.StepGroup;
@@ -20,14 +21,15 @@ public class UserLoginSteps extends ScenarioSteps {
 
 	@Step
 	public void enter(String userName, String password) {
-
+		waitABit(1000);
 		loginPage.enterLoginAndPassword(userName, password);
                 
 	}
 
 	@Step
 	public void click_login_button() {
-
+		waitABit(1000);
+		
 		loginPage.clickLogin();
 
 	}
@@ -108,8 +110,10 @@ public class UserLoginSteps extends ScenarioSteps {
 	public void verify_Twitter_page() {
 		loginPage.goToNewWindow();
 		waitABit(5000);
-		loginPage.waitForTitleToAppear(LoginPage.TWITTER_PAGE_TITLE);
-		Assert.assertEquals(LoginPage.TWITTER_PAGE_TITLE,loginPage.getPageTitle());
+		
+		//loginPage.waitForTitleToAppear(LoginPage.TWITTER_PAGE_TITLE);
+		//Assert.assertEquals(LoginPage.TWITTER_PAGE_TITLE,loginPage.getPageTitle());
+		Assert.assertEquals(Vars.TWITER_PAGE_URL,loginPage.getPageUrl());
 	}
 
 	@Step
@@ -125,7 +129,8 @@ public class UserLoginSteps extends ScenarioSteps {
 	@StepGroup
 	public void the_user_is_signed_in_with(String userName, String password){
 		is_on_the_login_page();
-		enter(userName,password);		
+		enter(userName,password);
+		waitABit(1000);
 		click_login_button();
 	}
 	@Step

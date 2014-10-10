@@ -18,6 +18,14 @@
             <?php endif; ?>
         </h1>
         <h3><?=$team->year?></h3>
+        <?php if ($team->isOutOfCompetition): ?>
+			<div>
+				<span class="label label-danger">
+					<?=\yii::t('app', 'Out of competition')?>
+				</span>
+			</div>
+			<br />
+        <?php endif; ?>
         <strong><?=\yii::t('app', 'Coach')?></strong>:
         <a href="<?=$this->createUrl('/user/view', array('id' => $coach->_id))?>">
             <?php \web\widgets\user\Name::create(array('user' => $coach)); ?>

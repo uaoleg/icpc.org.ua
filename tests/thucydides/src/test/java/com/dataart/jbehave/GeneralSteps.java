@@ -1,6 +1,7 @@
 package com.dataart.jbehave;
 
 import com.dataart.pages.LoginPage;
+import com.dataart.steps.ManageUserSteps;
 import com.dataart.steps.UserDocsSteps;
 import com.dataart.steps.UserImportSteps;
 import com.dataart.steps.UserLoginSteps;
@@ -11,14 +12,16 @@ import com.dataart.steps.UserQASteps;
 import com.dataart.steps.UserRegistrationSteps;
 import com.dataart.steps.UserTeamSteps;
 import com.dataart.utils.CheckGmail;
+import com.dataart.utils.DBClean;
 import com.dataart.utils.Vars;
-import java.awt.AWTException;
 
+import java.awt.AWTException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
-import junit.framework.Assert;
+
+
 import net.thucydides.core.annotations.ManagedPages;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.pages.Pages;
@@ -26,10 +29,12 @@ import static net.thucydides.core.steps.StepData.withTestDataFrom;
 import net.thucydides.core.steps.StepFactory;
 import static net.thucydides.core.webdriver.ThucydidesWebDriverSupport.getDriver;
 
+import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 
@@ -63,6 +68,9 @@ public class GeneralSteps {
 	UserDocsSteps userdoc;
 	@Steps
 	UserTeamSteps userteam;
+	
+	@Steps
+	ManageUserSteps manageuser;
 
 	@Given("the user is on the Login page")
 	public void givenTheUserIsOnTheLoginPage() {
@@ -84,8 +92,13 @@ public class GeneralSteps {
 		pages.getDriver().manage().timeouts()
 				.implicitlyWait(15, TimeUnit.SECONDS);
 		CheckGmail.deleteConfirmationMail(Vars.GMAIL_EMAIL, Vars.GMAIL_PASS);
-
+		
 	}
+        
+        @AfterScenario
+        public void endOver(){
+            
+        }
 
 	@When("the user enters name: $userName and password: $password and click the 'login' button")
 	public void whenTheUserEnterLoginAndPassword(String userName,
@@ -239,9 +252,9 @@ public class GeneralSteps {
 		userreg.user_should_see_DBerror_message(message);
 	}
 
-	@When("user enter all correct credentials")
-	public void userEnterAllCorrectCredentials() {
-		userreg.user_enter_all_correct_credentials();
+	@When("user enter all correct credentials $role")
+	public void userEnterAllCorrectCredentials(String role) {
+		userreg.user_enter_all_correct_credentials(role);
 	}
 
 	@When("user check his emailbox $email $password and click on the confirmation link")
@@ -662,7 +675,7 @@ public class GeneralSteps {
 	}
         
         @Then("user chooses file and uploads it")
-	public void userChoosesFileandUploadsIt() throws AWTException {
+	public void userChoosesFileandUploadsIt() throws AWTException, IOException {
 		userdoc.upload_file_and_click_Save_Document_button();
 	}
         
@@ -672,7 +685,7 @@ public class GeneralSteps {
 	}
         
         @Then("user clicks on Delete button near the first doc in the list")
-	public void userClicksOnDeleteButton() {
+	public void userClicksOnDeleteButton() throws IOException {
 		userdoc.delete_first_doc_button_click();
 	}
         
@@ -682,7 +695,7 @@ public class GeneralSteps {
 	}
         
         @Then("user can see that document is deleted from the list")
-	public void userCanSeeNoDocInList() {
+	public void userCanSeeNoDocInList() throws IOException {
 		userdoc.is_document_not_in_the_list();
 	}
         
@@ -778,5 +791,115 @@ public class GeneralSteps {
             userteam.is_Team_in_Table();
         }
         
+        @When("user clicks on earlier created team name")
+	public void userClicksonEarlierCreatedTeamName() {
+		userteam.user_Clicks_on_Created_Team();
+	}
+        
+        @Then("user clicks on delete button and confirms deletion")
+        public void userClicksonDeleteButtonandConfirmsDelete(){
+            userteam.user_Clicks_on_Delete_Button_and_Confirms_Delete();
+        }
+        
+        @Then("user can see that team is deleted from the list")
+        public void userCanSeeThatTeamIsDeletedFromList(){
+            userteam.team_is_not_in_the_List();
+        }
+        
+        @When("user clicks on first team in the list")
+	public void userClicksonFirstTeamNameinList() {
+		userteam.choose_First_Team_in_List();
+	}
+        
+        @Then("user is on the profile page of the team")
+        public void userisonProfilePageoftheTeam(){
+            userteam.is_on_the_Team_Profile_Page();
+        }
+        
+        @When("user clicks on first coach name in the list")
+	public void userClicksonFirstCoachNameinList() {
+		userteam.choose_First_Coach_Name_in_List();
+	}
+        
+        @Then("user is on the profile page of the coach")
+        public void userisonProfilePageofCoach(){
+            userteam.is_on_the_Coach_Profile_Page();
+        }
+        
+        @When("user clicks on first student name in the list")
+	public void userClicksonFirstStudentNameinList() {
+		userteam.choose_First_Student_Name_in_List();
+	}
+        
+        @Then("user is on the profile page of the student")
+        public void userisonProfilePageofStudent(){
+            userteam.is_on_the_Student_Profile_Page();
+        }
+
+        
+        @When("user enters team name in sorting field")
+	public void userEntersTeamNameinSortingField() {
+		userteam.input_Team_Name_for_Sorting();
+	}
+        
+        @Then("user can see table sorted by this team name")
+        public void userCanSeeTableSortedByChosenTeamName(){
+            userteam.is_Team_Table_is_Sorted_by_Team_Name();
+        }
+        
+        @When("user enters university name in sorting field")
+	public void userEntersUniversityNameinSortingField() {
+		userteam.input_University_Name_for_Sorting();
+	}
+        
+        @Then("user can see table sorted by this university name")
+        public void userCanSeeTableSortedByChosenUniversityName(){
+            userteam.is_Team_Table_is_Sorted_by_University_Name();
+        }
+
+
+        @When("user go to menu Coaches")
+        public void userGoToMenuCoaches(){
+        	manageuser.user_go_to_menu_Coaches();
+        }
+        @When("user click Activate on the first item from the list")
+        public void userClickActivateOnTheFirstItemFromTheList(){
+        	manageuser.user_click_activate_on_the_first_item_from_the_list();
+        }
+        
+        @Then("user should see status $status")
+        public void userShouldSeeStatus(String status){
+        	manageuser.user_should_see_status(status);
+        }
+        @When("user enter into search field $email")
+        public void userEnterIntoSearchField(String email){
+        	manageuser.user_enter_into_search_field(email);
+        }
+        
+        @Then("user should see correct search result in the table $email")
+        public void userShouldSeeCorrectSearchResultInTheTable(String email){
+        	manageuser.user_should_see_correct_search_result_in_the_table(email);
+        }
+        @When("user click on the name")
+        public void userClickOnTheName(){
+        	manageuser.user_click_on_the_name();
+        }
+        @Then("user should see corespondent information about himself")
+        public void userShouldSeeCorespondentInformationAboutHimself(){
+        	manageuser.user_should_see_corespondent_information_about_himself();
+        }
+        
+        @When("user upload a new photo")
+        public void userUploadANewPhoto(){
+        	userprofile.user_upload_a_new_photo();
+        }
+        @When("user chooses from drop down menu $item")
+        public void userChoosesFromDropDownMenuActive(String item){
+        	manageuser.user_chooses_from_drop_down_menu_Active(item);
+        }
+        @Then("user should see only users with button $item")
+        public void userShouldSeeOnlyUsersWithButtonSuspend(String item){
+        	manageuser.user_should_see_only_users_with_button(item);
+        }
 
 }

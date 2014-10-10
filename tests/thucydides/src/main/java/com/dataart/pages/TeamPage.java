@@ -17,7 +17,7 @@ public class TeamPage  extends PageObject{
         @FindBy(xpath="//button[@class='btn btn-default dropdown-toggle']")
 	public WebElementFacade exportDropdownList;
         @FindBy(xpath="//a[@href='/team/exportCheckingSystem']")
-	public WebElementFacade exportForTrackingSystemItem;
+	public WebElementFacade exportForCheckingSystemItem;
         @FindBy(xpath="//a[@href='/team/exportRegistration']")
 	public WebElementFacade exportForRegistrationItem;
         @FindBy(xpath="//button[@class='btn btn-primary btn-lg btn-save'][@type='submit']")
@@ -30,13 +30,31 @@ public class TeamPage  extends PageObject{
 	public WebElementFacade secondStudentOption;
         @FindBy(xpath="html/body/div[5]/ul/li[3]/div")
 	public WebElementFacade thirdStudentOption;
-        @FindBy(xpath="//td[@title='testteam']")
+        @FindBy(xpath="//a[contains(text(), 'YNCtestteam')]")
 	public WebElementFacade teamNameinTable;
+        @FindBy(xpath="//button[@class='btn btn-danger btn-delete-team']")
+	public WebElementFacade deleteTeamButton;
+        @FindBy(xpath="//button[@class='btn btn-default dropdown-toggle']")
+	public WebElementFacade downloadTeamlistDropdown;
+        @FindBy(xpath="//input[@id='gs_name']")
+	public WebElementFacade teamNameSortTextfield;
+        @FindBy(xpath="//input[starts-with(@id, 'gs_schoolName')]")
+	public WebElementFacade universityNameSortTextfield;
+        
+        
 
         
-        public final static String TEAMS_PAGE_TITLE = "Team - ICPC";        
+        public final static String TEAMS_PAGE_TITLE = "Team - ICPC";
+        public final static String TEAMS_PROFILE_PAGE_TITLE = "View Team - ICPC";
+        public final static String USER_PROFILE_PAGE_TITLE = "View User - ICPC";
         public final static String Team_Name = teamNameGenerator();
-        public final static String TEAM_NAME_IN_TABLE = "//td[@title='YNC" + Team_Name +"']";
+        //public final static String TEAM_NAME_IN_TABLE = "//td[@title='YNC" + Team_Name +"']";
+        public final static String TEAM_NAME_IN_TABLE = "//a[contains(text(), 'YNCtestteam')]";
+        public final static String TEAM_NAME_IN_TABLE_GENERAL_XPATH = "//td[@aria-describedby='team-list_name']/a";
+        public final static String COACH_NAME_IN_TABLE_GENERAL_XPATH = "//td[@aria-describedby='team-list_coachNameEn']/a";
+        public final static String STUDENTS_NAME_IN_TABLE_GENERAL_XPATH = "//td[@aria-describedby='team-list_members']/a";
+        public final static String UNIVERSITY_NAME_IN_TABLE_GENERAL_XPATH = "//td[starts-with(@aria-describedby, 'team-list_schoolName')]";
+        
         
         public static String teamNameGenerator(){            
              String teamName = "testteam" + (int) (Math.random()*1000 + 1);

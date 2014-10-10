@@ -67,6 +67,12 @@
                     </select>
                 </div>
 
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="isOutOfCompetition" <?=($team->isOutOfCompetition)?'checked':''?>> <?=\yii::t('app', 'Out of competition')?>
+                    </label>
+                </div>
+
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg btn-save">
                         <?=\yii::t('app', 'Save')?>

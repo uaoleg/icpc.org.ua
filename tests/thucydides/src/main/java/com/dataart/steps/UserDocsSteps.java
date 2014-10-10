@@ -7,7 +7,11 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -20,6 +24,7 @@ import java.util.logging.Logger;
 import junit.framework.Assert;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
+import org.apache.log4j.helpers.Loader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 
@@ -133,41 +138,18 @@ public class UserDocsSteps extends ScenarioSteps {
 		docsPage.titleInputField.sendKeys("testtitle");
 		docsPage.descriptionInputField.sendKeys("testdescription");
                 //waitABit(1000);
-		docsPage.chooseFileButton.click();
-		waitABit(1000);
+		
 
 	}
 
 	@Step
-	public void upload_file_and_click_Save_Document_button()
-			throws AWTException {
-		// WebElement elem =
-		// getDriver().findElement(By.xpath("//input[@id='html5_19135rc2bkee11h810v91mhv1tl23'][@type='file']"));
-		// String js =
-		// "arguments[0].style.height='auto'; arguments[0].style.overflow='visible';";
-		// ((JavascriptExecutor) getDriver()).executeScript(js, elem);
-		// docsPage.uploadDocButton.sendKeys("c:\TestDoc.doc");
-		// WebDriverWait waiting = new WebDriverWait(getDriver(), 30, 1000);
-		// waiting.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(DocsPage.SAVE_DOCUMENT_BUTTON_XPATH)));
-		StringSelection ss = new StringSelection("C:\\TestDoc.doc");
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
-		Robot robot = new Robot();
-		 //robot.keyPress(KeyEvent.VK_ENTER);
-		// robot.keyRelease(KeyEvent.VK_ENTER);
-		robot.keyPress(KeyEvent.VK_CONTROL);
-		robot.keyPress(KeyEvent.VK_V);
-                waitABit(5000);
-		robot.keyRelease(KeyEvent.VK_CONTROL);
-		robot.keyRelease(KeyEvent.VK_V);
-                waitABit(5000);
-		robot.keyPress(KeyEvent.VK_ENTER);
-		robot.keyRelease(KeyEvent.VK_ENTER);
-                waitABit(5000);
-               // getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-                WebDriverWait waiting = new WebDriverWait(getDriver(), 30, 1000);
-                waiting.until(ExpectedConditions.presenceOfElementLocated(By.xpath(DocsPage.SAVE_DOCUMENT_BUTTON_XPATH)));
-
-
+	public void upload_file_and_click_Save_Document_button() throws IOException{
+            File file = new File("./src/test/resources/TestDoc.doc");
+            String dirPath = file.getCanonicalPath();
+            System.out.println(dirPath);
+            
+		getDriver().findElement(By.xpath("//*[@class='form-horizontal clearfix']//*[@id='container']//input[@type='file']")).sendKeys(dirPath);
+                waitABit(2000);
 		docsPage.saveDocumentButton.click();
                 waitABit(5000);
 
@@ -182,7 +164,8 @@ public class UserDocsSteps extends ScenarioSteps {
 	}
 
 	@Step
-	public void delete_first_doc_button_click() {
+	public void delete_first_doc_button_click() throws IOException {
+                docsPage.getFirsDocTitle();
 		docsPage.deleteFirstDocButton.click();
 	}
 
@@ -202,10 +185,21 @@ public class UserDocsSteps extends ScenarioSteps {
 	}
 
 	@Step
-	public void is_document_not_in_the_list() {
+	public void is_document_not_in_the_list() throws FileNotFoundException, IOException {
 		String s = getDriver().findElement(
 				By.xpath(DocsPage.FIRST_DOCUMENT_LINK_XPATH)).getText();
-		Assert.assertNotSame(s, "testtitle");
+                FileReader r = new FileReader("src\\test\\resources\\buff.txt");
+           
+                BufferedReader bfr = new BufferedReader(r);
+                String x ="";
+                
+                while((x = bfr.readLine()) != null){
+                System.out.println(x);
+                
+                    }
+                
+                
+		Assert.assertNotSame(s, x);
 	}
 
 	@Step

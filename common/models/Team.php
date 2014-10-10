@@ -115,6 +115,12 @@ class Team extends \common\ext\MongoDb\Document
     public $isDeleted = false;
 
     /**
+     * Is team out of a competition
+     * @var bool
+     */
+    public $isOutOfCompetition = false;
+
+    /**
      * Objects of member users
      * @var array
      */
@@ -252,20 +258,21 @@ class Team extends \common\ext\MongoDb\Document
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'name'          => \yii::t('app', 'Name of a team'),
-            'year'          => \yii::t('app', 'Year in which team participates'),
-            'phase'         => \yii::t('app', 'Stage in which team participates'),
-            'coachId'       => \yii::t('app', 'Related coach ID'),
-            'coachNameUk'   => \yii::t('app', 'Name of the coach in ukrainian'),
-            'coachNameEn'   => \yii::t('app', 'Name of the coach in english'),
-            'schoolId'      => \yii::t('app', 'Related school ID'),
-            'schoolNameUk'  => \yii::t('app', 'Full name of school in ukrainian'),
-            'schoolNameEn'  => \yii::t('app', 'Full name of school in english'),
-            'league'        => \yii::t('app', 'League of a team'),
-            'memberIds'     => \yii::t('app', 'List of members'),
-            'state'         => \yii::t('app', 'List of state labels of a team'),
-            'region'        => \yii::t('app', 'List of region labels of a team'),
-            'isDeleted'     => \yii::t('app', 'Is team deleted'),
+            'name'                 => \yii::t('app', 'Name of a team'),
+            'year'                 => \yii::t('app', 'Year in which team participates'),
+            'phase'                => \yii::t('app', 'Stage in which team participates'),
+            'coachId'              => \yii::t('app', 'Related coach ID'),
+            'coachNameUk'          => \yii::t('app', 'Name of the coach in ukrainian'),
+            'coachNameEn'          => \yii::t('app', 'Name of the coach in english'),
+            'schoolId'             => \yii::t('app', 'Related school ID'),
+            'schoolNameUk'         => \yii::t('app', 'Full name of school in ukrainian'),
+            'schoolNameEn'         => \yii::t('app', 'Full name of school in english'),
+            'league'               => \yii::t('app', 'League of a team'),
+            'memberIds'            => \yii::t('app', 'List of members'),
+            'state'                => \yii::t('app', 'List of state labels of a team'),
+            'region'               => \yii::t('app', 'List of region labels of a team'),
+            'isDeleted'            => \yii::t('app', 'Is team deleted'),
+            'isOutOfCompetition'   => \yii::t('app', 'Is team out of a competition'),
         ));
     }
 
@@ -341,6 +348,9 @@ class Team extends \common\ext\MongoDb\Document
         // Convert MongoId to String
         $this->coachId = (string)$this->coachId;
         $this->schoolId = (string)$this->schoolId;
+
+		// Conver to bool
+        $this->isOutOfCompetition = (bool)$this->isOutOfCompetition;
 
         // Set coach name and school name properties
         if (empty($this->coachNameUk)) {

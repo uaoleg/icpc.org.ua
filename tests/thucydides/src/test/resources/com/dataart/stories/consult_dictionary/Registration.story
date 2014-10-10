@@ -7,7 +7,7 @@ I want to be able to register new users
 
 Scenario: As user i want to be able to register and log into new accout
 Given the user is on the Registration page
-When user enter all correct credentials
+When user enter all correct credentials student
 And user click Sign up
 When user check his emailbox myicpctest@gmail.com 123myicpctest and click on the confirmation link
 Then user should see the verified E-mail confirmation message Email verified successfully!
@@ -18,7 +18,7 @@ Then user loged out
 
 Scenario: As user i want to be able to resend an email again after registration
 Given the user is on the Registration page
-When user enter all correct credentials
+When user enter all correct credentials student
 And user click Sign up
 Then user click on Resend email button and check email 
 

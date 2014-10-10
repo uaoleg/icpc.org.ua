@@ -1,6 +1,6 @@
 package com.dataart.steps;
 
-import junit.framework.Assert;
+
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.annotations.StepGroup;
 import net.thucydides.core.steps.ScenarioSteps;
@@ -8,6 +8,8 @@ import net.thucydides.core.steps.ScenarioSteps;
 import com.dataart.model.User;
 import com.dataart.pages.ProfilePage;
 import com.dataart.utils.Vars;
+
+import org.junit.Assert;
 import org.openqa.selenium.By;
 
 public class UserProfileSteps extends ScenarioSteps{
@@ -134,6 +136,13 @@ public class UserProfileSteps extends ScenarioSteps{
 	@Step
 	public void user_should_see_warrning_messages_about_blank_fields(){
 		Assert.assertTrue(profilePage.warrningList.size()>0);
+	}
+	@Step
+	public void user_upload_a_new_photo(){
+		waitABit(2000);
+		profilePage.loadLogoFrom("images2.jpg");
+		waitABit(2000);
+		profilePage.saveButton.click();
 	}
 
 }

@@ -64,16 +64,17 @@ public class LoginPage extends PageObject {
 
 	public static final String GITHUB_PAGE_TITLE = "uaoleg/icpc.org.ua · GitHub";
 
-	public static final String TWITTER_PAGE_TITLE = "icpc.org.ua (IcpcOrgUa) | Twitter";
-
+	public static final String TWITTER_PAGE_TITLE = "icpc.org.ua (@IcpcOrgUa) | Twitter";
+	
+	
 	public static final String MAILTO_LINK_TEXT = "info@icpc.org.ua";
         
       
 
 	public void enterLoginAndPassword(String userName, String password) {
 
-		$(userNameTextField).sendKeys(userName);
-		//
+		$(userNameTextField).sendKeys(userName);		
+		waitABit(500);
 		$(passwordTextField).sendKeys(password);
 
 	}
@@ -157,6 +158,11 @@ public class LoginPage extends PageObject {
 		Actions builder = new Actions(getDriver());
 		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		builder.moveToElement(forgetPasswordLink).click().perform();
+	}
+	
+	public String getPageUrl(){
+		System.out.println(getDriver().getCurrentUrl());
+		return getDriver().getCurrentUrl();
 	}
 
 }
