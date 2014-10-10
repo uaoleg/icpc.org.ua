@@ -22,7 +22,7 @@ public class TeamPage  extends PageObject{
 	public WebElementFacade exportForRegistrationItem;
         @FindBy(xpath="//button[@class='btn btn-primary btn-lg btn-save'][@type='submit']")
 	public WebElementFacade saveTeamButton;
-        @FindBy(xpath="//*[@class='select2-choices']")
+        @FindBy(xpath="//input[@id='s2id_autogen1']")
 	public WebElementFacade addStudentsField;
         @FindBy(xpath="html/body/div[5]/ul/li[1]/div")
 	public WebElementFacade firstStudentOption;

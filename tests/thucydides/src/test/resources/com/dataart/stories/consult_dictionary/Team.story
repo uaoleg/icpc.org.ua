@@ -10,21 +10,21 @@ Given the user is on the News page
 When user clicks on the Team link
 Then user should be sent to Team page
  
-!--Scenario: As a coach i want to create a new team with three members
-!--Given the user is signed in with coa1@mailinator.com 123456
-!--Given the user is on the Teams page
-!--When user click on create a new team button
-!--Then user enter team name
-!--Then user enter team members
-!--Then user click save button
-!--Then user should see created team in the table 
+Scenario: As a coach i want to create a new team with three members
+Given the user is signed in with coa1@mailinator.com 123456
+Given the user is on the Teams page
+When user click on create a new team button
+Then user enter team name
+Then user enter team members
+Then user click save button
+Then user should see created team in the table 
 
-!--Scenario: As a coach i want to delete previously created team
-!--Given the user is signed in with coa1@mailinator.com 123456
-!--Given the user is on the Teams page
-!--When user clicks on earlier created team name
-!--Then user clicks on delete button and confirms deletion
-!--Then user can see that team is deleted from the list
+Scenario: As a coach i want to delete previously created team
+Given the user is signed in with coa1@mailinator.com 123456
+Given the user is on the Teams page
+When user clicks on earlier created team name
+Then user clicks on delete button and confirms deletion
+Then user can see that team is deleted from the list
 
 Scenario: As a coordinator i want to be able to download list of teams suited for checking system
 Given the user is signed in with coord1@mailinator.com 123456

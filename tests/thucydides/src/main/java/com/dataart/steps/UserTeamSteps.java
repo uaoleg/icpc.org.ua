@@ -107,21 +107,28 @@ public class UserTeamSteps extends ScenarioSteps{
             teamPage.addStudentsField.click();	
 		try {
 			Robot robot = new Robot();
-			robot.keyPress(KeyEvent.VK_ENTER);
+			
+                        teamPage.addStudentsField.sendKeys("@");
+                        waitABit(500);
+                        robot.keyPress(KeyEvent.VK_ENTER);
 			robot.keyRelease(KeyEvent.VK_ENTER);
 			waitABit(2000);
+                        teamPage.addStudentsField.sendKeys("@");
+                        waitABit(500);
 			robot.keyPress(KeyEvent.VK_ENTER);
 			robot.keyRelease(KeyEvent.VK_ENTER);
                         waitABit(2000);
+                        teamPage.addStudentsField.sendKeys("@");
+                        waitABit(500);
 			robot.keyPress(KeyEvent.VK_ENTER);
 			robot.keyRelease(KeyEvent.VK_ENTER);
                         waitABit(2000);
-                        robot.keyPress(KeyEvent.VK_ENTER);
-			robot.keyRelease(KeyEvent.VK_ENTER);
-                        waitABit(2000);
-                        robot.keyPress(KeyEvent.VK_ENTER);
-			robot.keyRelease(KeyEvent.VK_ENTER);
-                        waitABit(2000);
+//                        robot.keyPress(KeyEvent.VK_ENTER);
+//			robot.keyRelease(KeyEvent.VK_ENTER);
+//                        waitABit(2000);
+//                        robot.keyPress(KeyEvent.VK_ENTER);
+//			robot.keyRelease(KeyEvent.VK_ENTER);
+//                        waitABit(2000);
 		} catch (AWTException ex) {
 			Logger.getLogger(UserDocsSteps.class.getName()).log(Level.SEVERE,
 					null, ex);

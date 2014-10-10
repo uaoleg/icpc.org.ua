@@ -132,6 +132,7 @@ public class UserLoginSteps extends ScenarioSteps {
 		enter(userName,password);
 		waitABit(1000);
 		click_login_button();
+                waitABit(2000);
 	}
 	@Step
     public void	user_go_to_user_profile(){

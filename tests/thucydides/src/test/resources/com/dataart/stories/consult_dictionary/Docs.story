@@ -21,11 +21,11 @@ When user clicks on the Docs link and chooses Regulations item
 Then user clicks on the top document's title
 Then user is able to download that document
 
-!--Scenario: As user i want to be able to download document in Guidance docs menu
-!--Given the user is on the Login page
-!--When user clicks on the Docs link and chooses Guidance item
-!--Then user clicks on the top document's title
-!--Then user is able to download that document
+Scenario: As user i want to be able to download document in Guidance docs menu
+Given the user is on the Login page
+When user clicks on the Docs link and chooses Guidance item
+Then user clicks on the top document's title
+Then user is able to download that document
 
 Scenario: As coordinator i want to be able to upload documents to the Regulations section
 Given the user is on the Login page
