@@ -901,5 +901,9 @@ public class GeneralSteps {
         public void userShouldSeeOnlyUsersWithButtonSuspend(String item){
         	manageuser.user_should_see_only_users_with_button(item);
         }
+        @Then("user should see uploaded photo")      	
+        public void userShouldSeeUploadedPhoto(){
+        	userprofile.user_should_see_uploaded_photo();
+        }
 
 }

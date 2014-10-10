@@ -9,8 +9,10 @@ import com.dataart.model.User;
 import com.dataart.pages.ProfilePage;
 import com.dataart.utils.Vars;
 
+import org.apache.log4j.helpers.Loader;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class UserProfileSteps extends ScenarioSteps{
 
@@ -139,10 +141,17 @@ public class UserProfileSteps extends ScenarioSteps{
 	}
 	@Step
 	public void user_upload_a_new_photo(){
-		waitABit(2000);
-		profilePage.loadLogoFrom("images2.jpg");
-		waitABit(2000);
+		profilePage.waitFor(ExpectedConditions.elementToBeClickable(profilePage.uploadBtn));
+		getDriver().findElement(By.xpath("//*[@id='uploadContainer']//input[@type='file']")).sendKeys(Loader.getResource("images2.jpg").getFile().substring(1).replace('/','\\'));		
+		//profilePage.waitFor(ExpectedConditions.visibilityOf(profilePage.profilePhoto));	
+		
 		profilePage.saveButton.click();
+	}
+	
+	@Step
+	public void user_should_see_uploaded_photo(){
+		profilePage.waitForAnyRenderedElementOf(By.xpath("//img[contains(@src,'/user/photo/id')]"));
+		Assert.assertTrue(profilePage.profilePhoto.isDisplayed());
 	}
 
 }

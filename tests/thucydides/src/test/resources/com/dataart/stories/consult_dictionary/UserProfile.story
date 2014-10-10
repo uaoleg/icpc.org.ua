@@ -59,4 +59,10 @@ When user go to additional tab /en
 And click save button
 Then user should see warrning messages about blank fields
 
+Scenario: As a user i want to be abble to upload a new user photo
+Given the user is signed in with admin@icpc.org.ua e3r4t5
+When user move to general info tab
+When user upload a new photo
+Then user should see uploaded photo
+
 

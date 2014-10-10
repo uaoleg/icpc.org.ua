@@ -69,8 +69,13 @@ public class ProfilePage extends PageObject {
 	public WebElementFacade phoneWork;
 	@FindBy(id = "fax")
 	public WebElementFacade fax;
-	@FindBy(xpath=".//*[@id='uploadContainer']/div[1]/span")
+	@FindBy(xpath="//*[@id='uploadContainer']//input[@type='file']")
     public WebElement file;
+	@FindBy(id="uploadPickfiles")
+	public WebElement uploadBtn;
+	@FindBy(xpath="//img[contains(@src,'/user/photo/id')]")
+	public WebElement profilePhoto;
+	
 	
 	public void cleanAdditionalFields() {
 		phoneHome.clear();
@@ -108,8 +113,5 @@ public class ProfilePage extends PageObject {
 
 	}
 	
-	public void loadLogoFrom(String filename) {
-        upload(filename).to(file);
-    }
-
+	
 }
