@@ -3,7 +3,7 @@ Story: Manageing user profile for icpc.org.ua
 Narrative: 
 In order to be able to manage user profile
 As a user
-I want to be able to set user settings
+I want to be able to set user settings for icpc.org.ua
 
 Scenario: As a user i want to be able to change my password log in with new credentials and back my old password
 Given the user is signed in with mystud@mailinator.com 123456
@@ -64,5 +64,3 @@ Given the user is signed in with admin@icpc.org.ua e3r4t5
 When user move to general info tab
 When user upload a new photo
 Then user should see uploaded photo
-
-
