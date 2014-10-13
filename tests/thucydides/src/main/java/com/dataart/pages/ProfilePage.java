@@ -73,9 +73,10 @@ public class ProfilePage extends PageObject {
     public WebElement file;
 	@FindBy(id="uploadPickfiles")
 	public WebElement uploadBtn;
-	@FindBy(xpath="//img[contains(@src,'/user/photo/id')]")
+	@FindBy(id="uploadPickfiles")
 	public WebElement profilePhoto;
-	
+	@FindBy(css=".help-block")
+	public WebElement extensionError;
 	
 	public void cleanAdditionalFields() {
 		phoneHome.clear();

@@ -905,5 +905,14 @@ public class GeneralSteps {
         public void userShouldSeeUploadedPhoto(){
         	userprofile.user_should_see_uploaded_photo();
         }
-
+        @When("user upload a new file $fileName")
+        public void userUploadANewFile(String fileName){
+        	userprofile.user_upload_a_new_file(fileName);
+        }
+        
+        @Then("user should see extension error message $message")
+        public void userShouldSeeExtensionErrorMessage(String message){
+        	userprofile.user_should_see_extension_error_message(message);
+        }
+       
 }

@@ -64,3 +64,9 @@ Given the user is signed in with admin@icpc.org.ua e3r4t5
 When user move to general info tab
 When user upload a new photo
 Then user should see uploaded photo
+
+Scenario: As a user i want to be abble to see error message when user upload not a photo (*.doc, *.xls)
+Given the user is signed in with admin@icpc.org.ua e3r4t5
+When user move to general info tab
+When user upload a new file TestDoc.doc
+Then user should see extension error message File extension error.

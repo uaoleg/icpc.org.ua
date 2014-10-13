@@ -12,6 +12,7 @@ import com.dataart.utils.Vars;
 import org.apache.log4j.helpers.Loader;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class UserProfileSteps extends ScenarioSteps{
@@ -152,6 +153,17 @@ public class UserProfileSteps extends ScenarioSteps{
 	public void user_should_see_uploaded_photo(){
 		profilePage.waitForAnyRenderedElementOf(By.xpath("//img[contains(@src,'/user/photo/id')]"));
 		Assert.assertTrue(profilePage.profilePhoto.isDisplayed());
+	}
+	@Step
+	public void user_upload_a_new_file(String fileName){
+		profilePage.waitFor(ExpectedConditions.elementToBeClickable(profilePage.uploadBtn));		
+		//((JavascriptExecutor)getDriver()).executeScript("arguments[0].checked = true;", getDriver().findElement(By.xpath("//*[@id='uploadContainer']//input[@type='file']")));
+		getDriver().findElement(By.xpath("//*[@id='uploadContainer']//input[@type='file']")).sendKeys(Loader.getResource(fileName).getFile().substring(1).replace('/','\\'));
+	}
+	@Step
+	public void user_should_see_extension_error_message(String message){
+		profilePage.waitFor(ExpectedConditions.textToBePresentInElement(profilePage.extensionError, message));		
+		Assert.assertEquals(message,profilePage.extensionError.getText());
 	}
 
 }
