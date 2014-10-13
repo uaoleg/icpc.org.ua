@@ -656,7 +656,7 @@ public class GeneralSteps {
 
 //	@When("user click on create a new team button")
 //	public void userClickOnCreateAnewTeamButton() {
-//		userteam.user_click_on_create_a_new_team_button();
+//		userteam.user_Clicks_on_Create_Team_Button();
 //	}
         
         @Then("user clicks on the Upload Doc button in Regulation section")

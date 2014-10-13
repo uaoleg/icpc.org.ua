@@ -25,10 +25,10 @@ public class UserTeamSteps extends ScenarioSteps{
 	public void the_user_is_on_the_teams_page(){
 		teamPage.open();
 	}
-	@Step
-	public void user_click_on_create_a_new_team_button(){
-		teamPage.clickOn(teamPage.createTeamButton);
-	}
+//	@Step
+//	public void user_click_on_create_a_new_team_button(){
+//		teamPage.clickOn(teamPage.createTeamButton);
+//	}
 	@Step
 	public void verify_is_on_the_Team_Page() {
 		teamPage.waitForTitleToAppear(TeamPage.TEAMS_PAGE_TITLE);
@@ -103,8 +103,9 @@ public class UserTeamSteps extends ScenarioSteps{
         
         @Step
 	public void adding_New_Students_to_Team() {
-            
+           
             teamPage.addStudentsField.click();	
+         
 		try {
 			Robot robot = new Robot();
 			
@@ -133,6 +134,8 @@ public class UserTeamSteps extends ScenarioSteps{
 			Logger.getLogger(UserDocsSteps.class.getName()).log(Level.SEVERE,
 					null, ex);
 		}
+
+            
 
                 
 	}
