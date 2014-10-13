@@ -82,12 +82,6 @@
 			<version>1.6</version>
 			<type>jar</type>
 		</dependency>
-                <dependency>
-                        <groupId>org.monte</groupId>
-                        <artifactId>monte-screen-recorder</artifactId>
-                        <version>0.7.7</version>
-                        <type>jar</type>
-                </dependency>
 	</dependencies>
 	<build>
 		<plugins>
