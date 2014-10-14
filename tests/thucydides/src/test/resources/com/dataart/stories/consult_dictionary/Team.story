@@ -19,10 +19,19 @@ Then user enter team members
 Then user click save button
 Then user should see created team in the table 
 
+Scenario: As a coach i want to be able to manage created team
+Given the user is signed in with coa1@mailinator.com 123456
+Given the user is on the Teams page
+When user click on name of team created by him
+Then user clicks on Manage button
+Then user enters new team name
+Then user click save button
+Then user should see changed team name in team profile
+
 Scenario: As a coach i want to delete previously created team
 Given the user is signed in with coa1@mailinator.com 123456
 Given the user is on the Teams page
-When user clicks on earlier created team name
+When user click on name of team created by him
 Then user clicks on delete button and confirms deletion
 Then user can see that team is deleted from the list
 
@@ -65,3 +74,20 @@ Scenario: As a user i want to be able to sort teams in list by university name
 Given the user is on the Teams page
 When user enters university name in sorting field
 Then user can see table sorted by this university name
+
+Scenario: As a coach i want to create a new team with three members that is out of competition
+Given the user is signed in with coa1@mailinator.com 123456
+Given the user is on the Teams page
+When user click on create a new team button
+Then user enter team name
+Then user enter team members
+Then user checks the Out of competition checkbox
+Then user click save button
+Then user clicks on previously created team name in order to get to it's profile
+Then user should see Out of competition message
+
+Scenario: As a user i want to be able to sort data in table by descent
+Given the user is on the Teams page
+When user clicks on Sort by descent icon in Team name column
+Then user can see table sorted by descent
+

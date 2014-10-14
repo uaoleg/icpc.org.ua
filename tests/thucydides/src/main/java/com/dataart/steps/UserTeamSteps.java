@@ -21,6 +21,12 @@ import org.openqa.selenium.interactions.Actions;
 public class UserTeamSteps extends ScenarioSteps{
 	TeamPage teamPage;
         private String tmp;
+        private String lastTeamName;
+        private String lastSchoolName;
+        private String lastCoachName;
+        private int i;
+       
+        
 	@Step
 	public void the_user_is_on_the_teams_page(){
 		teamPage.open();
@@ -93,6 +99,8 @@ public class UserTeamSteps extends ScenarioSteps{
         
         @Step
         public void user_Enters_Team_Name(){
+//            teamPage.teamNameField.clear();
+            waitABit(1000);
             teamPage.teamNameField.sendKeys(TeamPage.Team_Name);
         }
         
@@ -187,7 +195,9 @@ public class UserTeamSteps extends ScenarioSteps{
        
        @Step
        public void team_is_not_in_the_List(){
-           Assert.assertTrue(getDriver().findElements(By.xpath(TeamPage.TEAM_NAME_IN_TABLE)).isEmpty());
+           System.out.println(tmp);
+           Assert.assertTrue(getDriver().findElements(By.linkText(tmp)).isEmpty());
+           tmp = null;
        }
        
        @Step
@@ -258,6 +268,90 @@ public class UserTeamSteps extends ScenarioSteps{
               }
            }
        }
+       
+       @Step
+       public void out_of_Competition_Checkbox_Checking(){
+           teamPage.outofCompetitionCheckbox.click();
+       }
+       
+       @Step
+       public void click_on_Previously_Created_Team(){
+           System.out.println(TeamPage.Team_Name);
+           getDriver().findElement(By.partialLinkText(TeamPage.Team_Name)).click();
+       }
+       
+       @Step
+       public void out_of_Competition_Warning_is_Displayed(){
+           getDriver().findElement(By.xpath(TeamPage.OUTOFCOMPETITION_WARNING_MESSAGE_XPATH)).isDisplayed();    
+           //team deleting
+           teamPage.deleteTeamButton.click();
+           waitABit(2000);
+           try {
+			Robot robot = new Robot();
+			robot.keyPress(KeyEvent.VK_ENTER);
+			robot.keyRelease(KeyEvent.VK_ENTER);
+			waitABit(2000);
+			
+		} catch (AWTException ex) {
+			Logger.getLogger(UserDocsSteps.class.getName()).log(Level.SEVERE,
+					null, ex);
+		}
+       }
+       
+       @Step
+       public void click_on_Sort_by_Descent_Icon(){
+           int ltn = getDriver().findElements(By.xpath(TeamPage.TEAM_NAME_IN_TABLE_GENERAL_XPATH)).size();
+           int lsn = getDriver().findElements(By.xpath(TeamPage.UNIVERSITY_NAME_IN_TABLE_GENERAL_XPATH)).size();
+           int lcn = getDriver().findElements(By.xpath(TeamPage.COACH_NAME_IN_TABLE_GENERAL_XPATH)).size();
+           lastTeamName = getDriver().findElements(By.xpath(TeamPage.TEAM_NAME_IN_TABLE_GENERAL_XPATH)).get(ltn-1).getText();
+           lastSchoolName = getDriver().findElements(By.xpath(TeamPage.UNIVERSITY_NAME_IN_TABLE_GENERAL_XPATH)).get(lsn-1).getText();
+           lastCoachName = getDriver().findElements(By.xpath(TeamPage.COACH_NAME_IN_TABLE_GENERAL_XPATH)).get(lcn-1).getText();
+           teamPage.sortbyDescentButton.click();
+           
+       }
+       
+       @Step
+       public void can_See_Table_Sorted_by_Descent(){
+           Assert.assertEquals(getDriver().findElements(By.xpath(TeamPage.TEAM_NAME_IN_TABLE_GENERAL_XPATH)).get(0).getText(), lastTeamName);
+           Assert.assertEquals(getDriver().findElements(By.xpath(TeamPage.UNIVERSITY_NAME_IN_TABLE_GENERAL_XPATH)).get(0).getText(), lastSchoolName);
+           Assert.assertEquals(getDriver().findElements(By.xpath(TeamPage.COACH_NAME_IN_TABLE_GENERAL_XPATH)).get(0).getText(), lastCoachName);
+       }
+       
+       @Step
+       public void click_on_Team_Created_by_Coach(){
+           List<WebElement> l = getDriver().findElements(By.xpath(TeamPage.COACH_NAME_IN_TABLE_GENERAL_XPATH));
+            for (WebElement a : l){
+              if(a.getText().equals("Stive coach coach")){
+                 i = l.indexOf(a);
+                 System.out.println(i);
+                 break;
+              }
+           }
+            tmp = getDriver().findElements(By.xpath(TeamPage.TEAM_NAME_IN_TABLE_GENERAL_XPATH)).get(i).getText();
+            getDriver().findElements(By.xpath(TeamPage.TEAM_NAME_IN_TABLE_GENERAL_XPATH)).get(i).click();
+            waitABit(1000);
+            Assert.assertEquals(TeamPage.TEAMS_PROFILE_PAGE_TITLE, getDriver().getTitle());
+            
+            
+       }
+       
+       @Step
+       public void click_on_Manage_Team_Button(){
+           teamPage.manageTeamButton.click();
+           
+       }
+       
+       @Step
+       public void assert_Team_Name_in_Team_Profile(){
+           teamPage.teamNameinTeamProfile.containsOnlyText("YNC"+TeamPage.Team_Name);
+       }
+       
+       @Step
+        public void user_Enters_New_Team_Name(){
+            teamPage.teamNameField.clear();
+            waitABit(1000);
+            teamPage.teamNameField.sendKeys(TeamPage.Team_Name);
+        }
        
 
 		

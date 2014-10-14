@@ -40,6 +40,16 @@ public class TeamPage  extends PageObject{
 	public WebElementFacade teamNameSortTextfield;
         @FindBy(xpath="//input[starts-with(@id, 'gs_schoolName')]")
 	public WebElementFacade universityNameSortTextfield;
+        @FindBy(xpath="//input[@type='checkbox'][@name='isOutOfCompetition']")
+	public WebElementFacade outofCompetitionCheckbox;
+        @FindBy(xpath="//span[@class='label label-danger']")
+	public WebElementFacade outofCompetitionWarningMessage;
+        @FindBy(xpath="//span[@sort='desc']")
+	public WebElementFacade sortbyDescentButton;
+        @FindBy(xpath="//a[@class='btn btn-primary']")
+	public WebElementFacade manageTeamButton;
+        @FindBy(xpath="//h1")
+	public WebElementFacade teamNameinTeamProfile;
         
         
 
@@ -49,11 +59,12 @@ public class TeamPage  extends PageObject{
         public final static String USER_PROFILE_PAGE_TITLE = "View User - ICPC";
         public final static String Team_Name = teamNameGenerator();
         //public final static String TEAM_NAME_IN_TABLE = "//td[@title='YNC" + Team_Name +"']";
-        public final static String TEAM_NAME_IN_TABLE = "//a[contains(text(), 'YNCtestteam')]";
+        public final static String TEAM_NAME_IN_TABLE = "//a[contains(text(), 'YNCestteam')]";
         public final static String TEAM_NAME_IN_TABLE_GENERAL_XPATH = "//td[@aria-describedby='team-list_name']/a";
-        public final static String COACH_NAME_IN_TABLE_GENERAL_XPATH = "//td[@aria-describedby='team-list_coachNameEn']/a";
+        public final static String COACH_NAME_IN_TABLE_GENERAL_XPATH = "//td[starts-with(@aria-describedby, 'team-list_coachName')]/a";
         public final static String STUDENTS_NAME_IN_TABLE_GENERAL_XPATH = "//td[@aria-describedby='team-list_members']/a";
         public final static String UNIVERSITY_NAME_IN_TABLE_GENERAL_XPATH = "//td[starts-with(@aria-describedby, 'team-list_schoolName')]";
+        public final static String OUTOFCOMPETITION_WARNING_MESSAGE_XPATH = "//span[@class='label label-danger']";
         
         
         public static String teamNameGenerator(){            

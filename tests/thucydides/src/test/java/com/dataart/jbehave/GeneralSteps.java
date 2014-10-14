@@ -791,10 +791,10 @@ public class GeneralSteps {
             userteam.is_Team_in_Table();
         }
         
-        @When("user clicks on earlier created team name")
-	public void userClicksonEarlierCreatedTeamName() {
-		userteam.user_Clicks_on_Created_Team();
-	}
+//        @When("user clicks on earlier created team name")
+//	public void userClicksonEarlierCreatedTeamName() {
+//		userteam.user_Clicks_on_Created_Team();
+//	}
         
         @Then("user clicks on delete button and confirms deletion")
         public void userClicksonDeleteButtonandConfirmsDelete(){
@@ -914,5 +914,50 @@ public class GeneralSteps {
         public void userShouldSeeExtensionErrorMessage(String message){
         	userprofile.user_should_see_extension_error_message(message);
         }
+        
+        @Then("user checks the Out of competition checkbox")
+        public void userChecksoutofCompetitionCheckbox(){
+        	userteam.out_of_Competition_Checkbox_Checking();
+        }
+        
+        @Then("user clicks on previously created team name in order to get to it's profile")
+        public void userClicksonPreviouslyCreatedTeam(){
+        	userteam.click_on_Previously_Created_Team();
+        }
+        
+        @Then("user should see Out of competition message")
+        public void userShouldSeeOutofCompetitionWarningMessage(){
+        	userteam.out_of_Competition_Warning_is_Displayed();
+        }
+        
+        @When("user clicks on Sort by descent icon in Team name column")
+        public void userClicksonSortbyDescentButton(){
+        	userteam.click_on_Sort_by_Descent_Icon();
+        }
+        
+        @Then("user can see table sorted by descent")
+        public void userCanSeeTableSortedbyDescent(){
+        	userteam.can_See_Table_Sorted_by_Descent();
+        }
+        
+        @When("user click on name of team created by him")
+        public void userClicksonTeamCreatedByHim(){
+        	userteam.click_on_Team_Created_by_Coach();
+        }
+        @Then("user clicks on Manage button")
+        public void userClicksonManageTeamButton(){
+        	userteam.click_on_Manage_Team_Button();
+        }
+        
+        @Then("user should see changed team name in team profile")
+        public void userShouldSeeChangedTeamName(){
+        	userteam.assert_Team_Name_in_Team_Profile();
+        }
+        
+        @Then("user enters new team name")
+        public void userEntersNewTeamName(){
+        	userteam.user_Enters_New_Team_Name();
+        }
+        
        
 }
