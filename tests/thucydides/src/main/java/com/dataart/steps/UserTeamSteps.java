@@ -104,36 +104,54 @@ public class UserTeamSteps extends ScenarioSteps{
         @Step
 	public void adding_New_Students_to_Team() {
            
-            teamPage.addStudentsField.click();	
+            //teamPage.addStudentsField.click();
+            Actions builder = new Actions(getDriver());
+            builder.moveToElement(teamPage.addStudentsField).click().perform();
+            waitABit(1000);
+            builder.moveToElement(teamPage.firstStudentOption).click().perform();
+            waitABit(1000);
+            builder.moveToElement(teamPage.addStudentsField, 270, 10).click().perform();
+            waitABit(500);
+            builder.moveToElement(teamPage.secondStudentOption).click().perform();
+            waitABit(1000);
+            builder.moveToElement(teamPage.addStudentsField, 485, 15).build().perform();
+            waitABit(500);
+            teamPage.addStudentsField.click();
+            waitABit(500);
+            builder.moveToElement(teamPage.thirdStudentOption).click().perform();
+            waitABit(2000);
+            
+            
+            
          
-		try {
-			Robot robot = new Robot();
-			
-                        teamPage.addStudentsField.sendKeys("@");
-                        waitABit(500);
-                        robot.keyPress(KeyEvent.VK_ENTER);
-			robot.keyRelease(KeyEvent.VK_ENTER);
-			waitABit(2000);
-                        teamPage.addStudentsField.sendKeys("@");
-                        waitABit(500);
-			robot.keyPress(KeyEvent.VK_ENTER);
-			robot.keyRelease(KeyEvent.VK_ENTER);
-                        waitABit(2000);
-                        teamPage.addStudentsField.sendKeys("@");
-                        waitABit(500);
-			robot.keyPress(KeyEvent.VK_ENTER);
-			robot.keyRelease(KeyEvent.VK_ENTER);
-                        waitABit(2000);
+//		try {
+//			Robot robot = new Robot();
+//			
+//                        teamPage.addStudentsField.sendKeys("@");
+//                        waitABit(500);
 //                        robot.keyPress(KeyEvent.VK_ENTER);
+//			robot.keyRelease(KeyEvent.VK_ENTER);
+//			waitABit(2000);
+//                        teamPage.addStudentsField.sendKeys("@");
+//                        waitABit(500);
+//			robot.keyPress(KeyEvent.VK_ENTER);
+//			robot.keyRelease(KeyEvent.VK_ENTER);
+//                        waitABit(2000);
+//                        teamPage.addStudentsField.sendKeys("@");
+//                        waitABit(500);
+//			robot.keyPress(KeyEvent.VK_ENTER);
 //			robot.keyRelease(KeyEvent.VK_ENTER);
 //                        waitABit(2000);
 //                        robot.keyPress(KeyEvent.VK_ENTER);
 //			robot.keyRelease(KeyEvent.VK_ENTER);
 //                        waitABit(2000);
-		} catch (AWTException ex) {
-			Logger.getLogger(UserDocsSteps.class.getName()).log(Level.SEVERE,
-					null, ex);
-		}
+//                        robot.keyPress(KeyEvent.VK_ENTER);
+//			robot.keyRelease(KeyEvent.VK_ENTER);
+//                        waitABit(2000);
+//		} catch (AWTException ex) {
+//			Logger.getLogger(UserDocsSteps.class.getName()).log(Level.SEVERE,
+//					null, ex);
+		
 
             
 
