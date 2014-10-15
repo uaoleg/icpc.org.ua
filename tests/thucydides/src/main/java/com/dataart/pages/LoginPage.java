@@ -18,13 +18,13 @@ import org.openqa.selenium.interactions.Actions;
 public class LoginPage extends PageObject {
 
 	@FindBy(xpath = "//input[@type='email']")
-	WebElementFacade userNameTextField;
+	public WebElementFacade userNameTextField;
 
 	@FindBy(xpath = "//input[@type='password']")
-	WebElementFacade passwordTextField;
+	public WebElementFacade passwordTextField;
 
 	@FindBy(xpath = "//button[@type='submit']")
-	WebElementFacade loginButton;
+	public WebElementFacade loginButton;
 
 	@FindBy(css = ".welcome")
 	WebElementFacade welcomeMsg;
@@ -45,7 +45,7 @@ public class LoginPage extends PageObject {
 	public WebElementFacade logOut;
 
 	@FindBy(xpath = "//*[@href='https://github.com/uaoleg/icpc.org.ua']")
-	WebElementFacade githubLink;
+	public WebElementFacade githubLink;
 
 	@FindBy(xpath = "//*[@href='http://www.dataart.ua']")
 	WebElementFacade daLink;
@@ -71,18 +71,8 @@ public class LoginPage extends PageObject {
         
       
 
-	public void enterLoginAndPassword(String userName, String password) {
 
-		$(userNameTextField).sendKeys(userName);		
-		waitABit(500);
-		$(passwordTextField).sendKeys(password);
-
-	}
-
-	public void clickLogin() {
-		loginButton.click();
-
-	}
+	
 
 	public void dataartLinkClick() {
 		$(daLink).click();

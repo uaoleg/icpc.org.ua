@@ -19,5 +19,6 @@ public interface Vars {
     final String ADMINSNAME = "Alexey ог Plekhanov";
     final String ADMINSUNIV = "Dnipro National University";
     final String ADMINSEMAIL = "admin@icpc.org.ua";
+    final String RESULTSPAGE = "http://acc.icpc.org.ua/results";
 	
 }
