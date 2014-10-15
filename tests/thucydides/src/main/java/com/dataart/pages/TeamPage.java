@@ -59,7 +59,7 @@ public class TeamPage  extends PageObject{
         public final static String USER_PROFILE_PAGE_TITLE = "View User - ICPC";
         public final static String Team_Name = teamNameGenerator();
         //public final static String TEAM_NAME_IN_TABLE = "//td[@title='YNC" + Team_Name +"']";
-        public final static String TEAM_NAME_IN_TABLE = "//a[contains(text(), 'YNCestteam')]";
+        public final static String TEAM_NAME_IN_TABLE = "//a[contains(text(), 'YNCtestteam')]";
         public final static String TEAM_NAME_IN_TABLE_GENERAL_XPATH = "//td[@aria-describedby='team-list_name']/a";
         public final static String COACH_NAME_IN_TABLE_GENERAL_XPATH = "//td[starts-with(@aria-describedby, 'team-list_coachName')]/a";
         public final static String STUDENTS_NAME_IN_TABLE_GENERAL_XPATH = "//td[@aria-describedby='team-list_members']/a";
