@@ -59,4 +59,13 @@ public class UserResultsSteps extends ScenarioSteps {
 		
 		Assert.assertTrue(resultsPage.resultTable.isDisplayed());
 	}
+	@Step
+	public void user_close_the_modal_window(){
+		resultsPage.clickOn(resultsPage.closeDialog);
+		resultsPage.waitFor(ExpectedConditions.stalenessOf(resultsPage.modalWindow));
+	}
+	@Step
+	public void user_should_not_see_a_modal_window(){
+		
+	}
 }
