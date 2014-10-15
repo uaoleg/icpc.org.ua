@@ -936,4 +936,12 @@ public class GeneralSteps {
        public void userShouldSeeUploadedTableWithResults(){
     	   userresults.user_should_see_uploaded_table_with_results();
        }
+       @When("user close the modal window")
+       public void userCloseTheModalWindow(){
+    	   
+       }
+       @Then("user should not see a modal window")
+       public void userShouldNotSeeAModalWindow(){
+    	   
+       }
 }

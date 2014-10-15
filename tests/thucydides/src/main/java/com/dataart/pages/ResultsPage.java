@@ -37,5 +37,7 @@ public class ResultsPage extends PageObject {
 	public WebElement enableUpload;
 	@FindBy(id="gbox_results")
 	public WebElement resultTable;
+	@FindBy(xpath="//*[@id='uploadModal']/div[@class='modal-dialog']")
+	public WebElement modalWindow;
 	
 }
