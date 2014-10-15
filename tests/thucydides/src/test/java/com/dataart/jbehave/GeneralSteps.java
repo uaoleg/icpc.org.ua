@@ -10,6 +10,7 @@ import com.dataart.steps.UserPasswordResetSteps;
 import com.dataart.steps.UserProfileSteps;
 import com.dataart.steps.UserQASteps;
 import com.dataart.steps.UserRegistrationSteps;
+import com.dataart.steps.UserResultsSteps;
 import com.dataart.steps.UserTeamSteps;
 import com.dataart.utils.CheckGmail;
 import com.dataart.utils.DBClean;
@@ -19,6 +20,7 @@ import java.awt.AWTException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
+
 
 
 
@@ -71,6 +73,9 @@ public class GeneralSteps {
 	
 	@Steps
 	ManageUserSteps manageuser;
+	
+	@Steps
+	UserResultsSteps userresults;
 
 	@Given("the user is on the Login page")
 	public void givenTheUserIsOnTheLoginPage() {
@@ -914,6 +919,7 @@ public class GeneralSteps {
         public void userShouldSeeExtensionErrorMessage(String message){
         	userprofile.user_should_see_extension_error_message(message);
         }
+
         
         @Then("user checks the Out of competition checkbox")
         public void userChecksoutofCompetitionCheckbox(){
@@ -960,4 +966,23 @@ public class GeneralSteps {
         }
         
        
+
+       @When("user click on the Results link")
+       public void userClickOnTheResultsLink(){
+    	   userresults.user_click_on_the_results_menu();
+       }
+       @When("user click on upload result button")
+       public void userClickOnUploadResultButton(){
+    	   userresults.user_click_on_upload_result_button();
+       }
+       @When("user choose area $ukraine")
+       public void userChooseArea(String area){
+    	   userresults.user_choose_area(area);
+    	   
+       }
+       @Then("user should see uploaded table with results")
+       public void userShouldSeeUploadedTableWithResults(){
+    	   userresults.user_should_see_uploaded_table_with_results();
+       }
+
 }

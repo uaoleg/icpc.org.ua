@@ -28,8 +28,7 @@ Then user clicks on the top document's title
 Then user is able to download that document
 
 Scenario: As coordinator i want to be able to upload documents to the Regulations section
-Given the user is on the Login page
-When the user enters name: coord1@mailinator.com and password: 123456 and click the 'login' button
+Given the user is signed in with coord1@mailinator.com 123456
 When user clicks on the Docs link and chooses Regulations item
 Then user clicks on the Upload Doc button in Regulation section
 Then user fills all the fields
@@ -37,8 +36,7 @@ Then user chooses file and uploads it
 Then user is able to see document in the list
 
 Scenario: As coordinator i want to be able to upload documents to the Guidance section
-Given the user is on the Login page
-When the user enters name: coord1@mailinator.com and password: 123456 and click the 'login' button
+Given the user is signed in with coord1@mailinator.com 123456
 When user clicks on the Docs link and chooses Guidance item
 Then user clicks on the Upload Doc button in Guidance section
 Then user fills all the fields
@@ -46,24 +44,21 @@ Then user chooses file and uploads it
 Then user is able to see document in the list
 
 Scenario: As coordinator i want to be able to delete documents from the Regulations section
-Given the user is on the Login page
-When the user enters name: coord1@mailinator.com and password: 123456 and click the 'login' button
+Given the user is signed in with coord1@mailinator.com 123456
 When user clicks on the Docs link and chooses Regulations item
 Then user clicks on Delete button near the first doc in the list
 Then user confirms deleting
 Then user can see that document is deleted from the list
 
 Scenario: As coordinator i want to be able to delete documents from the Guidance section
-Given the user is on the Login page
-When the user enters name: coord1@mailinator.com and password: 123456 and click the 'login' button
+Given the user is signed in with coord1@mailinator.com 123456
 When user clicks on the Docs link and chooses Guidance item
 Then user clicks on Delete button near the first doc in the list
 Then user confirms deleting
 Then user can see that document is deleted from the list
 
 Scenario: As coordinator i want to be able to edit documents from the Regulations section
-Given the user is on the Login page
-When the user enters name: coord1@mailinator.com and password: 123456 and click the 'login' button
+Given the user is signed in with coord1@mailinator.com 123456
 When user clicks on the Docs link and chooses Regulations item
 Then user clicks on the Edit button near the first document in the list
 Then user fills all fields with new correct information
@@ -72,8 +67,7 @@ Then user clicks on Save Document button
 Then user can see document with new info in fields in the list
 
 Scenario: As coordinator i want to be able to edit documents from the Guidance section
-Given the user is on the Login page
-When the user enters name: coord1@mailinator.com and password: 123456 and click the 'login' button
+Given the user is signed in with coord1@mailinator.com 123456
 When user clicks on the Docs link and chooses Guidance item
 Then user clicks on the Edit button near the first document in the list
 Then user fills all fields with new correct information

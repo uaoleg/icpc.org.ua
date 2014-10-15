@@ -12,7 +12,7 @@ And user click Sign up
 When user check his emailbox myicpctest@gmail.com 123myicpctest and click on the confirmation link
 Then user should see the verified E-mail confirmation message Email verified successfully!
 When user click on go to login page link
-When the user enters name: myicpctest@gmail.com and password: 123myicpctest and click the 'login' button
+Given the user is signed in with myicpctest@gmail.com 123myicpctest
 Then user should see a page title Additional User - ICPC
 Then user loged out
 

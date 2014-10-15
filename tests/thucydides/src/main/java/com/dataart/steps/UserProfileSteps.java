@@ -27,24 +27,29 @@ public class UserProfileSteps extends ScenarioSteps{
 	}
 	@Step
 	public void user_enter_current_password(String password){
+		profilePage.waitFor(ExpectedConditions.visibilityOf(profilePage.currentPasswordField));
 		profilePage.typeInto(profilePage.currentPasswordField, password);
 	}
 	@Step
 	public void user_enter_new_password(String password){
+		profilePage.waitFor(ExpectedConditions.visibilityOf(profilePage.passwordField));
 		profilePage.typeInto(profilePage.passwordField, password);
 	}
 	@Step
 	public void user_repeate_new_password(String password){
+		profilePage.waitFor(ExpectedConditions.visibilityOf(profilePage.passwordRepeatField));
 		profilePage.typeInto(profilePage.passwordRepeatField, password);
 	}
 	@Step
 	public void user_click_change_password_button(){
+		profilePage.waitFor(ExpectedConditions.visibilityOf(profilePage.changePasswordButton));
 		profilePage.clickOn(profilePage.changePasswordButton);
 		
 		profilePage.waitForWithRefresh();
 	}
 	@Step
 	public void user_should_see_sucess_message(String message){
+		profilePage.waitFor(ExpectedConditions.visibilityOf(profilePage.successAlert));
 		Assert.assertEquals(profilePage.getSuccessMessage(),message);
 	}
 	
@@ -159,6 +164,7 @@ public class UserProfileSteps extends ScenarioSteps{
 		profilePage.waitFor(ExpectedConditions.elementToBeClickable(profilePage.uploadBtn));		
 		//((JavascriptExecutor)getDriver()).executeScript("arguments[0].checked = true;", getDriver().findElement(By.xpath("//*[@id='uploadContainer']//input[@type='file']")));
 		getDriver().findElement(By.xpath("//*[@id='uploadContainer']//input[@type='file']")).sendKeys(Loader.getResource(fileName).getFile().substring(1).replace('/','\\'));
+		
 	}
 	@Step
 	public void user_should_see_extension_error_message(String message){

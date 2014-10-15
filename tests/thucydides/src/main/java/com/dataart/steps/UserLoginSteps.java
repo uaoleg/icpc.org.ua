@@ -1,6 +1,7 @@
 package com.dataart.steps;
 
 import org.junit.Assert;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.dataart.pages.LoginPage;
 import com.dataart.utils.Vars;
@@ -17,26 +18,31 @@ public class UserLoginSteps extends ScenarioSteps {
 	public void is_on_the_login_page() {
 
 		loginPage.open();
+		loginPage.waitFor(ExpectedConditions.visibilityOf(loginPage.userNameTextField));
 	}
 
 	@Step
 	public void enter(String userName, String password) {
-		waitABit(1000);
-		loginPage.enterLoginAndPassword(userName, password);
+		loginPage.waitFor(ExpectedConditions.visibilityOf(loginPage.userNameTextField));
+		loginPage.typeInto(loginPage.userNameTextField, userName);
+		loginPage.typeInto(loginPage.passwordTextField, password);
                 
 	}
 
 	@Step
 	public void click_login_button() {
-		waitABit(1000);
+		loginPage.waitFor(ExpectedConditions.visibilityOf(loginPage.loginButton));
 		
-		loginPage.clickLogin();
+		loginPage.clickOn(loginPage.loginButton);
+		loginPage.waitForWithRefresh();
 
 	}
 
 	@Step
 	public void click_logout_link() {
-		waitABit(500);
+
+		waitABit(2000);
+		loginPage.waitForWithRefresh();
 		loginPage.clickOn(loginPage.logOut);
 	}
 
@@ -82,6 +88,7 @@ public class UserLoginSteps extends ScenarioSteps {
 
 	@Step
 	public void user_clicks_on_GitHub_link() {
+		loginPage.waitFor(ExpectedConditions.elementToBeClickable(loginPage.githubLink));
 		loginPage.githubLinkClick();
 	}
 
@@ -92,8 +99,7 @@ public class UserLoginSteps extends ScenarioSteps {
 
 	@Step
 	public void verify_DA_page() {
-		loginPage.goToNewWindow();
-		//waitABit(5000);
+		loginPage.goToNewWindow();		
 		loginPage.waitForTitleToAppear(LoginPage.DA_PAGE_TITLE);
 		Assert.assertEquals(LoginPage.DA_PAGE_TITLE,loginPage.getPageTitle());
 	}
@@ -129,10 +135,9 @@ public class UserLoginSteps extends ScenarioSteps {
 	@StepGroup
 	public void the_user_is_signed_in_with(String userName, String password){
 		is_on_the_login_page();
-		enter(userName,password);
-		waitABit(1000);
+		enter(userName,password);		
 		click_login_button();
-                waitABit(2000);
+                
 	}
 	@Step
     public void	user_go_to_user_profile(){
