@@ -987,11 +987,15 @@ public class GeneralSteps {
 
        @When("user close the modal window")
        public void userCloseTheModalWindow(){
-    	   
+    	   userresults.user_close_the_modal_window();
        }
        @Then("user should not see a modal window")
        public void userShouldNotSeeAModalWindow(){
-    	   
+    	   userresults.user_should_not_see_a_modal_window();
+       }
+       @Then("user should see disable upload button")
+       public void userShouldSeeDisableUploadButton(){
+    	   userresults.user_should_see_disable_upload_button();
        }
 
 }
