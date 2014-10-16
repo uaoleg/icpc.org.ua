@@ -148,6 +148,8 @@ public class UserProfileSteps extends ScenarioSteps{
 	@Step
 	public void user_upload_a_new_photo(){
 		profilePage.waitFor(ExpectedConditions.elementToBeClickable(profilePage.uploadBtn));
+		//JavascriptExecutor executor = (JavascriptExecutor)getDriver();
+		//executor.executeScript("arguments[0].style.display='block';", getDriver().findElement(By.xpath("//input[@type='file']")));
 		getDriver().findElement(By.xpath("//*[@id='uploadContainer']//input[@type='file']")).sendKeys(Loader.getResource("images2.jpg").getFile().substring(1).replace('/','\\'));		
 		//profilePage.waitFor(ExpectedConditions.visibilityOf(profilePage.profilePhoto));	
 		

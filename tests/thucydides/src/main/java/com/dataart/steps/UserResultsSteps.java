@@ -62,10 +62,16 @@ public class UserResultsSteps extends ScenarioSteps {
 	@Step
 	public void user_close_the_modal_window(){
 		resultsPage.clickOn(resultsPage.closeDialog);
-		resultsPage.waitFor(ExpectedConditions.stalenessOf(resultsPage.modalWindow));
+		resultsPage.waitFor(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id='uploadModal']/div[@class='modal-dialog']")));
 	}
 	@Step
 	public void user_should_not_see_a_modal_window(){
+		Assert.assertFalse(resultsPage.isElementVisible(By.xpath("//*[@id='uploadModal']/div[@class='modal-dialog']")));
 		
+	}
+	@Step
+	public void user_should_see_disable_upload_button(){
+		System.out.println(resultsPage.uploadBtn.getAttribute("disabled"));
+		Assert.assertTrue((resultsPage.uploadBtn.getAttribute("disabled")).equals("true"));
 	}
 }
