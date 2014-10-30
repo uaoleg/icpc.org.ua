@@ -77,6 +77,8 @@ public class ProfilePage extends PageObject {
 	public WebElement profilePhoto;
 	@FindBy(css=".help-block")
 	public WebElement extensionError;
+	@FindBy(css=".alert.alert-danger.text-center")
+	public WebElement alertMessage;
 	
 	public void cleanAdditionalFields() {
 		phoneHome.clear();

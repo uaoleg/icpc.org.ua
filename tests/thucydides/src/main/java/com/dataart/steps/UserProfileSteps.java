@@ -173,5 +173,11 @@ public class UserProfileSteps extends ScenarioSteps{
 		profilePage.waitFor(ExpectedConditions.textToBePresentInElement(profilePage.extensionError, message));		
 		Assert.assertEquals(message,profilePage.extensionError.getText());
 	}
+	@Step
+	public void user_should_see_a_message(String message){
+		profilePage.waitFor(ExpectedConditions.elementToBeClickable(profilePage.alertMessage));		
+		System.out.println(profilePage.alertMessage.getText());
+		Assert.assertEquals(message,profilePage.alertMessage.getText());
+	}
 
 }
