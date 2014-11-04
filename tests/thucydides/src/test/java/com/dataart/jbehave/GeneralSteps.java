@@ -1001,5 +1001,8 @@ public class GeneralSteps {
        public void userShouldSeeAMessage(String message){
     	   userprofile.user_should_see_a_message(message);
        }
-
+       @Then("user should see a message alert $message")
+       public void userShouldSeeAMessageAlert(String message){
+    	   userprofile.user_should_see_a_message_alert(message);
+       }
 }
