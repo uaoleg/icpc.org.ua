@@ -1026,5 +1026,9 @@ public class GeneralSteps {
        public void userShouldSeeDisableUploadButton(){
     	   userresults.user_should_see_disable_upload_button();
        }
+       @Then("user should see a message $message")
+       public void userShouldSeeAMessage(String message){
+    	   userprofile.user_should_see_a_message(message);
+       }
 
 }

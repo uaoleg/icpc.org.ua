@@ -70,3 +70,12 @@ Given the user is signed in with admin@icpc.org.ua e3r4t5
 When user move to general info tab
 When user upload a new file TestDoc.doc
 Then user should see extension error message File extension error.
+
+Scenario: As a user i want to be abble to see warning message about filling additonal info in profile if user profile info is not filled
+Given the user is signed in with olegstud@mailinator.com 123456
+Then user should see a message Please fill in your additional info in ukrainian and english languages
+
+Scenario: As a user i want to be abble to see warning message about status approving
+Given the user is signed in with admin@icpc.org.ua e3r4t5
+Then user should see a message Warning! Your coordinator status is not approved yet!\ncoord1 coord1 can approve your status.
+
