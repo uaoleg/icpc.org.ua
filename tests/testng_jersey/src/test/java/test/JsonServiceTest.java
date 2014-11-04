@@ -132,6 +132,23 @@ public class JsonServiceTest {
 		System.out.println(response.getEntity(String.class));
 		Assert.assertEquals(response.getStatus(), 200);
 	}
+	
+	@Test
+	public void deleteMarkedTeamsTest() {
+		ClientConfig config = new DefaultClientConfig();
+		Client client = Client.create(config);
+		WebResource webResource = client
+				.resource("http://acc.icpc.org.ua/test/team/delete");		
+		ClientResponse response = webResource
+				.accept(MediaType.APPLICATION_JSON_TYPE)
+				.header("X-Requested-With", "XMLHttpRequest")
+				.header("Accept-Language", "en-US,en;q=0.8")
+				.post(ClientResponse.class);
+
+	
+		Assert.assertEquals(response.getStatus(), 200);
+	}
+	//
 
 	// Doesn't work
 	// ///////////////////////////////////////////////////////////////
