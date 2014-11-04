@@ -20,5 +20,18 @@ class TeamCommand extends \console\ext\ConsoleCommand
             echo "Error! Team with id={$id} was not found\n";
         }
     }
-    
+
+    /**
+     * Method which deletes all the teams with isDeleted = true from the data storage
+     */
+    public function actionRemoveDeleted()
+    {
+        $teams = Team::model()->findAllByAttributes(array('isDeleted' => true));
+        foreach ($teams as $team) {
+            $team->delete();
+            echo '.';
+        }
+        echo "\nAll 'deleted' teams have been removed from the data storage.\n";
+    }
+
 }
