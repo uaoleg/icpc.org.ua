@@ -52,8 +52,14 @@ public class NewsPage extends PageObject {
 	public List<WebElement> editList;
 	@FindBy(xpath = "//h2[@class='news-title']/a[contains(@href,'/news/view')]")
 	public List<WebElement> titleNewsList;
-        @FindBy(xpath="//*[@href='/team/list']")
+	@FindBy(xpath = "//*[@href='/team/list']")
 	public WebElementFacade teamLink;
+
+	@FindBy(css = ".next>a")
+	public WebElement newerButton;
+
+	@FindBy(css = ".previous>a")
+	public WebElement previousButton;
 
 	public void goToNews() {
 		mainMenuList.get(0).click();
@@ -75,12 +81,12 @@ public class NewsPage extends PageObject {
 	}
 
 	public String getNewsTitle() {
-		
+
 		return newsTitle.getText();
 	}
 
 	public String getNewsBody() {
-		
+
 		return newsBody.getText();
 	}
 
@@ -93,5 +99,10 @@ public class NewsPage extends PageObject {
 
 		System.out.println(pictureForNews.isCurrentlyVisible());
 		upload("src/test/resources/images2.jpg").to(pictureForNews);
+	}
+	public String getNewsPageNumber(){
+		System.out.println( newerButton.getAttribute("href"));
+		return newerButton.getAttribute("href");
+		
 	}
 }
