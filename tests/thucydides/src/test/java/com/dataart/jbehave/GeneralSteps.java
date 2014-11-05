@@ -1005,4 +1005,16 @@ public class GeneralSteps {
        public void userShouldSeeAMessageAlert(String message){
     	   userprofile.user_should_see_a_message_alert(message);
        }
+       @When("user click on Newer button")
+       public void userClickOnNewerButton(){
+    	   usernews.user_click_on_Newer_button();
+       }
+       @Then("user should see previous news page")
+       public void userShouldSeePreviousNewsPage(){
+    	   usernews.user_should_see_previous_news_page();
+       }
+       @When("user click on Older button")
+       public void userClickOnOlderButton(){
+    	   //under constraction
+       }
 }
