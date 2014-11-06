@@ -1015,6 +1015,10 @@ public class GeneralSteps {
        }
        @When("user click on Older button")
        public void userClickOnOlderButton(){
-    	   //under constraction
+    	   usernews.user_click_on_older_button();
+       }
+       @Then("user should see initial news page")
+       public void userShouldSeeInitialNewsPage(){
+    	   usernews.user_should_see_initial_news_page();
        }
 }
