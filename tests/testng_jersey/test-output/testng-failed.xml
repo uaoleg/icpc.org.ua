@@ -5,7 +5,7 @@
     <classes>
       <class name="test.JsonServiceTest">
         <methods>
-          <include name="manageTeamsNegativeTest"/>
+          <include name="deleteMarkedTeamsTest"/>
         </methods>
       </class> <!-- test.JsonServiceTest -->
     </classes>

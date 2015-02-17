@@ -98,3 +98,16 @@ When user click on publish button
 And user go to news menu
 When user click on the news title
 Then user should see a title and news body
+
+Scenario: As admin i want to be able to navigate to the previous page
+Given the user is signed in with admin@icpc.org.ua e3r4t5
+When user go to news menu
+When user click on Newer button
+Then user should see previous news page
+
+Scenario: As admin i want to be able to navigate to the previous page and back
+Given the user is signed in with admin@icpc.org.ua e3r4t5
+When user go to news menu
+When user click on Newer button
+When user click on Older button
+Then user should see initial news page

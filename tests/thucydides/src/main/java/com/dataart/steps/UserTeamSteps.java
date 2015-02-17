@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -25,6 +26,8 @@ public class UserTeamSteps extends ScenarioSteps{
         private String lastSchoolName;
         private String lastCoachName;
         private int i;
+        
+        
        
         
 	@Step

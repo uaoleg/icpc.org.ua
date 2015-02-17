@@ -1,6 +1,7 @@
 package com.dataart.jbehave;
 
 import com.dataart.pages.LoginPage;
+import com.dataart.pages.TeamPage;
 import com.dataart.steps.ManageUserSteps;
 import com.dataart.steps.UserDocsSteps;
 import com.dataart.steps.UserImportSteps;
@@ -15,15 +16,11 @@ import com.dataart.steps.UserTeamSteps;
 import com.dataart.utils.CheckGmail;
 import com.dataart.utils.DBClean;
 import com.dataart.utils.Vars;
-
 import java.awt.AWTException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-
-
-
 import net.thucydides.core.annotations.ManagedPages;
 import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.pages.Pages;
@@ -32,12 +29,16 @@ import net.thucydides.core.steps.StepFactory;
 import static net.thucydides.core.webdriver.ThucydidesWebDriverSupport.getDriver;
 
 import org.jbehave.core.annotations.AfterScenario;
+import org.jbehave.core.annotations.AfterStories;
+import org.jbehave.core.annotations.AfterStory;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 public class GeneralSteps {
@@ -104,6 +105,34 @@ public class GeneralSteps {
         public void endOver(){
             
         }
+        
+        @AfterStories
+        public void deleteCreatedTeams(){
+            user.is_on_the_login_page();
+            user.enter("coa1@mailinator.com", "123456");                
+            user.click_login_button();
+            usernews.user_click_on_the_team_link(); 
+            int g = 0;
+            do{ 
+                g=0;
+                List<WebElement> l = pages.getDriver().findElements(By.xpath(TeamPage.COACH_NAME_IN_TABLE_GENERAL_XPATH));
+                for (WebElement a : l){
+                  if(a.getText().equals("Stive coach coach")){
+                     int i = l.indexOf(a);
+                     System.out.println(i);
+                     pages.getDriver().findElements(By.xpath(TeamPage.TEAM_NAME_IN_TABLE_GENERAL_XPATH)).get(i).click();
+                     userteam.user_Clicks_on_Delete_Button_and_Confirms_Delete();
+                     g=1;
+                     break;
+                     }
+                }
+            }while (g == 1);
+    
+        
+            pages.getDriver().close();
+            pages.getDriver().quit();
+        }
+        
 
 	@When("the user enters name: $userName and password: $password and click the 'login' button")
 	public void whenTheUserEnterLoginAndPassword(String userName,
@@ -1001,5 +1030,24 @@ public class GeneralSteps {
        public void userShouldSeeAMessage(String message){
     	   userprofile.user_should_see_a_message(message);
        }
-
+       @Then("user should see a message alert $message")
+       public void userShouldSeeAMessageAlert(String message){
+    	   userprofile.user_should_see_a_message_alert(message);
+       }
+       @When("user click on Newer button")
+       public void userClickOnNewerButton(){
+    	   usernews.user_click_on_Newer_button();
+       }
+       @Then("user should see previous news page")
+       public void userShouldSeePreviousNewsPage(){
+    	   usernews.user_should_see_previous_news_page();
+       }
+       @When("user click on Older button")
+       public void userClickOnOlderButton(){
+    	   usernews.user_click_on_older_button();
+       }
+       @Then("user should see initial news page")
+       public void userShouldSeeInitialNewsPage(){
+    	   usernews.user_should_see_initial_news_page();
+       }
 }

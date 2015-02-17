@@ -11,6 +11,8 @@ import org.openqa.selenium.WebElement;
 
 
 
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import com.dataart.model.News;
 import com.dataart.pages.NewsPage;
 
@@ -137,4 +139,23 @@ public class UserNewsSteps extends ScenarioSteps {
 		waitABit(500);
 	}
         
+    @Step
+    public void user_click_on_Newer_button(){
+    	newsPage.waitFor(ExpectedConditions.elementToBeClickable(newsPage.newerButton));
+    	newsPage.clickOn(newsPage.newerButton);
+    }
+    @Step
+    public void user_should_see_previous_news_page(){    	
+    	Assert.assertEquals("http://acc.icpc.org.ua/news/latest/page/3",newsPage.getNewsPageNumber());
+    }
+    @Step
+    public void user_click_on_older_button(){
+    	newsPage.waitFor(ExpectedConditions.elementToBeClickable(newsPage.previousButton));
+    	newsPage.clickOn(newsPage.previousButton);
+    }
+    @Step
+    public void user_should_see_initial_news_page(){
+    	newsPage.waitFor(ExpectedConditions.elementToBeClickable(newsPage.newerButton));
+    	Assert.assertEquals("http://acc.icpc.org.ua/news/latest/page/2",newsPage.getNewsPageNumber());
+    }
 }
