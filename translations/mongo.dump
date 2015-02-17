@@ -406,7 +406,6 @@
 { "category" : "app", "language" : "uk", "message" : "Home phone number", "translation" : "Домашній телефон", "_id" : { "$oid" : "5260e6a9445798b6048b45d9" } }
 { "category" : "app", "language" : "uk", "message" : "Mobile phone number", "translation" : "Мобільній телефон", "_id" : { "$oid" : "5260e6a9445798b6048b45da" } }
 { "category" : "app", "language" : "uk", "message" : "Skype", "translation" : "Skype", "_id" : { "$oid" : "5260e6a9445798b6048b45db" } }
-{ "category" : "app", "language" : "uk", "message" : "ACM number if you have", "translation" : "Номер ACM", "_id" : { "$oid" : "5260e6a9445798b6048b45dc" } }
 { "category" : "app", "language" : "uk", "message" : "Position", "translation" : "Посада", "_id" : { "$oid" : "5260e6a9445798b6048b45dd" } }
 { "category" : "app", "language" : "uk", "message" : "Office address", "translation" : "Робоча адреса", "_id" : { "$oid" : "5260e6a9445798b6048b45de" } }
 { "category" : "app", "language" : "uk", "message" : "Work phone number", "translation" : "Робочий телефон", "_id" : { "$oid" : "5260e6a9445798b6048b45df" } }
@@ -440,7 +439,6 @@
 { "category" : "app", "language" : "ru", "message" : "Home phone number", "translation" : "Домашний телефон", "_id" : { "$oid" : "5260e6a9445798b6048b46d4" } }
 { "category" : "app", "language" : "ru", "message" : "Mobile phone number", "translation" : "Мобильный телефон", "_id" : { "$oid" : "5260e6a9445798b6048b46d5" } }
 { "category" : "app", "language" : "ru", "message" : "Skype", "translation" : "Skype", "_id" : { "$oid" : "5260e6a9445798b6048b46d6" } }
-{ "category" : "app", "language" : "ru", "message" : "ACM number if you have", "translation" : "Номер ACM", "_id" : { "$oid" : "5260e6a9445798b6048b46d7" } }
 { "category" : "app", "language" : "ru", "message" : "Position", "translation" : "Должность", "_id" : { "$oid" : "5260e6a9445798b6048b46d8" } }
 { "category" : "app", "language" : "ru", "message" : "Office address", "translation" : "Рабочий адрес", "_id" : { "$oid" : "5260e6a9445798b6048b46d9" } }
 { "category" : "app", "language" : "ru", "message" : "Work phone number", "translation" : "Рабочий телефон", "_id" : { "$oid" : "5260e6a9445798b6048b46da" } }
@@ -474,7 +472,6 @@
 { "_id" : { "$oid" : "5260e6a9445798b6048b47cf" }, "category" : "app", "language" : "en", "message" : "Home phone number", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47d0" }, "category" : "app", "language" : "en", "message" : "Mobile phone number", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47d1" }, "category" : "app", "language" : "en", "message" : "Skype", "translation" : "" }
-{ "_id" : { "$oid" : "5260e6a9445798b6048b47d2" }, "category" : "app", "language" : "en", "message" : "ACM number if you have", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47d3" }, "category" : "app", "language" : "en", "message" : "Position", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47d4" }, "category" : "app", "language" : "en", "message" : "Office address", "translation" : "" }
 { "_id" : { "$oid" : "5260e6a9445798b6048b47d5" }, "category" : "app", "language" : "en", "message" : "Work phone number", "translation" : "" }
@@ -854,8 +851,7 @@
 { "category" : "app", "language" : "uk", "message" : "There is {n} question with this tag. Are you sure?|There are {n} questions with this tag. Are you sure?", "translation" : "З цим тегом {n} питання. Ви впевнені?|З цим тегом {n} питань. Ви впевнені?", "_id" : { "$oid" : "52dce3a7445798d1188b4667" } }
 { "category" : "app", "language" : "uk", "message" : "Tag Manage", "translation" : "Керування тегами", "_id" : { "$oid" : "52dce3a7445798d1188b4669" } }
 { "category" : "app", "language" : "uk", "message" : "Q&A", "translation" : "Q&A", "_id" : { "$oid" : "52dce3a7445798d1188b4683" } }
-{ "category" : "app", "language" : "uk", "message" : "Congrats! You've been successfully registered on {app}.", "translation" : "Вітаємо! Ви успішно зареєструвались у {app}.", "_id" : { "$oid" : "52dce3a7445798d1188b4689" } }
-{ "category" : "app", "language" : "uk", "message" : "Please, confirm your email by following this link.", "translation" : "Будь ласка, підтвердіть вашу e-mail адресу, перешовши за цим посиланням.", "_id" : { "$oid" : "52dce3a7445798d1188b468a" } }
+{ "category" : "app", "language" : "uk", "message" : "Please, confirm your email by following this link.", "translation" : "Будь ласка, підтвердіть вашу e-mail адресу, перейшовши за цим посиланням.", "_id" : { "$oid" : "52dce3a7445798d1188b468a" } }
 { "category" : "app", "language" : "uk", "message" : "Email verified successfully!", "translation" : "E-mail адресу успішно перевірено!", "_id" : { "$oid" : "52dce3a7445798d1188b468c" } }
 { "category" : "app", "language" : "uk", "message" : "Now you can authorize on {a}login page{/a}", "translation" : "Ви можете авторизуватися на {a}сторінці логіну{/a}", "_id" : { "$oid" : "52dce3a7445798d1188b468d" } }
 { "category" : "app", "language" : "uk", "message" : "E-mail confirmation", "translation" : "Підтвердження e-mail адреси", "_id" : { "$oid" : "52dce3a7445798d1188b46a3" } }
@@ -884,7 +880,6 @@
 { "category" : "app", "language" : "ru", "message" : "There is {n} question with this tag. Are you sure?|There are {n} questions with this tag. Are you sure?", "translation" : "С данным тэгом существует {n} вопрос. Вы уверены?|С данным тэгом существует {n} вопросов. Вы уверены?", "_id" : { "$oid" : "52dce3a8445798d1188b4841" } }
 { "category" : "app", "language" : "ru", "message" : "Tag Manage", "translation" : "Управление тэгами", "_id" : { "$oid" : "52dce3a8445798d1188b4843" } }
 { "category" : "app", "language" : "ru", "message" : "Q&A", "translation" : "Q&A", "_id" : { "$oid" : "52dce3a8445798d1188b485d" } }
-{ "category" : "app", "language" : "ru", "message" : "Congrats! You've been successfully registered on {app}.", "translation" : "Поздравляем! Вы успешно зарегестрировались в {app}.", "_id" : { "$oid" : "52dce3a8445798d1188b4863" } }
 { "category" : "app", "language" : "ru", "message" : "Please, confirm your email by following this link.", "translation" : "Пожалуйста, подтвердите ваш e-mail адрес, пройдя по ссылке.", "_id" : { "$oid" : "52dce3a8445798d1188b4864" } }
 { "category" : "app", "language" : "ru", "message" : "Email verified successfully!", "translation" : "Ваш e-mail адрес успешно подтвержден!", "_id" : { "$oid" : "52dce3a8445798d1188b4866" } }
 { "category" : "app", "language" : "ru", "message" : "Now you can authorize on {a}login page{/a}", "translation" : "Теперь вы можете авторизоваться на {a}странице входа{/a}", "_id" : { "$oid" : "52dce3a8445798d1188b4867" } }
@@ -914,7 +909,6 @@
 { "_id" : { "$oid" : "52dce3a8445798d1188b4a1b" }, "category" : "app", "language" : "en", "message" : "There is {n} question with this tag. Are you sure?|There are {n} questions with this tag. Are you sure?", "translation" : "" }
 { "_id" : { "$oid" : "52dce3a8445798d1188b4a1d" }, "category" : "app", "language" : "en", "message" : "Tag Manage", "translation" : "" }
 { "_id" : { "$oid" : "52dce3a8445798d1188b4a37" }, "category" : "app", "language" : "en", "message" : "Q&A", "translation" : "" }
-{ "_id" : { "$oid" : "52dce3a8445798d1188b4a3d" }, "category" : "app", "language" : "en", "message" : "Congrats! You've been successfully registered on {app}.", "translation" : "" }
 { "_id" : { "$oid" : "52dce3a8445798d1188b4a3e" }, "category" : "app", "language" : "en", "message" : "Please, confirm your email by following this link.", "translation" : "" }
 { "_id" : { "$oid" : "52dce3a8445798d1188b4a40" }, "category" : "app", "language" : "en", "message" : "Email verified successfully!", "translation" : "" }
 { "_id" : { "$oid" : "52dce3a8445798d1188b4a41" }, "category" : "app", "language" : "en", "message" : "Now you can authorize on {a}login page{/a}", "translation" : "" }
@@ -968,19 +962,16 @@
 { "category" : "app", "language" : "uk", "message" : "Stage in which team participates", "translation" : "Етап, в якому приймала участь команда", "_id" : { "$oid" : "52f0ff1b445798b64e8b45e9" } }
 { "category" : "app", "language" : "uk", "message" : "Can increase the Stage Number by only 1.", "translation" : "Можливо збільшити номер етапу лиша на 1.", "_id" : { "$oid" : "52f0ff1b445798b64e8b45f7" } }
 { "category" : "app", "language" : "uk", "message" : "stage", "translation" : "етап", "_id" : { "$oid" : "52f0ff1b445798b64e8b46eb" } }
-{ "category" : "app", "language" : "uk", "message" : "Stage is completed", "translation" : "Етап завершено", "_id" : { "$oid" : "52f0ff1b445798b64e8b46ec" } }
 { "category" : "app", "language" : "uk", "message" : "Stage", "translation" : "Етап", "_id" : { "$oid" : "52f0ff1b445798b64e8b46f4" } }
 { "category" : "app", "language" : "ru", "message" : "Number of stage", "translation" : "Номер этапа", "_id" : { "$oid" : "52f0ff1b445798b64e8b47bc" } }
 { "category" : "app", "language" : "ru", "message" : "Stage in which team participates", "translation" : "Этап, в котором учавствует команда", "_id" : { "$oid" : "52f0ff1b445798b64e8b47d6" } }
 { "category" : "app", "language" : "ru", "message" : "Can increase the Stage Number by only 1.", "translation" : "Номер этапа может быть увеличен только на 1.", "_id" : { "$oid" : "52f0ff1b445798b64e8b47e4" } }
 { "category" : "app", "language" : "ru", "message" : "stage", "translation" : "этап", "_id" : { "$oid" : "52f0ff1c445798b64e8b48d8" } }
-{ "category" : "app", "language" : "ru", "message" : "Stage is completed", "translation" : "Этап завершен", "_id" : { "$oid" : "52f0ff1c445798b64e8b48d9" } }
 { "category" : "app", "language" : "ru", "message" : "Stage", "translation" : "Этап", "_id" : { "$oid" : "52f0ff1c445798b64e8b48e1" } }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b49a9" }, "category" : "app", "language" : "en", "message" : "Number of stage", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b49c3" }, "category" : "app", "language" : "en", "message" : "Stage in which team participates", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b49d1" }, "category" : "app", "language" : "en", "message" : "Can increase the Stage Number by only 1.", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b4ac5" }, "category" : "app", "language" : "en", "message" : "stage", "translation" : "" }
-{ "_id" : { "$oid" : "52f0ff1c445798b64e8b4ac6" }, "category" : "app", "language" : "en", "message" : "Stage is completed", "translation" : "" }
 { "_id" : { "$oid" : "52f0ff1c445798b64e8b4ace" }, "category" : "app", "language" : "en", "message" : "Stage", "translation" : "" }
 { "category" : "app", "language" : "uk", "message" : "Absolute Place", "translation" : "Абсолютне місце", "_id" : { "$oid" : "52f4a51044579838608b45d1" } }
 { "category" : "app", "language" : "uk", "message" : "Prize Place", "translation" : "Призове місце", "_id" : { "$oid" : "52f4a51044579838608b45d2" } }
@@ -1219,3 +1210,24 @@
 { "category" : "app", "language" : "ru", "message" : "Ignore recaptcha", "translation" : "Игнорировать recaptcha", "_id" : { "$oid" : "53f6dda6445798ff4e8b493f" } }
 { "_id" : { "$oid" : "53f6dda6445798ff4e8b4b3a" }, "category" : "app", "language" : "en", "message" : "Email length should be {n} symbols or more.", "translation" : "" }
 { "_id" : { "$oid" : "53f6dda6445798ff4e8b4b80" }, "category" : "app", "language" : "en", "message" : "Ignore recaptcha", "translation" : "" }
+{ "category" : "app", "language" : "uk", "message" : "Is team out of a competition", "translation" : "Команда поза конкурсом", "_id" : { "$oid" : "5429374c4457980f6c8b45fb" } }
+{ "category" : "app", "language" : "uk", "message" : "Team \"{name}\" already exists for year {year}", "translation" : "Команда \"{name}\" вже існує для {year} року", "_id" : { "$oid" : "5429374c4457980f6c8b4607" } }
+{ "category" : "app", "language" : "uk", "message" : "ACM number", "translation" : "ACM номер", "_id" : { "$oid" : "5429374c4457980f6c8b4625" } }
+{ "category" : "app", "language" : "uk", "message" : "Out of competition", "translation" : "Поза конкурсом", "_id" : { "$oid" : "5429374c4457980f6c8b46b4" } }
+{ "category" : "app", "language" : "uk", "message" : "Data from icpc.baylor.edu", "translation" : "Дані з icpc.baylor.edu", "_id" : { "$oid" : "5429374c4457980f6c8b4705" } }
+{ "category" : "app", "language" : "uk", "message" : "Proceeded to the next stage", "translation" : "Перейшла до наступного туру", "_id" : { "$oid" : "5429374c4457980f6c8b4739" } }
+{ "category" : "app", "language" : "ru", "message" : "Is team out of a competition", "translation" : "Команда вне конкурса", "_id" : { "$oid" : "5429374c4457980f6c8b4842" } }
+{ "category" : "app", "language" : "ru", "message" : "Team \"{name}\" already exists for year {year}", "translation" : "Команда \"{team}\" уже существует для {year} года", "_id" : { "$oid" : "5429374c4457980f6c8b484e" } }
+{ "category" : "app", "language" : "ru", "message" : "ACM number", "translation" : "ACM номер", "_id" : { "$oid" : "5429374c4457980f6c8b486c" } }
+{ "category" : "app", "language" : "ru", "message" : "Out of competition", "translation" : "Вне конкурса", "_id" : { "$oid" : "5429374c4457980f6c8b48fb" } }
+{ "category" : "app", "language" : "ru", "message" : "Data from icpc.baylor.edu", "translation" : "Данные с icpc.baylor.edu", "_id" : { "$oid" : "5429374c4457980f6c8b494c" } }
+{ "category" : "app", "language" : "ru", "message" : "Proceeded to the next stage", "translation" : "Перешла в следующий тур", "_id" : { "$oid" : "5429374c4457980f6c8b4980" } }
+{ "_id" : { "$oid" : "5429374c4457980f6c8b4a89" }, "category" : "app", "language" : "en", "message" : "Is team out of a competition", "translation" : "" }
+{ "_id" : { "$oid" : "5429374c4457980f6c8b4a95" }, "category" : "app", "language" : "en", "message" : "Team \"{name}\" already exists for year {year}", "translation" : "" }
+{ "_id" : { "$oid" : "5429374c4457980f6c8b4ab3" }, "category" : "app", "language" : "en", "message" : "ACM number", "translation" : "" }
+{ "_id" : { "$oid" : "5429374c4457980f6c8b4b42" }, "category" : "app", "language" : "en", "message" : "Out of competition", "translation" : "" }
+{ "_id" : { "$oid" : "5429374c4457980f6c8b4b93" }, "category" : "app", "language" : "en", "message" : "Data from icpc.baylor.edu", "translation" : "" }
+{ "_id" : { "$oid" : "5429374c4457980f6c8b4bc7" }, "category" : "app", "language" : "en", "message" : "Proceeded to the next stage", "translation" : "" }
+{ "category" : "app", "language" : "uk", "message" : "Congrats! You've been successfully registered on Ukrainian Collegiate Programming Contest website.", "translation" : "Вітаємо! Ви успішно зареєструвались на сайті Всеукраїниської студентської олімпіади з програмування!", "_id" : { "$oid" : "54e301184457980e0b8b46d3" } }
+{ "category" : "app", "language" : "ru", "message" : "Congrats! You've been successfully registered on Ukrainian Collegiate Programming Contest website.", "translation" : "Поздравляем! Вы успешно зарегистрировались на сайте Всеукраинской студенческой олимпиады по программированию!", "_id" : { "$oid" : "54e301184457980e0b8b491a" } }
+{ "_id" : { "$oid" : "54e301184457980e0b8b4b61" }, "category" : "app", "language" : "en", "message" : "Congrats! You've been successfully registered on Ukrainian Collegiate Programming Contest website.", "translation" : "" }
