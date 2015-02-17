@@ -33,7 +33,8 @@
                         <div class="col-lg-9">
                             <input class="form-control" id="speciality" name="speciality" type="text"
                                    value="<?=\CHtml::encode($info->speciality)?>"
-                                   placeholder="<?=\yii::t('app', 'Speciality', null, null, $lang)?>" />
+                                   placeholder="<?=\yii::t('app', 'Speciality', null, null, $lang)?>"
+                                   data-baylor-speciality="" />
                         </div>
                     </div>
                     <div class="form-group">

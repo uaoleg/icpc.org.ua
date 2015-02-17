@@ -101,12 +101,20 @@ class Baylor extends \CApplicationComponent
                 'officeAddress' => '[id="tabs:contactForm:roaddressaddressLine1"]',
                 'email' => '[id="tabs:piForm:piusernameView"]',
                 'acmId' => '[id="tabs:piForm:ropiacmId"]',
+                'speciality' => '[id="tabs:piForm:rodegreeareaOfStudy"]',
+                'birthday' => '[id="tabs:piForm:degreedateOfBirthView"]',
             );
 
             foreach ($info as $key => $value) {
                 $datum = $html->find($value, 0);
                 if (!is_null($datum)) {
-                    $baylorInfo[$key] = trim($datum->plaintext);
+                    $result = trim($datum->plaintext);
+                    if ($key === 'birthday') {
+                        $unixBirthday = strtotime(trim($datum->plaintext));
+                        $result = date('Y-m-d', $unixBirthday);
+                    }
+
+                    $baylorInfo[$key] = $result;
                 }
             }
 

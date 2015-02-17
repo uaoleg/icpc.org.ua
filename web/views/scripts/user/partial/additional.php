@@ -29,7 +29,8 @@
     <div class="col-lg-9">
         <input class="form-control" id="dateOfBirth" name="dateOfBirth" type="text"
                value="<?=(is_int($info->dateOfBirth)) ? date('Y-m-d', $info->dateOfBirth) : ''?>"
-               placeholder="<?=\yii::t('app', 'Date of birth', null, null, $lang)?>" />
+               placeholder="<?=\yii::t('app', 'Date of birth', null, null, $lang)?>"
+               data-baylor-birthday="" />
     </div>
 </div>
 

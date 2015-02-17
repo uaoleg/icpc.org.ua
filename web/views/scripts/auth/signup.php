@@ -20,6 +20,8 @@
                     <input type="hidden" name="phoneHome" data-baylor-phoneHome="" />
                     <input type="hidden" name="phoneMobile" data-baylor-phoneMobile="" />
                     <input type="hidden" name="shirtSize" data-baylor-shirtSize="" />
+                    <input type="hidden" name="dateOfBirth" data-baylor-birthday="" />
+                    <input type="hidden" name="speciality" data-baylor-speciality="" />
                     <div class="form-group">
                         <input type="text" class="form-control" name="firstNameUk"
                                value="<?=\CHtml::encode($user->firstNameUk)?>"
@@ -136,6 +138,10 @@
                     <label><?=$user->getAttributeLabel('lastNameEn')?></label>
                     <p class="form-control-static"></p>
                 </div>
+                <div class="form-group hide" data-baylor-birthday-text="">
+                    <label><?=$user->getAttributeLabel('dateOfBirth')?></label>
+                    <p class="form-control-static"></p>
+                </div>
                 <div class="form-group hide" data-baylor-acmId-text="">
                     <label><?=$user->getAttributeLabel('acmNumber')?></label>
                     <p class="form-control-static"></p>
@@ -146,6 +152,10 @@
                 </div>
                 <div class="form-group hide" data-baylor-phoneMobile-text="">
                     <label><?=$user->getAttributeLabel('phoneMobile')?></label>
+                    <p class="form-control-static"></p>
+                </div>
+                <div class="form-group hide" data-baylor-speciality-text="">
+                    <label><?=$user->getAttributeLabel('speciality')?></label>
                     <p class="form-control-static"></p>
                 </div>
             </div>
