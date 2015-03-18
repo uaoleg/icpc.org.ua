@@ -365,6 +365,12 @@ class User extends \common\ext\MongoDb\Document
                     $approver = User::model()->find($criteria);
                 }
             }
+
+            // Otherwise there is no approver
+            else {
+                $approver = null;
+            }
+
             $this->cache->set($key, $approver, SECONDS_IN_HOUR);
         }
         return $this->cache->get($key);
