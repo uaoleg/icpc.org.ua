@@ -307,6 +307,7 @@ class User extends \common\ext\MongoDb\Document
         $key = 'approver';
         if (!$this->cache->get($key)) {
             $criteria = new \EMongoCriteria();
+
             // Get approver for coordinator
             if (!empty($this->coordinator) && !$this->isApprovedCoordinator) {
                 switch ($this->coordinator) {
@@ -330,12 +331,13 @@ class User extends \common\ext\MongoDb\Document
                             ->addCond('schoolId', 'in', $ids);
                         break;
                 }
+                $approver = User::model()->find($criteria);
             }
 
             // Get approver for coach
             elseif (($this->type === static::ROLE_COACH) && (!$this->isApprovedCoach)) {
                 $schoolIds = School::model()->getCollection()->distinct('_id', array(
-                    'region' => $this->school->region
+                    'state' => $this->school->state,
                 ));
                 $ids = array();
                 foreach ($schoolIds as $schoolId) {
@@ -345,8 +347,25 @@ class User extends \common\ext\MongoDb\Document
                     ->addCond('isApprovedCoordinator', '==', true)
                     ->addCond('coordinator', '==', static::ROLE_COORDINATOR_STATE)
                     ->addCond('schoolId', 'in', $ids);
+                $approver = User::model()->find($criteria);
+
+                // If there is no state coordinator than try regional one
+                if ($approver === null) {
+                    $schoolIds = School::model()->getCollection()->distinct('_id', array(
+                        'region' => $this->school->region,
+                    ));
+                    $ids = array();
+                    foreach ($schoolIds as $schoolId) {
+                        $ids[] = (string)$schoolId;
+                    }
+                    $criteria
+                        ->addCond('isApprovedCoordinator', '==', true)
+                        ->addCond('coordinator', '==', static::ROLE_COORDINATOR_REGION)
+                        ->addCond('schoolId', 'in', $ids);
+                    $approver = User::model()->find($criteria);
+                }
             }
-            $this->cache->set($key, User::model()->find($criteria), SECONDS_IN_HOUR);
+            $this->cache->set($key, $approver, SECONDS_IN_HOUR);
         }
         return $this->cache->get($key);
     }
