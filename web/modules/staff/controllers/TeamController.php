@@ -6,6 +6,7 @@ use \common\components\Rbac;
 use \common\models\School;
 use \common\models\Team;
 use \common\models\User;
+use EMongoCriteria;
 
 class TeamController extends \web\modules\staff\ext\Controller
 {
@@ -44,7 +45,7 @@ class TeamController extends \web\modules\staff\ext\Controller
         return array(
             array(
                 'allow',
-                'actions' => array('manage', 'schoolComplete'),
+                'actions' => array('manage', 'import', 'postImport' ,'schoolComplete'),
                 'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE => array('team' => $team)),
             ),
             array(
@@ -68,6 +69,81 @@ class TeamController extends \web\modules\staff\ext\Controller
         );
     }
 
+    protected function parseBaylorUrl($url)
+    {
+        return (int)$url;
+    }
+
+    public function actionPostImport()
+    {
+        $url             = $this->request->getPost('url');
+        $email           = $this->request->getPost('email');
+        $password        = $this->request->getPost('password');
+
+        $teamId = $this->parseBaylorUrl($url);
+
+        $criteria = new EMongoCriteria();
+        $criteria->addCond('baylorId','eq',$teamId);
+        $team = Team::model()->findFirst($criteria);
+
+        $errors = false;
+
+        if (empty($team))
+        {
+            $response = \yii::app()->baylor->importTeam($email, $password, $teamId);
+
+            if (!empty($response) && empty($response['error']) && !empty($response['data']['team']))
+            {
+                $team = new Team();
+
+                $memberIds = array();
+                if (!empty($response['data']['team']['members']))
+                {
+                    foreach ($response['data']['team']['members'] as $member)
+                    {
+                        $userCriteria = new EMongoCriteria();
+                        $email = $member['email'];
+                        $userCriteria->addCond('email','eq', $email);
+                        $user = User::model()->findFirst($userCriteria);
+                        if (!empty($user)) {
+                            $memberIds[] = $user->_id->{'$id'};
+                        } else {
+                            $errors[] = "User with email {$member['email']} ({$member['name']}) wasn't found";
+                        }
+                    }
+                }
+
+                if (empty($errors)) {
+                    $team->setAttributes(array(
+                        'name'               => \yii::app()->user->getInstance()->school->shortNameEn.'_'.$response['data']['team']['title'],
+                        'coachId'            => \yii::app()->user->id,
+                        'schoolId'           => \yii::app()->user->getInstance()->school->_id,
+                        'memberIds'          => $memberIds,
+                        'baylorId'           => $response['data']['team']['id'],
+                        'isOutOfCompetition' => false
+                    ), false);
+
+                    $team->save();
+                    $errors = $team->hasErrors() ? $team->getErrors() : false;
+                }
+            }
+        } else {
+            $errors[] = 'This team was imported before';
+        }
+
+        $this->renderJson(array(
+            'errors' => $errors,
+            'response' => $response,
+            'teamId' => ! empty($team->_id ) ? $team->_id->{'$id'} : false,
+        ));
+    }
+
+    public function actionImport()
+    {
+        $this->render('import', array(
+        ));
+    }
+
     /**
      * Manage the team either create or edit it
      */
@@ -83,7 +159,7 @@ class TeamController extends \web\modules\staff\ext\Controller
             $teamId             = $this->request->getPost('teamId');
             $teamName           = $this->request->getPost('name');
             $memberIds          = $this->request->getPost('memberIds');
-            $isOutOfCompetition = $this->request->getPost('isOutOfCompetition');
+            $isOutOfCompetition = true;
 
             // Get team
             if (!empty($teamId)) {

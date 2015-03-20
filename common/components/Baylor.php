@@ -51,6 +51,132 @@ class Baylor extends \CApplicationComponent
     }
 
     /**
+     * Method that handles the whole team import
+     * @param string $email
+     * @param string $password
+     * @param string $team_id
+     * @return array
+     */
+    public function importTeam($email, $password, $team_id)
+    {
+        $this->cookiesFile = \yii::getPathOfAlias('common.runtime') . '/' . uniqid('', true);
+        $this->curl = new Curl;
+
+        $this->_login($email, $password);
+
+        $response = $this->_parseTeam($team_id);
+
+        if ($response) {
+            return array(
+                'errors' => false,
+                'data' => $response
+            );
+        } else {
+            return array(
+                'errors' => true
+            );
+        }
+    }
+
+    /**
+     * Method that handles get request and parses data for team import
+     * @param string $team_id
+     * @return array|bool
+     * @throws \CException
+     */
+    protected function _parseTeam($team_id)
+    {
+
+        $result = array();
+        $teams = array();
+
+        // Import HTML DOM Parser
+        \yii::import('common.lib.HtmlDomParser.*');
+        require_once('HtmlDomParser.php');
+        $parser = new HtmlDomParser();
+
+        //Get Teams list
+        $getCurl = $this->curl->newRequest('get', $this->url . '/private/dashboard.icpc');
+        $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
+        $html = $parser->str_get_html($response->body);
+
+        $header = $html->find('#header', 0);
+        if (!is_null($header)) {
+
+            $rows = $html->find('[id="accordionPanel:teamMemberForm:teamMembers_data"] td a.team');
+
+            foreach($rows as $item)
+            {
+                $id = substr($item->href, strlen('/private/team/'));
+                $teams[$id] = [
+                    'title' => $item->plaintext,
+                    'id' => $id,
+                    'url' => $item->href,
+                ];
+            }
+            $result['teams'] = $teams;
+            //-----//
+
+            if (empty($teams[$team_id])) {
+                return false;
+            }
+
+            //Get information about team
+            $team = $teams[$team_id];
+            $url = $team['url'];
+
+            $getCurl = $this->curl->newRequest('get', $this->url . $url);
+            $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
+            $html = $parser->str_get_html($response->body);
+            $header = $html->find('#header', 0);
+
+            if (!is_null($header)) {
+
+                $status = $html->find('[id="teamTabs:teamForm:statusRO"] div.statusModification', 0);
+                $team['status'] = strtolower(trim($status->plaintext, " ".chr(0xC2).chr(0xA0)));
+
+                $rows = $html->find('[id="teamMembersTabs:teamMembersForm:teamMembersTable_data"] tr');
+                if (!empty($rows)) {
+
+                    foreach ($rows as $row)
+                    {
+                        $tds = $row->find('td');
+                        $isRegistrationComplete = trim($tds[3]->find('input',0)->checked, chr(0xC2).chr(0xA0));
+                        $team['members'][] = array(
+                            'name' => trim($tds[0]->plaintext, " ".chr(0xC2).chr(0xA0)),
+                            'email' => $this->clear($tds[1]->plaintext),
+                            'role' => trim($tds[2]->plaintext, " ".chr(0xC2).chr(0xA0)),
+                            'isRegistrationComplete' => !empty($isRegistrationComplete),
+                        );
+                    }
+
+                }
+
+                $result['team'] = $team;
+            }
+
+            //-----//
+        }
+
+        return $result;
+    }
+
+    /**
+     * Method that clears sting from empty symbols
+     * @param string $string
+     * @return string
+     */
+    protected function clear($string)
+    {
+        $result = $string;
+
+        $result = str_replace(array(' ', "\n", "\t", "\r", chr(0xC2).chr(0xA0)), '', $result);
+        $result = trim($result, " ".chr(0xC2).chr(0xA0));
+
+        return $result;
+    }
+
+    /**
      * Method that handles login request
      * @param string $email
      * @param string $password
@@ -104,7 +230,6 @@ class Baylor extends \CApplicationComponent
                 'speciality' => '[id="tabs:piForm:rodegreeareaOfStudy"]',
                 'birthday' => '[id="tabs:piForm:degreedateOfBirthView"]',
             );
-
             foreach ($info as $key => $value) {
                 $datum = $html->find($value, 0);
                 if (!is_null($datum)) {
@@ -119,6 +244,14 @@ class Baylor extends \CApplicationComponent
             }
 
             unlink($this->cookiesFile);
+
+
+            $id = $html->find('[id="logoffMenu:profile"]', 0);
+            if (!empty($id)) {
+                $baylorInfo['baylor_id'] = (int)substr($id->href, 17);
+            } else {
+                $baylorInfo['baylor_id'] = 0;
+            }
 
             return $baylorInfo;
         } else {
