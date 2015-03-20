@@ -192,7 +192,11 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        &copy; <?=date('Y')?> <a href="http://www.dataart.ua" target="_blank" class="inline">DataArt</a>
+                        &copy; <?=date('Y')?>
+                        <a href="http://olymp.dp.ua/" target="_blank" class="inline"
+                           title="<?=\yii::t('app', 'Regional Distant Center for University and School Olympiads at DNU Oles\' Honchar')?>"
+                           rel="tooltip"><?= \yii::t('app', 'RDCUSO') ?></a>,
+                        <a href="http://www.dataart.ua" target="_blank" class="inline">DataArt</a>
                     </li>
                     <li>
                         <a href="https://github.com/uaoleg/icpc.org.ua" target="_blank" class="inline">
