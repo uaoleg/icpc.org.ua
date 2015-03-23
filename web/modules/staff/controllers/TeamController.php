@@ -11,6 +11,8 @@ use EMongoCriteria;
 class TeamController extends \web\modules\staff\ext\Controller
 {
 
+    const BAYLOR_STATUS_ACCEPTED = '(accepted)';
+
     /**
      * Init
      */
@@ -96,8 +98,13 @@ class TeamController extends \web\modules\staff\ext\Controller
             {
                 $team = new Team();
 
+                if (empty($response['data']['team']['status']) || strtolower($response['data']['team']['status']) != self::BAYLOR_STATUS_ACCEPTED)
+                {
+                    $errors[] = 'Team should be accepted';
+                }
+
                 $memberIds = array();
-                if (!empty($response['data']['team']['members']))
+                if (empty($errors) && !empty($response['data']['team']['members']))
                 {
                     foreach ($response['data']['team']['members'] as $member)
                     {
