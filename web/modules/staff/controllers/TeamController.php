@@ -115,7 +115,7 @@ class TeamController extends \web\modules\staff\ext\Controller
 
                 if (empty($errors)) {
                     $team->setAttributes(array(
-                        'name'               => \yii::app()->user->getInstance()->school->shortNameEn.'_'.$response['data']['team']['title'],
+                        'name'               => $response['data']['team']['title'],
                         'coachId'            => \yii::app()->user->id,
                         'schoolId'           => \yii::app()->user->getInstance()->school->_id,
                         'memberIds'          => $memberIds,
