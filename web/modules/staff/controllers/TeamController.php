@@ -167,9 +167,15 @@ class TeamController extends \web\modules\staff\ext\Controller
             } else {
                 $team = new Team();
             }
-           if ($team === null) {
+
+            if ($team === null) {
                 $this->httpException(404);
-           }
+            }
+
+            //You can't manage team that ws imported from bailor
+            if (!empty($team->baylorId)) {
+                $this->httpException(404);
+            }
 
             // Update team
             $team->setAttributes(array(
