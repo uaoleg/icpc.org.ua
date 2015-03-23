@@ -3,7 +3,7 @@ function appStaffTeamImport(options)
    $('.btn-save').on('click', function() {
       var $this = $(this),
          $form = $this.closest('.form');
-      $this.prop('disabled', true);
+         $this.prop('disabled', true);
 
       $.ajax({
          url: app.baseUrl + '/staff/team/postImport',
@@ -13,9 +13,7 @@ function appStaffTeamImport(options)
             password:         $('[name=password]').val()
          },
          success: function(response) {
-            console.debug(response);
             if (response.errors) {
-
                var place = $("#formerrors");
                place.html("");
                $.each(response.errors, function(key, value) {
