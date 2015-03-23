@@ -47,7 +47,7 @@ class TeamController extends \web\modules\staff\ext\Controller
         return array(
             array(
                 'allow',
-                'actions' => array('manage', 'import', 'postImport' ,'schoolComplete'),
+                'actions' => array('manage', 'import', 'postImport', 'postTeams','schoolComplete'),
                 'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE => array('team' => $team)),
             ),
             array(
@@ -71,18 +71,46 @@ class TeamController extends \web\modules\staff\ext\Controller
         );
     }
 
-    protected function parseBaylorUrl($url)
+    public function actionPostTeams()
     {
-        return (int)$url;
+        $email           = $this->request->getPost('email');
+        $password        = $this->request->getPost('password');
+
+        $response = \yii::app()->baylor->getTeamList($email, $password);
+
+        $imported = array();
+        $teams = array();
+
+        $errors = [];
+
+        if (!empty($response) && empty($response['error']) && !empty($response['data']))
+        {
+            foreach ( $response['data'] as $team )
+            {
+                if (!in_array($team['id'], $imported))
+                {
+                    $teams[] = $team;
+                }
+            }
+
+        }
+
+        if (empty($teams))
+        {
+            $errors[] = "You don't have teams to import";
+        }
+
+        $this->renderJson(array(
+            'errors'   => !empty($errors) ? $errors : false,
+            'teams'    => $teams,
+        ));
     }
 
     public function actionPostImport()
     {
-        $url             = $this->request->getPost('url');
+        $teamId          = $this->request->getPost('team');
         $email           = $this->request->getPost('email');
         $password        = $this->request->getPost('password');
-
-        $teamId = $this->parseBaylorUrl($url);
 
         $criteria = new EMongoCriteria();
         $criteria->addCond('baylorId','eq',$teamId);
@@ -140,7 +168,6 @@ class TeamController extends \web\modules\staff\ext\Controller
 
         $this->renderJson(array(
             'errors' => $errors,
-            'response' => $response,
             'teamId' => ! empty($team->_id ) ? $team->_id->{'$id'} : false,
         ));
     }

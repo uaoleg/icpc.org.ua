@@ -78,17 +78,30 @@ class Baylor extends \CApplicationComponent
         }
     }
 
-    /**
-     * Method that handles get request and parses data for team import
-     * @param string $team_id
-     * @return array|bool
-     * @throws \CException
-     */
-    protected function _parseTeam($team_id)
+    public function getTeamList($email, $password)
     {
+        $this->cookiesFile = \yii::getPathOfAlias('common.runtime') . '/' . uniqid('', true);
+        $this->curl = new Curl;
 
+        $this->_login($email, $password);
+
+        $response = $this->_parseTeamList();
+
+        if ($response) {
+            return array(
+                'errors' => false,
+                'data' => $response
+            );
+        } else {
+            return array(
+                'errors' => true
+            );
+        }
+    }
+
+    public function _parseTeamList()
+    {
         $result = array();
-        $teams = array();
 
         // Import HTML DOM Parser
         \yii::import('common.lib.HtmlDomParser.*');
@@ -108,18 +121,36 @@ class Baylor extends \CApplicationComponent
             foreach($rows as $item)
             {
                 $id = substr($item->href, strlen('/private/team/'));
-                $teams[$id] = [
+                $result[$id] = [
                     'title' => $item->plaintext,
                     'id' => $id,
                     'url' => $item->href,
                 ];
             }
-            $result['teams'] = $teams;
-            //-----//
+        }
 
-            if (empty($teams[$team_id])) {
-                return false;
-            }
+        return $result;
+    }
+
+    /**
+     * Method that handles get request and parses data for team import
+     * @param string $team_id
+     * @return array|bool
+     * @throws \CException
+     */
+    protected function _parseTeam($team_id)
+    {
+        $result = array();
+
+        // Import HTML DOM Parser
+        \yii::import('common.lib.HtmlDomParser.*');
+        require_once('HtmlDomParser.php');
+        $parser = new HtmlDomParser();
+
+        $teams = $this->_parseTeamList();
+        $result['teams'] = $teams;
+
+        if (!empty($teams[$team_id])) {
 
             //Get information about team
             $team = $teams[$team_id];
