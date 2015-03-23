@@ -39,9 +39,6 @@
                 <div class="form-group teams">
                     <label for="name"><?=\yii::t('app', 'Teams')?></label>
                     <select name="team" class="form-control">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
                     </select>
                 </div>
 
