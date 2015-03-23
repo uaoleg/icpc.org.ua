@@ -97,6 +97,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             User::ROLE_USER,
             Rbac::OP_STUDENT_SET_STATUS,
             Rbac::OP_STUDENT_VIEW_FULL,
+            Rbac::OP_USER_EXPORT,
             Rbac::OP_COACH_SET_STATUS,
             Rbac::OP_COORDINATOR_SET_STATUS,
             Rbac::OP_DOCUMENT_CREATE,
@@ -184,9 +185,11 @@ class RbacCommand extends \console\ext\ConsoleCommand
     {
         $bizRuleSetStatus = 'return \yii::app()->rbac->bizRuleStudentSetStatus($params);';
         $bizRuleViewFull = 'return \yii::app()->rbac->bizRuleStudentViewFull($params);';
+        $bizRuleUserExport = 'return \yii::app()->rbac->bizRuleUserExport($params);';
 
         $this->auth->createOperation(Rbac::OP_STUDENT_SET_STATUS, 'Activate (or suspend) student', $bizRuleSetStatus);
         $this->auth->createOperation(Rbac::OP_STUDENT_VIEW_FULL, 'Student full profile view', $bizRuleViewFull);
+        $this->auth->createOperation(Rbac::OP_USER_EXPORT, 'Students export', $bizRuleUserExport);
     }
 
     /**
