@@ -73,6 +73,15 @@ transform: rotate(-90deg);
     margin: -10px 10px 10px;
 }
 
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.break-word {
+    word-wrap: break-word;
+}
+
 /* Document
 ----------------------------------------------------------------------------- */
 

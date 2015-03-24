@@ -10,7 +10,9 @@
 </script>
 
 <h2>
-    <?=\CHtml::encode($question->title)?>
+    <div class="break-word">
+        <?= \CHtml::encode($question->title) ?>
+    </div>
     <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_QA_QUESTION_UPDATE, array(
         'question' => $question,
     ))): ?>
@@ -30,7 +32,7 @@
 
 <hr />
 
-<div>
+<div class="break-word">
     <?=$question->content?>
 </div>
 
