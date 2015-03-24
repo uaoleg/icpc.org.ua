@@ -13,7 +13,7 @@
        style="margin: 10px 0 0;"><?=\yii::t('app', 'Create Tag')?></a>
 </div>
 
-<table class="table table-striped">
+<table class="table table-striped qatags__manage-table">
     <tr>
         <th>
             <?=\yii::t('app', 'Tag Name')?>
@@ -32,7 +32,9 @@
             <?=\CHtml::encode($tag->name)?>
         </td>
         <td>
-            <?=\CHtml::encode($tag->desc)?>
+            <div class="ellipsis">
+                <?=\CHtml::encode($tag->desc)?>
+            </div>
         </td>
         <td>
             <a href="<?=$this->createUrl('/qa/latest', array('tag' => $tag->name))?>">
