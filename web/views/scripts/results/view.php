@@ -52,7 +52,8 @@
                 rowNum: 1000,
                 sortname: 'place',
                 sortorder: 'asc',
-                shrinkToFit: false,
+                shrinkToFit: true,
+                autowidth: true,
                 beforeSelectRow: function() {
                     return false;
                 },
