@@ -36,6 +36,7 @@ class Rbac extends \CApplicationComponent
     const OP_TEAM_LEAGUE_UPDATE     = 'teamLeagueUpdate';
     const OP_TEAM_PHASE_UPDATE      = 'teamPhaseUpdate';
     const OP_TEAM_EXPORT            = 'teamExport';
+    const OP_USER_EXPORT            = 'userExport';
     const OP_QA_ANSWER_CREATE       = 'qaAnswerCreate';
     const OP_QA_ANSWER_READ         = 'qaAnswerRead';
     const OP_QA_ANSWER_UPDATE       = 'qaAnswerUpdate';
@@ -260,6 +261,17 @@ class Rbac extends \CApplicationComponent
      * @return bool
      */
     public function bizRuleTeamExport(array $params)
+    {
+        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
+    }
+
+    /**
+     * Export users (csv)
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleUserExport(array $params)
     {
         return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
     }

@@ -28,6 +28,44 @@ class StudentsController extends \web\modules\staff\ext\Controller
     }
 
     /**
+     * Prepare user profile for export or show
+     */
+    protected function _prepareUser($user)
+    {
+        $school = (isset($user->school->{'fullName' . ucfirst(\yii::app()->language)}))
+            ? $user->school->{'fullName' . ucfirst(\yii::app()->language)}
+            : $user->school->fullNameUk;
+
+        $phone = array();
+
+        if (!empty($user->info->phoneHome)) {
+            $phone['phoneHome'] = $user->info->phoneHome;
+        }
+        if (!empty($user->info->phoneMobile)) {
+            $phone['phoneMobile'] = $user->info->phoneMobile;
+        }
+        if (!empty($user->info->phoneWork)) {
+            $phone['phoneWork'] = $user->info->phoneWork;
+        }
+        return array(
+            'id'                => (string) $user->_id,
+            'name'              => \web\widgets\user\Name::create( array(
+                'user' => $user,
+                'lang' => \yii::app()->language
+            ), true ),
+            'school'            => $school,
+            'speciality'        => (string) $user->info->speciality,
+            'group'             => (string) $user->info->group,
+            'email'             => $user->email,
+            'phone'             => implode(', ',$phone),
+            'course'            => $user->info->course,
+            'dateBirthday'      => date( 'Y-m-d H:i:s', $user->info->dateOfBirth ),
+            'dateCreated'       => date( 'Y-m-d H:i:s', $user->dateCreated ),
+            'isApprovedStudent' => $this->renderPartial( 'index/action', array( 'user' => $user ), true )
+        );
+    }
+
+    /**
      * Method for jqGrid which returns all the students
      */
     public function actionGetListJson()
@@ -39,14 +77,10 @@ class StudentsController extends \web\modules\staff\ext\Controller
 
         $rows = array();
         foreach ($jqgrid['itemList'] as $user) {
-            $arrayToAdd = array(
-                'id'                => (string)$user->_id,
-                'name'              => \web\widgets\user\Name::create(array('user' => $user, 'lang' => \yii::app()->language), true),
-                'email'             => $user->email,
-                'dateCreated'       => date('Y-m-d H:i:s', $user->dateCreated),
-                'isApprovedStudent' => $this->renderPartial('index/action', array('user' => $user), true)
-            );
-            $rows[] = $arrayToAdd;
+            $idsToRemember[] = (string)$user->_id;
+            $rows[] = $this->_prepareUser($user);
+
+            \yii::app()->user->setState('userIdsForExport', $idsToRemember);
         }
 
         $this->renderJson(array(
@@ -55,6 +89,36 @@ class StudentsController extends \web\modules\staff\ext\Controller
             'records'   => count($jqgrid['itemList']),
             'rows'      => $rows,
         ));
+    }
+
+    /**
+     * Method for export list of student
+     */
+    public function actionExport()
+    {
+        // Get params
+        $userIds = \yii::app()->user->getState('userIdsForExport');
+        $userIds = array_map(function($id) {
+            return new \MongoId($id);
+        }, $userIds);
+
+        // Get list of teams
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('_id', 'in', $userIds);
+        $users = User::model()->findAll($criteria);
+
+        $list = array();
+        foreach ($users as $user)
+        {
+            $list[] = $this->_prepareUser($user);
+        }
+
+        // Render CSV
+        $this->renderCsv($list, "icpc_users_cs_{$this->getYear()}.csv", function($user) {
+            return array(
+                $user['name'], $user['school'],  $user['speciality'], $user['group'], $user['email'], $user['phone'], $user['course'], $user['dateBirthday']
+            );
+        });
     }
 
     /**
