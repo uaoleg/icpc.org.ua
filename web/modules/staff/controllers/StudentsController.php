@@ -59,7 +59,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
             'email'             => $user->email,
             'phone'             => implode(', ',$phone),
             'course'            => $user->info->course,
-            'dateBirthday'      => date( 'Y-m-d H:i:s', $user->info->dateOfBirth ),
+            'dateBirthday'      => date( 'Y-m-d', $user->info->dateOfBirth ),
             'dateCreated'       => date( 'Y-m-d H:i:s', $user->dateCreated ),
             'isApprovedStudent' => $this->renderPartial( 'index/action', array( 'user' => $user ), true )
         );
@@ -80,7 +80,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
             $idsToRemember[] = (string)$user->_id;
             $rows[] = $this->_prepareUser($user);
 
-            \yii::app()->user->setState('userIdsForExport', $idsToRemember);
+            \yii::app()->user->setState('userCriteriaForExport', $jqgrid['criteria']);
         }
 
         $this->renderJson(array(
@@ -97,17 +97,23 @@ class StudentsController extends \web\modules\staff\ext\Controller
     public function actionExport()
     {
         // Get params
-        $userIds = \yii::app()->user->getState('userIdsForExport');
-        $userIds = array_map(function($id) {
-            return new \MongoId($id);
-        }, $userIds);
+        $criteria = \yii::app()->user->getState('userCriteriaForExport');
+        $criteria->limit(0);
+        $criteria->offset(0);
 
-        // Get list of teams
-        $criteria = new \EMongoCriteria();
-        $criteria->addCond('_id', 'in', $userIds);
         $users = User::model()->findAll($criteria);
 
-        $list = array();
+        $list = array(array(
+            'name'         => \yii::t( 'app', 'Name' ),
+            'school'       => \yii::t( 'app', 'School' ),
+            'speciality'   => \yii::t( 'app', 'Speciality' ),
+            'group'        => \yii::t( 'app', 'Group' ),
+            'email'        => \yii::t( 'app', 'Email' ),
+            'phone'        => \yii::t( 'app', 'Phone' ),
+            'course'       => \yii::t( 'app', 'Course' ),
+            'dateBirthday' => \yii::t( 'app', 'Date of birth' ),
+        ));
+
         foreach ($users as $user)
         {
             $list[] = $this->_prepareUser($user);
