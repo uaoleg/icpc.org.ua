@@ -14,7 +14,7 @@ namespace common\models;
  * @property-read User          $approver
  * @property-read User\Photo    $photo
  */
-class User extends \common\ext\MongoDb\Document
+class User extends Person
 {
 
     /**
@@ -28,48 +28,6 @@ class User extends \common\ext\MongoDb\Document
     const ROLE_COORDINATOR_REGION   = 'coordinator_region';
     const ROLE_COORDINATOR_UKRAINE  = 'coordinator_ukraine';
     const ROLE_ADMIN                = 'admin';
-
-    /**
-     * First name in Ukrainian
-     * @var string
-     */
-    public $firstNameUk;
-
-    /**
-     * Middle name in Ukrainian
-     * @var string
-     */
-    public $middleNameUk;
-
-    /**
-     * Last name in Ukrainian
-     * @var string
-     */
-    public $lastNameUk;
-
-    /**
-     * First name in English
-     * @var string
-     */
-    public $firstNameEn;
-
-    /**
-     * Middle name in English
-     * @var string
-     */
-    public $middleNameEn;
-
-    /**
-     * Last name in English
-     * @var string
-     */
-    public $lastNameEn;
-
-    /**
-     * Contact email
-     * @var string
-     */
-    public $email;
 
     /**
      * Hash of the password.
@@ -95,12 +53,6 @@ class User extends \common\ext\MongoDb\Document
      * School ID
      */
     public $schoolId;
-
-    /**
-     * Date created
-     * @var int
-     */
-    public $dateCreated;
 
     /**
      * Is email confirmed
@@ -149,60 +101,6 @@ class User extends \common\ext\MongoDb\Document
      * @var User\Photo
      */
     protected $_photo;
-
-    /**
-     * Returns first name in appropriate language
-     *
-     * @return string
-     */
-    public function getFirstName()
-    {
-        switch ($this->useLanguage) {
-            default:
-            case 'uk':
-                return $this->firstNameUk;
-                break;
-            case 'en':
-                return (!empty($this->firstNameEn)) ? $this->firstNameEn : $this->firstNameUk;
-                break;
-        }
-    }
-
-    /**
-     * Returns middle name in appropriate language
-     *
-     * @return string
-     */
-    public function getMiddleName()
-    {
-        switch ($this->useLanguage) {
-            default:
-            case 'uk':
-                return $this->middleNameUk;
-                break;
-            case 'en':
-                return (!empty($this->middleNameEn)) ? $this->middleNameEn : $this->middleNameUk;
-                break;
-        }
-    }
-
-    /**
-     * Returns last name in appropriate language
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        switch ($this->useLanguage) {
-            default:
-            case 'uk':
-                return $this->lastNameUk;
-                break;
-            case 'en':
-                return (!empty($this->lastNameEn)) ? $this->lastNameEn : $this->lastNameUk;
-                break;
-        }
-    }
 
     /**
      * Returns user's school

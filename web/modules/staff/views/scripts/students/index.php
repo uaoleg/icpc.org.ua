@@ -25,7 +25,7 @@
                 )))?>,
                 colModel: [
                     {name: 'name', index: 'name', width: 75, sortable: false, search: false, formatter: 'showlink', formatoptions: {baseLinkUrl: '/user/view'}},
-                    {name: 'school', index: 'school', width: 75},
+                    {name: 'schoolFullName<?=ucfirst($lang)?>', index: 'schoolFullName<?=ucfirst($lang)?>', width: 75},
                     {name: 'speciality', index: 'speciality', width: 50},
                     {name: 'group', index: 'group', width: 50},
                     {name: 'email', index: 'email', width: 75},
