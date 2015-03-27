@@ -101,4 +101,12 @@ class SystemCommand extends \console\ext\ConsoleCommand
         return !$envError;
     }
 
+    /**
+     * Flush cache
+     */
+    public function actionCacheFlush()
+    {
+        \yii::app()->cache->flush();
+    }
+
 }
