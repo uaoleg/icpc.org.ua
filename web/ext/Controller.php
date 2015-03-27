@@ -385,6 +385,7 @@ class Controller extends \CController
 
         // Return params
         return array(
+            'criteria'  => $criteria,
             'page'      => $page,
             'perPage'   => $perPage,
             'itemList'  => $itemList,

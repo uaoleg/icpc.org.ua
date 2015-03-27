@@ -1,6 +1,7 @@
 <?php
 namespace web\modules\staff\controllers;
 
+use common\models\Student;
 use \common\models\User;
 use \common\components\Rbac;
 
@@ -24,45 +25,92 @@ class StudentsController extends \web\modules\staff\ext\Controller
     public function actionIndex()
     {
         // Render view
-        $this->render('index');
+        $this->rebuildStudentsCollection();
+        $this->render('index', array(
+            'lang'  => \yii::app()->languageCore,
+        ));
     }
 
     /**
      * Prepare user profile for export or show
      */
-    protected function _prepareUser($user)
+    protected function _prepareUser(Student $user)
     {
-        $school = (isset($user->school->{'fullName' . ucfirst(\yii::app()->language)}))
-            ? $user->school->{'fullName' . ucfirst(\yii::app()->language)}
-            : $user->school->fullNameUk;
+        $lang = \yii::app()->languageCore;
+        $school = (isset($user->{'schoolFullName' . ucfirst($lang)}))
+            ? $user->{'schoolFullName' . ucfirst($lang)}
+            : $user->schoolFullNameUk;
 
-        $phone = array();
-
-        if (!empty($user->info->phoneHome)) {
-            $phone['phoneHome'] = $user->info->phoneHome;
-        }
-        if (!empty($user->info->phoneMobile)) {
-            $phone['phoneMobile'] = $user->info->phoneMobile;
-        }
-        if (!empty($user->info->phoneWork)) {
-            $phone['phoneWork'] = $user->info->phoneWork;
-        }
         return array(
             'id'                => (string) $user->_id,
             'name'              => \web\widgets\user\Name::create( array(
                 'user' => $user,
                 'lang' => \yii::app()->language
             ), true ),
-            'school'            => $school,
-            'speciality'        => (string) $user->info->speciality,
-            'group'             => (string) $user->info->group,
+            'speciality'        => (string) $user->speciality,
+            'group'             => (string) $user->group,
             'email'             => $user->email,
-            'phone'             => implode(', ',$phone),
-            'course'            => $user->info->course,
-            'dateBirthday'      => date( 'Y-m-d H:i:s', $user->info->dateOfBirth ),
+            'phone'             => $user->phone,
+            'course'            => $user->course,
+            'dateBirthday'      => date( 'Y-m-d', $user->dateOfBirth ),
             'dateCreated'       => date( 'Y-m-d H:i:s', $user->dateCreated ),
-            'isApprovedStudent' => $this->renderPartial( 'index/action', array( 'user' => $user ), true )
+            'isApprovedStudent' => $this->renderPartial( 'index/action', array( 'user' => $user ), true ),
+            'schoolFullName'.ucfirst($lang) => $school,
         );
+    }
+
+    protected function rebuildStudentsCollection()
+    {
+        Student::model()->getCollection()->remove();
+
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('type', '==', User::ROLE_STUDENT);
+        $list = User::model()->findAll($criteria);
+
+        foreach ($list as $user)
+        {
+            $student = new Student();
+            $student->setIsNewRecord(true);
+            $student->_id = $user->_id;
+
+            $phone = array();
+            if (!empty($user->info->phoneHome)) {
+                $phone['phoneHome'] = $user->info->phoneHome;
+            }
+            if (!empty($user->info->phoneMobile)) {
+                $phone['phoneMobile'] = $user->info->phoneMobile;
+            }
+            if (!empty($user->info->phoneWork)) {
+                $phone['phoneWork'] = $user->info->phoneWork;
+            }
+
+            // Update team
+            $student->setAttributes(array(
+
+                'firstNameUk'  => $user->firstNameUk,
+                'middleNameUk' => $user->middleNameUk,
+                'lastNameUk'   => $user->lastNameUk,
+                'firstNameEn'  => $user->firstNameEn,
+                'middleNameEn' => $user->middleNameEn,
+                'lastNameEn'   => $user->lastNameEn,
+                'email'        => $user->email,
+
+                'speciality'   => (string) $user->info->speciality,
+                'group'        => (string) $user->info->group,
+                'course'       => $user->info->course,
+
+                'dateCreated'       => $user->dateCreated,
+                'dateOfBirth'       => $user->info->dateOfBirth,
+
+                'phone'        => implode(', ',$phone),
+                'isApprovedStudent'     =>   $user->isApprovedStudent,
+
+                'schoolFullNameUk' => $user->school->fullNameUk,
+                'schoolFullNameEn' => $user->school->fullNameEn,
+            ), false);
+
+            $student->save();
+        }
     }
 
     /**
@@ -72,15 +120,13 @@ class StudentsController extends \web\modules\staff\ext\Controller
     {
         // Get jqGrid params
         $criteria = new \EMongoCriteria();
-        $criteria->addCond('type', '==', User::ROLE_STUDENT);
-        $jqgrid = $this->_getJqgridParams(User::model(), $criteria);
+        $jqgrid = $this->_getJqgridParams(Student::model(), $criteria);
 
         $rows = array();
         foreach ($jqgrid['itemList'] as $user) {
             $idsToRemember[] = (string)$user->_id;
-            $rows[] = $this->_prepareUser($user);
-
-            \yii::app()->user->setState('userIdsForExport', $idsToRemember);
+            $rows[] =  $this->_prepareUser($user);
+            \yii::app()->user->setState('userCriteriaForExport', $jqgrid['criteria']);
         }
 
         $this->renderJson(array(
@@ -97,26 +143,37 @@ class StudentsController extends \web\modules\staff\ext\Controller
     public function actionExport()
     {
         // Get params
-        $userIds = \yii::app()->user->getState('userIdsForExport');
-        $userIds = array_map(function($id) {
-            return new \MongoId($id);
-        }, $userIds);
+        $lang = \yii::app()->languageCore;
 
-        // Get list of teams
-        $criteria = new \EMongoCriteria();
-        $criteria->addCond('_id', 'in', $userIds);
-        $users = User::model()->findAll($criteria);
+        $criteria = \yii::app()->user->getState('userCriteriaForExport');
+        $criteria->limit(0);
+        $criteria->offset(0);
 
-        $list = array();
+        $users = Student::model()->findAll($criteria);
+        $schoolFieldName = "schoolFullName" . ucfirst($lang);
+
+        $list = array(array(
+            'name'         => \yii::t( 'app', 'Name' ),
+            "school"       => \yii::t( 'app', 'School' ),
+            'speciality'   => \yii::t( 'app', 'Speciality' ),
+            'group'        => \yii::t( 'app', 'Group' ),
+            'email'        => \yii::t( 'app', 'Email' ),
+            'phone'        => \yii::t( 'app', 'Phone' ),
+            'course'       => \yii::t( 'app', 'Course' ),
+            'dateBirthday' => \yii::t( 'app', 'Date of birth' ),
+        ));
+
         foreach ($users as $user)
         {
-            $list[] = $this->_prepareUser($user);
+            $item =  $this->_prepareUser($user);
+            $item['school'] = $item[$schoolFieldName];
+            $list[] = $item;
         }
 
         // Render CSV
         $this->renderCsv($list, "icpc_users_cs_{$this->getYear()}.csv", function($user) {
             return array(
-                $user['name'], $user['school'],  $user['speciality'], $user['group'], $user['email'], $user['phone'], $user['course'], $user['dateBirthday']
+                $user['name'], $user['school'], $user['speciality'], $user['group'], $user['email'], $user['phone'], $user['course'], $user['dateBirthday']
             );
         });
     }
