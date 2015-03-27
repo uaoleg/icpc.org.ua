@@ -62,6 +62,10 @@ class StudentsController extends \web\modules\staff\ext\Controller
      */
     protected function _rebuildStudentsCollection()
     {
+        if (Student::model()->cache->get('collectionIsUpToDate')) {
+            return;
+        }
+
         Student::model()->getCollection()->remove();
 
         $criteria = new \EMongoCriteria();
@@ -106,7 +110,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
             $student->save();
         }
 
-        Student::model()->cache->set();
+        Student::model()->cache->set('collectionIsUpToDate', true, SECONDS_IN_HOUR);
     }
 
     /**

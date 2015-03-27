@@ -415,6 +415,11 @@ class User extends Person
      */
     protected function afterSave()
     {
+        // Invalidate cache of students view table
+        if ($this->type === static::ROLE_STUDENT) {
+            ViewTable\Student::model()->cache->delete('collectionIsUpToDate');
+        }
+
         // If user changed any name, info in results and teams models should be updated
         $initialUser = new static();
         $initialUser->setAttributes($this->_initialAttributes, false);

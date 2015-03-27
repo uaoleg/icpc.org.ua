@@ -48,7 +48,7 @@ class Cache
      *
      * @param string $key
      * @param mixed  $value
-     * @param int    $expire
+     * @param int    $expire The number of seconds in which the cached value will expire
      * @param \ICacheDependency $dependency
      */
     public function set($key, $value, $expire = 0, \ICacheDependency $dependency = null)

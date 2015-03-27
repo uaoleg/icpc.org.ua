@@ -81,6 +81,15 @@ class InfoStudent extends Info
         ));
     }
 
+    /**
+     * After save action
+     */
+    protected function afterSave()
+    {
+        // Invalidate cache of students view table
+        \common\models\ViewTable\Student::model()->cache->delete('collectionIsUpToDate');
 
+        parent::afterSave();
+    }
 
 }
