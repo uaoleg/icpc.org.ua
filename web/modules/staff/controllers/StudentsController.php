@@ -105,6 +105,8 @@ class StudentsController extends \web\modules\staff\ext\Controller
             ), false);
             $student->save();
         }
+
+        Student::model()->cache->set();
     }
 
     /**
