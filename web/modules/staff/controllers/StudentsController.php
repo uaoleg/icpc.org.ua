@@ -43,10 +43,10 @@ class StudentsController extends \web\modules\staff\ext\Controller
             : $user->schoolFullNameUk;
 
         return array(
-            'id'                => (string) $user->_id,
+            'id'                => (string)$user->_id,
             'name'              => \web\widgets\user\Name::create(array('user' => $user, 'lang' => \yii::app()->language), true),
-            'speciality'        => (string) $user->speciality,
-            'group'             => (string) $user->group,
+            'speciality'        => (string)$user->speciality,
+            'group'             => (string)$user->group,
             'email'             => $user->email,
             'phone'             => $user->phone,
             'course'            => $user->course,

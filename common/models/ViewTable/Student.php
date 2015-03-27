@@ -6,6 +6,18 @@ class Student extends \common\models\Person
 {
 
     /**
+     * Full name in Ukranian
+     * @var string
+     */
+    public $nameUk;
+
+    /**
+     * Full name in English
+     * @var string
+     */
+    public $nameEn;
+
+    /**
      * Speciality of study
      * @var string
      */
@@ -73,6 +85,8 @@ class Student extends \common\models\Person
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
+            'nameUk'            => \yii::t('app', 'Full Name (Ukranian)'),
+            'nameEn'            => \yii::t('app', 'Full Name (English)'),
             'speciality'        => \yii::t('app', 'Speciality of study'),
             'group'             => \yii::t('app', 'Group'),
             'course'            => \yii::t('app', 'Course'),
@@ -82,6 +96,20 @@ class Student extends \common\models\Person
             'schoolFullNameEn'  => \yii::t('app', 'School full name (English)'),
             'isApprovedStudent' => \yii::t('app', 'Is approved student'),
         ));
+    }
+
+    /**
+     * Before validate action
+     *
+     * @return bool
+     */
+    protected function beforeValidate()
+    {
+        // Set full name
+        $this->nameUk = "{$this->lastNameUk} {$this->firstNameUk} {$this->middleNameUk}";
+        $this->nameEn = "{$this->lastNameEn} {$this->firstNameEn} {$this->middleNameEn}";
+
+        return parent::beforeValidate();
     }
 
 }
