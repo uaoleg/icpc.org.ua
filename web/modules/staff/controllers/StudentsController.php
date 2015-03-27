@@ -41,10 +41,12 @@ class StudentsController extends \web\modules\staff\ext\Controller
         $school = (isset($user->{'schoolFullName' . ucfirst($lang)}))
             ? $user->{'schoolFullName' . ucfirst($lang)}
             : $user->schoolFullNameUk;
+        $nameKey = 'name' . ucfirst($lang);
+        $schoolFullNameKey = 'schoolFullName' . ucfirst($lang);
 
         return array(
             'id'                => (string)$user->_id,
-            'name'              => \web\widgets\user\Name::create(array('user' => $user, 'lang' => \yii::app()->language), true),
+            $nameKey            => \web\widgets\user\Name::create(array('user' => $user, 'lang' => \yii::app()->language), true),
             'speciality'        => (string)$user->speciality,
             'group'             => (string)$user->group,
             'email'             => $user->email,
@@ -53,7 +55,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
             'dateBirthday'      => date('Y-m-d', $user->dateOfBirth),
             'dateCreated'       => date('Y-m-d H:i:s', $user->dateCreated),
             'isApprovedStudent' => $this->renderPartial('index/action', array( 'user' => $user ), true),
-            'schoolFullName'.ucfirst($lang) => $school,
+            $schoolFullNameKey  => $school,
         );
     }
 
