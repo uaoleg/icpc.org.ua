@@ -2,7 +2,7 @@
 
 namespace common\models\ViewTable;
 
-class Student extends Person
+class Student extends \common\models\Person
 {
 
     /**
