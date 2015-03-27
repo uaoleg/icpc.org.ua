@@ -153,6 +153,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
 
         $users = Student::model()->findAll($criteria);
         $schoolFieldName = "schoolFullName" . ucfirst($lang);
+        $userFieldName = "name" . ucfirst($lang);
 
         $list = array(array(
             'name'         => \yii::t( 'app', 'Name' ),
@@ -169,6 +170,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
         {
             $item =  $this->_prepareUser($user);
             $item['school'] = $item[$schoolFieldName];
+            $item['name'] = $item[$userFieldName];
             $list[] = $item;
         }
 
