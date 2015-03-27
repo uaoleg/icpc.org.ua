@@ -1,7 +1,7 @@
 <?php
 namespace web\modules\staff\controllers;
 
-use common\models\Student;
+use common\models\ViewTable\Student;
 use \common\models\User;
 use \common\components\Rbac;
 
@@ -24,8 +24,9 @@ class StudentsController extends \web\modules\staff\ext\Controller
      */
     public function actionIndex()
     {
+        $this->_rebuildStudentsCollection();
+
         // Render view
-        $this->rebuildStudentsCollection();
         $this->render('index', array(
             'lang'  => \yii::app()->languageCore,
         ));
@@ -43,23 +44,23 @@ class StudentsController extends \web\modules\staff\ext\Controller
 
         return array(
             'id'                => (string) $user->_id,
-            'name'              => \web\widgets\user\Name::create( array(
-                'user' => $user,
-                'lang' => \yii::app()->language
-            ), true ),
+            'name'              => \web\widgets\user\Name::create(array('user' => $user, 'lang' => \yii::app()->language), true),
             'speciality'        => (string) $user->speciality,
             'group'             => (string) $user->group,
             'email'             => $user->email,
             'phone'             => $user->phone,
             'course'            => $user->course,
-            'dateBirthday'      => date( 'Y-m-d', $user->dateOfBirth ),
-            'dateCreated'       => date( 'Y-m-d H:i:s', $user->dateCreated ),
-            'isApprovedStudent' => $this->renderPartial( 'index/action', array( 'user' => $user ), true ),
+            'dateBirthday'      => date('Y-m-d', $user->dateOfBirth),
+            'dateCreated'       => date('Y-m-d H:i:s', $user->dateCreated),
+            'isApprovedStudent' => $this->renderPartial('index/action', array( 'user' => $user ), true),
             'schoolFullName'.ucfirst($lang) => $school,
         );
     }
 
-    protected function rebuildStudentsCollection()
+    /**
+     * Rebuild view table collection of students
+     */
+    protected function _rebuildStudentsCollection()
     {
         Student::model()->getCollection()->remove();
 
@@ -67,8 +68,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
         $criteria->addCond('type', '==', User::ROLE_STUDENT);
         $list = User::model()->findAll($criteria);
 
-        foreach ($list as $user)
-        {
+        foreach ($list as $user) {
             $student = new Student();
             $student->setIsNewRecord(true);
             $student->_id = $user->_id;
@@ -84,9 +84,8 @@ class StudentsController extends \web\modules\staff\ext\Controller
                 $phone['phoneWork'] = $user->info->phoneWork;
             }
 
-            // Update team
+            // Save student
             $student->setAttributes(array(
-
                 'firstNameUk'  => $user->firstNameUk,
                 'middleNameUk' => $user->middleNameUk,
                 'lastNameUk'   => $user->lastNameUk,
@@ -94,21 +93,16 @@ class StudentsController extends \web\modules\staff\ext\Controller
                 'middleNameEn' => $user->middleNameEn,
                 'lastNameEn'   => $user->lastNameEn,
                 'email'        => $user->email,
-
                 'speciality'   => (string) $user->info->speciality,
                 'group'        => (string) $user->info->group,
                 'course'       => $user->info->course,
-
-                'dateCreated'       => $user->dateCreated,
-                'dateOfBirth'       => $user->info->dateOfBirth,
-
-                'phone'        => implode(', ',$phone),
-                'isApprovedStudent'     =>   $user->isApprovedStudent,
-
+                'dateCreated'  => $user->dateCreated,
+                'dateOfBirth'  => $user->info->dateOfBirth,
+                'phone'        => implode(', ', $phone),
+                'isApprovedStudent'=> $user->isApprovedStudent,
                 'schoolFullNameUk' => $user->school->fullNameUk,
                 'schoolFullNameEn' => $user->school->fullNameEn,
             ), false);
-
             $student->save();
         }
     }

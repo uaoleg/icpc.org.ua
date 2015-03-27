@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: egor.litvinov
- * Date: 25.03.2015
- * Time: 16:25
- */
 
 namespace common\models;
 
-
-abstract class Person extends \common\ext\MongoDb\Document {
+abstract class Person extends \common\ext\MongoDb\Document
+{
 
     /**
      * First name in Ukrainian
@@ -112,4 +106,5 @@ abstract class Person extends \common\ext\MongoDb\Document {
                 break;
         }
     }
+
 }

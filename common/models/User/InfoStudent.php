@@ -64,7 +64,7 @@ class InfoStudent extends Info
             'group'                => \yii::t('app', 'Group'),
             'schoolAdmissionYear'  => \yii::t('app', 'Year of admission to University'),
             'course'               => \yii::t('app', 'Course'),
-            'document'             => \yii::t('app', 'Document serial number')
+            'document'             => \yii::t('app', 'Document serial number'),
         ));
     }
 
