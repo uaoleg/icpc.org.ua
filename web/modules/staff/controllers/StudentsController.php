@@ -147,28 +147,27 @@ class StudentsController extends \web\modules\staff\ext\Controller
         // Get params
         $lang = \yii::app()->languageCore;
 
+        // List of table columns
+        $list = array(array(
+            'name'         => \yii::t('app', 'Name'),
+            'school'       => \yii::t('app', 'School'),
+            'speciality'   => \yii::t('app', 'Speciality'),
+            'group'        => \yii::t('app', 'Group'),
+            'email'        => \yii::t('app', 'Email'),
+            'phone'        => \yii::t('app', 'Phone'),
+            'course'       => \yii::t('app', 'Course'),
+            'dateBirthday' => \yii::t('app', 'Date of birth'),
+        ));
+
+        // Find all students
         $criteria = \yii::app()->user->getState('userCriteriaForExport');
         $criteria->limit(0);
         $criteria->offset(0);
-
-        $users = Student::model()->findAll($criteria);
-        $schoolFieldName = "schoolFullName" . ucfirst($lang);
-
-        $list = array(array(
-            'name'         => \yii::t( 'app', 'Name' ),
-            "school"       => \yii::t( 'app', 'School' ),
-            'speciality'   => \yii::t( 'app', 'Speciality' ),
-            'group'        => \yii::t( 'app', 'Group' ),
-            'email'        => \yii::t( 'app', 'Email' ),
-            'phone'        => \yii::t( 'app', 'Phone' ),
-            'course'       => \yii::t( 'app', 'Course' ),
-            'dateBirthday' => \yii::t( 'app', 'Date of birth' ),
-        ));
-
-        foreach ($users as $user)
-        {
-            $item =  $this->_prepareUser($user);
-            $item['school'] = $item[$schoolFieldName];
+        $students = Student::model()->findAll($criteria);
+        foreach ($students as $student) {
+            $item =  $this->_prepareUser($student);
+            $item['name'] = $item['name' . ucfirst($lang)];
+            $item['school'] = $item['schoolFullName' . ucfirst($lang)];
             $list[] = $item;
         }
 
