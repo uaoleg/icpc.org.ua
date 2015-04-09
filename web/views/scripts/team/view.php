@@ -10,7 +10,7 @@
     <div class="col-lg-6 col-lg-offset-3">
         <h1>
             <?=\CHtml::encode($team->name)?>
-            <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_UPDATE, array('team' => $team))): ?>
+            <?php if ((empty($team->baylorId)) && \yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_UPDATE, array('team' => $team))): ?>
                 <a href="<?=$this->createUrl('staff/team/manage', array('id' => $team->_id))?>" class="btn btn-primary"><?=\yii::t('app', 'Manage')?></a>
             <?php endif; ?>
             <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_DELETE, array('team' => $team))): ?>

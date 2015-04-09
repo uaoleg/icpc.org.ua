@@ -68,6 +68,9 @@
         <a class="btn btn-success btn-lg" href="<?=$this->createUrl('/staff/team/manage')?>">
             <?=\yii::t('app', 'Create a new team')?>
         </a>
+        <a class="btn btn-success btn-lg" href="<?=$this->createUrl('/staff/team/import')?>">
+            <?=\yii::t('app', 'Import a new team')?>
+        </a>
     <?php endif; ?>
 
     <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_EXPORT)): ?>

@@ -83,6 +83,12 @@ class Team extends \common\ext\MongoDb\Document
     public $schoolNameEn;
 
     /**
+     * Team id on icpc.baylor.edu
+     * @var string
+     */
+    public $baylorId;
+
+    /**
      * League
      * I-offers advanced degree in computer science
      * II-does not offer advanced degree in computer science
