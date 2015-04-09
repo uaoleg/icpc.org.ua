@@ -510,8 +510,11 @@ class AuthController extends \web\ext\Controller
         $query = $this->request->getParam('q');
 
         // Get schools
+        $lang = \yii::app()->languageCore;
+        $field = 'fullName'.ucfirst($lang);
+
         $criteria = new \EMongoCriteria();
-        $criteria->addCond('fullNameUk', '==', new \MongoRegex('/' . preg_quote($query) . '/i'));
+        $criteria->addCond($field, '==', new \MongoRegex('/' . preg_quote($query) . '/i'));
         $schools = School::model()->findAll($criteria);
 
         // Create json list of schools
@@ -519,7 +522,7 @@ class AuthController extends \web\ext\Controller
         foreach ($schools as $school) {
             $schoolsJson[] = array(
                 'id'    => (string)$school->_id,
-                'text'  => $school->fullNameUk
+                'text'  => $school->$field
             );
         }
 
