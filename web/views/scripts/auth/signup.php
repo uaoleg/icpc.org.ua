@@ -86,6 +86,7 @@
                         <input type="hidden"
                                name="schoolId"
                                class="form-control"
+                               data-formatnomatches="<?=\yii::t('app', 'No matches found')?>"
                                data-placeholder="<?=\yii::t('app', 'Your school')?>" />
                     </div>
                     <div class="form-group">
