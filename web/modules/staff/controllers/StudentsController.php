@@ -122,6 +122,10 @@ class StudentsController extends \web\modules\staff\ext\Controller
     {
         // Get jqGrid params
         $criteria = new \EMongoCriteria();
+        if (\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_STATE))
+        {
+            $criteria->addCond('isApprovedStudent', '==', true);
+        }
         $jqgrid = $this->_getJqgridParams(Student::model(), $criteria);
 
         $rows = array();

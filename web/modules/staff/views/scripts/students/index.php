@@ -33,7 +33,11 @@
                     {name: 'course', index: 'course', width: 25},
                     {name: 'dateBirthday', index: 'dateBirthday', width: 25, formatter: 'date', formatoptions: {newformat: 'Y-m-d'}, search: false},
                     {name: 'dateCreated', index: 'dateCreated', width: 25, formatter: 'date', formatoptions: {newformat: 'Y-m-d'}, search: false},
-                    {name: 'isApprovedStudent', index: 'isApprovedStudent', align: 'center', width: 50, search: true, sortable: false, stype: 'select', searchoptions: {sopt: ['bool'], value: "-1:<?=\yii::t('app', 'All')?>;0:<?=\yii::t('app', 'Suspended')?>;1:<?=\yii::t('app', 'Active')?>"}},
+                    <?php if (false) { ?>
+                        {name: 'isApprovedStudent', index: 'isApprovedStudent', align: 'center', width: 50, search: true, sortable: false, stype: 'select', searchoptions: {sopt: ['bool'], value: "-1:<?=\yii::t('app', 'All')?>;0:<?=\yii::t('app', 'Suspended')?>;1:<?=\yii::t('app', 'Active')?>"}},
+                    <?php } else {?>
+                        {name: 'isApprovedStudent', index: 'isApprovedStudent', width: 50, search: false},
+                    <?php } ?>
                 ],
                 sortname: 'dateCreated',
                 sortorder: 'desc'
