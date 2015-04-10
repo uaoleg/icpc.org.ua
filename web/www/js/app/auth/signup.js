@@ -97,11 +97,10 @@ function appAuthSignup() {
      * Init Select2
      */
     $('.form-group .form-control[name=schoolId]').select2({
-       minimumInputLength: 2,
-       formatNoMatches: function ()
-       {
-         return $(this.element).attr('data-formatnomatches');
-       },
+        minimumInputLength: 2,
+        formatNoMatches: function () {
+            return $(this.element).data('formatnomatches');
+        },
         query: function (query) {
             var data = {
                 results: []

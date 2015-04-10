@@ -86,7 +86,7 @@
                         <input type="hidden"
                                name="schoolId"
                                class="form-control"
-                               data-formatnomatches="<?=\yii::t('app', 'No matches found')?>"
+                               data-formatnomatches="<?=\yii::t('app', 'No matches found. Please, try to search by a part of your school\'s name, not by the full name.<br><br>If you not succeeded, please, contact your coach or coordinator with request to add your school to the list.')?>"
                                data-placeholder="<?=\yii::t('app', 'Your school')?>" />
                     </div>
                     <div class="form-group">
