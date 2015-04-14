@@ -28,7 +28,7 @@ class Unique extends AbstractValidator
             'year' => $year,
         ));
 
-        if ($team2 !== null) {
+        if ($team2 !== null && ($team2->_id != $team->_id)) {
             $this->addError($team, $attribute, \yii::t('app', 'Team "{name}" already exists for year {year}', array(
                 '{name}' => $name,
                 '{year}' => $year,
