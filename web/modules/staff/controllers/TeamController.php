@@ -44,7 +44,7 @@ class TeamController extends \web\modules\staff\ext\Controller
         return array(
             array(
                 'allow',
-                'actions' => array('manage', 'schoolComplete'),
+                'actions' => array('manage', 'schoolComplete', 'generate'),
                 'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE => array('team' => $team)),
             ),
             array(
@@ -66,6 +66,39 @@ class TeamController extends \web\modules\staff\ext\Controller
                 'deny',
             )
         );
+    }
+
+    public function actionGenerate()
+    {
+        $this->layout = false;
+
+        $teamId = $this->request->getParam('id' , null);
+        if (empty($teamId)){
+            $this->httpException(404);
+        }
+
+        $team = Team::model()->findByPk(new \MongoId($teamId));
+        if (empty($team)){
+            $this->httpException(404);
+        }
+
+        $school = School::model()->findByPk(new \MongoId($team->schoolId));
+        $coach = User::model()->findByPk(new \MongoId($team->coachId));
+
+        $usersMongoIds = array();
+        $usersMongoIds = array_map(function($id) {
+            return new \MongoId($id);
+        }, array_merge($usersMongoIds, $team->memberIds));
+        $members = User::model()->findAllByAttributes(array(
+            '_id' => array('$in' => $usersMongoIds)
+        ));
+
+        $this->render('generate', array(
+            'team'    => $team,
+            'school'  => $school,
+            'coach'   => $coach,
+            'members' => $members,
+        ));
     }
 
     /**
