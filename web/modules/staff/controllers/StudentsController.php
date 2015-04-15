@@ -1,7 +1,7 @@
 <?php
 namespace web\modules\staff\controllers;
 
-use common\models\ViewTable\Student;
+use \common\models\ViewTable\Student;
 use \common\models\User;
 use \common\components\Rbac;
 

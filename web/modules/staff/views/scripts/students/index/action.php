@@ -1,4 +1,4 @@
-<?php $isAdmin = \yii::app()->user->checkAccess(User::ROLE_ADMIN); ?>
+<?php $isAdmin = \yii::app()->user->checkAccess(\common\models\User::ROLE_ADMIN); ?>
 
 <div style="margin: 5px 0;">
     <button type="button" class="btn btn-success student-state <?=$user->isApprovedStudent ? 'hide' : ''?>"
