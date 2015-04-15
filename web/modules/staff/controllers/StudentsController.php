@@ -1,7 +1,7 @@
 <?php
 namespace web\modules\staff\controllers;
 
-use common\models\ViewTable\Student;
+use \common\models\ViewTable\Student;
 use \common\models\User;
 use \common\components\Rbac;
 
@@ -122,8 +122,12 @@ class StudentsController extends \web\modules\staff\ext\Controller
     {
         // Get jqGrid params
         $criteria = new \EMongoCriteria();
+        if (!\yii::app()->user->checkAccess(User::ROLE_ADMIN)) {
+            $criteria->addCond('isApprovedStudent', '==', true); // Only admin can see deleted students
+        }
         $jqgrid = $this->_getJqgridParams(Student::model(), $criteria);
 
+        // Get rows
         $rows = array();
         foreach ($jqgrid['itemList'] as $user) {
             $idsToRemember[] = (string)$user->_id;
@@ -131,6 +135,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
             \yii::app()->user->setState('userCriteriaForExport', $jqgrid['criteria']);
         }
 
+        // Render json
         $this->renderJson(array(
             'page'      => $jqgrid['page'],
             'total'     => ceil($jqgrid['totalCount'] / $jqgrid['perPage']),
