@@ -13,9 +13,7 @@
             <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_EXPORT_ONE, array('team' => $team))): ?>
                 <a target="_blank"
                    href="<?=$this->createUrl('staff/team/exportOne', array('id' => $team->_id))?>"
-                   class="btn btn-primary"
-                   title="<?=\yii::t('app', 'Export registration form')?>"
-                   data-toggle="tooltip"><?=\yii::t('app', 'Reg Form')?></a>
+                   class="btn btn-primary"><?=\yii::t('app', 'Export Reg Form')?></a>
             <?php endif; ?>
             <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_UPDATE, array('team' => $team))): ?>
                 <a href="<?=$this->createUrl('staff/team/manage', array('id' => $team->_id))?>" class="btn btn-primary"><?=\yii::t('app', 'Manage')?></a>
