@@ -73,7 +73,7 @@
         </a>
     <?php endif; ?>
 
-    <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_EXPORT)): ?>
+    <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_EXPORT_ALL)): ?>
         <div class="btn-group btn-csv" data-phase="1">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 <?=\yii::t('app', 'Export to CSV')?> <span class="caret"></span>

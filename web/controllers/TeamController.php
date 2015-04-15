@@ -18,7 +18,7 @@ class TeamController extends \web\ext\Controller
             array(
                 'allow',
                 'actions'   => array('exportCheckingSystem', 'exportRegistration'),
-                'roles'     => array(\common\components\Rbac::OP_TEAM_EXPORT),
+                'roles'     => array(\common\components\Rbac::OP_TEAM_EXPORT_ALL),
             ),
             array(
                 'deny',
@@ -86,6 +86,10 @@ class TeamController extends \web\ext\Controller
             ->addCond('teamId', '==', $teamId)
             ->addCond('year', '==', $team->year)
             ->sort('phase', \EMongoCriteria::SORT_ASC);
+
+        \yii::app()->user->setState('teamCriteriaForExport', $criteria);
+
+
         $results = Result::model()->findAll($criteria);
 
         // Render view
@@ -140,7 +144,6 @@ class TeamController extends \web\ext\Controller
 
         // Save filtered IDs for export
         \yii::app()->user->setState('teamIdsForExport', $idsToRemember);
-
         // Render json
         $this->renderJson(array(
             'page'      => $jqgrid['page'],
@@ -156,15 +159,9 @@ class TeamController extends \web\ext\Controller
     public function actionExportCheckingSystem()
     {
         // Get params
-        $teamIds = \yii::app()->user->getState('teamIdsForExport');
-
-        $teamIds = array_map(function($id) {
-            return new \MongoId($id);
-        }, $teamIds);
+        $criteria = \yii::app()->user->getState('teamCriteriaForExport');
 
         // Get list of teams
-        $criteria = new \EMongoCriteria();
-        $criteria->addCond('_id', 'in', $teamIds);
         $teams = Team::model()->findAll($criteria);
 
         // Render CSV
@@ -181,15 +178,9 @@ class TeamController extends \web\ext\Controller
     public function actionExportRegistration()
     {
         // Get params
-        $teamIds = \yii::app()->user->getState('teamIdsForExport');
-
-        $teamIds = array_map(function($id) {
-            return new \MongoId($id);
-        }, $teamIds);
+        $criteria = \yii::app()->user->getState('teamCriteriaForExport');
 
         // Get list of teams
-        $criteria = new \EMongoCriteria();
-        $criteria->addCond('_id', 'in', $teamIds);
         $teams = Team::model()->findAll($criteria);
 
         // Render CSV

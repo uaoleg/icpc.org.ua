@@ -52,6 +52,11 @@ class TeamController extends \web\modules\staff\ext\Controller
             ),
             array(
                 'allow',
+                'actions' => array('exportOne'),
+                'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_EXPORT_ONE => array('team' => $team)),
+            ),
+            array(
+                'allow',
                 'actions' => array('delete'),
                 'roles' => array(Rbac::OP_TEAM_DELETE => array('team' => $team)),
             ),
@@ -182,6 +187,30 @@ class TeamController extends \web\modules\staff\ext\Controller
     public function actionImport()
     {
         $this->render('import', array(
+        ));
+    }
+
+    /**
+     * Generate team's registration form
+     */
+    public function actionExportOne()
+    {
+        // Get params
+        $teamId = $this->request->getParam('id' , null);
+        if (empty($teamId)){
+            $this->httpException(404);
+        }
+
+        // Get team
+        $team = Team::model()->findByPk(new \MongoId($teamId));
+        if (empty($team)){
+            $this->httpException(404);
+        }
+
+        // Render view
+        $this->layout = false;
+        $this->render('exportOne', array(
+            'team' => $team,
         ));
     }
 
