@@ -18,7 +18,7 @@ class TeamController extends \web\ext\Controller
             array(
                 'allow',
                 'actions'   => array('exportCheckingSystem', 'exportRegistration'),
-                'roles'     => array(\common\components\Rbac::OP_TEAM_EXPORT),
+                'roles'     => array(\common\components\Rbac::OP_TEAM_EXPORT_ALL),
             ),
             array(
                 'deny',
