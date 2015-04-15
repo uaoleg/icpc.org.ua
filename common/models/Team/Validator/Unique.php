@@ -23,12 +23,16 @@ class Unique extends AbstractValidator
         $name = $team->$attribute;
         $year = $team->year;
 
-        $team2 = Team::model()->findByAttributes(array(
-            'name' => new \MongoRegex('/^' . preg_quote($name) . '$/i'),
-            'year' => $year,
-        ));
+        // Find 2nd team with such name
+        $criteria = new \EMongoCriteria();
+        $criteria
+            ->addCond('_id', '!=', $team->_id)
+            ->addCond('name', '==', new \MongoRegex('/^' . preg_quote($name) . '$/i'))
+            ->addCond('year', '==', $year);
+        $team2 = Team::model()->find($criteria);
 
-        if ($team2 !== null && ($team2->_id != $team->_id)) {
+        // If 2nd team exists then add error
+        if ($team2 !== null) {
             $this->addError($team, $attribute, \yii::t('app', 'Team "{name}" already exists for year {year}', array(
                 '{name}' => $name,
                 '{year}' => $year,
