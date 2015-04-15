@@ -1,7 +1,10 @@
 <?php
     use \common\models\User;
+
+    $isAdmin = \yii::app()->user->checkAccess(User::ROLE_ADMIN);
+
+    \yii::app()->clientScript->registerCoreScript('jquery.jqgrid');
 ?>
-<?php \yii::app()->clientScript->registerCoreScript('jquery.jqgrid'); ?>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -21,7 +24,7 @@
                     \yii::t('app', 'Course'),
                     \yii::t('app', 'Date of birth'),
                     \yii::t('app', 'Registration date'),
-                    \yii::t('app', 'Status'),
+                    $isAdmin ? \yii::t('app', 'Status') : \yii::t('app', 'Action'),
                 )))?>,
                 colModel: [
                     {name: 'name<?=ucfirst($lang)?>', index: 'name<?=ucfirst($lang)?>', width: 75, formatter: 'showlink', formatoptions: {baseLinkUrl: '/user/view'}},
@@ -33,7 +36,11 @@
                     {name: 'course', index: 'course', width: 25},
                     {name: 'dateBirthday', index: 'dateBirthday', width: 25, formatter: 'date', formatoptions: {newformat: 'Y-m-d'}, search: false},
                     {name: 'dateCreated', index: 'dateCreated', width: 25, formatter: 'date', formatoptions: {newformat: 'Y-m-d'}, search: false},
-                    {name: 'isApprovedStudent', index: 'isApprovedStudent', align: 'center', width: 50, search: true, sortable: false, stype: 'select', searchoptions: {sopt: ['bool'], value: "-1:<?=\yii::t('app', 'All')?>;0:<?=\yii::t('app', 'Suspended')?>;1:<?=\yii::t('app', 'Active')?>"}},
+                    <?php if ($isAdmin): ?>
+                        {name: 'isApprovedStudent', index: 'isApprovedStudent', align: 'center', width: 50, search: true, sortable: false, stype: 'select', searchoptions: {sopt: ['bool'], value: "-1:<?=\yii::t('app', 'All')?>;0:<?=\yii::t('app', 'Suspended')?>;1:<?=\yii::t('app', 'Active')?>"}},
+                    <?php else: ?>
+                        {name: 'isApprovedStudent', index: 'isApprovedStudent', width: 50, search: false},
+                    <?php endif; ?>
                 ],
                 sortname: 'dateCreated',
                 sortorder: 'desc'
