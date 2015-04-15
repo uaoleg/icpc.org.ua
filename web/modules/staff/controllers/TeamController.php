@@ -93,8 +93,7 @@ class TeamController extends \web\modules\staff\ext\Controller
         // Render view
         $this->layout = false;
         $this->render('exportOne', array(
-            'team'    => $team,
-            'members' => $members,
+            'team' => $team,
         ));
     }
 
