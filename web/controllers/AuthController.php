@@ -4,6 +4,7 @@ namespace web\controllers;
 
 use \common\models\School;
 use \common\models\User;
+use MongoDate;
 use \web\ext\WebUser;
 
 class AuthController extends \web\ext\Controller
@@ -293,11 +294,17 @@ class AuthController extends \web\ext\Controller
         } catch (\Exception $e) {
             $success = false;
         }
-        if ($emailConfirmation !== null) {
+        if (isset($emailConfirmation) && $emailConfirmation !== null) {
             $user = User::model()->findByPk(new \MongoId($emailConfirmation->userId));
             $user->isEmailConfirmed = true;
             $user->save();
-            $emailConfirmation->delete();
+
+            //Save date when email was confirmed
+            if (empty($emailConfirmation->confirmedDate)) {
+                $emailConfirmation->confirmedDate = new MongoDate();
+                $emailConfirmation->save();
+            }
+
             $success = true;
         } else {
             $success = false;

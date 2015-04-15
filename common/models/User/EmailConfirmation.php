@@ -12,6 +12,12 @@ class EmailConfirmation extends \common\ext\MongoDb\Document
     public $userId;
 
     /**
+     * Date when email was confirmed
+     * @var DateTime
+     */
+    public $confirmedDate = false;
+
+    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
