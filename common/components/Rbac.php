@@ -35,7 +35,8 @@ class Rbac extends \CApplicationComponent
     const OP_TEAM_DELETE            = 'teamDelete';
     const OP_TEAM_LEAGUE_UPDATE     = 'teamLeagueUpdate';
     const OP_TEAM_PHASE_UPDATE      = 'teamPhaseUpdate';
-    const OP_TEAM_EXPORT            = 'teamExport';
+    const OP_TEAM_EXPORT_ALL        = 'teamExportAll';
+    const OP_TEAM_EXPORT_ONE        = 'teamExportOne';
     const OP_USER_EXPORT            = 'userExport';
     const OP_QA_ANSWER_CREATE       = 'qaAnswerCreate';
     const OP_QA_ANSWER_READ         = 'qaAnswerRead';
@@ -255,14 +256,29 @@ class Rbac extends \CApplicationComponent
     }
 
     /**
-     * Export team (csv)
+     * Export all teams (csv)
      *
      * @param array $params
      * @return bool
      */
-    public function bizRuleTeamExport(array $params)
+    public function bizRuleTeamExportAll(array $params)
     {
         return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
+    }
+
+    /**
+     * Export team's form (html)
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleTeamExportOne(array $params)
+    {
+        if ((string)$this->user->_id === $params['team']->coachId) {
+            return true;
+        } else {
+            return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
+        }
     }
 
     /**

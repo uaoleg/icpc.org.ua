@@ -73,7 +73,7 @@
             <td>РЕЄСТРАЦІЙНА ФОРМА КОМАНДИ</td>
         </tr>
         <tr>
-            <td>першого етапу Всеукраїнської студентської олімпіади з програмування <?php echo $team->year; ?> року</td>
+            <td>першого етапу Всеукраїнської студентської олімпіади з програмування <?= $team->year ?> року</td>
         </tr>
     </table>
 
@@ -86,13 +86,13 @@
                 Повна(укр):
             </td>
             <td class="space">
-                <?php echo $school->fullNameUk; ?>
+                <?= $team->school->fullNameUk ?>
             </td>
             <td width="1px">
                 Скорочена
             </td>
             <td class="space" width="150px">
-                <?php echo $school->shortNameUk; ?>
+                <?= $team->school->shortNameUk ?>
             </td>
         </tr>
         <tr>
@@ -100,7 +100,7 @@
                 Повна(англ):
             </td>
             <td class="space" colspan="3">
-                <?php echo $school->fullNameEn; ?>
+                <?= $team->school->fullNameEn ?>
             </td>
         </tr>
     </table>
@@ -135,7 +135,7 @@
                 Назва команди
             </td>
             <td class="space">
-                <?php echo $team->name; ?>
+                <?= $team->name ?>
             </td>
         </tr>
     </table>
@@ -153,7 +153,7 @@
                 Прізвище, ім'я, по-батькові
             </td>
             <td class="space" colspan="3">
-                <?php echo $team->coachNameUk; ?>
+                <?= $team->coachNameUk ?>
             </td>
         </tr>
     </table>
@@ -164,7 +164,7 @@
                 Ім'я, прізвище (англ):
             </td>
             <td class="space">
-                <?php echo $team->coachNameEn; ?>
+                <?= $team->coachNameEn ?>
             </td>
         </tr>
     </table>
@@ -175,7 +175,7 @@
                 Посада:
             </td>
             <td class="space">
-                <?php echo $coach->info->position; ?>
+                <?= $team->coach->info->position ?>
             </td>
         </tr>
     </table>
@@ -186,7 +186,7 @@
                 Робоча адреса:
             </td>
             <td class="space">
-                <?php echo $coach->info->officeAddress; ?>
+                <?= $team->coach->info->officeAddress ?>
             </td>
         </tr>
     </table>
@@ -197,7 +197,7 @@
                 Електрона адреса(e-mail):
             </td>
             <td class="space">
-                <?php echo $coach->email; ?>
+                <?= $team->coach->email ?>
             </td>
         </tr>
     </table>
@@ -208,19 +208,19 @@
                 Телефони робочий:
             </td>
             <td class="space">
-                <?php echo $coach->info->phoneWork; ?>
+                <?= $team->coach->info->phoneWork ?>
             </td>
             <td width="50px">
                 домашній:
             </td>
             <td class="space">
-                <?php echo $coach->info->phoneHome; ?>
+                <?= $team->coach->info->phoneHome ?>
             </td>
             <td width="50px">
                 мобільний:
             </td>
             <td class="space">
-                <?php echo $coach->info->phoneMobile; ?>
+                <?= $team->coach->info->phoneMobile ?>
             </td>
         </tr>
     </table>
@@ -229,13 +229,13 @@
 
     <?php
         $index = 1;
-        foreach ($members as $member)
+        foreach ($team->members as $member)
         {
     ?>
 
             <table class="header">
                 <tr>
-                    <th><?php echo (($index < 4) ? "Учасник {$index}" : "Запасний учасник"); ?></th>
+                    <th><?= (($index < 4) ? "Учасник {$index}" : "Запасний учасник") ?></th>
                 </tr>
             </table>
 
@@ -245,7 +245,7 @@
                         Прізвище, ім'я, по-батькові
                     </td>
                     <td class="space" colspan="3">
-                        <?php echo $member->lastNameUk; ?> <?php echo $member->firstNameUk; ?> <?php echo $member->middleNameUk; ?>
+                        <?= $member->lastNameUk ?> <?= $member->firstNameUk ?> <?= $member->middleNameUk ?>
                     </td>
                 </tr>
             </table>
@@ -256,7 +256,7 @@
                         Ім'я, прізвище (англ):
                     </td>
                     <td class="space">
-                        <?php echo $member->lastNameEn; ?> <?php echo $member->firstNameEn; ?> <?php echo $member->middleNameEn; ?>
+                        <?= $member->lastNameEn ?> <?= $member->firstNameEn ?> <?= $member->middleNameEn ?>
                     </td>
                 </tr>
             </table>
@@ -267,14 +267,14 @@
                         Напрям навчання
                     </td>
                     <td class="space">
-                        <?php echo $member->info->studyField; ?>
+                        <?= $member->info->studyField ?>
                     </td>
 
                     <td width="90px">
                         Спеціальність
                     </td>
                     <td class="space">
-                        <?php echo $member->info->speciality; ?>
+                        <?= $member->info->speciality ?>
                     </td>
                 </tr>
             </table>
@@ -285,19 +285,19 @@
                         Рік вступу до ВНЗ
                     </td>
                     <td class="space">
-                        <?php echo $member->info->schoolAdmissionYear; ?>
+                        <?= $member->info->schoolAdmissionYear ?>
                     </td>
                     <td width="30px">
                         Курс
                     </td>
                     <td class="space">
-                        <?php echo $member->info->course; ?>
+                        <?= $member->info->course ?>
                     </td>
                     <td width="130px">
                         Студентський квиток
                     </td>
                     <td class="space">
-                        <?php echo $member->info->document; ?>
+                        <?= $member->info->document ?>
                     </td>
                 </tr>
             </table>
@@ -308,14 +308,14 @@
                         Дата народження
                     </td>
                     <td class="space">
-                        <?php echo date("d.m.Y",$member->info->dateOfBirth); ?>
+                        <?= date("d.m.Y",$member->info->dateOfBirth) ?>
                     </td>
 
                     <td width="50px">
                         E-mail
                     </td>
                     <td class="space">
-                        <?php echo $member->email; ?>
+                        <?= $member->email ?>
                     </td>
                 </tr>
             </table>
@@ -326,13 +326,13 @@
                         Телефон домашній:
                     </td>
                     <td class="space">
-                        <?php echo $member->info->phoneHome; ?>
+                        <?= $member->info->phoneHome ?>
                     </td>
                     <td width="50px">
                         мобільний:
                     </td>
                     <td class="space">
-                        <?php echo $member->info->phoneMobile; ?>
+                        <?= $member->info->phoneMobile ?>
                     </td>
                 </tr>
             </table>
@@ -390,7 +390,7 @@
                 <td class="space" width="100px">
                 </td>
                 <td width="75px">
-                    <?php echo date("Y") ?> року
+                    <?= date('Y') ?> року
                 </td>
             </tr>
         </table>

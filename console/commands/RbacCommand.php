@@ -87,6 +87,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_TEAM_CREATE,
             Rbac::OP_TEAM_UPDATE,
             Rbac::OP_TEAM_DELETE,
+            Rbac::OP_TEAM_EXPORT_ONE,
             Rbac::OP_USER_READ_EMAIL,
         ));
 
@@ -107,7 +108,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_NEWS_UPDATE,
             Rbac::OP_RESULT_CREATE,
             Rbac::OP_RESULT_TEAM_DELETE,
-            Rbac::OP_TEAM_EXPORT,
+            Rbac::OP_TEAM_EXPORT_ALL,
             Rbac::OP_TEAM_LEAGUE_UPDATE,
             Rbac::OP_TEAM_PHASE_UPDATE,
             Rbac::OP_QA_ANSWER_CREATE,
@@ -252,7 +253,8 @@ class RbacCommand extends \console\ext\ConsoleCommand
     {
         $bizRuleUpdate = 'return \yii::app()->rbac->bizRuleTeamUpdate($params);';
         $bizRuleUpdatePhase = 'return \yii::app()->rbac->bizRuleTeamUpdatePhase($params);';
-        $bizRuleExport = 'return \yii::app()->rbac->bizRuleTeamExport($params);';
+        $bizRuleExportAll = 'return \yii::app()->rbac->bizRuleTeamExportAll($params);';
+        $bizRuleExportOne = 'return \yii::app()->rbac->bizRuleTeamExportOne($params);';
         $bizRuleLeagueUpdate = 'return \yii::app()->rbac->bizRuleTeamLeagueUpdate($params);';
         $bizRuleDelete = 'return \yii::app()->rbac->bizRuleTeamDelete($params);';
 
@@ -261,7 +263,8 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->auth->createOperation(Rbac::OP_TEAM_UPDATE, 'Edit team', $bizRuleUpdate);
         $this->auth->createOperation(Rbac::OP_TEAM_DELETE, 'Delete team', $bizRuleDelete);
         $this->auth->createOperation(Rbac::OP_TEAM_PHASE_UPDATE, 'Set team phase', $bizRuleUpdatePhase);
-        $this->auth->createOperation(Rbac::OP_TEAM_EXPORT, 'Export team', $bizRuleExport);
+        $this->auth->createOperation(Rbac::OP_TEAM_EXPORT_ALL, 'Export all teams', $bizRuleExportAll);
+        $this->auth->createOperation(Rbac::OP_TEAM_EXPORT_ONE, 'Export team form', $bizRuleExportOne);
         $this->auth->createOperation(Rbac::OP_TEAM_LEAGUE_UPDATE, 'Team\'s league update', $bizRuleLeagueUpdate);
     }
 

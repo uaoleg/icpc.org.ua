@@ -44,8 +44,13 @@ class TeamController extends \web\modules\staff\ext\Controller
         return array(
             array(
                 'allow',
-                'actions' => array('manage', 'schoolComplete', 'generate'),
+                'actions' => array('manage', 'schoolComplete'),
                 'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE => array('team' => $team)),
+            ),
+            array(
+                'allow',
+                'actions' => array('exportOne'),
+                'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_EXPORT_ONE => array('team' => $team)),
             ),
             array(
                 'allow',
@@ -68,35 +73,27 @@ class TeamController extends \web\modules\staff\ext\Controller
         );
     }
 
-    public function actionGenerate()
+    /**
+     * Generate team's registration form
+     */
+    public function actionExportOne()
     {
-        $this->layout = false;
-
+        // Get params
         $teamId = $this->request->getParam('id' , null);
         if (empty($teamId)){
             $this->httpException(404);
         }
 
+        // Get team
         $team = Team::model()->findByPk(new \MongoId($teamId));
         if (empty($team)){
             $this->httpException(404);
         }
 
-        $school = School::model()->findByPk(new \MongoId($team->schoolId));
-        $coach = User::model()->findByPk(new \MongoId($team->coachId));
-
-        $usersMongoIds = array();
-        $usersMongoIds = array_map(function($id) {
-            return new \MongoId($id);
-        }, array_merge($usersMongoIds, $team->memberIds));
-        $members = User::model()->findAllByAttributes(array(
-            '_id' => array('$in' => $usersMongoIds)
-        ));
-
-        $this->render('generate', array(
+        // Render view
+        $this->layout = false;
+        $this->render('exportOne', array(
             'team'    => $team,
-            'school'  => $school,
-            'coach'   => $coach,
             'members' => $members,
         ));
     }
