@@ -28,7 +28,8 @@ class Unique extends AbstractValidator
         $criteria
             ->addCond('_id', '!=', $team->_id)
             ->addCond('name', '==', new \MongoRegex('/^' . preg_quote($name) . '$/i'))
-            ->addCond('year', '==', $year);
+            ->addCond('year', '==', $year)
+            ->addCond('isDeleted', '==', false);
         $team2 = Team::model()->find($criteria);
 
         // If 2nd team exists then add error
