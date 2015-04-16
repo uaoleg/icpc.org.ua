@@ -65,11 +65,19 @@
     </div>
 
     <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_CREATE)): ?>
-        <a class="btn btn-success btn-lg" href="<?=$this->createUrl('/staff/team/manage')?>">
-            <?=\yii::t('app', 'Create a new team')?>
+        <a class="btn btn-success btn-lg"
+           href="<?=$this->createUrl('/staff/team/manage')?>"
+           title="<?=\yii::t('app', 'Create a new team out of competition')?>"
+           rel="tooltip">
+            <span class="glyphicon glyphicon-plus"></span>
+            <?=\yii::t('app', 'New team')?>
         </a>
-        <a class="btn btn-success btn-lg" href="<?=$this->createUrl('/staff/team/import')?>">
-            <?=\yii::t('app', 'Import a new team')?>
+        <a class="btn btn-success btn-lg"
+           href="<?=$this->createUrl('/staff/team/import')?>"
+           title="<?=\yii::t('app', 'Import teams from icpc.baylor.edu')?>"
+           rel="tooltip">
+            <span class="glyphicon glyphicon-cloud-download"></span>
+            <?=\yii::t('app', 'Import teams')?>
         </a>
     <?php endif; ?>
 

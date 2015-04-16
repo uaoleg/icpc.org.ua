@@ -1,7 +1,3 @@
-<?php use \common\models\Result; ?>
-<?php use \common\models\User; ?>
-<?php use \common\models\Team; ?>
-
 <script type="text/javascript">
     $(document).ready(function() {
         new appStaffTeamImport({
@@ -17,11 +13,14 @@
 
         <div class="panel panel-primary panel-school">
             <div class="panel-heading">
-                <?=\yii::t('app', 'Team Info')?>
-
+                <?=\yii::t('app', 'Import your teams from icpc.baylor.edu')?>
             </div>
 
             <div class="panel-body form">
+
+                <p>
+                    <?= \yii::t('app', 'We promise we will not save any of the data!') ?>
+                </p>
 
                 <div class="form-group auth">
                     <label for="name"><?=\yii::t('app', 'Email')?></label>
@@ -45,7 +44,7 @@
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg btn-load">
-                        <?=\yii::t('app', 'Load teams')?>
+                        <?=\yii::t('app', 'Import teams')?>
                     </button>
                 </div>
 
