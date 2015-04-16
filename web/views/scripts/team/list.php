@@ -58,13 +58,10 @@
     });
 </script>
 
-<div class="clearfix">
-
-    <div class="pull-right">
-        <?php \web\widgets\filter\Year::create(array('checked' => $year)); ?>
-    </div>
+<table class="page-top-controls"><tr>
 
     <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_CREATE)): ?>
+    <td>
         <a class="btn btn-success btn-lg"
            href="<?=$this->createUrl('/staff/team/manage')?>"
            title="<?=\yii::t('app', 'Create a new team out of competition')?>"
@@ -72,6 +69,8 @@
             <span class="glyphicon glyphicon-plus"></span>
             <?=\yii::t('app', 'New team')?>
         </a>
+    </td>
+    <td>
         <a class="btn btn-success btn-lg"
            href="<?=$this->createUrl('/staff/team/import')?>"
            title="<?=\yii::t('app', 'Import teams from icpc.baylor.edu')?>"
@@ -79,9 +78,11 @@
             <span class="glyphicon glyphicon-cloud-download"></span>
             <?=\yii::t('app', 'Import teams')?>
         </a>
+    </td>
     <?php endif; ?>
 
     <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_EXPORT_ALL)): ?>
+    <td>
         <div class="btn-group btn-csv" data-phase="1">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 <?=\yii::t('app', 'Export to CSV')?> <span class="caret"></span>
@@ -91,9 +92,14 @@
                 <li><a href="<?=$this->createUrl('/team/exportRegistration')?>"><?=\yii::t('app', 'For registration')?></a></li>
             </ul>
         </div>
+    </td>
     <?php endif; ?>
 
-</div>
+    <td>
+        <?php \web\widgets\filter\Year::create(array('checked' => $year)); ?>
+    </td>
+
+</tr></table>
 
 <hr />
 

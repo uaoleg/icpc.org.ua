@@ -67,6 +67,20 @@ transform: rotate(-90deg);
     padding: 0 20px;
 }
 
+.page-top-controls {
+    width: 100%;
+}
+
+.page-top-controls td {
+    padding-right: 10px;
+    width: 10px;
+}
+
+.page-top-controls td:last-child {
+    text-align: right;
+    width: 100%;
+}
+
 .slogan {
     font-size: 18px;
     font-style: italic;
