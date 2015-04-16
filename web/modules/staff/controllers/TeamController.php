@@ -6,9 +6,12 @@ use \common\components\Rbac;
 use \common\models\School;
 use \common\models\Team;
 use \common\models\User;
+use EMongoCriteria;
 
 class TeamController extends \web\modules\staff\ext\Controller
 {
+
+    const BAYLOR_STATUS_ACCEPTED = '(accepted)';
 
     /**
      * Init
@@ -44,7 +47,7 @@ class TeamController extends \web\modules\staff\ext\Controller
         return array(
             array(
                 'allow',
-                'actions' => array('manage', 'schoolComplete'),
+                'actions' => array('manage', 'import', 'postImport', 'postTeams','schoolComplete'),
                 'roles' => array(Rbac::OP_TEAM_CREATE, Rbac::OP_TEAM_UPDATE => array('team' => $team)),
             ),
             array(
@@ -71,6 +74,120 @@ class TeamController extends \web\modules\staff\ext\Controller
                 'deny',
             )
         );
+    }
+
+    public function actionPostTeams()
+    {
+        $email           = $this->request->getPost('email');
+        $password        = $this->request->getPost('password');
+
+        $response = \yii::app()->baylor->getTeamList($email, $password);
+
+        $imported = array();
+        $teams = array();
+
+        $errors = array();
+
+        if (!empty($response) && empty($response['error']) && !empty($response['data']))
+        {
+            $criteria = new EMongoCriteria();
+            $criteria->addCond('baylorId','noteq', null);
+            $importedList = Team::model()->findAll($criteria);
+            foreach ($importedList as $item) {
+                $imported[] = (string)$item->baylorId;
+            }
+
+            foreach ( $response['data'] as $team )
+            {
+                if (!in_array($team['id'], $imported))
+                {
+                    $teams[] = $team;
+                }
+            }
+
+        }
+
+        if (empty($teams))
+        {
+            $errors[] = "You don't have teams to import";
+        }
+
+        $this->renderJson(array(
+            'errors'   => !empty($errors) ? $errors : false,
+            'teams'    => $teams,
+        ));
+    }
+
+    public function actionPostImport()
+    {
+        $teamId          = $this->request->getPost('team');
+        $email           = $this->request->getPost('email');
+        $password        = $this->request->getPost('password');
+
+        $criteria = new EMongoCriteria();
+        $criteria->addCond('baylorId','eq',$teamId);
+        $team = Team::model()->findFirst($criteria);
+
+        $errors = false;
+
+        if (empty($team))
+        {
+            $response = \yii::app()->baylor->importTeam($email, $password, $teamId);
+
+            if (!empty($response) && empty($response['error']) && !empty($response['data']['team']))
+            {
+                $team = new Team();
+
+                if (empty($response['data']['team']['status']) || strtolower($response['data']['team']['status']) != self::BAYLOR_STATUS_ACCEPTED)
+                {
+                    $errors[] = 'Team should be accepted';
+                }
+
+                $memberIds = array();
+                if (empty($errors) && !empty($response['data']['team']['members']))
+                {
+                    foreach ($response['data']['team']['members'] as $member)
+                    {
+                        $userCriteria = new EMongoCriteria();
+                        $email = $member['email'];
+                        $userCriteria->addCond('email','eq', $email);
+                        $user = User::model()->findFirst($userCriteria);
+                        if (!empty($user)) {
+                            $memberIds[] = $user->_id->{'$id'};
+                        } else {
+                            $errors[] = "User with email {$member['email']} ({$member['name']}) wasn't found";
+                        }
+                    }
+                }
+
+                if (empty($errors)) {
+                    $team->setAttributes(array(
+                        'name'               => $response['data']['team']['title'],
+                        'coachId'            => \yii::app()->user->id,
+                        'schoolId'           => \yii::app()->user->getInstance()->school->_id,
+                        'memberIds'          => $memberIds,
+                        'baylorId'           => $response['data']['team']['id'],
+                        'isOutOfCompetition' => false
+                    ), false);
+
+                    $team->save();
+                    $errors = $team->hasErrors() ? $team->getErrors() : false;
+                }
+            }
+        } else {
+            $errors[] = 'This team was imported before';
+        }
+
+        $this->renderJson(array(
+            'errors' => $errors,
+            'teamId' => ! empty($team->_id ) ? $team->_id->{'$id'} : false,
+        ));
+    }
+
+    public function actionImport()
+    {
+        $this->render('import', array(
+        ));
     }
 
     /**
@@ -112,7 +229,7 @@ class TeamController extends \web\modules\staff\ext\Controller
             $teamId             = $this->request->getPost('teamId');
             $teamName           = $this->request->getPost('name');
             $memberIds          = $this->request->getPost('memberIds');
-            $isOutOfCompetition = $this->request->getPost('isOutOfCompetition');
+            $isOutOfCompetition = true;
 
             // Get team
             if (!empty($teamId)) {
@@ -120,9 +237,15 @@ class TeamController extends \web\modules\staff\ext\Controller
             } else {
                 $team = new Team();
             }
-           if ($team === null) {
+
+            if ($team === null) {
                 $this->httpException(404);
-           }
+            }
+
+            //You can't manage team that ws imported from bailor
+            if (!empty($team->baylorId)) {
+                $this->httpException(404);
+            }
 
             // Update team
             $team->setAttributes(array(
