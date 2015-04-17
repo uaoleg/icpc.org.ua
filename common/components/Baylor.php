@@ -163,8 +163,8 @@ class Baylor extends \CApplicationComponent
 
             if (!is_null($header)) {
 
-                $status = $html->find('[id="teamTabs:teamForm:statusRO"] div.statusModification', 0);
-                $team['status'] = strtolower(trim($status->plaintext, " ".chr(0xC2).chr(0xA0)));
+                $status = $html->find('[id="teamTabs:teamForm:statusRO"] div.statusModification span.statusACCEPTED', 0);
+                $team['status'] = !empty($status) ? \web\modules\staff\controllers\TeamController::BAYLOR_STATUS_ACCEPTED : false;
 
                 $rows = $html->find('[id="teamMembersTabs:teamMembersForm:teamMembersTable_data"] tr');
                 if (!empty($rows)) {
