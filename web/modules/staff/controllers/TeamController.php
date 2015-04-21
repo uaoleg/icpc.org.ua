@@ -76,10 +76,14 @@ class TeamController extends \web\modules\staff\ext\Controller
         );
     }
 
+    /**
+     * Get teams from baylor
+     */
     public function actionPostTeams()
     {
-        $email           = $this->request->getPost('email');
-        $password        = $this->request->getPost('password');
+        // Get params
+        $email      = $this->request->getPost('email');
+        $password   = $this->request->getPost('password');
 
         $response = \yii::app()->baylor->getTeamList($email, $password);
 
@@ -88,74 +92,72 @@ class TeamController extends \web\modules\staff\ext\Controller
 
         $errors = array();
 
-        if (!empty($response) && empty($response['error']) && !empty($response['data']))
-        {
+        if (!empty($response) && empty($response['error']) && !empty($response['data'])) {
             $criteria = new EMongoCriteria();
-            $criteria->addCond('baylorId','noteq', null);
+            $criteria->addCond('baylorId', '!=', null);
             $importedList = Team::model()->findAll($criteria);
             foreach ($importedList as $item) {
                 $imported[] = (string)$item->baylorId;
             }
 
-            foreach ( $response['data'] as $team )
-            {
-                if (!in_array($team['id'], $imported))
-                {
+            foreach ( $response['data'] as $team ) {
+                if (!in_array($team['id'], $imported)) {
                     $teams[] = $team;
                 }
             }
-
         }
 
-        if (empty($teams))
-        {
-            $errors[] = "You don't have teams to import";
+        if (empty($teams)) {
+            $errors[] = \yii::t('app', 'You have no teams to import.');
         }
 
+        // Render json
         $this->renderJson(array(
             'errors'   => !empty($errors) ? $errors : false,
             'teams'    => $teams,
         ));
     }
 
+    /**
+     * Import team from baylor
+     */
     public function actionPostImport()
     {
-        $teamId          = $this->request->getPost('team');
-        $email           = $this->request->getPost('email');
-        $password        = $this->request->getPost('password');
+        // Get params
+        $teamId     = $this->request->getPost('team');
+        $email      = $this->request->getPost('email');
+        $password   = $this->request->getPost('password');
 
+        // Get team
         $criteria = new EMongoCriteria();
-        $criteria->addCond('baylorId','eq',$teamId);
+        $criteria->addCond('baylorId', '==', $teamId);
         $team = Team::model()->findFirst($criteria);
 
         $errors = false;
 
-        if (empty($team))
-        {
+        if (empty($team)) {
             $response = \yii::app()->baylor->importTeam($email, $password, $teamId);
 
-            if (!empty($response) && empty($response['error']) && !empty($response['data']['team']))
-            {
+            if (!empty($response) && empty($response['error']) && !empty($response['data']['team'])) {
                 $team = new Team();
 
-                if (empty($response['data']['team']['status']) || strtolower($response['data']['team']['status']) != self::BAYLOR_STATUS_ACCEPTED)
-                {
-                    $errors[] = 'Team should be accepted';
+                if (empty($response['data']['team']['status']) || strtolower($response['data']['team']['status']) != self::BAYLOR_STATUS_ACCEPTED) {
+                    $errors[] = \yii::t('app', 'Team should be accepted.');
                 }
 
                 $memberIds = array();
-                if (empty($errors) && !empty($response['data']['team']['members']))
-                {
-                    foreach ($response['data']['team']['members'] as $member)
-                    {
-                        $userCriteria = new EMongoCriteria();
-                        $email = $member['email'];
-                        $userCriteria->addCond('email','eq', $email);
-                        $user = User::model()->findFirst($userCriteria);
+                if (empty($errors) && !empty($response['data']['team']['members'])) {
+                    foreach ($response['data']['team']['members'] as $member) {
+                        $user = User::model()->findByAttributes([
+                            'email' => mb_strtolower($member['email']),
+                        ]);
                         if (!empty($user)) {
-                            $memberIds[] = $user->_id->{'$id'};
+                            $memberIds[] = (string)$user->_id;
                         } else {
-                            $errors[] = "User with email {$member['email']} ({$member['name']}) wasn't found";
+                            $errors[] = \yii::t('app', 'User {name} with email {email} was not found.', [
+                                '{email}'   => $member['email'],
+                                '{name}'    => $member['name'],
+                            ]);
                         }
                     }
                 }
@@ -175,15 +177,19 @@ class TeamController extends \web\modules\staff\ext\Controller
                 }
             }
         } else {
-            $errors[] = 'This team was imported before';
+            $errors[] = \yii::t('app', 'This team has been imported before.');
         }
 
+        // Render json
         $this->renderJson(array(
             'errors' => $errors,
-            'teamId' => ! empty($team->_id ) ? $team->_id->{'$id'} : false,
+            'teamId' => !empty($team->_id) ? (string)$team->_id : false,
         ));
     }
 
+    /**
+     * Render import page
+     */
     public function actionImport()
     {
         $this->render('import', array(
