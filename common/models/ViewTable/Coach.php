@@ -43,20 +43,10 @@ class Coach extends \common\models\Person {
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'state'           => \yii::t( 'app', 'Code of state' ),
-            'stateName'       => \yii::t( 'app', 'Name of state' ),
-            'isApprovedCoach' => \yii::t( 'app', 'Is approved coach' ),
+            'state'           => \yii::t('app', 'Code of state'),
+            'stateName'       => \yii::t('app', 'Name of state'),
+            'isApprovedCoach' => \yii::t('app', 'Is approved coach'),
         ));
-    }
-
-    /**
-     * Before validate action
-     *
-     * @return bool
-     */
-    protected function beforeValidate()
-    {
-        return parent::beforeValidate();
     }
 
 }

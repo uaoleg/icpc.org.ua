@@ -3,9 +3,9 @@
 namespace web\modules\staff\controllers;
 
 use \common\components\Rbac;
-use common\models\Geo\State;
+use \common\models\Geo\State;
 use \common\models\User;
-use common\models\ViewTable\Coach;
+use \common\models\ViewTable\Coach as ViewCoach;
 
 class CoachesController extends \web\modules\staff\ext\Controller
 {
@@ -26,22 +26,22 @@ class CoachesController extends \web\modules\staff\ext\Controller
      */
     protected function _rebuildViewCollection()
     {
-        if (Coach::model()->cache->get('collectionIsUpToDate')) {
+        if (ViewCoach::model()->cache->get('collectionIsUpToDate')) {
             return;
         }
 
-        Coach::model()->getCollection()->remove();
+        ViewCoach::model()->getCollection()->remove();
 
         $criteria = new \EMongoCriteria();
         $criteria->addCond('type', '==', User::ROLE_COACH);
         $list = User::model()->findAll($criteria);
 
         foreach ($list as $user) {
-            $coach = new Coach();
+            $coach = new ViewCoach();
             $coach->setIsNewRecord(true);
             $coach->_id = $user->_id;
 
-            // Save student
+            // Save coach
             $coach->setAttributes(array(
                 'firstNameUk'  => $user->firstNameUk,
                 'middleNameUk' => $user->middleNameUk,
@@ -57,7 +57,7 @@ class CoachesController extends \web\modules\staff\ext\Controller
             $coach->save();
         }
 
-        Coach::model()->cache->set('collectionIsUpToDate', true, SECONDS_IN_HOUR);
+        ViewCoach::model()->cache->set('collectionIsUpToDate', true, SECONDS_IN_HOUR);
     }
 
     /**
@@ -81,7 +81,7 @@ class CoachesController extends \web\modules\staff\ext\Controller
     {
         // Get jqGrid params
         $criteria = new \EMongoCriteria();
-        $jqgrid = $this->_getJqgridParams(Coach::model(), $criteria);
+        $jqgrid = $this->_getJqgridParams(ViewCoach::model(), $criteria);
 
         $rows = array();
         foreach ($jqgrid['itemList'] as $user) {

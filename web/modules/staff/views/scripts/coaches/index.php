@@ -1,14 +1,10 @@
-<?php
-    use \common\models\User;
-?>
 <?php \yii::app()->clientScript->registerCoreScript('jquery.jqgrid'); ?>
 <?php
-    $stateSelects = array(":".\yii::t('app', 'All'));
-    foreach ($states as $index => $state)
-    {
+    $stateSelects = array(':' . \yii::t('app', 'All'));
+    foreach ($states as $index => $state) {
         $stateSelects[] = "{$index}:{$state}";
     }
-    $stateSelects = implode(";",$stateSelects);
+    $stateSelects = implode(';', $stateSelects);
 ?>
 <script type="text/javascript">
     $(document).ready(function() {
