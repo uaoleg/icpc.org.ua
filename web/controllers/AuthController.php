@@ -293,11 +293,10 @@ class AuthController extends \web\ext\Controller
         } catch (\Exception $e) {
             $success = false;
         }
-        if ($emailConfirmation !== null) {
+        if (isset($emailConfirmation) && $emailConfirmation !== null) {
             $user = User::model()->findByPk(new \MongoId($emailConfirmation->userId));
             $user->isEmailConfirmed = true;
             $user->save();
-            $emailConfirmation->delete();
             $success = true;
         } else {
             $success = false;
