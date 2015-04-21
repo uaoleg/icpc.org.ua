@@ -43,16 +43,17 @@ class CoachesController extends \web\modules\staff\ext\Controller
 
             // Save coach
             $coach->setAttributes(array(
-                'firstNameUk'  => $user->firstNameUk,
-                'middleNameUk' => $user->middleNameUk,
-                'lastNameUk'   => $user->lastNameUk,
-                'firstNameEn'  => $user->firstNameEn,
-                'middleNameEn' => $user->middleNameEn,
-                'lastNameEn'   => $user->lastNameEn,
-                'email'   => $user->email,
-                'isApprovedCoach'=> $user->isApprovedCoach,
-                'state'       => $user->school->state,
-                'stateName'   => $user->school->getStateLabel(),
+                '_id'               => $user->_id,
+                'firstNameUk'       => $user->firstNameUk,
+                'middleNameUk'      => $user->middleNameUk,
+                'lastNameUk'        => $user->lastNameUk,
+                'firstNameEn'       => $user->firstNameEn,
+                'middleNameEn'      => $user->middleNameEn,
+                'lastNameEn'        => $user->lastNameEn,
+                'email'             => $user->email,
+                'isApprovedCoach'   => $user->isApprovedCoach,
+                'state'             => $user->school->state,
+                'stateName'         => $user->school->getStateLabel(),
             ), false);
             $coach->save();
         }
@@ -84,13 +85,14 @@ class CoachesController extends \web\modules\staff\ext\Controller
         $jqgrid = $this->_getJqgridParams(ViewCoach::model(), $criteria);
 
         $rows = array();
-        foreach ($jqgrid['itemList'] as $user) {
+        foreach ($jqgrid['itemList'] as $viewUser) {
+            $user = User::model()->findByPk($viewUser->_id);
             $arrayToAdd = array(
                 'id'              => (string)$user->_id,
                 'name'            => \web\widgets\user\Name::create(array('user' => $user, 'lang' => \yii::app()->language), true),
                 'email'           => $user->email,
                 'dateCreated'     => date('Y-m-d H:i:s', $user->dateCreated),
-                'state'           => $user->stateName,
+                'state'           => $viewUser->stateName,
                 'isApprovedCoach' => $this->renderPartial('index/action', array('user' => $user), true)
             );
             $rows[] = $arrayToAdd;

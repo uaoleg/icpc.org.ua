@@ -92,6 +92,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
 
             // Save student
             $student->setAttributes(array(
+                '_id'          => $user->_id,
                 'firstNameUk'  => $user->firstNameUk,
                 'middleNameUk' => $user->middleNameUk,
                 'lastNameUk'   => $user->lastNameUk,
@@ -130,7 +131,6 @@ class StudentsController extends \web\modules\staff\ext\Controller
         // Get rows
         $rows = array();
         foreach ($jqgrid['itemList'] as $user) {
-            $idsToRemember[] = (string)$user->_id;
             $rows[] =  $this->_prepareUser($user);
             \yii::app()->user->setState('userCriteriaForExport', $jqgrid['criteria']);
         }
