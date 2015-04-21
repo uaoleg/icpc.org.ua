@@ -13,9 +13,9 @@ class EmailConfirmation extends \common\ext\MongoDb\Document
 
     /**
      * Date when email was confirmed
-     * @var DateTime
+     * @var \MongoDate
      */
-    public $confirmedDate = false;
+    public $dateConfirmed = false;
 
     /**
      * Returns the attribute labels.
@@ -62,14 +62,15 @@ class EmailConfirmation extends \common\ext\MongoDb\Document
      */
     protected function beforeValidate()
     {
-        if (!parent::beforeValidate()) {
-            return false;
-        }
-
         // MongoId to string
         $this->userId = (string)$this->userId;
 
-        return true;
+        // Save date when email was confirmed
+        if (empty($this->dateConfirmed)) {
+            $this->dateConfirmed = new \MongoDate();
+        }
+
+        return parent::beforeValidate();
     }
 
 }
