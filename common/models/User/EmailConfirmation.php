@@ -12,6 +12,12 @@ class EmailConfirmation extends \common\ext\MongoDb\Document
     public $userId;
 
     /**
+     * Date when email was confirmed
+     * @var \MongoDate
+     */
+    public $dateConfirmed = false;
+
+    /**
      * Returns the attribute labels.
      *
      * Note, in order to inherit labels defined in the parent class, a child class needs to
@@ -56,14 +62,15 @@ class EmailConfirmation extends \common\ext\MongoDb\Document
      */
     protected function beforeValidate()
     {
-        if (!parent::beforeValidate()) {
-            return false;
-        }
-
         // MongoId to string
         $this->userId = (string)$this->userId;
 
-        return true;
+        // Save date when email was confirmed
+        if (empty($this->dateConfirmed)) {
+            $this->dateConfirmed = new \MongoDate();
+        }
+
+        return parent::beforeValidate();
     }
 
 }
