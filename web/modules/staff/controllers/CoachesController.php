@@ -3,7 +3,9 @@
 namespace web\modules\staff\controllers;
 
 use \common\components\Rbac;
+use \common\models\Geo\State;
 use \common\models\User;
+use \common\models\ViewTable\Coach as ViewCoach;
 
 class CoachesController extends \web\modules\staff\ext\Controller
 {
@@ -20,12 +22,56 @@ class CoachesController extends \web\modules\staff\ext\Controller
     }
 
     /**
+     * Rebuild view table collection of coaches
+     */
+    protected function _rebuildViewCollection()
+    {
+        if (ViewCoach::model()->cache->get('collectionIsUpToDate')) {
+            return;
+        }
+
+        ViewCoach::model()->getCollection()->remove();
+
+        $criteria = new \EMongoCriteria();
+        $criteria->addCond('type', '==', User::ROLE_COACH);
+        $list = User::model()->findAll($criteria);
+
+        foreach ($list as $user) {
+            $coach = new ViewCoach();
+            $coach->setIsNewRecord(true);
+            $coach->_id = $user->_id;
+
+            // Save coach
+            $coach->setAttributes(array(
+                'firstNameUk'  => $user->firstNameUk,
+                'middleNameUk' => $user->middleNameUk,
+                'lastNameUk'   => $user->lastNameUk,
+                'firstNameEn'  => $user->firstNameEn,
+                'middleNameEn' => $user->middleNameEn,
+                'lastNameEn'   => $user->lastNameEn,
+                'email'   => $user->email,
+                'isApprovedCoach'=> $user->isApprovedCoach,
+                'state'       => $user->school->state,
+                'stateName'   => $user->school->getStateLabel(),
+            ), false);
+            $coach->save();
+        }
+
+        ViewCoach::model()->cache->set('collectionIsUpToDate', true, SECONDS_IN_HOUR);
+    }
+
+    /**
      * Manage coaches
      */
     public function actionIndex()
     {
+        $this->_rebuildViewCollection();
+        $states = State::model()->attributeLabels();
+
         // Render view
-        $this->render('index');
+        $this->render('index', array(
+            'states' => $states['const.name'],
+        ));
     }
 
     /**
@@ -35,8 +81,7 @@ class CoachesController extends \web\modules\staff\ext\Controller
     {
         // Get jqGrid params
         $criteria = new \EMongoCriteria();
-        $criteria->addCond('type', '==', User::ROLE_COACH);
-        $jqgrid = $this->_getJqgridParams(User::model(), $criteria);
+        $jqgrid = $this->_getJqgridParams(ViewCoach::model(), $criteria);
 
         $rows = array();
         foreach ($jqgrid['itemList'] as $user) {
@@ -45,6 +90,7 @@ class CoachesController extends \web\modules\staff\ext\Controller
                 'name'            => \web\widgets\user\Name::create(array('user' => $user, 'lang' => \yii::app()->language), true),
                 'email'           => $user->email,
                 'dateCreated'     => date('Y-m-d H:i:s', $user->dateCreated),
+                'state'           => $user->stateName,
                 'isApprovedCoach' => $this->renderPartial('index/action', array('user' => $user), true)
             );
             $rows[] = $arrayToAdd;

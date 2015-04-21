@@ -1,7 +1,7 @@
 <?php
 namespace web\modules\staff\controllers;
 
-use \common\models\ViewTable\Student;
+use \common\models\ViewTable\Student as ViewStudent;
 use \common\models\User;
 use \common\components\Rbac;
 
@@ -64,18 +64,18 @@ class StudentsController extends \web\modules\staff\ext\Controller
      */
     protected function _rebuildStudentsCollection()
     {
-        if (Student::model()->cache->get('collectionIsUpToDate')) {
+        if (ViewStudent::model()->cache->get('collectionIsUpToDate')) {
             return;
         }
 
-        Student::model()->getCollection()->remove();
+        ViewStudent::model()->getCollection()->remove();
 
         $criteria = new \EMongoCriteria();
         $criteria->addCond('type', '==', User::ROLE_STUDENT);
         $list = User::model()->findAll($criteria);
 
         foreach ($list as $user) {
-            $student = new Student();
+            $student = new ViewStudent();
             $student->setIsNewRecord(true);
             $student->_id = $user->_id;
 
@@ -112,7 +112,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
             $student->save();
         }
 
-        Student::model()->cache->set('collectionIsUpToDate', true, SECONDS_IN_HOUR);
+        ViewStudent::model()->cache->set('collectionIsUpToDate', true, SECONDS_IN_HOUR);
     }
 
     /**
@@ -168,7 +168,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
         $criteria = \yii::app()->user->getState('userCriteriaForExport');
         $criteria->limit(0);
         $criteria->offset(0);
-        $students = Student::model()->findAll($criteria);
+        $students = ViewStudent::model()->findAll($criteria);
         foreach ($students as $student) {
             $item =  $this->_prepareUser($student);
             $item['name'] = $item['name' . ucfirst($lang)];
