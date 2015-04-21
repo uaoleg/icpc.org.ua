@@ -209,7 +209,7 @@ class UserController extends \web\ext\Controller
                 )));
             }
             if (!$user->hasErrors()) {
-                $user->save();
+                $user->save(false);
                 \yii::app()->user->setFlash('passwordChangeSuccess', true);
             }
 
