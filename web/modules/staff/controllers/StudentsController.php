@@ -35,7 +35,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
     /**
      * Prepare user profile for export or show
      */
-    protected function _prepareUser(Student $user)
+    protected function _prepareUser(ViewStudent $user)
     {
         $lang = \yii::app()->languageCore;
         $school = (isset($user->{'schoolFullName' . ucfirst($lang)}))
@@ -125,7 +125,7 @@ class StudentsController extends \web\modules\staff\ext\Controller
         if (!\yii::app()->user->checkAccess(User::ROLE_ADMIN)) {
             $criteria->addCond('isApprovedStudent', '==', true); // Only admin can see deleted students
         }
-        $jqgrid = $this->_getJqgridParams(Student::model(), $criteria);
+        $jqgrid = $this->_getJqgridParams(ViewStudent::model(), $criteria);
 
         // Get rows
         $rows = array();
