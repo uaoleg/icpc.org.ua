@@ -157,6 +157,7 @@ class TeamController extends \web\ext\Controller
     {
         // Get params
         $criteria = \yii::app()->user->getState('teamCriteriaForExport');
+        $criteria->setLimit(0);
 
         // Get list of teams
         $teams = Team::model()->findAll($criteria);
@@ -176,6 +177,7 @@ class TeamController extends \web\ext\Controller
     {
         // Get params
         $criteria = \yii::app()->user->getState('teamCriteriaForExport');
+        $criteria->setLimit(0);
 
         // Get list of teams
         $teams = Team::model()->findAll($criteria);
