@@ -86,10 +86,6 @@ class TeamController extends \web\ext\Controller
             ->addCond('teamId', '==', $teamId)
             ->addCond('year', '==', $team->year)
             ->sort('phase', \EMongoCriteria::SORT_ASC);
-
-        \yii::app()->user->setState('teamCriteriaForExport', $criteria);
-
-
         $results = Result::model()->findAll($criteria);
 
         // Render view
@@ -112,6 +108,7 @@ class TeamController extends \web\ext\Controller
         $criteria = new \EMongoCriteria();
         $criteria->addCond('year', '==', $this->getYear());
         $jqgrid = $this->_getJqgridParams(Team::model()->scopeByActive(), $criteria);
+        \yii::app()->user->setState('teamCriteriaForExport', $jqgrid['criteria']);
 
         // Fill rows
         $rows = array();
