@@ -1,4 +1,4 @@
-<?php use \common\models\User; ?>
+<?php $this->pageTitle = $team->name; ?>
 
 <script type="text/javascript">
     $(document).ready(function() {

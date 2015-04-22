@@ -416,10 +416,14 @@ class Controller extends \CController
      * Sets the page title
      *
      * @param string $value
+     * @param bool   $appendAppName
      */
-    public function setPageTitle($value)
+    public function setPageTitle($value, $appendAppName = true)
     {
         $this->_pageTitle = $value;
+        if ($appendAppName) {
+            $this->_pageTitle .= ' - ' .  \yii::app()->name;
+        }
     }
 
 }

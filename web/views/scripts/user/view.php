@@ -1,3 +1,5 @@
+<?php $this->pageTitle = \web\widgets\user\Name::create(array('user' => $user), true); ?>
+
 <div class="row">
     <div class="col-lg-2">
         <?=\web\widgets\user\Photo::create(array('photo' => $user->photo), true)?>
