@@ -336,6 +336,9 @@ class TeamController extends \web\modules\staff\ext\Controller
         }
     }
 
+    /**
+     * Sync team that already exissts
+     */
     public function actionBaylorSync()
     {
         if ($this->request->isPostRequest && $this->request->isAjaxRequest) {
@@ -351,8 +354,8 @@ class TeamController extends \web\modules\staff\ext\Controller
             $result = \yii::app()->baylor->importTeam($email, $password, $team->baylorId);
 
             if(empty($result['errors'])) {
+                
                 // Save the team info
-
                 $teamInfo = $result['data']['team'];
 
                 $memberIds = array();

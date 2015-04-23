@@ -8,7 +8,7 @@ function appTeamView() {
      */
     $('.btn-delete-team').on('confirmed', function(){
         $.ajax({
-            url: '/staff/team/delete',
+            url: app.baseUrl + '/staff/team/delete',
             data: {
                 teamId: $(this).data('team-id')
             },
@@ -29,7 +29,7 @@ function appTeamView() {
         $('.alert-danger', $modal).addClass('hide');
 
         $.ajax({
-            url: '/staff/team/baylorsync',
+            url: app.baseUrl + '/staff/team/baylorsync',
             data: {
                 teamId: $('.btn-sync-team').data('team-id'),
                 email: $('#baylor-modal__email').val(),
