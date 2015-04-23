@@ -135,6 +135,7 @@ class TeamController extends \web\ext\Controller
                 'year'                          => $team->year,
                 'state'                         => $team->getStateLabel(),
                 'region'                        => $team->getRegionLabel(),
+                'isOutOfCompetition'            => ($team->isOutOfCompetition) ? \yii::t('app', 'Out of competition') : \yii::t('app', 'In competition'),
                 'phase'                         => $team->phase,
             );
         }

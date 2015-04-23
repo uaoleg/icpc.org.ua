@@ -23,6 +23,7 @@
                 \yii::t('app', 'Members'),
                 \yii::t('app', 'State'),
                 \yii::t('app', 'Region'),
+                \yii::t('app', 'Status'),
                 \yii::t('app', 'Stage'),
             ))?>,
             colModel: [
@@ -32,6 +33,7 @@
                 {name: 'members', index: 'members', width: 40, search: false},
                 {name: 'state', index: 'state.<?=\yii::app()->language?>', width: 15, search: true},
                 {name: 'region', index: 'region.<?=\yii::app()->language?>', width: 10, search: true},
+                {name: 'isOutOfCompetition', index: 'isOutOfCompetition', width: 10, stype: 'select', searchoptions: {sopt: ['bool'], value: "-1:<?=\yii::t('app', 'All')?>;0:<?=\yii::t('app', 'In competition')?>;1:<?=\yii::t('app', 'Out of competition')?>"}},
                 {name: 'phase', index: 'phase', width: 5, stype: 'select', searchoptions: {sopt: ['ge'], value: "1:1;2:2;3:3"}}
             ],
             sortname: 'teamname',
