@@ -20,7 +20,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
     {
         parent::init();
 
-        $this->auth = \yii::app()->authManager;
+        @$this->auth = \yii::app()->authManager;
     }
 
     /**
@@ -31,26 +31,26 @@ class RbacCommand extends \console\ext\ConsoleCommand
         /**
          * Delete all auth items
          */
-        Auth\Item::model()->deleteAll();
-        $this->auth->init();
+        @Auth\Item::model()->deleteAll();
+        @$this->auth->init();
 
         /**
          * Create operations
          */
-        $this->_operationsUser();
-        $this->_operationsStudent();
-        $this->_operationsCoach();
-        $this->_operationsCoordinator();
-        $this->_operationsDocument();
-        $this->_operationsNews();
-        $this->_operationsResult();
-        $this->_operationsTeam();
-        $this->_operationsQa();
+        @$this->_operationsUser();
+        @$this->_operationsStudent();
+        @$this->_operationsCoach();
+        @$this->_operationsCoordinator();
+        @$this->_operationsDocument();
+        @$this->_operationsNews();
+        @$this->_operationsResult();
+        @$this->_operationsTeam();
+        @$this->_operationsQa();
 
         /**
          * Guest role
          */
-        $this->_createRole(User::ROLE_GUEST, array(
+        @$this->_createRole(User::ROLE_GUEST, array(
             Rbac::OP_DOCUMENT_READ,
             Rbac::OP_NEWS_READ,
             Rbac::OP_TEAM_READ,
@@ -63,7 +63,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         /**
          * User role
          */
-        $this->_createRole(User::ROLE_USER, array(
+        @$this->_createRole(User::ROLE_USER, array(
             User::ROLE_GUEST,
             Rbac::OP_QA_COMMENT_CREATE,
             Rbac::OP_QA_COMMENT_UPDATE,
@@ -74,18 +74,19 @@ class RbacCommand extends \console\ext\ConsoleCommand
         /**
          * Student role
          */
-        $this->_createRole(User::ROLE_STUDENT, array(
+        @$this->_createRole(User::ROLE_STUDENT, array(
             User::ROLE_USER,
         ));
 
         /**
          * Coach role
          */
-        $this->_createRole(User::ROLE_COACH, array(
+        @$this->_createRole(User::ROLE_COACH, array(
             User::ROLE_USER,
             Rbac::OP_STUDENT_VIEW_FULL,
             Rbac::OP_TEAM_CREATE,
             Rbac::OP_TEAM_UPDATE,
+            Rbac::OP_TEAM_SYNC,
             Rbac::OP_TEAM_DELETE,
             Rbac::OP_TEAM_EXPORT_ONE,
             Rbac::OP_USER_READ_EMAIL,
@@ -94,7 +95,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         /**
          * Coordinator of State role
          */
-        $this->_createRole(User::ROLE_COORDINATOR_STATE, array(
+        @$this->_createRole(User::ROLE_COORDINATOR_STATE, array(
             User::ROLE_USER,
             Rbac::OP_STUDENT_SET_STATUS,
             Rbac::OP_STUDENT_VIEW_FULL,
@@ -121,14 +122,14 @@ class RbacCommand extends \console\ext\ConsoleCommand
         /**
          * Coordinator of Region role
          */
-        $this->_createRole(User::ROLE_COORDINATOR_REGION, array(
+        @$this->_createRole(User::ROLE_COORDINATOR_REGION, array(
             User::ROLE_COORDINATOR_STATE,
         ));
 
         /**
          * Coordinator of Ukraine role
          */
-        $this->_createRole(User::ROLE_COORDINATOR_UKRAINE, array(
+        @$this->_createRole(User::ROLE_COORDINATOR_UKRAINE, array(
             User::ROLE_COORDINATOR_REGION,
             Rbac::OP_QA_ANSWER_DELETE,
             Rbac::OP_QA_COMMENT_DELETE,
@@ -139,7 +140,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         /**
          * Admin role
          */
-        $this->_createRole(User::ROLE_ADMIN, array(
+        @$this->_createRole(User::ROLE_ADMIN, array(
             User::ROLE_COORDINATOR_UKRAINE,
         ));
 
@@ -148,7 +149,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
 
     protected function _createRole($roleName, array $children)
     {
-        $role = $this->auth->createRole($roleName);
+        $role = @$this->auth->createRole($roleName);
         foreach ($children as $child) {
             if (!$role->hasChild($child)) {
                 $role->addChild($child);
@@ -176,7 +177,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
      */
     protected function _operationsUser()
     {
-        $this->auth->createOperation(Rbac::OP_USER_READ_EMAIL, 'View user email');
+        @$this->auth->createOperation(Rbac::OP_USER_READ_EMAIL, 'View user email');
     }
 
     /**
@@ -188,9 +189,9 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $bizRuleViewFull = 'return \yii::app()->rbac->bizRuleStudentViewFull($params);';
         $bizRuleUserExport = 'return \yii::app()->rbac->bizRuleUserExport($params);';
 
-        $this->auth->createOperation(Rbac::OP_STUDENT_SET_STATUS, 'Activate (or suspend) student', $bizRuleSetStatus);
-        $this->auth->createOperation(Rbac::OP_STUDENT_VIEW_FULL, 'Student full profile view', $bizRuleViewFull);
-        $this->auth->createOperation(Rbac::OP_USER_EXPORT, 'Students export', $bizRuleUserExport);
+        @$this->auth->createOperation(Rbac::OP_STUDENT_SET_STATUS, 'Activate (or suspend) student', $bizRuleSetStatus);
+        @$this->auth->createOperation(Rbac::OP_STUDENT_VIEW_FULL, 'Student full profile view', $bizRuleViewFull);
+        @$this->auth->createOperation(Rbac::OP_USER_EXPORT, 'Students export', $bizRuleUserExport);
     }
 
     /**
@@ -200,7 +201,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
     {
         $bizRuleSetStatus = 'return \yii::app()->rbac->bizRuleCoachSetStatus($params);';
 
-        $this->auth->createOperation(Rbac::OP_COACH_SET_STATUS, 'Activate (or suspend) coach', $bizRuleSetStatus);
+        @$this->auth->createOperation(Rbac::OP_COACH_SET_STATUS, 'Activate (or suspend) coach', $bizRuleSetStatus);
     }
 
     /**
@@ -210,7 +211,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
     {
         $bizRuleSetStatus = 'return \yii::app()->rbac->bizRuleCoordinatorSetStatus($params);';
 
-        $this->auth->createOperation(Rbac::OP_COORDINATOR_SET_STATUS, 'Activate (or suspend) coordinator', $bizRuleSetStatus);
+        @$this->auth->createOperation(Rbac::OP_COORDINATOR_SET_STATUS, 'Activate (or suspend) coordinator', $bizRuleSetStatus);
     }
 
     /**
@@ -218,10 +219,10 @@ class RbacCommand extends \console\ext\ConsoleCommand
      */
     protected function _operationsDocument()
     {
-        $this->auth->createOperation(Rbac::OP_DOCUMENT_CREATE, 'Create document');
-        $this->auth->createOperation(Rbac::OP_DOCUMENT_READ, 'Read document');
-        $this->auth->createOperation(Rbac::OP_DOCUMENT_UPDATE, 'Edit document');
-        $this->auth->createOperation(Rbac::OP_DOCUMENT_DELETE, 'Delete document');
+        @$this->auth->createOperation(Rbac::OP_DOCUMENT_CREATE, 'Create document');
+        @$this->auth->createOperation(Rbac::OP_DOCUMENT_READ, 'Read document');
+        @$this->auth->createOperation(Rbac::OP_DOCUMENT_UPDATE, 'Edit document');
+        @$this->auth->createOperation(Rbac::OP_DOCUMENT_DELETE, 'Delete document');
     }
 
     /**
@@ -232,9 +233,9 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $bizRuleRead   = 'return \yii::app()->rbac->bizRuleNewsRead($params);';
         $bizRuleUpdate = 'return \yii::app()->rbac->bizRuleNewsUpdate($params);';
 
-        $this->auth->createOperation(Rbac::OP_NEWS_CREATE, 'Create news');
-        $this->auth->createOperation(Rbac::OP_NEWS_READ, 'Read news', $bizRuleRead);
-        $this->auth->createOperation(Rbac::OP_NEWS_UPDATE, 'Edit news', $bizRuleUpdate);
+        @$this->auth->createOperation(Rbac::OP_NEWS_CREATE, 'Create news');
+        @$this->auth->createOperation(Rbac::OP_NEWS_READ, 'Read news', $bizRuleRead);
+        @$this->auth->createOperation(Rbac::OP_NEWS_UPDATE, 'Edit news', $bizRuleUpdate);
     }
 
     /**
@@ -242,8 +243,8 @@ class RbacCommand extends \console\ext\ConsoleCommand
      */
     protected function _operationsResult()
     {
-        $this->auth->createOperation(Rbac::OP_RESULT_CREATE, 'Create result');
-        $this->auth->createOperation(Rbac::OP_RESULT_TEAM_DELETE, 'Delete team result');
+        @$this->auth->createOperation(Rbac::OP_RESULT_CREATE, 'Create result');
+        @$this->auth->createOperation(Rbac::OP_RESULT_TEAM_DELETE, 'Delete team result');
     }
 
     /**
@@ -252,20 +253,22 @@ class RbacCommand extends \console\ext\ConsoleCommand
     protected function _operationsTeam()
     {
         $bizRuleUpdate = 'return \yii::app()->rbac->bizRuleTeamUpdate($params);';
+        $bizRuleSync = 'return \yii::app()->rbac->bizRuleTeamSync($params);';
         $bizRuleUpdatePhase = 'return \yii::app()->rbac->bizRuleTeamUpdatePhase($params);';
         $bizRuleExportAll = 'return \yii::app()->rbac->bizRuleTeamExportAll($params);';
         $bizRuleExportOne = 'return \yii::app()->rbac->bizRuleTeamExportOne($params);';
         $bizRuleLeagueUpdate = 'return \yii::app()->rbac->bizRuleTeamLeagueUpdate($params);';
         $bizRuleDelete = 'return \yii::app()->rbac->bizRuleTeamDelete($params);';
 
-        $this->auth->createOperation(Rbac::OP_TEAM_CREATE, 'Create team');
-        $this->auth->createOperation(Rbac::OP_TEAM_READ, 'Read team');
-        $this->auth->createOperation(Rbac::OP_TEAM_UPDATE, 'Edit team', $bizRuleUpdate);
-        $this->auth->createOperation(Rbac::OP_TEAM_DELETE, 'Delete team', $bizRuleDelete);
-        $this->auth->createOperation(Rbac::OP_TEAM_PHASE_UPDATE, 'Set team phase', $bizRuleUpdatePhase);
-        $this->auth->createOperation(Rbac::OP_TEAM_EXPORT_ALL, 'Export all teams', $bizRuleExportAll);
-        $this->auth->createOperation(Rbac::OP_TEAM_EXPORT_ONE, 'Export team form', $bizRuleExportOne);
-        $this->auth->createOperation(Rbac::OP_TEAM_LEAGUE_UPDATE, 'Team\'s league update', $bizRuleLeagueUpdate);
+        @$this->auth->createOperation(Rbac::OP_TEAM_CREATE, 'Create team');
+        @$this->auth->createOperation(Rbac::OP_TEAM_READ, 'Read team');
+        @$this->auth->createOperation(Rbac::OP_TEAM_UPDATE, 'Edit team', $bizRuleUpdate);
+        @$this->auth->createOperation(Rbac::OP_TEAM_SYNC, 'Edit team', $bizRuleSync);
+        @$this->auth->createOperation(Rbac::OP_TEAM_DELETE, 'Delete team', $bizRuleDelete);
+        @$this->auth->createOperation(Rbac::OP_TEAM_PHASE_UPDATE, 'Set team phase', $bizRuleUpdatePhase);
+        @$this->auth->createOperation(Rbac::OP_TEAM_EXPORT_ALL, 'Export all teams', $bizRuleExportAll);
+        @$this->auth->createOperation(Rbac::OP_TEAM_EXPORT_ONE, 'Export team form', $bizRuleExportOne);
+        @$this->auth->createOperation(Rbac::OP_TEAM_LEAGUE_UPDATE, 'Team\'s league update', $bizRuleLeagueUpdate);
     }
 
     /**
@@ -273,22 +276,22 @@ class RbacCommand extends \console\ext\ConsoleCommand
      */
     protected function _operationsQa()
     {
-        $this->auth->createOperation(Rbac::OP_QA_ANSWER_CREATE, 'Create answer');
-        $this->auth->createOperation(Rbac::OP_QA_ANSWER_READ, 'Read answer');
-        $this->auth->createOperation(Rbac::OP_QA_ANSWER_UPDATE, 'Update answer');
-        $this->auth->createOperation(Rbac::OP_QA_ANSWER_DELETE, 'Delete answer');
-        $this->auth->createOperation(Rbac::OP_QA_COMMENT_CREATE, 'Create comment');
-        $this->auth->createOperation(Rbac::OP_QA_COMMENT_READ, 'Read comment');
-        $this->auth->createOperation(Rbac::OP_QA_COMMENT_UPDATE, 'Update comment');
-        $this->auth->createOperation(Rbac::OP_QA_COMMENT_DELETE, 'Delete comment');
-        $this->auth->createOperation(Rbac::OP_QA_QUESTION_CREATE, 'Create question');
-        $this->auth->createOperation(Rbac::OP_QA_QUESTION_READ, 'Read question');
-        $this->auth->createOperation(Rbac::OP_QA_QUESTION_UPDATE, 'Update question');
-        $this->auth->createOperation(Rbac::OP_QA_QUESTION_DELETE, 'Delete question');
-        $this->auth->createOperation(Rbac::OP_QA_TAG_CREATE, 'Create tag');
-        $this->auth->createOperation(Rbac::OP_QA_TAG_READ, 'Read tag');
-        $this->auth->createOperation(Rbac::OP_QA_TAG_UPDATE, 'Update tag');
-        $this->auth->createOperation(Rbac::OP_QA_TAG_DELETE, 'Delete tag');
+        @$this->auth->createOperation(Rbac::OP_QA_ANSWER_CREATE, 'Create answer');
+        @$this->auth->createOperation(Rbac::OP_QA_ANSWER_READ, 'Read answer');
+        @$this->auth->createOperation(Rbac::OP_QA_ANSWER_UPDATE, 'Update answer');
+        @$this->auth->createOperation(Rbac::OP_QA_ANSWER_DELETE, 'Delete answer');
+        @$this->auth->createOperation(Rbac::OP_QA_COMMENT_CREATE, 'Create comment');
+        @$this->auth->createOperation(Rbac::OP_QA_COMMENT_READ, 'Read comment');
+        @$this->auth->createOperation(Rbac::OP_QA_COMMENT_UPDATE, 'Update comment');
+        @$this->auth->createOperation(Rbac::OP_QA_COMMENT_DELETE, 'Delete comment');
+        @$this->auth->createOperation(Rbac::OP_QA_QUESTION_CREATE, 'Create question');
+        @$this->auth->createOperation(Rbac::OP_QA_QUESTION_READ, 'Read question');
+        @$this->auth->createOperation(Rbac::OP_QA_QUESTION_UPDATE, 'Update question');
+        @$this->auth->createOperation(Rbac::OP_QA_QUESTION_DELETE, 'Delete question');
+        @$this->auth->createOperation(Rbac::OP_QA_TAG_CREATE, 'Create tag');
+        @$this->auth->createOperation(Rbac::OP_QA_TAG_READ, 'Read tag');
+        @$this->auth->createOperation(Rbac::OP_QA_TAG_UPDATE, 'Update tag');
+        @$this->auth->createOperation(Rbac::OP_QA_TAG_DELETE, 'Delete tag');
     }
 
     /**
@@ -315,7 +318,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $admin->save();
 
         // Assign admin role
-        $this->auth->assign(User::ROLE_ADMIN, $admin->_id);
+        @$this->auth->assign(User::ROLE_ADMIN, $admin->_id);
 
         // Display admin params
         if ($admin->hasErrors()) {

@@ -57,6 +57,11 @@ class TeamController extends \web\modules\staff\ext\Controller
             ),
             array(
                 'allow',
+                'actions' => array('baylorSync'),
+                'roles' => array(Rbac::OP_TEAM_SYNC => array('team' => $team)),
+            ),
+            array(
+                'allow',
                 'actions' => array('delete'),
                 'roles' => array(Rbac::OP_TEAM_DELETE => array('team' => $team)),
             ),
@@ -328,6 +333,62 @@ class TeamController extends \web\modules\staff\ext\Controller
                 'team'      => $team,
             ));
 
+        }
+    }
+
+    public function actionBaylorSync()
+    {
+        if ($this->request->isPostRequest && $this->request->isAjaxRequest) {
+            $email    = $this->request->getParam('email');
+            $password = $this->request->getParam('password');
+            $teamId   = $this->request->getParam('teamId');
+            $errors   = array();
+
+            \yii::app()->user->setState('baylor_email', $email);
+
+            $team = Team::model()->findByPk(new \MongoId($teamId));
+
+            $result = \yii::app()->baylor->importTeam($email, $password, $team->baylorId);
+
+            if(empty($result['errors'])) {
+                // Save the team info
+
+                $teamInfo = $result['data']['team'];
+
+                $memberIds = array();
+                foreach ($teamInfo['members'] as $member) {
+                    $user = User::model()->findByAttributes([
+                        'email' => mb_strtolower($member['email']),
+                    ]);
+                    if (!is_null($user)) {
+                        $memberIds[] = (string)$user->_id;
+                    } else {
+                        $errors[] = \yii::t('app', 'User {name} with email {email} was not found.', [
+                            '{email}'   => $member['email'],
+                            '{name}'    => $member['name'],
+                        ]);
+                    }
+                }
+
+                if (empty($errors)) {
+                    $team->setAttributes(array(
+                        'name'               => $teamInfo['title'],
+                        'memberIds'          => $memberIds
+                    ), false);
+
+                    $team->save();
+                    $errors = $team->hasErrors() ? $team->getErrors() : array();
+                }
+
+            } else {
+                $this->renderJson(array(
+                    'errors' => true
+                ));
+            }
+
+            $this->renderJson(array(
+                'errors' => (empty($errors)) ? false : $errors
+            ));
         }
     }
 
