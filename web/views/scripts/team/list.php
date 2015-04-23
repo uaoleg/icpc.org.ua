@@ -27,13 +27,13 @@
                 \yii::t('app', 'Stage'),
             ))?>,
             colModel: [
-                {name: 'name', index: 'name', width: 20, formatter: 'showlink', formatoptions:{baseLinkUrl:'/team/view'}},
-                {name: 'schoolName<?=ucfirst($lang)?>', index: 'schoolName<?=ucfirst($lang)?>', width: 20},
+                {name: 'name', index: 'name', width: 10, formatter: 'showlink', formatoptions:{baseLinkUrl:'/team/view'}},
+                {name: 'schoolName<?=ucfirst($lang)?>', index: 'schoolName<?=ucfirst($lang)?>', width: 15},
                 {name: 'coachName<?=ucfirst($lang)?>', index: 'coachName<?=ucfirst($lang)?>', width: 15, formatter: coachShowLink},
-                {name: 'members', index: 'members', width: 40, search: false},
-                {name: 'state', index: 'state.<?=\yii::app()->language?>', width: 15, search: true},
+                {name: 'members', index: 'members', width: 30, search: false},
+                {name: 'state', index: 'state.<?=\yii::app()->language?>', width: 10, search: true},
                 {name: 'region', index: 'region.<?=\yii::app()->language?>', width: 10, search: true},
-                {name: 'isOutOfCompetition', index: 'isOutOfCompetition', width: 10, stype: 'select', searchoptions: {sopt: ['bool'], value: "-1:<?=\yii::t('app', 'All')?>;0:<?=\yii::t('app', 'In competition')?>;1:<?=\yii::t('app', 'Out of competition')?>"}},
+                {name: 'isOutOfCompetition', index: 'isOutOfCompetition', width: 5, stype: 'select', searchoptions: {sopt: ['bool'], value: "-1:<?=\yii::t('app', 'All')?>;0:<?=\yii::t('app', 'In competition')?>;1:<?=\yii::t('app', 'Out of competition')?>"}},
                 {name: 'phase', index: 'phase', width: 5, stype: 'select', searchoptions: {sopt: ['ge'], value: "1:1;2:2;3:3"}}
             ],
             sortname: 'teamname',
