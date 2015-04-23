@@ -9,7 +9,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
 
     /**
      * Auth manager
-     * @var \common\ext\MongoDb\Auth\Manager
+     * var \common\ext\MongoDb\Auth\Manager
      */
     public $auth;
 
@@ -86,6 +86,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
             Rbac::OP_STUDENT_VIEW_FULL,
             Rbac::OP_TEAM_CREATE,
             Rbac::OP_TEAM_UPDATE,
+            Rbac::OP_TEAM_SYNC,
             Rbac::OP_TEAM_DELETE,
             Rbac::OP_TEAM_EXPORT_ONE,
             Rbac::OP_USER_READ_EMAIL,
@@ -159,8 +160,8 @@ class RbacCommand extends \console\ext\ConsoleCommand
     /**
      * Assign the list of given operation to the given role
      *
-     * @param \CAuthItem $authItem
-     * @param array $operationList
+     * param \CAuthItem $authItem
+     * param array $operationList
      */
     protected function _assignOperations(\CAuthItem $authItem, array $operationList)
     {
@@ -252,6 +253,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
     protected function _operationsTeam()
     {
         $bizRuleUpdate = 'return \yii::app()->rbac->bizRuleTeamUpdate($params);';
+        $bizRuleSync = 'return \yii::app()->rbac->bizRuleTeamSync($params);';
         $bizRuleUpdatePhase = 'return \yii::app()->rbac->bizRuleTeamUpdatePhase($params);';
         $bizRuleExportAll = 'return \yii::app()->rbac->bizRuleTeamExportAll($params);';
         $bizRuleExportOne = 'return \yii::app()->rbac->bizRuleTeamExportOne($params);';
@@ -261,6 +263,7 @@ class RbacCommand extends \console\ext\ConsoleCommand
         $this->auth->createOperation(Rbac::OP_TEAM_CREATE, 'Create team');
         $this->auth->createOperation(Rbac::OP_TEAM_READ, 'Read team');
         $this->auth->createOperation(Rbac::OP_TEAM_UPDATE, 'Edit team', $bizRuleUpdate);
+        $this->auth->createOperation(Rbac::OP_TEAM_SYNC, 'Edit team', $bizRuleSync);
         $this->auth->createOperation(Rbac::OP_TEAM_DELETE, 'Delete team', $bizRuleDelete);
         $this->auth->createOperation(Rbac::OP_TEAM_PHASE_UPDATE, 'Set team phase', $bizRuleUpdatePhase);
         $this->auth->createOperation(Rbac::OP_TEAM_EXPORT_ALL, 'Export all teams', $bizRuleExportAll);

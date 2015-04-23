@@ -10,7 +10,7 @@
     <div class="col-lg-6 col-lg-offset-3">
         <h1>
             <?=\CHtml::encode($team->name)?>
-            <?php if ((empty($team->baylorId)) && \yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_UPDATE, array('team' => $team))): ?>
+            <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_EXPORT_ONE, array('team' => $team))): ?>
                 <a target="_blank"
                    href="<?=$this->createUrl('staff/team/exportOne', array('id' => $team->_id))?>"
                    class="btn btn-primary"><?=\yii::t('app', 'Export Reg Form')?></a>
@@ -18,18 +18,25 @@
             <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_UPDATE, array('team' => $team))): ?>
                 <a href="<?=$this->createUrl('staff/team/manage', array('id' => $team->_id))?>" class="btn btn-primary"><?=\yii::t('app', 'Manage')?></a>
             <?php endif; ?>
+            <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_SYNC, array('team' => $team))): ?>
+                <button class="btn btn-primary btn-sync-team"
+                    data-team-id="<?=$team->_id?>"
+                    data-toggle="modal"
+                    data-target="#baylor-modal">
+                    <span class="glyphicon glyphicon-refresh"></span> <?=\yii::t('app', 'Sync with Baylor')?></button>
+            <?php endif; ?>
             <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_DELETE, array('team' => $team))): ?>
                 <button class="btn btn-danger btn-delete-team" data-team-id="<?=$team->_id?>" data-confirm="<?=\yii::t('app', 'Are you sure you want to delete the team?')?>"><?=\yii::t('app', 'Delete')?></button>
             <?php endif; ?>
         </h1>
         <h3><?=$team->year?></h3>
         <?php if ($team->isOutOfCompetition): ?>
-			<div>
-				<span class="label label-danger">
-					<?=\yii::t('app', 'Out of competition')?>
-				</span>
-			</div>
-			<br />
+            <div>
+                <span class="label label-danger">
+                    <?=\yii::t('app', 'Out of competition')?>
+                </span>
+            </div>
+            <br />
         <?php endif; ?>
         <strong><?=\yii::t('app', 'Coach')?></strong>:
         <a href="<?=$this->createUrl('/user/view', array('id' => $coach->_id))?>">
@@ -117,3 +124,5 @@
         </div>
     </div>
 <?php endif; ?>
+
+<?= \web\widgets\BaylorModal::create(array(), true); ?>

@@ -32,6 +32,7 @@ class Rbac extends \CApplicationComponent
     const OP_TEAM_CREATE            = 'teamCreate';
     const OP_TEAM_READ              = 'teamRead';
     const OP_TEAM_UPDATE            = 'teamUpdate';
+    const OP_TEAM_SYNC              = 'teamSync';
     const OP_TEAM_DELETE            = 'teamDelete';
     const OP_TEAM_LEAGUE_UPDATE     = 'teamLeagueUpdate';
     const OP_TEAM_PHASE_UPDATE      = 'teamPhaseUpdate';
@@ -230,7 +231,22 @@ class Rbac extends \CApplicationComponent
      */
     public function bizRuleTeamUpdate(array $params)
     {
-        return ((string)$this->user->_id === $params['team']->coachId);
+        $team = $params['team'];
+
+        return ((string)$this->user->_id === $team->coachId) && ($team->isOutOfCompetition);
+    }
+
+    /**
+     * Biz rule for syncing team from baylor
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function bizRuleTeamSync(array $params)
+    {
+        $team = $params['team'];
+
+        return ((string)$this->user->_id === $team->coachId) && (!$team->isOutOfCompetition);
     }
 
     /**
