@@ -186,10 +186,13 @@ class TeamController extends \web\ext\Controller
         // Render CSV
         $this->renderCsv($teams, "icpc_teams_r_{$this->getYear()}.csv", function($team) {
             $arrayToPut = array(
-                $team->name, $team->school->fullNameUk, $team->school->shortNameUk, $team->coachNameUk
+                $team->name, $team->school->fullNameUk, $team->school->shortNameUk,
+				$team->coachNameUk, $team->coachNameEn, $team->coach->email,
             );
             foreach ($team->members as $member) {
                 $arrayToPut[] = \web\widgets\user\Name::create(array('user' => $member, 'lang' => 'uk'), true);
+				$arrayToPut[] = \web\widgets\user\Name::create(array('user' => $member, 'lang' => 'en'), true);
+				$arrayToPut[] = $member->email;
             }
             return $arrayToPut;
         });
