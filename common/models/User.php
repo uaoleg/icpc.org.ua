@@ -241,11 +241,12 @@ class User extends Person
                 foreach ($schoolIds as $schoolId) {
                     $ids[] = (string)$schoolId;
                 }
-                $criteria
+                $stateCriteria = new \EMongoCriteria;
+                $stateCriteria
                     ->addCond('isApprovedCoordinator', '==', true)
                     ->addCond('coordinator', '==', static::ROLE_COORDINATOR_STATE)
                     ->addCond('schoolId', 'in', $ids);
-                $approver = User::model()->find($criteria);
+                $approver = User::model()->find($stateCriteria);
 
                 // If there is no state coordinator than try regional one
                 if ($approver === null) {
@@ -256,11 +257,21 @@ class User extends Person
                     foreach ($schoolIds as $schoolId) {
                         $ids[] = (string)$schoolId;
                     }
-                    $criteria
+                    $regionCriteria = new \EMongoCriteria;
+                    $regionCriteria
                         ->addCond('isApprovedCoordinator', '==', true)
                         ->addCond('coordinator', '==', static::ROLE_COORDINATOR_REGION)
                         ->addCond('schoolId', 'in', $ids);
-                    $approver = User::model()->find($criteria);
+                    $approver = User::model()->find($regionCriteria);
+                }
+
+                // If there is no regional coordinator than try ukrainian one
+                if (is_null($approver)) {
+                    $ukraineCriteria = new \EMongoCriteria;
+                    $ukraineCriteria
+                        ->addCond('isApprovedCoordinator', '==', true)
+                        ->addCond('coordinator', '==', static::ROLE_COORDINATOR_UKRAINE);
+                    $approver = User::model()->find($ukraineCriteria);
                 }
             }
 
@@ -475,6 +486,38 @@ class User extends Person
                 \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_STATE, (string)$this->_id);
                 \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_REGION, (string)$this->_id);
                 \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_UKRAINE, (string)$this->_id);
+            }
+        }
+
+        // if user sets him or herself as coach, approver needs to be notified
+        if ($this->attributeHasChanged('type') && $this->type == static::ROLE_COACH) {
+            $approver = $this->getApprover();
+            if (!is_null($approver)) {
+                $lang = $approver->settings->lang;
+                if (!in_array($lang, ['uk', 'en'])) {
+                    $lang = 'uk';
+                }
+
+                \yii::app()->cli->runCommand('email', 'newCoachNotifyApprover', [
+                    'userName'      => sprintf('%s %s', $this->{'firstName'.ucfirst($lang)}, $this->{'lastName'.ucfirst($lang)}),
+                    'approverEmail' => $approver->email
+                ], [], true);
+            }
+        }
+
+        // if user sets him or herself as coordinator, approver needs to be notified
+        if ($this->attributeHasChanged('coordinator') && !is_null($this->coordinator)) {
+            $approver = $this->getApprover();
+            if (!is_null($approver)) {
+                $lang = $approver->settings->lang;
+                if (!in_array($lang, ['uk', 'en'])) {
+                    $lang = 'uk';
+                }
+
+                \yii::app()->cli->runCommand('email', 'newCoordinatorNotifyApprover', [
+                    'userName'      => sprintf('%s %s', $this->{'firstName'.ucfirst($lang)}, $this->{'lastName'.ucfirst($lang)}),
+                    'approverEmail' => $approver->email
+                ], [], true);
             }
         }
 

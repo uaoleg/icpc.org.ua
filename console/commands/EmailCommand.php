@@ -2,6 +2,7 @@
 
 use \common\ext\Mail\MailMessage;
 use \common\models\Qa;
+use common\models\User;
 
 class EmailCommand extends \console\ext\ConsoleCommand
 {
@@ -48,6 +49,50 @@ class EmailCommand extends \console\ext\ConsoleCommand
             ));
         \yii::app()->mail->send($message);
 
+    }
+
+    /**
+     * Notifies via email approver about new coach
+     *
+     * @param string $userName
+     * @param string $approverEmail
+     */
+    public function actionNewCoachNotifyApprover($userName, $approverEmail)
+    {
+        // Send email
+        $message = new MailMessage();
+        $message
+            ->addTo($approverEmail)
+            ->setFrom(\yii::app()->params['emails']['noreply']['address'], \yii::app()->params['emails']['noreply']['name'])
+            ->setSubject(@\yii::t('app', '[{app}] There is new coach awaiting for your approval!', array('{app}' => \yii::app()->name)))
+            ->setView('newCoachCoordinatorWaitsForApproval', array(
+                'link' => \yii::app()->createAbsoluteUrl('/staff/coaches'),
+                'name' => $userName
+            ));
+
+        \yii::app()->mail->send($message);
+    }
+
+    /**
+     * Notifies via email approver about new coach
+     *
+     * @param string $userName
+     * @param string $approverEmail
+     */
+    public function actionNewCoordinatorNotifyApprover($userName, $approverEmail)
+    {
+        // Send email
+        $message = new MailMessage();
+        $message
+            ->addTo($approverEmail)
+            ->setFrom(\yii::app()->params['emails']['noreply']['address'], \yii::app()->params['emails']['noreply']['name'])
+            ->setSubject(@\yii::t('app', '[{app}] There is new coordinator awaiting for your approval!', array('{app}' => \yii::app()->name)))
+            ->setView('newCoachCoordinatorWaitsForApproval', array(
+                'link' => \yii::app()->createAbsoluteUrl('/staff/coordinators'),
+                'name' => $userName
+            ));
+
+        \yii::app()->mail->send($message);
     }
 
 }
