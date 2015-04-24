@@ -15,7 +15,7 @@
 
         <div class="panel panel-primary panel-school">
             <div class="panel-heading">
-                <?=\yii::t('app', 'Team Info')?>
+                <?=\yii::t('app', 'Team Info (out of competition)')?>
             </div>
 
             <div class="panel-body form">
@@ -65,6 +65,10 @@
                             </option>
                         <?php endforeach; ?>
                     </select>
+                </div>
+
+                <div class="alert alert-warning" role="alert">
+                    <?=\yii::t('app', 'Note, that this team will be <b>out of</b> competition. To create a team in competition, please import it from icpc.baylor.edu')?>
                 </div>
 
                 <div class="form-group">
