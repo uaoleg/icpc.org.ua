@@ -193,8 +193,8 @@
 
     <table>
         <tr>
-            <td width="160px">
-                Електронна адреса(e-mail):
+            <td width="170px">
+                Електронна адреса (e-mail):
             </td>
             <td class="space">
                 <?= $team->coach->email ?>
