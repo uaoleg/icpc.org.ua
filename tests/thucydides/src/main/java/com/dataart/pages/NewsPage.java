@@ -3,11 +3,8 @@ package com.dataart.pages;
 import java.util.List;
 import java.util.Set;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-
-import com.gargoylesoftware.htmlunit.javascript.host.Document;
 
 import net.thucydides.core.annotations.At;
 import net.thucydides.core.annotations.DefaultUrl;
