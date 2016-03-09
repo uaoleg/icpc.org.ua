@@ -607,7 +607,7 @@ abstract class EMongoDocument extends EMongoEmbeddedDocument
 			if(version_compare(Mongo::VERSION, '1.0.5','>=') === true)
 				$result = $this->getCollection()->insert($rawData, array(
 					'fsync'	=> $this->getFsyncFlag(),
-					'safe'	=> $this->getSafeFlag()
+					'w'	=> $this->getSafeFlag()
 				));
 			else
 				$result = $this->getCollection()->insert($rawData, CPropertyValue::ensureBoolean($this->getSafeFlag()));
@@ -993,7 +993,7 @@ abstract class EMongoDocument extends EMongoEmbeddedDocument
 			return $this->getCollection()->remove($criteria->getConditions(), array(
 				'justOne'=>false,
 				'fsync'=>$this->getFsyncFlag(),
-				'safe'=>$this->getSafeFlag()
+				'w'=>$this->getSafeFlag()
 			));
 		else
 			return $this->getCollection()->remove($criteria->getConditions(), false);
