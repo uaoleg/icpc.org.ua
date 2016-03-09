@@ -157,10 +157,20 @@
                                     'href'     => $this->createUrl('/qa'),
                                     'caption'  => \yii::t('app', 'Q&A'),
                                 ),
-                                'lang' => array(
-                                    'href'      => $this->createUrl('/staff/lang'),
-                                    'caption'   => \yii::t('app', 'Langs'),
+                                'admin' => array(
+                                    'href'      => '#',
+                                    'caption'   => \yii::t('app', 'Admin'),
                                     'rbac'      => \common\models\User::ROLE_ADMIN,
+                                    'itemList'  => array(
+                                        'lang' => array(
+                                            'href'      => $this->createUrl('/staff/lang'),
+                                            'caption'   => \yii::t('app', 'Langs'),
+                                        ),
+                                        'organizations' => array(
+                                            'href'      => $this->createUrl('/staff/organizations'),
+                                            'caption'   => \yii::t('app', 'Organizations'),
+                                        ),
+                                    ),
                                 ),
                             ),
                         )); ?>

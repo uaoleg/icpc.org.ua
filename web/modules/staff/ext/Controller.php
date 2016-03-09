@@ -30,7 +30,10 @@ class Controller extends \web\ext\Controller
             ),
             array(
                 'allow',
-                'controllers'   => array('staff/lang'),
+                'controllers'   => array(
+                    'staff/lang',
+                    'staff/organizations',
+                ),
                 'roles'         => array(User::ROLE_ADMIN),
             ),
             array(

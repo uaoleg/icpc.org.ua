@@ -17,6 +17,16 @@ class School extends \common\ext\MongoDb\Document
     // Scenarios
     const SC_ASSIGN_TO_TEAM = 'assignToTeam';
 
+    // Available types
+    const TYPE_HIGH             = 'high';
+    const TYPE_HIGH_CLASSIC     = 'high_classic';
+    const TYPE_HIGH_TECHNICAL   = 'high_technical';
+    const TYPE_HIGH_ECONOMIC    = 'high_economic';
+    const TYPE_HIGH_PEDAGOGICAL = 'high_pedagogical';
+    const TYPE_HIGH_NATURAL     = 'high_natural';
+    const TYPE_MIDDLE           = 'middle';
+    const TYPE_COMPANY          = 'company';
+
     /**
      * Full university name in ukranian
      * @var string
@@ -40,6 +50,12 @@ class School extends \common\ext\MongoDb\Document
      * @var string
      */
     public $shortNameEn;
+
+    /**
+     * Organization type
+     * @var string
+     */
+    public $type;
 
     /**
      * State
@@ -126,9 +142,19 @@ class School extends \common\ext\MongoDb\Document
             'fullNameEn'    => \yii::t('app', 'Full university name in english'),
             'shortNameUk'   => \yii::t('app', 'Short university name in ukrainian'),
             'shortNameEn'   => \yii::t('app', 'Short university name in english'),
+            'type'          => \yii::t('app', 'Type'),
             'state'         => \yii::t('app', 'State'),
             'region'        => \yii::t('app', 'Region'),
-
+            'const.type' => array(
+                static::TYPE_COMPANY            => \yii::t('app', 'Company'),
+                static::TYPE_HIGH               => \yii::t('app', 'High'),
+                static::TYPE_HIGH_CLASSIC       => \yii::t('app', 'High classic'),
+                static::TYPE_HIGH_ECONOMIC      => \yii::t('app', 'High economic'),
+                static::TYPE_HIGH_NATURAL       => \yii::t('app', 'High natural'),
+                static::TYPE_HIGH_PEDAGOGICAL   => \yii::t('app', 'High pedagogical'),
+                static::TYPE_HIGH_TECHNICAL     => \yii::t('app', 'High technical'),
+                static::TYPE_MIDDLE             => \yii::t('app', 'Middle school'),
+            ),
         ));
     }
 
@@ -143,6 +169,7 @@ class School extends \common\ext\MongoDb\Document
             array('fullNameUk, state, region', 'required'),
             array('fullNameUk, fullNameEn, shortNameUk, shortNameEn', 'unique'),
             array('shortNameUk, fullNameEn, shortNameEn', 'required', 'on' => static::SC_ASSIGN_TO_TEAM),
+            array('type', School\Validator\Type::className()),
             array('state', School\Validator\State::className()),
             array('region', School\Validator\Region::className()),
         ));

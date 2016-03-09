@@ -15,7 +15,7 @@ class LangController extends \web\modules\staff\ext\Controller
         parent::init();
 
         // Set active main menu item
-        $this->setNavActiveItem('main', 'lang');
+        $this->setNavActiveItem('main', 'admin');
     }
 
     /**
