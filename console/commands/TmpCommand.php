@@ -44,4 +44,24 @@ class TmpCommand extends \console\ext\ConsoleCommand
         echo "\nDone";
     }
 
+    /**
+     * Set default schoool type
+     *
+     * @version 16.1
+     */
+    public function actionSchoolType()
+    {
+        $schools = \common\models\School::model()->findAll();
+
+        foreach ($schools as $school) {
+            if (empty($school->type)) {
+                $school->type = \common\models\School::TYPE_HIGH;
+                $school->save();
+            }
+            echo '.';
+        }
+
+        echo "\nDone";
+    }
+
 }
