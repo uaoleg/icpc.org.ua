@@ -61,7 +61,7 @@ class <?php echo $modelClass; ?> extends <?php echo $this->baseClass."\n"; ?>
 <?php endforeach; ?>
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('<?php echo implode(', ', array_keys($columns)); ?>', 'safe', 'on'=>'search'),
+			array('<?php echo implode(', ', array_keys($columns)); ?>', 'w', 'on'=>'search'),
 		);
 	}
 

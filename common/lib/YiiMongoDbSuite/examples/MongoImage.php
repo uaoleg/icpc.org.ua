@@ -55,7 +55,7 @@ class MongoImage extends EMongoGridFS
 	public function rules()
 	{
 		return array(
-			array('filename, metadata','safe'),
+			array('filename, metadata','w'),
 			array('filename','required'),
 		);
 	}

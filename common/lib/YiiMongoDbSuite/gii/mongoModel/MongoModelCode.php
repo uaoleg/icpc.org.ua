@@ -197,7 +197,7 @@ class MongoModelCode extends CCodeModel
 				$rules[]="array('".implode(', ',$cols)."', 'length', 'max'=>$len)";
 		}
 		if($safe!==array())
-			$rules[]="array('".implode(', ',$safe)."', 'safe')";
+			$rules[]="array('".implode(', ',$safe)."', 'w')";
 
 		return $rules;
 	}

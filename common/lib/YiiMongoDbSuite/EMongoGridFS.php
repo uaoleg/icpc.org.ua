@@ -308,7 +308,7 @@ abstract class EMongoGridFS extends EMongoDocument
 		$this->applyScopes($criteria);
 		return $this->getCollection()->remove($criteria->getConditions(), array(
 			'fsync'=>$this->getFsyncFlag(),
-			'safe'=>$this->getSafeFlag(),
+			'w'=>$this->getSafeFlag(),
 		));
 	}
 }
