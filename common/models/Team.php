@@ -343,7 +343,6 @@ class Team extends \common\ext\MongoDb\Document
                     'year' => \EMongoCriteria::SORT_DESC,
                     'name' => \EMongoCriteria::SORT_ASC,
                 ),
-                'unique' => true,
             ),
         ));
     }
