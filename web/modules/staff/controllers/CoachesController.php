@@ -138,5 +138,19 @@ class CoachesController extends \web\modules\staff\ext\Controller
 
         $user->save();
     }
+    
+    /**
+     * Deactivate coach's state
+     */
+    public function actionDeactivateAll()
+    {
+      $modifier = new \EMongoModifier();
+      $modifier->addModifier('isApprovedCoach', 'set', false);
+      $criteria = new \EMongoCriteria();
+      $criteria->addCond('isApprovedCoach','==', true);           
+      User::model()->updateAll($modifier,$criteria);
+      // Redirect to edit page
+      $this->redirect(array('index'));
+    }
 
 }

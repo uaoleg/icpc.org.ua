@@ -35,8 +35,13 @@
                 stringResult: true,
                 searchOnEnter: false
             });
+            
+            $('.confirmation').on('click', function () {
+                return confirm('Are you really want to Deactivate all Coaches?');
+            });
     });
 </script>
 
 <h3><?=\yii::t('app', 'List of Coaches')?></h3>
+<div class="btn-group"><a href="/staff/coaches/deactivateAll" class="btn btn-danger confirmation"><?=\yii::t('app', 'Disactivate all Coaches')?></a></div>
 <table id="staff__coaches_list" style="width: 100%;"></table>
