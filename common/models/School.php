@@ -222,16 +222,27 @@ class School extends \common\ext\MongoDb\Document
      */
     protected function afterSave()
     {
-        // If any name is changed, info in result model should be updated
+        // If any name is changed than update Result and Team
         foreach (array('fullNameUk', 'fullNameEn') as $attr) {
             if ($this->attributeHasChanged($attr)) {
                 $lang = substr($attr, -2);
                 $modifier = new \EMongoModifier();
-                $modifier->addModifier('schoolName' . $lang, 'set', $this->$attr);
+                $modifier->addModifier("schoolName{$lang}", 'set', $this->$attr);
                 $criteria = new \EMongoCriteria();
                 $criteria->addCond('schoolId', '==', (string)$this->_id);
                 Result::model()->updateAll($modifier, $criteria);
+                Team::model()->updateAll($modifier, $criteria);
             }
+        }
+
+        // If type changed
+        if ($this->attributeHasChanged('type')) {
+            $modifier = new \EMongoModifier();
+            $modifier->addModifier('schoolType', 'set', $this->type);
+            $criteria = new \EMongoCriteria();
+            $criteria->addCond('schoolId', '==', (string)$this->_id);
+            Result::model()->updateAll($modifier, $criteria);
+            Team::model()->updateAll($modifier, $criteria);
         }
 
         parent::afterSave();

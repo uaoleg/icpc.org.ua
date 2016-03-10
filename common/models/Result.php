@@ -107,6 +107,12 @@ class Result extends \common\ext\MongoDb\Document
     public $schoolNameEn;
 
     /**
+     * Type of school
+     * @var string
+     */
+    public $schoolType;
+
+    /**
      * Coach ID
      * @var string
      * @see beforeValidate()
@@ -165,7 +171,7 @@ class Result extends \common\ext\MongoDb\Document
 
     /**
      * Returns the object of the team
-     * 
+     *
      * @return Team
      */
     public function getTeam()
@@ -244,7 +250,7 @@ class Result extends \common\ext\MongoDb\Document
                 return $this->coachNameUk;
                 break;
             case 'en':
-                return (!empty($this->schoolNameEn)) ? $this->coachNameEn : $this->coachNameUk;
+                return (!empty($this->coachNameEn)) ? $this->coachNameEn : $this->coachNameUk;
                 break;
         }
     }
@@ -271,6 +277,7 @@ class Result extends \common\ext\MongoDb\Document
             'schoolId'      => \yii::t('app', 'School ID'),
             'schoolNameUk'  => \yii::t('app', 'School name in ukrainian'),
             'schoolNameEn'  => \yii::t('app', 'School name in english'),
+            'schoolType'    => \yii::t('app', 'School type'),
             'coachId'       => \yii::t('app', 'Coach ID'),
             'coachNameUk'   => \yii::t('app', 'Coach name in ukrainian'),
             'coachNameEn'   => \yii::t('app', 'Coach name in english'),
@@ -364,6 +371,7 @@ class Result extends \common\ext\MongoDb\Document
                 'schoolId'      => (string)$this->team->school->_id,
                 'schoolNameUk'  => $this->team->school->fullNameUk,
                 'schoolNameEn'  => $this->team->school->fullNameEn,
+                'schoolType'    => $this->team->school->type,
                 'coachId'       => (string)$this->team->coach->_id,
                 'coachNameUk'   => \web\widgets\user\Name::create(array('user' => $this->team->coach, 'lang' => 'uk'), true),
                 'coachNameEn'   => \web\widgets\user\Name::create(array('user' => $this->team->coach, 'lang' => 'en'), true),

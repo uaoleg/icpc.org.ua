@@ -51,8 +51,8 @@ class TmpCommand extends \console\ext\ConsoleCommand
      */
     public function actionSchoolType()
     {
+        echo "Default school type";
         $schools = \common\models\School::model()->findAll();
-
         foreach ($schools as $school) {
             if (empty($school->type)) {
                 $school->type = \common\models\School::TYPE_HIGH;
@@ -60,6 +60,29 @@ class TmpCommand extends \console\ext\ConsoleCommand
             }
             echo '.';
         }
+        echo "\n";
+
+        echo "Team school type";
+        $teams = \common\models\Team::model()->findAll();
+        foreach ($teams as $team) {
+            if (empty($team->schoolType) && $team->school) {
+                $team->schoolType = $team->school->type;
+                $team->save();
+            }
+            echo '.';
+        }
+        echo "\n";
+
+        echo "Result school type";
+        $results = \common\models\Result::model()->findAll();
+        foreach ($results as $result) {
+            if (empty($result->schoolType) && $result->team && $result->team->school) {
+                $result->schoolType = $result->team->school->type;
+                $result->save();
+            }
+            echo '.';
+        }
+        echo "\n";
 
         echo "\nDone";
     }
