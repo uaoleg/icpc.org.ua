@@ -490,8 +490,6 @@ class AuthController extends \web\ext\Controller
             ));
             return;
         }
-        //update request date
-        
         
         // Get user
         $user = User::model()->findByPk(new \MongoId($confirmation->userId));
@@ -512,6 +510,9 @@ class AuthController extends \web\ext\Controller
             ));
         \yii::app()->mail->send($message);
         
+        //update request date
+        $confirmation->dateConfirmed = false;
+        $confirmation->save();
     }
 
     /**
