@@ -36,12 +36,39 @@
                 searchOnEnter: false
             });
             
-            $('.confirmation').on('click', function () {
-                return confirm('Are you really want to Deactivate all Coaches?');
-            });
     });
 </script>
 
 <h3><?=\yii::t('app', 'List of Coaches')?></h3>
-<div class="btn-group"><a href="/staff/coaches/deactivateAll" class="btn btn-danger confirmation"><?=\yii::t('app', 'Disactivate all Coaches')?></a></div>
+<div class="btn-group">
+  <button type="button" class="btn btn-danger" id="deactivateAllCoachesModal-modal" data-toggle="modal" data-target="#deactivateAllCoachesModal">
+      <?=\yii::t('app', 'Disactivate all Coaches')?>
+  </button>
+</div>
+<div class="modal" id="deactivateAllCoachesModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?=\yii::t('app', 'Disactivate all Coaches')?></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12" id="uploadContainer">
+                        <div class="form-group">
+                            <p class="form-control-static">
+                              <?=\yii::t('app', 'Are you really want to Deactivate all Coaches?')?>
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <a href="/staff/coaches/deactivateAll" class="btn btn-danger confirmation"><?=\yii::t('app', 'Disactivate all Coaches')?></a>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><?=\yii::t('app', 'Close')?></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <table id="staff__coaches_list" style="width: 100%;"></table>
