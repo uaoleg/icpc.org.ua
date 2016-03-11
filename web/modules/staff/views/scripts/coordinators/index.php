@@ -30,8 +30,12 @@
                 stringResult: true,
                 searchOnEnter: false
             });
+            $('.confirmation').on('click', function () {
+                return confirm('Are you really want to Deactivate all Coordinators?');
+            });
     });
 </script>
 
 <h3><?=\yii::t('app', 'List of Coordinators')?></h3>
+<div class="btn-group"><a href="/staff/coordinators/deactivateAll" class="btn btn-danger confirmation"><?=\yii::t('app', 'Disactivate all Coordinators')?></a></div>
 <table id="staff__coordinators_list" style="width: 100%;"></table>
