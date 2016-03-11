@@ -2,6 +2,7 @@
 
 namespace web\controllers;
 
+use \common\models\School;
 use \common\models\Result;
 use \common\models\Team;
 
@@ -57,11 +58,20 @@ class TeamController extends \web\ext\Controller
             'year' => $year,
         ));
 
+        // Get list of available school types
+        $schoolTypes = array(
+            ':' . \yii::t('app', 'All'),
+        );
+        foreach (School::model()->getConstantList('TYPE_') as $type) {
+            $schoolTypes[] = $type . ':' . School::model()->getAttributeLabel($type, 'type');
+        }
+
         // Render view
         $this->render('list', array(
             'user'          => \yii::app()->user->getInstance(),
             'year'          => $year,
             'teamsCount'    => $teamsCount,
+            'schoolTypes'   => $schoolTypes,
             'lang'          => \yii::app()->languageCore,
         ));
     }
@@ -129,6 +139,7 @@ class TeamController extends \web\ext\Controller
                 'id'                            => (string)$team->_id,
                 'name'                          => $team->name,
                 'schoolName' . ucfirst($lang)   => $team->schoolName,
+                'schoolType'                    => School::model()->getAttributeLabel($team->schoolType, 'type'),
                 'coachName' . ucfirst($lang)    => $team->coachName,
                 'coachId'                       => $team->coachId,
                 'members'                       => $members_str,

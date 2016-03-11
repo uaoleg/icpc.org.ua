@@ -14,11 +14,12 @@
 
         var $table = $('#team-list');
         $table.jqGrid({
-            url: '<?=$this->createUrl('/team/GetTeamListJson')?>',
+            url: '<?=$this->createUrl('getTeamListJson')?>',
             datatype: 'json',
             colNames: <?=\CJSON::encode(array(
                 \yii::t('app', 'Team name'),
                 \yii::t('app', 'School name'),
+                \yii::t('app', 'School type'),
                 \yii::t('app', 'Coach name'),
                 \yii::t('app', 'Members'),
                 \yii::t('app', 'State'),
@@ -29,6 +30,10 @@
             colModel: [
                 {name: 'name', index: 'name', width: 10, formatter: 'showlink', formatoptions:{baseLinkUrl:'/team/view'}},
                 {name: 'schoolName<?=ucfirst($lang)?>', index: 'schoolName<?=ucfirst($lang)?>', width: 15},
+                {name: 'schoolType', index: 'schoolType', width: 10,
+                    stype: 'select',
+                    searchoptions: {sopt: ['bw'], value: "<?= implode(';', $schoolTypes) ?>"}
+                },
                 {name: 'coachName<?=ucfirst($lang)?>', index: 'coachName<?=ucfirst($lang)?>', width: 15, formatter: coachShowLink},
                 {name: 'members', index: 'members', width: 30, search: false},
                 {name: 'state', index: 'state.<?=\yii::app()->language?>', width: 10, search: true},
