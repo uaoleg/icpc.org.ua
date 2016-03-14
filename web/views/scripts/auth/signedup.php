@@ -20,6 +20,9 @@
                 <div class="alert alert-success fade in hide">
                     <strong><?=\yii::t('app', 'E-mail was resent successfully!')?></strong>
                 </div>
+                <div class="alert alert-warning fade in hide">
+                    <strong><?=\yii::t('app', 'E-mail confirmation Request can be sent to 1 times per day.')?></strong>
+                </div>
             </div>
         </div>
     </div>

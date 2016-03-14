@@ -12,9 +12,13 @@ function appAuthSignedup() {
                 confirmationId: $thisElement.data('id')
             },
             success: function() {
-                $('.alert').removeClass('hide');
+                $('.alert.alert-success').removeClass('hide');
                 $thisElement.prop('disabled', false);
-            }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+				$('.alert.alert-warning').removeClass('hide');
+                $thisElement.prop('disabled', false);
+			}
         });
     });
 }

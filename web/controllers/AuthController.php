@@ -476,10 +476,21 @@ class AuthController extends \web\ext\Controller
 
         // Get confirmation
         $confirmation = User\EmailConfirmation::model()->findByPk(new \MongoId($confirmationId));
+
         if ($confirmation === null) {
             $this->httpException(404);
         }
 
+
+        if($confirmation->dateConfirmed->sec > strtotime("-1 day")){
+            header('HTTP/1.1 403 Forbidden');
+            $this->renderJson(array(
+                'type' => 'error',
+                'errors'    => array('request was made less than a day ago' => true),
+            ));
+            return;
+        }
+        
         // Get user
         $user = User::model()->findByPk(new \MongoId($confirmation->userId));
         if ($user === null) {
@@ -498,6 +509,10 @@ class AuthController extends \web\ext\Controller
                 )),
             ));
         \yii::app()->mail->send($message);
+        
+        //update request date
+        $confirmation->dateConfirmed = false;
+        $confirmation->save();
     }
 
     /**

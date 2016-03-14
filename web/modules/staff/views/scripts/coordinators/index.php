@@ -30,12 +30,39 @@
                 stringResult: true,
                 searchOnEnter: false
             });
-            $('.confirmation').on('click', function () {
-                return confirm('Are you really want to Deactivate all Coordinators?');
-            });
     });
 </script>
 
 <h3><?=\yii::t('app', 'List of Coordinators')?></h3>
-<div class="btn-group"><a href="/staff/coordinators/deactivateAll" class="btn btn-danger confirmation"><?=\yii::t('app', 'Disactivate all Coordinators')?></a></div>
+<div class="btn-group">
+  <button type="button" class="btn btn-danger" id="deactivateAllCoordinatorsModal-modal" data-toggle="modal" data-target="#deactivateAllCoordinatorsModal">
+      <?=\yii::t('app', 'Disactivate all Coordinators')?>
+  </button>
+</div>
+<div class="modal" id="deactivateAllCoordinatorsModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?=\yii::t('app', 'Disactivate all Coordinators')?></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12" id="uploadContainer">
+                        <div class="form-group">
+                            <p class="form-control-static">
+                              <?=\yii::t('app', 'Are you really want to Deactivate all Coordinators?')?>
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <a href="/staff/coordinators/deactivateAll" class="btn btn-danger confirmation"><?=\yii::t('app', 'Disactivate all Coordinators')?></a>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><?=\yii::t('app', 'Close')?></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <table id="staff__coordinators_list" style="width: 100%;"></table>
