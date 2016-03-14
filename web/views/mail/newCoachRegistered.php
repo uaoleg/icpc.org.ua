@@ -1,0 +1,1 @@
+<?=\yii::t('app', 'A new user in role of "{role}" registered and need approval! Hes email is {email}.', array('{role}' => $link, '{email}' => $email))?>

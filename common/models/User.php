@@ -208,6 +208,7 @@ class User extends Person
 
             // Get approver for coordinator
             if (!empty($this->coordinator) && !$this->isApprovedCoordinator) {
+
                 switch ($this->coordinator) {
                     case static::ROLE_COORDINATOR_REGION:
                     case static::ROLE_COORDINATOR_UKRAINE:

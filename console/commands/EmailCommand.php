@@ -49,5 +49,28 @@ class EmailCommand extends \console\ext\ConsoleCommand
         \yii::app()->mail->send($message);
 
     }
+    
+    /**
+     * Notify about a new Coach or Coordinator
+     *
+     * @param string $emailTo - Email of parrent user
+     * @param string $user_email - Email of registered user
+     * @param string $role
+     */
+    
+    public function actionCoachOrCoordinatorNotify($emailTo, $user_email, $role)
+    {
+        // Send email
+        $message = new MailMessage();
+        $message
+            ->addTo($emailTo)
+            ->setFrom(\yii::app()->params['emails']['noreply']['address'], \yii::app()->params['emails']['noreply']['name'])
+            ->setSubject(\yii::t('app', 'A new Coach or Coordinator registered and need approval!'))
+            ->setView('newCoachRegistered', array(
+                'role' => $role,
+                'email' => $user_email,
+            ));
+        \yii::app()->mail->send($message);
+    }
 
 }
