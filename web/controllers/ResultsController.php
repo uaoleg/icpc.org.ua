@@ -34,7 +34,7 @@ class ResultsController extends \web\ext\Controller
         // Select states for which there are results
         $states = Result::model()->getCollection()->distinct('geo',  array(
             'year'  => $year,
-            'geo'   => array('$in' => Geo\State::model()->getConstantList('NAME_'))
+            'geo'   => array('$in' => array_values(Geo\State::model()->getConstantList('NAME_')))
         ));
 
         $statesWithLabels = array();
@@ -46,7 +46,7 @@ class ResultsController extends \web\ext\Controller
         // Select regions for which there are results
         $regions = Result::model()->getCollection()->distinct('geo', array(
             'year' => $year,
-            'geo'  => array('$in' => Geo\Region::model()->getConstantList('NAME_'))
+            'geo'  => array('$in' => array_values(Geo\Region::model()->getConstantList('NAME_')))
         ));
 
         $regionsWithLabels = array();
