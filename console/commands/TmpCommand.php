@@ -55,7 +55,11 @@ class TmpCommand extends \console\ext\ConsoleCommand
         $schools = \common\models\School::model()->findAll();
         foreach ($schools as $school) {
             if (empty($school->type)) {
-                $school->type = \common\models\School::TYPE_HIGH;
+                if (mb_strpos($school->fullNameUk, 'Поза конкурсом - ') === 0) {
+                    $school->type = \common\models\School::TYPE_MIDDLE;
+                } else {
+                    $school->type = \common\models\School::TYPE_HIGH;
+                }
                 $school->save();
             }
             echo '.';
