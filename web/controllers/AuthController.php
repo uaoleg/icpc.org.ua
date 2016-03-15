@@ -485,19 +485,13 @@ class AuthController extends \web\ext\Controller
 
         // Get confirmation
         $confirmation = User\EmailConfirmation::model()->findByPk(new \MongoId($confirmationId));
-
         if ($confirmation === null) {
             $this->httpException(404);
         }
 
-
-        if($confirmation->dateConfirmed->sec > strtotime("-1 day")){
-            header('HTTP/1.1 403 Forbidden');
-            $this->renderJson(array(
-                'type' => 'error',
-                'errors'    => array('request was made less than a day ago' => true),
-            ));
-            return;
+        // Check confirmation sent time
+        if ($confirmation->dateConfirmed->sec > strtotime("-1 day")) {
+            $this->httpException(403, \yii::t('app', 'E-mail confirmation request can be sent no more than 1 time per day.'));
         }
 
         // Get user

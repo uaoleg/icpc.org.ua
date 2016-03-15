@@ -21,7 +21,7 @@
                     <strong><?=\yii::t('app', 'E-mail was resent successfully!')?></strong>
                 </div>
                 <div class="alert alert-warning fade in hide">
-                    <strong><?=\yii::t('app', 'E-mail confirmation Request can be sent to 1 times per day.')?></strong>
+                    <strong><?=\yii::t('app', 'E-mail confirmation request can be sent no more than 1 time per day.')?></strong>
                 </div>
             </div>
         </div>
