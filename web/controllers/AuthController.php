@@ -368,16 +368,12 @@ class AuthController extends \web\ext\Controller
             // If no errors, than create and auth user
             if (!$user->hasErrors()) {
 
-                // Notify parrent user for new childed account
-
+                // Send an email notification about new approve required
                 $approver = $user->getApprover();
-                
-                if($approver){
-                    // Send an email notification about new answer
+                if ($approver) {
                     \yii::app()->cli->runCommand('email', 'coachOrCoordinatorNotify', array(
-                        'email' => (string)$approver->email,
-                        'user_email' => (string)$user->email,
-                        'role' => (string)$user->type,
+                        'emailTo'   => (string)$approver->email,
+                        'userId'    => (string)$user->_id,
                     ), array(), true);
                 }
 
@@ -503,7 +499,7 @@ class AuthController extends \web\ext\Controller
             ));
             return;
         }
-        
+
         // Get user
         $user = User::model()->findByPk(new \MongoId($confirmation->userId));
         if ($user === null) {
@@ -522,7 +518,7 @@ class AuthController extends \web\ext\Controller
                 )),
             ));
         \yii::app()->mail->send($message);
-        
+
         //update request date
         $confirmation->dateConfirmed = false;
         $confirmation->save();

@@ -2,6 +2,7 @@
 
 use \common\ext\Mail\MailMessage;
 use \common\models\Qa;
+use \common\models\User;
 
 class EmailCommand extends \console\ext\ConsoleCommand
 {
@@ -49,26 +50,38 @@ class EmailCommand extends \console\ext\ConsoleCommand
         \yii::app()->mail->send($message);
 
     }
-    
+
     /**
      * Notify about a new Coach or Coordinator
      *
-     * @param string $emailTo - Email of parrent user
-     * @param string $user_email - Email of registered user
-     * @param string $role
+     * @param string $emailTo   Email of parrent user
+     * @param string $userId    ID of registered user
      */
-    
-    public function actionCoachOrCoordinatorNotify($emailTo, $user_email, $role)
+
+    public function actionCoachOrCoordinatorNotify($emailTo, $userId)
     {
+        // Get user
+        $user = User::findByPk(new \MongoId($userId));
+        if (!$user) {
+            echo \yii::t('app', 'User not found.');
+            exit;
+        }
+
+        // Define subject
+        if ($user->type === User::ROLE_COACH) {
+            $subject = \yii::t('app', 'A new coach is registered and needs your approval!');
+        } else {
+            $subject = \yii::t('app', 'A new coordinator is registered and needs your approval!');
+        }
+
         // Send email
         $message = new MailMessage();
         $message
             ->addTo($emailTo)
             ->setFrom(\yii::app()->params['emails']['noreply']['address'], \yii::app()->params['emails']['noreply']['name'])
-            ->setSubject(\yii::t('app', 'A new Coach or Coordinator registered and need approval!'))
-            ->setView('newCoachRegistered', array(
-                'role' => $role,
-                'email' => $user_email,
+            ->setSubject($subject)
+            ->setView('newCoachOrCoordinatorRegistered', array(
+                'user' => $user,
             ));
         \yii::app()->mail->send($message);
     }
