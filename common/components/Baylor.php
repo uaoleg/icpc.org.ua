@@ -116,16 +116,16 @@ class Baylor extends \CApplicationComponent
         $header = $html->find('#header', 0);
         if (!is_null($header)) {
 
-            $rows = $html->find('[id="accordionPanel:teamMemberForm:teamMembers_data"] td a.team');
+            $rows = $html->find('[id="examExecutionAditionalInfo:teamsForm:teamsTable_data"] td a.team');
 
             foreach($rows as $item)
             {
                 $id = substr($item->href, strlen('/private/team/'));
-                $result[$id] = [
+                $result[$id] = array(
                     'title' => $item->plaintext,
                     'id' => $id,
                     'url' => $item->href,
-                ];
+                );
             }
         }
 
