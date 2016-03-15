@@ -35,35 +35,43 @@
                 stringResult: true,
                 searchOnEnter: false
             });
-            
+
     });
 </script>
 
 <h3><?=\yii::t('app', 'List of Coaches')?></h3>
+
 <div class="btn-group">
-  <button type="button" class="btn btn-danger" id="deactivateAllCoachesModal-modal" data-toggle="modal" data-target="#deactivateAllCoachesModal">
-      <?=\yii::t('app', 'Disactivate all Coaches')?>
-  </button>
+    <button type="button" class="btn btn-danger" id="deactivateAllCoachesModal-modal" data-toggle="modal" data-target="#deactivateAllCoachesModal">
+        <?=\yii::t('app', 'Deactivate all coaches')?>
+    </button>
 </div>
+
+<br><br>
+
+<table id="staff__coaches_list" style="width: 100%;"></table>
+
 <div class="modal" id="deactivateAllCoachesModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><?=\yii::t('app', 'Disactivate all Coaches')?></h4>
+                <h4 class="modal-title"><?=\yii::t('app', 'Deactivate all coaches')?></h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-lg-12" id="uploadContainer">
                         <div class="form-group">
                             <p class="form-control-static">
-                              <?=\yii::t('app', 'Are you really want to Deactivate all Coaches?')?>
+                              <?=\yii::t('app', 'Are you really want to deactivate all coaches?')?>
                             </p>
                         </div>
 
                         <div class="form-group">
-                            <a href="/staff/coaches/deactivateAll" class="btn btn-danger confirmation"><?=\yii::t('app', 'Disactivate all Coaches')?></a>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><?=\yii::t('app', 'Close')?></button>
+                            <a href="<?=$this->createUrl('/staff/coaches/deactivateAll')?>" class="btn btn-danger confirmation">
+                                <?=\yii::t('app', 'Deactivate all coaches')?>
+                            </a>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><?=\yii::t('app', 'Cancel')?></button>
                         </div>
                     </div>
                 </div>
@@ -71,4 +79,3 @@
         </div>
     </div>
 </div>
-<table id="staff__coaches_list" style="width: 100%;"></table>
