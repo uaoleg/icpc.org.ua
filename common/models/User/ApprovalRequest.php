@@ -53,7 +53,7 @@ class ApprovalRequest extends \common\ext\MongoDb\Document
     public function rules()
     {
         return array_merge(parent::rules(), array(
-            array('userId, dateCreated', 'required'),
+            array('userId, role, dateCreated', 'required'),
         ));
     }
 

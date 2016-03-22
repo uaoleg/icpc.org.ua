@@ -368,15 +368,6 @@ class AuthController extends \web\ext\Controller
             // If no errors, than create and auth user
             if (!$user->hasErrors()) {
 
-                // Send an email notification about new approve required
-                $approver = $user->getApprover();
-                if ($approver) {
-                    \yii::app()->cli->runCommand('email', 'coachOrCoordinatorNotify', array(
-                        'emailTo'   => (string)$approver->email,
-                        'userId'    => (string)$user->_id,
-                    ), array(), true);
-                }
-
                 // Save user
                 $user->save();
 
