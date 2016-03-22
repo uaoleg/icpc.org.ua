@@ -1,3 +1,9 @@
+<?php
+
+    use \common\models\User;
+
+?>
+
 <!DOCTYPE html>
 <html lang="<?=\yii::app()->language?>">
 
@@ -73,7 +79,20 @@
                                     '{/a}'      => '</a>'
                                 ))?>
                             <?php endif; ?>
+                            <br><br>
+                            <button type="button" class="btn btn-default js-user-approval-request-button <?= User\ApprovalRequest::isSentRecently(\yii::app()->user->id, User\ApprovalRequest::ROLE_COORDINATOR) ? 'hide' : '' ?>"
+                                    data-role="<?= User\ApprovalRequest::ROLE_COORDINATOR ?>">
+                                <?= \yii::t('app', 'Send approval request') ?>
+                            </button>
+                            <p class="js-user-approval-request-label <?= !User\ApprovalRequest::isSentRecently(\yii::app()->user->id, User\ApprovalRequest::ROLE_COORDINATOR) ? 'hide' : '' ?>">
+                                <?=\yii::t('app', 'Your request has been recently sent. You can send next request in a day.')?>
+                            </p>
                         </div>
+                        <script>
+                            $(document).ready(function() {
+                                new appUserApprovalRequest();
+                            });
+                        </script>
                     <?php endif; ?>
                     <?php if ((\yii::app()->user->getInstance()->type === \common\models\User::ROLE_COACH) && (!\yii::app()->user->getInstance()->isApprovedCoach)): ?>
                         <div class="alert alert-danger text-center">
@@ -85,7 +104,20 @@
                                     '{/a}'      => '</a>'
                                 ))?>
                             <?php endif; ?>
+                            <br><br>
+                            <button type="button" class="btn btn-default js-user-approval-request-button <?= User\ApprovalRequest::isSentRecently(\yii::app()->user->id, User\ApprovalRequest::ROLE_COACH) ? 'hide' : '' ?>"
+                                    data-role="<?= User\ApprovalRequest::ROLE_COACH ?>">
+                                <?= \yii::t('app', 'Send approval request') ?>
+                            </button>
+                            <p class="js-user-approval-request-label <?= !User\ApprovalRequest::isSentRecently(\yii::app()->user->id, User\ApprovalRequest::ROLE_COACH) ? 'hide' : '' ?>">
+                                <?=\yii::t('app', 'Your request has been recently sent. You can send next request in a day.')?>
+                            </p>
                         </div>
+                        <script>
+                            $(document).ready(function() {
+                                new appUserApprovalRequest();
+                            });
+                        </script>
                     <?php endif; ?>
                     <?php if (\yii::app()->user->getState(\web\ext\WebUser::SESSION_INFO_NOT_FULL)): ?>
                         <div class="alert alert-danger text-center">

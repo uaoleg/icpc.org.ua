@@ -395,4 +395,15 @@ class UserController extends \web\ext\Controller
         }
     }
 
+    /**
+     * Request approve status for coach or coordinator
+     */
+    public function actionApprovalRequest()
+    {
+        $request = new User\ApprovalRequest();
+        $request->userId = \yii::app()->user->id;
+        $request->role = $this->request->getParam('role');
+        $request->save();
+    }
+
 }
