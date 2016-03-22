@@ -112,19 +112,15 @@ class Baylor extends \CApplicationComponent
         $getCurl = $this->curl->newRequest('get', $this->url . '/private/dashboard.icpc');
         $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
         $html = $parser->str_get_html($response->body);
-
         $header = $html->find('#header', 0);
         if (!is_null($header)) {
-
             $rows = $html->find('[id="examExecutionAditionalInfo:teamsForm:teamsTable_data"] td a.team');
-
-            foreach($rows as $item)
-            {
+            foreach ($rows as $item) {
                 $id = substr($item->href, strlen('/private/team/'));
                 $result[$id] = array(
                     'title' => $item->plaintext,
-                    'id' => $id,
-                    'url' => $item->href,
+                    'id'    => $id,
+                    'url'   => $item->href,
                 );
             }
         }
