@@ -109,20 +109,29 @@ class Baylor extends \CApplicationComponent
         $parser = new HtmlDomParser();
 
         //Get Teams list
-        $getCurl = $this->curl->newRequest('get', $this->url . '/private/dashboard.icpc');
+        $getCurl = $this->curl->newRequest('POST', $this->url . '/private/team/yourTeamList.icpc', array(
+            'teamCreateButton:yearSelectorForm'         => 'teamCreateButton:yearSelectorForm',
+            'teamCreateButton:yearSelectorForm:year'    => 2017,
+            'javax.faces.ViewState'                     => '9135935228831978634:-6291211713543351310',
+            'javax.faces.source:teamCreateButton'       => 'yearSelectorForm:year',
+            'javax.faces.partial.event'                 => 'change',
+            'javax.faces.partial.execute'               => 'teamCreateButton:yearSelectorForm:year',
+            'javax.faces.partial.render'                => 'teamMemberForm',
+            'javax.faces.behavior.event'                => 'change',
+            'javax.faces.partial.ajax'                  => 'true',
+        ));
         $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
-        $html = $parser->str_get_html($response->body);
-        $header = $html->find('#header', 0);
-        if (!is_null($header)) {
-            $rows = $html->find('[id="examExecutionAditionalInfo:teamsForm:teamsTable_data"] td a.team');
-            foreach ($rows as $item) {
-                $id = substr($item->href, strlen('/private/team/'));
-                $result[$id] = array(
-                    'title' => $item->plaintext,
-                    'id'    => $id,
-                    'url'   => $item->href,
-                );
-            }
+        $xml = simplexml_load_string($response->body, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $elements = (array)$xml->changes->update;
+        $html = $parser->str_get_html($elements[1]);
+        $rows = $html->find('a.team');
+        foreach ($rows as $item) {
+            $id = substr($item->href, strlen('/private/team/'));
+            $result[$id] = array(
+                'title' => $item->plaintext,
+                'id'    => $id,
+                'url'   => $item->href,
+            );
         }
 
         return $result;
