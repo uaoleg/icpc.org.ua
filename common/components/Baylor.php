@@ -111,7 +111,7 @@ class Baylor extends \CApplicationComponent
         //Get Teams list
         $getCurl = $this->curl->newRequest('POST', $this->url . '/private/team/yourTeamList.icpc', array(
             'teamCreateButton:yearSelectorForm'         => 'teamCreateButton:yearSelectorForm',
-            'teamCreateButton:yearSelectorForm:year'    => 2017,
+            'teamCreateButton:yearSelectorForm:year'    => date('Y') + 1,
             'javax.faces.ViewState'                     => '9135935228831978634:-6291211713543351310',
             'javax.faces.source:teamCreateButton'       => 'yearSelectorForm:year',
             'javax.faces.partial.event'                 => 'change',
