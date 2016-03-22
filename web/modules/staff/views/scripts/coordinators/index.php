@@ -57,7 +57,7 @@
                     <div class="col-lg-12" id="uploadContainer">
                         <div class="form-group">
                             <p class="form-control-static">
-                              <?=\yii::t('app', 'Are you really want to ceactivate all coordinators?')?>
+                              <?=\yii::t('app', 'Are you really want to deactivate all coordinators?')?>
                             </p>
                         </div>
 
