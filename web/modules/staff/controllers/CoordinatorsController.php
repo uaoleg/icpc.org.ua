@@ -96,6 +96,11 @@ class CoordinatorsController extends \web\modules\staff\ext\Controller
      */
     public function actionDeactivateAll()
     {
+        // Check access
+        if (!\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE, array('user' => \yii::app()->user->getInstance()))) {
+            return $this->httpException(403);
+        }
+
         // Deactivate
         $modifier = new \EMongoModifier();
         $modifier->addModifier('isApprovedCoordinator', 'set', false);

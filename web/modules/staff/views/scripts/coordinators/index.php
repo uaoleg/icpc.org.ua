@@ -1,7 +1,10 @@
 <?php
+
     use \common\models\User;
+
+    \yii::app()->clientScript->registerCoreScript('jquery.jqgrid');
+
 ?>
-<?php \yii::app()->clientScript->registerCoreScript('jquery.jqgrid'); ?>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -35,16 +38,19 @@
 
 <h3><?=\yii::t('app', 'List of Coordinators')?></h3>
 
+<?php if (\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE, array('user' => \yii::app()->user->getInstance()))): ?>
 <div class="btn-group">
     <button type="button" class="btn btn-danger" id="deactivateAllCoordinatorsModal-modal" data-toggle="modal" data-target="#deactivateAllCoordinatorsModal">
         <?=\yii::t('app', 'Deactivate all coordinators')?>
     </button>
 </div>
+<?php endif; ?>
 
 <br><br>
 
 <table id="staff__coordinators_list" style="width: 100%;"></table>
 
+<?php if (\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE, array('user' => \yii::app()->user->getInstance()))): ?>
 <div class="modal" id="deactivateAllCoordinatorsModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -73,3 +79,4 @@
         </div>
     </div>
 </div>
+<?php endif; ?>

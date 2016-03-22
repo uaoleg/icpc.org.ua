@@ -1,11 +1,17 @@
-<?php \yii::app()->clientScript->registerCoreScript('jquery.jqgrid'); ?>
 <?php
+
+    use \common\models\User;
+
+    \yii::app()->clientScript->registerCoreScript('jquery.jqgrid');
+
     $stateSelects = array(':' . \yii::t('app', 'All'));
     foreach ($states as $index => $state) {
         $stateSelects[] = "{$index}:{$state}";
     }
     $stateSelects = implode(';', $stateSelects);
+    
 ?>
+
 <script type="text/javascript">
     $(document).ready(function() {
         new appStaffCoachesIndex();
@@ -41,16 +47,19 @@
 
 <h3><?=\yii::t('app', 'List of Coaches')?></h3>
 
+<?php if (\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE, array('user' => \yii::app()->user->getInstance()))): ?>
 <div class="btn-group">
     <button type="button" class="btn btn-danger" id="deactivateAllCoachesModal-modal" data-toggle="modal" data-target="#deactivateAllCoachesModal">
         <?=\yii::t('app', 'Deactivate all coaches')?>
     </button>
 </div>
+<?php endif; ?>
 
 <br><br>
 
 <table id="staff__coaches_list" style="width: 100%;"></table>
 
+<?php if (\yii::app()->user->checkAccess(User::ROLE_COORDINATOR_UKRAINE, array('user' => \yii::app()->user->getInstance()))): ?>
 <div class="modal" id="deactivateAllCoachesModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -66,7 +75,6 @@
                               <?=\yii::t('app', 'Are you really want to deactivate all coaches?')?>
                             </p>
                         </div>
-
                         <div class="form-group">
                             <a href="<?=$this->createUrl('/staff/coaches/deactivateAll')?>" class="btn btn-danger confirmation">
                                 <?=\yii::t('app', 'Deactivate all coaches')?>
@@ -79,3 +87,4 @@
         </div>
     </div>
 </div>
+<?php endif; ?>
