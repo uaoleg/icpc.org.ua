@@ -88,41 +88,41 @@ class State extends \common\ext\MongoDb\Document
     {
         if ($this->_region === null) {
             switch ($this->name) {
-                case static::NAME_CHERNIHIV:
-                case static::NAME_SUMY:
-                case static::NAME_VINNYTSIA:
-                case static::NAME_ZHYTOMYR:
+                case static::NAME_DNIPROPETROVSK:
+                case static::NAME_KIROVOHRAD:
+                case static::NAME_POLTAVA:
+                case static::NAME_CHERKASY:
                     $this->_region = Region::get(Region::NAME_CENTER);
+                    break;
+                case static::NAME_KIEV:
+                case static::NAME_SUMY:
+                case static::NAME_CHERNIHIV:
+                case static::NAME_ZHYTOMYR:
+                    $this->_region = Region::get(Region::NAME_NORTH);
                     break;
                 case static::NAME_DONETSK:
                 case static::NAME_KHARKIV:
                 case static::NAME_LUHANSK:
                     $this->_region = Region::get(Region::NAME_EAST);
                     break;
-                case static::NAME_KIEV:
-                    $this->_region = Region::get(Region::NAME_KIEV);
-                    break;
                 case static::NAME_ARC:
-                case static::NAME_KHERSON:
-                case static::NAME_MYKOLAIV:
-                case static::NAME_ODESSA:
                 case static::NAME_ZAPORIZHIA:
+                case static::NAME_MYKOLAIV:
+                case static::NAME_KHERSON:
+                case static::NAME_ODESSA:
                     $this->_region = Region::get(Region::NAME_SOUTH);
                     break;
                 case static::NAME_IVANO_FRANKIVSK:
                 case static::NAME_VOLYN:
                 case static::NAME_LVIV:
                 case static::NAME_RIVNE:
-                case static::NAME_TERNOPIL:
                 case static::NAME_ZAKARPATTIA:
-                case static::NAME_KHMELNYTSKYI:
-                case static::NAME_CHERNIVTSI:
                     $this->_region = Region::get(Region::NAME_WEST);
                     break;
-                case static::NAME_DNIPROPETROVSK:
-                case static::NAME_POLTAVA:
-                case static::NAME_KIROVOHRAD:
-                case static::NAME_CHERKASY:
+                case static::NAME_VINNYTSIA:
+                case static::NAME_KHMELNYTSKYI:
+                case static::NAME_TERNOPIL:
+                case static::NAME_CHERNIVTSI:
                     $this->_region = Region::get(Region::NAME_SOUTH_WEST);
                     break;
             }

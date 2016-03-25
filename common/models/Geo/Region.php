@@ -12,8 +12,8 @@ class Region extends \common\ext\MongoDb\Document
      * Available regions
      */
     const NAME_CENTER       = 'center';
+    const NAME_NORTH        = 'north';
     const NAME_EAST         = 'east';
-    const NAME_KIEV         = 'kiev';
     const NAME_SOUTH        = 'south';
     const NAME_WEST         = 'west';
     const NAME_SOUTH_WEST   = 'south_west';
@@ -66,8 +66,8 @@ class Region extends \common\ext\MongoDb\Document
             'name' => \yii::t('app', 'Region name'),
             'const.name' => array(
                 static::NAME_CENTER     => \yii::t('app', 'Center'),
+                static::NAME_NORTH      => \yii::t('app', 'North'),
                 static::NAME_EAST       => \yii::t('app', 'East'),
-                static::NAME_KIEV       => \yii::t('app', 'Kiev'),
                 static::NAME_SOUTH      => \yii::t('app', 'South'),
                 static::NAME_WEST       => \yii::t('app', 'West'),
                 static::NAME_SOUTH_WEST => \yii::t('app', 'Southwestern'),
