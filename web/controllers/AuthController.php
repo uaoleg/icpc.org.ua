@@ -90,6 +90,7 @@ class AuthController extends \web\ext\Controller
 
         // Login
         $error = '';
+        $confirmation = null;
         if ($this->request->isPostRequest) {
             $identity = new \web\ext\UserIdentity($email, $password);
             if ($identity->authenticate()) {
@@ -120,13 +121,20 @@ class AuthController extends \web\ext\Controller
                 }
             } else {
                 $error = $identity->errorMessage;
+                if ($identity->errorCode === \web\ext\UserIdentity::ERROR_EMAIL_NOT_CONFIRMED) {
+                    $user = User::model()->findByAttributes(array('email' => mb_strtolower($email)));
+                    if ($user !== null) {
+                        $confirmation = User\EmailConfirmation::model()->findByAttributes(array('userId' => (string)$user->_id));
+                    }
+                }
             }
         }
 
         // Render view
         $this->render('login', array(
-            'email' => $email,
-            'error' => $error,
+            'email'         => $email,
+            'error'         => $error,
+            'confirmation'  => $confirmation,
         ));
     }
 
