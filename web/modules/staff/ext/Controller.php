@@ -31,10 +31,16 @@ class Controller extends \web\ext\Controller
             array(
                 'allow',
                 'controllers'   => array(
-                    'staff/lang',
                     'staff/organizations',
                 ),
-                'roles'         => array(User::ROLE_ADMIN),
+                'roles' => array(User::ROLE_COORDINATOR_UKRAINE),
+            ),
+            array(
+                'allow',
+                'controllers'   => array(
+                    'staff/lang',
+                ),
+                'roles' => array(User::ROLE_ADMIN),
             ),
             array(
                 'deny',

@@ -192,7 +192,7 @@
                                 'admin' => array(
                                     'href'      => '#',
                                     'caption'   => \yii::t('app', 'Admin'),
-                                    'rbac'      => \common\models\User::ROLE_ADMIN,
+                                    'rbac'      => \common\models\User::ROLE_COORDINATOR_UKRAINE,
                                     'itemList'  => array(
                                         'lang' => array(
                                             'href'      => $this->createUrl('/staff/lang'),

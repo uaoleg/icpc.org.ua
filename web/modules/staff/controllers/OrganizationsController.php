@@ -3,7 +3,6 @@
 namespace web\modules\staff\controllers;
 
 use \common\models\School;
-use EMongoCriteria;
 
 class OrganizationsController extends \web\modules\staff\ext\Controller
 {
