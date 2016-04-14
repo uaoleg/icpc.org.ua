@@ -261,6 +261,7 @@
                 </tr>
             </table>
 
+            <?php if ($member->info instanceof \common\models\User\InfoStudent): ?>
             <table>
                 <tr>
                     <td width="110px">
@@ -278,7 +279,9 @@
                     </td>
                 </tr>
             </table>
+            <?php endif; ?>
 
+            <?php if ($member->info instanceof \common\models\User\InfoStudent): ?>
             <table>
                 <tr>
                     <td width="120px">
@@ -301,6 +304,7 @@
                     </td>
                 </tr>
             </table>
+            <?php endif; ?>
 
             <table>
                 <tr>
