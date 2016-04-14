@@ -110,6 +110,21 @@ class Baylor extends \CApplicationComponent
 
         //Get Teams list
         $getCurl = $this->curl->newRequest('POST', $this->url . '/private/team/yourTeamList.icpc', array(
+
+            // Setting number of rows
+            'javax.faces.partial.ajax'      => 'true',
+            'javax.faces.source'            => 'teamMemberForm:teamMembers',
+            'javax.faces.partial.execute'   => 'teamMemberForm:teamMembers',
+            'javax.faces.partial.render'    => 'teamMemberForm:teamMembers',
+            'teamMemberForm:teamMembers'    => 'teamMemberForm:teamMembers',
+            'teamMemberForm:teamMembers_pagination' => 'true',
+            'teamMemberForm:teamMembers_first'      => '0',
+            'teamMemberForm:teamMembers_rows'       => '50',
+            'teamMemberForm:teamMembers_encodeFeature'  => 'true',
+            'teamMemberForm'                            => 'teamMemberForm',
+            'javax.faces.ViewState'                     => '9135935228831978634:-6291211713543351310',
+
+            // Setting year
             'teamCreateButton:yearSelectorForm'         => 'teamCreateButton:yearSelectorForm',
             'teamCreateButton:yearSelectorForm:year'    => date('Y') + 1,
             'javax.faces.ViewState'                     => '9135935228831978634:-6291211713543351310',
