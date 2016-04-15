@@ -24,6 +24,8 @@ class School extends \common\ext\MongoDb\Document
     const TYPE_HIGH_ECONOMIC    = 'high_economic';
     const TYPE_HIGH_PEDAGOGICAL = 'high_pedagogical';
     const TYPE_HIGH_NATURAL     = 'high_natural';
+    const TYPE_HIGH_LEVEL1      = 'high_level1';
+    const TYPE_HIGH_LEVEL2      = 'high_level2';
     const TYPE_MIDDLE           = 'middle';
     const TYPE_COMPANY          = 'company';
 
@@ -153,6 +155,8 @@ class School extends \common\ext\MongoDb\Document
                 static::TYPE_HIGH_NATURAL       => \yii::t('app', 'High natural'),
                 static::TYPE_HIGH_PEDAGOGICAL   => \yii::t('app', 'High pedagogical'),
                 static::TYPE_HIGH_TECHNICAL     => \yii::t('app', 'High technical'),
+                static::TYPE_HIGH_LEVEL1        => \yii::t('app', 'High level 1 accreditation'),
+                static::TYPE_HIGH_LEVEL2        => \yii::t('app', 'High level 2 accreditation'),
                 static::TYPE_MIDDLE             => \yii::t('app', 'Middle school'),
             ),
         ));
