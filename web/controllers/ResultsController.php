@@ -95,7 +95,7 @@ class ResultsController extends \web\ext\Controller
                 break;
             case Result::PHASE_3:
                 $geo    = $this->request->getParam('country');
-                $header = School::getCountryLabel();
+                $header = School::model()->getCountryLabel();
                 break;
             default:
                 $this->httpException(404);

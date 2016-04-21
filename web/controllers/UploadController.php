@@ -8,6 +8,7 @@ use \common\models\Team;
 use \common\models\Result;
 use \common\models\UploadedFile;
 use \common\models\User;
+use \Sunra\PhpSimple\HtmlDomParser;
 
 class UploadController extends \web\ext\Controller
 {
@@ -95,12 +96,10 @@ class UploadController extends \web\ext\Controller
         $year   = (int)date('Y');
         $resultsViewParams = array('year' => $year);
 
-        // Import HTML DOM Parser
+        // Create parser object
         \yii::import('common.lib.HtmlDomParser.*');
         require_once('HtmlDomParser.php');
-
-        // Create parser object
-        $parser = new \Sunra\PhpSimple\HtmlDomParser();
+        $parser = new HtmlDomParser();
         $html = $parser->str_get_html($uploadedFile->getBytes());
         $uploadedFile->delete();
 
