@@ -46,4 +46,20 @@ class DbCommand extends \console\ext\ConsoleCommand
         echo "Done\n";
     }
 
+	public function actionSchools()
+	{
+		$schools = new \common\models\School();
+		$dups = [];
+		foreach ($schools->findAll() as $school) {
+			if ($school->shortNameEn === null) {
+				continue;
+			}
+			if (!isset($dups[$school->shortNameEn])) {
+				$dups[$school->shortNameEn] = -1;
+			}
+			$dups[$school->shortNameEn]++;
+		}
+		var_dump(array_filter($dups));
+	}
+
 }
