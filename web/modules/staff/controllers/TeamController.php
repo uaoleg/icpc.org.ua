@@ -147,7 +147,8 @@ class TeamController extends \web\modules\staff\ext\Controller
                 $team = new Team();
 
                 if (empty($response['data']['team']['status']) || strtolower($response['data']['team']['status']) != self::BAYLOR_STATUS_ACCEPTED) {
-                    $errors[] = \yii::t('app', 'Team should be accepted.');
+/** @todo Enable this check */
+//                    $errors[] = \yii::t('app', 'Team should be accepted.');
                 }
 
                 $memberIds = array();
@@ -354,7 +355,7 @@ class TeamController extends \web\modules\staff\ext\Controller
             $result = \yii::app()->baylor->importTeam($email, $password, $team->baylorId);
 
             if(empty($result['errors'])) {
-                
+
                 // Save the team info
                 $teamInfo = $result['data']['team'];
 
