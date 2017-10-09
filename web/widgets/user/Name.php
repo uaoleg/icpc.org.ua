@@ -11,7 +11,7 @@ class Name extends \web\ext\Widget
 {
 
     /**
-     * Availabel views
+     * Available views
      */
     const VIEW_FIRST                = 'first';
     const VIEW_FIRST_MIDDLE_LAST    = 'firstMiddleLast';

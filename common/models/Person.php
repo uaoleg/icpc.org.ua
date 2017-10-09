@@ -64,10 +64,8 @@ abstract class Person extends \common\ext\MongoDb\Document
             default:
             case 'uk':
                 return $this->firstNameUk;
-                break;
             case 'en':
-                return (!empty($this->firstNameEn)) ? $this->firstNameEn : $this->firstNameUk;
-                break;
+                return $this->firstNameEn;
         }
     }
 
@@ -82,10 +80,8 @@ abstract class Person extends \common\ext\MongoDb\Document
             default:
             case 'uk':
                 return $this->middleNameUk;
-                break;
             case 'en':
-                return (!empty($this->middleNameEn)) ? $this->middleNameEn : $this->middleNameUk;
-                break;
+                return $this->middleNameEn;
         }
     }
 
@@ -100,10 +96,8 @@ abstract class Person extends \common\ext\MongoDb\Document
             default:
             case 'uk':
                 return $this->lastNameUk;
-                break;
             case 'en':
-                return (!empty($this->lastNameEn)) ? $this->lastNameEn : $this->lastNameUk;
-                break;
+                return $this->lastNameEn;
         }
     }
 
