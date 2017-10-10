@@ -66,7 +66,7 @@ class Name extends \web\ext\Widget
             $name = $this->user->email;
         }
 
-        return $name;
+        echo $name;
     }
 
 }
