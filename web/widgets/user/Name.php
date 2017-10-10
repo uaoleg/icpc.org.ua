@@ -49,16 +49,24 @@ class Name extends \web\ext\Widget
         // Render full name
         switch ($this->view) {
             case static::VIEW_FIRST:
-                echo "{$first}";
+                $name = "{$first}";
                 break;
             default:
             case static::VIEW_FIRST_MIDDLE_LAST:
-                echo "{$first} {$middle} {$last}";
+                $name = "{$first} {$middle} {$last}";
                 break;
             case static::VIEW_LAST_FIRST_MIDDLE:
-                echo "{$last} {$first} {$middle}";
+                $name = "{$last} {$first} {$middle}";
                 break;
         }
+        $name = trim($name);
+
+        // Set email in case of empty name
+        if (empty($name)) {
+            $name = $this->user->email;
+        }
+
+        return $name;
     }
 
 }
