@@ -361,9 +361,18 @@ class TeamController extends \web\modules\staff\ext\Controller
 
                 $memberIds = array();
                 foreach ($teamInfo['members'] as $member) {
+
+                    // Filter only students
+                    if (!in_array($member['role'], ['Contestant', 'Reserve'])) {
+                        continue;
+                    }
+
+                    // Get user
                     $user = User::model()->findByAttributes([
                         'email' => mb_strtolower($member['email']),
                     ]);
+
+                    // Push to the list of members
                     if (!is_null($user)) {
                         $memberIds[] = (string)$user->_id;
                     } else {
