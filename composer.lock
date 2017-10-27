@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1b4aa8d1842b623a89b93980bcbdf25c",
-    "content-hash": "17efeff1e1cb3a41465857813dbc028c",
+    "hash": "ad444878d06025b9c49a5e8ca8b2c01d",
+    "content-hash": "9a90785483de7cce268307ebc6a41221",
     "packages": [
         {
             "name": "baibaratsky/yii2-rollbar",
@@ -2038,55 +2038,6 @@
             "time": "2016-07-22 22:26:59"
         },
         {
-            "name": "yiisoft/yii2-mongodb",
-            "version": "2.1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/yiisoft/yii2-mongodb.git",
-                "reference": "ec67acfdfe104dd83055c6e43606cfb80265a588"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-mongodb/zipball/ec67acfdfe104dd83055c6e43606cfb80265a588",
-                "reference": "ec67acfdfe104dd83055c6e43606cfb80265a588",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mongodb": ">=1.0.0",
-                "yiisoft/yii2": "~2.0.5"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "yii\\mongodb\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Paul Klimov",
-                    "email": "klimov.paul@gmail.com"
-                }
-            ],
-            "description": "MongoDB extension for the Yii framework",
-            "keywords": [
-                "GridFS",
-                "active-record",
-                "mongo",
-                "mongodb",
-                "yii2"
-            ],
-            "time": "2017-06-23 09:29:41"
-        },
-        {
             "name": "yiisoft/yii2-swiftmailer",
             "version": "2.1.0",
             "source": {
@@ -2483,37 +2434,40 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.6.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102"
+                "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8e6e04167378abf1ddb4d3522d8755c5fd90d102",
-                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
+                "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "php": "^5.6 || ^7.0"
             },
             "require-dev": {
-                "doctrine/collections": "1.*",
-                "phpunit/phpunit": "~4.1"
+                "doctrine/collections": "^1.0",
+                "doctrine/common": "^2.6",
+                "phpunit/phpunit": "^4.1"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "DeepCopy\\": "src/DeepCopy/"
-                }
+                },
+                "files": [
+                    "src/DeepCopy/deep_copy.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Create deep copies (clones) of your objects",
-            "homepage": "https://github.com/myclabs/DeepCopy",
             "keywords": [
                 "clone",
                 "copy",
@@ -2521,7 +2475,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-04-12 18:52:22"
+            "time": "2017-10-19 19:58:43"
         },
         {
             "name": "phpdocumentor/reflection-common",
