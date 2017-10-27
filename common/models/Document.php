@@ -5,9 +5,16 @@ namespace common\models;
 /**
  * Document
  *
- * @property-read UploadedFile $file
+ * @property string $title
+ * @property string $desc
+ * @property string $type
+ * @property string $fileExt
+ * @property bool   $isPublished
+ * @property string $content
+ * @property string $timeCreated
+ * @property string $timeUpdated
  */
-class Document extends \common\ext\MongoDb\Document
+class Document extends BaseActiveRecord
 {
 
     /**
@@ -17,68 +24,27 @@ class Document extends \common\ext\MongoDb\Document
     const TYPE_REGULATIONS  = 'regulations';
 
     /**
-     * Title
-     * @var string
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public $title;
-
-    /**
-     * Description
-     * @var string
-     */
-    public $desc;
-
-    /**
-     * Type
-     * @var string
-     */
-    public $type;
-
-    /**
-     * File extension
-     * @var string
-     */
-    public $fileExt;
-
-    /**
-     * Whether the doc is published
-     * @var bool
-     */
-    public $isPublished = false;
-
-    /**
-     * Date created
-     * @var int
-     */
-    public $dateCreated;
-
-    /**
-     * Related file
-     * @var UploadedFile
-     */
-    protected $_file;
-
-    /**
-     * Returns related file
-     *
-     * @return UploadedFile
-     */
-    public function getFile()
+    public static function tableName()
     {
-        if ($this->_file === null) {
-            $this->_file = UploadedFile::model()->findByAttributes(array(
-                'uniqueId' => $this->getUniqueId(),
-            ));
-        }
-        return $this->_file;
+        return '{{%document}}';
+    }
+
+    /**
+     * Returns a list of behaviors that this component should behave as
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            $this->behaviorTimestamp(),
+        ];
     }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
@@ -89,7 +55,7 @@ class Document extends \common\ext\MongoDb\Document
             'type'          => \yii::t('app', 'Type'),
             'fileExt'       => \yii::t('app', 'File extension'),
             'isPublished'   => \yii::t('app', 'Is published'),
-            'dateCreated'   => \yii::t('app', 'Registration date'),
+            'timeCreated'   => \yii::t('app', 'Registration date'),
             'const.type' => array(
                 static::TYPE_GUIDANCE           => \yii::t('app', 'Guidance'),
                 static::TYPE_REGULATIONS        => \yii::t('app', 'Regulations'),
@@ -99,77 +65,22 @@ class Document extends \common\ext\MongoDb\Document
 
     /**
      * Define attribute rules
-     *
      * @return array
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('title, type, dateCreated, fileExt', 'required'),
-            array('title', 'length', 'max' => 300),
-            array('desc', 'length', 'max' => 1000),
-        ));
-    }
+        return array_merge(parent::rules(), [
+            [['title', 'type', 'fileExt'], 'required'],
 
-	/**
-	 * This returns the name of the collection for this class
-     *
-     * @return string
-	 */
-	public function getCollectionName()
-	{
-		return 'document';
-	}
+            ['title', 'string', 'max' => 300],
 
-    /**
-     * List of collection indexes
-     *
-     * @return array
-     */
-    public function indexes()
-    {
-        return array_merge(parent::indexes(), array(
-            'isPublished_type_dateCreated' => array(
-                'key' => array(
-                    'isPublished'   => \EMongoCriteria::SORT_ASC,
-                    'type'          => \EMongoCriteria::SORT_ASC,
-                    'dateCreated'   => \EMongoCriteria::SORT_DESC,
-                ),
-            ),
-        ));
-    }
+            ['desc', 'string', 'max' => 1000],
 
-    /**
-     * Before validate action
-     *
-     * @return bool
-     */
-    protected function beforeValidate()
-    {
-        if (!parent::beforeValidate()) return false;
+            ['isPublished', 'boolean'],
+            ['isPublished', 'default', 'value' => false],
 
-        // Convert to bool
-        $this->isPublished = (bool)$this->isPublished;
-
-        // Set created date
-        if ($this->dateCreated == null) {
-            $this->dateCreated = time();
-        }
-
-        return true;
-    }
-
-    /**
-     * After delete action
-     */
-    protected function afterDelete()
-    {
-        // Delete uploaded file
-        $criteria = new \EMongoCriteria();
-        $criteria->addCond('uniqueId', '==', $this->getUniqueId());
-        \common\models\UploadedFile::model()->deleteAll($criteria);
-
-        parent::afterDelete();
+            ['content', 'safe'],
+        ]);
     }
 
 }

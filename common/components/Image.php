@@ -2,7 +2,7 @@
 
 namespace common\components;
 
-class Image extends \CApplicationComponent
+class Image extends \yii\base\Component
 {
 
     /**

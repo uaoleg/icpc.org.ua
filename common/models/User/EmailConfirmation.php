@@ -2,27 +2,28 @@
 
 namespace common\models\User;
 
-class EmailConfirmation extends \common\ext\MongoDb\Document
+use \common\models\BaseActiveRecord;
+
+/**
+ * Email confirmation
+ *
+ * @property int    $userId
+ * @property int    $timeConfirmed
+ */
+class EmailConfirmation extends BaseActiveRecord
 {
 
     /**
-     * User ID
-     * @var string
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public $userId;
-
-    /**
-     * Date when email was confirmed
-     * @var \MongoDate
-     */
-    public $dateConfirmed = false;
+    public static function tableName()
+    {
+        return '{{%user_email_confirmation}}';
+    }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
@@ -39,38 +40,12 @@ class EmailConfirmation extends \common\ext\MongoDb\Document
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('userId', 'required'),
-            array('userId', 'unique'),
-        ));
-    }
+        return array_merge(parent::rules(), [
+            ['userId', 'required'],
+            ['userId', 'unique'],
 
-    /**
-     * This returns the name of the collection for this class
-     *
-     * @return string
-     */
-    public function getCollectionName()
-    {
-        return 'user.emailConfirmation';
-    }
-
-    /**
-     * Before validate action
-     *
-     * @return boolean
-     */
-    protected function beforeValidate()
-    {
-        // MongoId to string
-        $this->userId = (string)$this->userId;
-
-        // Save date when email was confirmed
-        if (empty($this->dateConfirmed)) {
-            $this->dateConfirmed = new \MongoDate();
-        }
-
-        return parent::beforeValidate();
+            ['timeConfirmed', 'default', 'value' => time()],
+        ]);
     }
 
 }

@@ -1,1 +1,0 @@
-<?=date('Y-m-d H:i', $this->news->dateCreated)?>

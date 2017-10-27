@@ -1,1 +1,0 @@
-<?=\yii::t('app', 'To your question here {link} a new answer was posted!', array('{link}' => $link))?>

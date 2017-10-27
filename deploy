@@ -1,0 +1,8 @@
+set -v
+git pull
+composer install
+php yii db/dump-before-migrate
+php yii migrate --interactive=0
+php yii rbac/init
+php yii cache/flush-all
+grunt deploy

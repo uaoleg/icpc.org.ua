@@ -2,45 +2,43 @@
 
 namespace common\models\News;
 
-class PublishLog extends \common\ext\MongoDb\Document
+use \common\models\BaseActiveRecord;
+
+/**
+ * New publishing log
+ *
+ * @property int    $newsId
+ * @property int    $revisionId
+ * @property int    $userId
+ * @property bool   $isPublished
+ * @property int    $timeCreated
+ * @property int    $timeUpdated
+ */
+class PublishLog extends BaseActiveRecord
 {
 
     /**
-     * ID of the news
-     * @var string
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public $newsId;
+    public static function tableName()
+    {
+        return '{{%news_publish_log}}';
+    }
 
     /**
-     * ID of the revision which status was changed
-     * @var string
+     * Returns a list of behaviors that this component should behave as
+     * @return array
      */
-    public $revisionId;
-
-    /**
-     * ID of the user who made this change
-     * @var string
-     */
-    public $userId;
-
-    /**
-     * Status in which news was changed to
-     * @var bool
-     */
-    public $isPublished;
-
-    /**
-     * Timestamp when this change was made
-     * @var int
-     */
-    public $timestamp;
+    public function behaviors()
+    {
+        return [
+            $this->behaviorTimestamp(),
+        ];
+    }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
@@ -50,7 +48,6 @@ class PublishLog extends \common\ext\MongoDb\Document
             'revisionId'    => \yii::t('app', 'Revision ID'),
             'userId'        => \yii::t('app', 'ID of the user who made this change'),
             'isPublished'   => \yii::t('app', 'New status'),
-            'timestamp'     => \yii::t('app', 'Timestamp of the change'),
         ));
     }
 
@@ -61,61 +58,10 @@ class PublishLog extends \common\ext\MongoDb\Document
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('newsId, revisionId, userId, timestamp', 'required')
-        ));
+        return array_merge(parent::rules(), [
+            [['newsId', 'revisionId', 'userId'], 'required'],
+            ['isPublished', 'boolean'],
+        ]);
     }
 
-    /**
-     * This returns the name of the collection for this class
-     *
-     * @return string
-     */
-    public function getCollectionName()
-    {
-        return 'news.publishLog';
-    }
-
-    /**
-     * List of collection indexes
-     *
-     * @return array
-     */
-    public function indexes()
-    {
-        return array_merge(parent::indexes(), array(
-            'newsId_timestamp' => array(
-                'key' => array(
-                    'newsId'    => \EMongoCriteria::SORT_ASC,
-                    'timestamp' => \EMongoCriteria::SORT_DESC,
-                ),
-            ),
-        ));
-    }
-
-    /**
-     * Before validate action
-     * @return bool
-     */
-    protected function beforeValidate()
-    {
-        if (!parent::beforeValidate()) {
-            return false;
-        }
-
-        // Set timestamp
-        if (empty($this->timestamp)) {
-            $this->timestamp = time();
-        }
-
-        // Type casting
-        $this->setAttributes(array(
-            'newsId'        => (string)$this->newsId,
-            'revisionId'    => (string)$this->revisionId,
-            'userId'        => (string)$this->userId,
-            'isPublished'   => (bool)$this->isPublished,
-        ), false);
-
-        return true;
-    }
 }

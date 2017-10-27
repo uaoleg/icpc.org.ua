@@ -4,18 +4,17 @@ namespace common\models\Team\Validator;
 
 use \common\models\Team;
 
-class School extends \common\ext\MongoDb\Validator\AbstractValidator
+class School extends \yii\validators\Validator
 {
 
     /**
      * Validate assigned school
-     *
      * @param Team $team
      * @param string $attribute
      */
 	public function validateAttribute($team, $attribute)
 	{
-        if (!$team->attributeHasChanged($attribute)) {
+        if (!$team->isAttributeChanged($attribute)) {
             return;
         }
 

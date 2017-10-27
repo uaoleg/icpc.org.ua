@@ -2,7 +2,7 @@
 
 namespace common\components;
 
-class Cli extends \CApplicationComponent
+class Cli extends \yii\base\Component
 {
 
     /**

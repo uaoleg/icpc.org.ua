@@ -6,7 +6,7 @@ use \Sunra\PhpSimple\HtmlDomParser;
 use \anlutro\cURL\cURL as Curl;
 use \anlutro\cURL\Request as CurlRequest;
 
-class Baylor extends \CApplicationComponent
+class Baylor extends \yii\base\Component
 {
     /**
      * @var Curl
@@ -156,7 +156,7 @@ class Baylor extends \CApplicationComponent
      * Method that handles get request and parses data for team import
      * @param string $team_id
      * @return array|bool
-     * @throws \CException
+     * @throws \yii\base\Exception
      */
     protected function _parseTeam($team_id)
     {
@@ -181,7 +181,7 @@ class Baylor extends \CApplicationComponent
             $html = $parser->str_get_html($response->body);
             $header = $html->find('#header', 0);
 
-            if (!is_null($header)) {
+            if ($header !== null) {
 
                 $status = $html->find('[id="teamTabs:teamForm:statusRO"] div.statusModification span.statusACCEPTED', 0);
                 $team['status'] = !empty($status) ? \web\modules\staff\controllers\TeamController::BAYLOR_STATUS_ACCEPTED : false;
@@ -252,7 +252,7 @@ class Baylor extends \CApplicationComponent
     /**
      * Method that handles get request and parses data
      * @return array|bool
-     * @throws \CException
+     * @throws \yii\base\Exception
      */
     protected function _parse()
     {
@@ -267,7 +267,7 @@ class Baylor extends \CApplicationComponent
         $html = $parser->str_get_html($response->body);
 
         $header = $html->find('#header', 0);
-        if (!is_null($header)) {
+        if ($header !== null) {
             $baylorInfo = array();
             $info = array(
                 'firstName' => '[id="tabs:piForm:ropifirstName"]',
@@ -282,7 +282,7 @@ class Baylor extends \CApplicationComponent
             );
             foreach ($info as $key => $value) {
                 $datum = $html->find($value, 0);
-                if (!is_null($datum)) {
+                if ($datum !== null) {
                     $result = trim($datum->plaintext);
                     if ($key === 'birthday') {
                         $unixBirthday = strtotime(trim($datum->plaintext));

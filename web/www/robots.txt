@@ -1,8 +1,0 @@
-User-agent: *
-Crawl-delay: 10
-
-# Other
-Disallow: /js/
-Disallow: /lib/
-Disallow: /min/
-Disallow: /themes/

@@ -7,13 +7,24 @@ use \common\models\Team;
 /**
  * Team Result
  *
- * @property-read string $schoolName
- * @property-read string $coachName
- * @property-read bool   $phaseIsCompleted
- * @property-read string $geoType
- * @property-read Team   $team
+ * @property int    $teamId
+ * @property int    $year
+ * @property int    $phase
+ * @property string $geo
+ * @property int    $place
+ * @property string $placeText
+ * @property int    $prizePlace
+ * @property int    $total
+ * @property int    $penalty
+ *
+ * @property-read string        $schoolName
+ * @property-read string        $coachName
+ * @property-read bool          $phaseIsCompleted
+ * @property-read string        $geoType
+ * @property-read Result\Task[] $tasks
+ * @property-read Team          $team
  */
-class Result extends \common\ext\MongoDb\Document
+class Result extends BaseActiveRecord
 {
 
     /**
@@ -37,149 +48,64 @@ class Result extends \common\ext\MongoDb\Document
     const TASKS_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
-     * Year of the result
-     * @var integer
-     */
-    public $year;
-
-    /**
-     * Phase number
-     * @var integer
-     */
-    public $phase;
-
-    /**
-     * Name of the state, region or country (phase-related)
-     * @var string
-     */
-    public $geo;
-
-    /**
-     * Absolute place
-     * @var integer
-     */
-    public $place;
-
-    /**
-     * String representation of place (e.g. "1", "37-38", etc.)
-     * @var string
-     */
-    public $placeText;
-
-    /**
-     * Prize place (is set manually)
-     * @var integer
-     */
-    public $prizePlace = self::PRIZE_PLACE_NO;
-
-    /**
-     * ID of the team
-     * @var string
-     */
-    public $teamId;
-
-    /**
-     * Name of a team
-     * @var string
-     * @see beforeValidate()
-     */
-    public $teamName;
-
-    /**
-     * School ID
-     * @var string
-     * @see beforeValidate()
-     */
-    public $schoolId;
-
-    /**
-     * School name of the result's team in ukrainian
-     * @var string
-     * @see beforeValidate()
-     */
-    public $schoolNameUk;
-
-    /**
-     * School name of the result's team in english
-     * @var string
-     * @see beforeValidate()
-     */
-    public $schoolNameEn;
-
-    /**
-     * Type of school
-     * @var string
-     */
-    public $schoolType;
-
-    /**
-     * Coach ID
-     * @var string
-     * @see beforeValidate()
-     */
-    public $coachId;
-
-    /**
-     * Coach name of the result's team in ukrainian
-     * @var string
-     * @see beforeValidate()
-     */
-    public $coachNameUk;
-
-    /**
-     * Coach name of the result's team in english
-     * @var string
-     * @see beforeValidate()
-     */
-    public $coachNameEn;
-
-    /**
-     * Array of tasks => number of tries
-     * @var array
-     */
-    public $tasksTries = array();
-
-    /**
-     * Array of tasks => time spent
-     * @var array
-     */
-    public $tasksTime = array();
-
-    /**
-     * Total points
-     * @var integer
-     */
-    public $total;
-
-    /**
-     * Penalty points
-     * @var integer
-     */
-    public $penalty;
-
-    /**
-     * Team object
-     * @var Team
-     */
-    protected $_team;
-
-    /**
      * Is phase completed
      * @var bool
      */
     protected $_phaseIsCompleted;
 
     /**
-     * Returns the object of the team
-     *
-     * @return Team
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public function getTeam()
+    public static function tableName()
     {
-        if (($this->_team === null) && (!empty($this->teamId))) {
-            $this->_team = Team::model()->findByPk(new \MongoId($this->teamId));
-        }
-        return $this->_team;
+        return '{{%result}}';
+    }
+
+    /**
+     * Returns the attribute labels.
+     * @return array attribute labels (name => label)
+     */
+    public function attributeLabels()
+    {
+        return array_merge(parent::attributeLabels(), array(
+            'year'          => \yii::t('app', 'Year of the result'),
+            'phase'         => \yii::t('app', 'Number of stage'),
+            'geo'           => \yii::t('app', 'Geographical position'),
+            'place'         => \yii::t('app', 'Absolute Place'),
+            'placeText'     => \yii::t('app', 'Absolute Place'),
+            'prizePlace'    => \yii::t('app', 'Prize Place'),
+            'teamId'        => \yii::t('app', 'ID of the team'),
+            'schoolNameUk'  => \yii::t('app', 'School name in ukrainian'),
+            'schoolNameEn'  => \yii::t('app', 'School name in english'),
+            'schoolType'    => \yii::t('app', 'School type'),
+            'coachId'       => \yii::t('app', 'Coach ID'),
+            'coachNameUk'   => \yii::t('app', 'Coach name in ukrainian'),
+            'coachNameEn'   => \yii::t('app', 'Coach name in english'),
+            'total'         => \yii::t('app', 'Total points'),
+            'penalty'       => \yii::t('app', 'Penalty points'),
+        ));
+    }
+
+    /**
+     * Define attribute rules
+     * @return array
+     */
+    public function rules()
+    {
+        return array_merge(parent::rules(), [
+
+            ['year', 'default', 'value' => date('Y')],
+
+            ['place', 'required'],
+            ['place', 'number', 'min' => 1],
+
+            ['prizePlace', 'number', 'min' => static::PRIZE_PLACE_1, 'max' => static::PRIZE_PLACE_NO],
+            ['prizePlace', 'default', 'value' => static::PRIZE_PLACE_NO],
+
+            ['phase, geo', 'required'],
+
+        ]);
     }
 
     /**
@@ -220,20 +146,17 @@ class Result extends \common\ext\MongoDb\Document
     }
 
     /**
-     * Returns school name in appropriate language
-     *
+     * Returns school full name in appropriate language
      * @return string
      */
     public function getSchoolName()
     {
-        switch ($this->useLanguage) {
+        switch (static::$useLanguage) {
             default:
             case 'uk':
-                return $this->schoolNameUk;
-                break;
+                return $this->school->fullNameUk;
             case 'en':
-                return (!empty($this->schoolNameEn)) ? $this->schoolNameEn : $this->schoolNameUk;
-                break;
+                return (!empty($this->school->fullNameEn)) ? $this->school->fullNameEn : $this->school->fullNameUk;
         }
     }
 
@@ -244,151 +167,37 @@ class Result extends \common\ext\MongoDb\Document
      */
     public function getCoachName()
     {
-        switch ($this->useLanguage) {
+        switch (static::$useLanguage) {
             default:
             case 'uk':
-                return $this->coachNameUk;
+                $lang = 'uk';
                 break;
             case 'en':
-                return (!empty($this->coachNameEn)) ? $this->coachNameEn : $this->coachNameUk;
+                $lang = (!empty($this->coachNameEn)) ? 'en' : 'uk';
                 break;
         }
+        return \frontend\widgets\user\Name::widget(['user' => $this->coach, 'lang' => $lang]);
     }
 
     /**
-     * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
-     * @return array attribute labels (name => label)
+     * Returns related tasks
+     * @return \yii\db\ActiveQuery
      */
-    public function attributeLabels()
+    public function getTasks()
     {
-        return array_merge(parent::attributeLabels(), array(
-            'year'          => \yii::t('app', 'Year of the result'),
-            'phase'         => \yii::t('app', 'Number of stage'),
-            'geo'           => \yii::t('app', 'Geographical position'),
-            'place'         => \yii::t('app', 'Absolute Place'),
-            'placeText'     => \yii::t('app', 'Absolute Place'),
-            'prizePlace'    => \yii::t('app', 'Prize Place'),
-            'teamId'        => \yii::t('app', 'ID of the team'),
-            'teamName'      => \yii::t('app', 'Name of the team'),
-            'schoolId'      => \yii::t('app', 'School ID'),
-            'schoolNameUk'  => \yii::t('app', 'School name in ukrainian'),
-            'schoolNameEn'  => \yii::t('app', 'School name in english'),
-            'schoolType'    => \yii::t('app', 'School type'),
-            'coachId'       => \yii::t('app', 'Coach ID'),
-            'coachNameUk'   => \yii::t('app', 'Coach name in ukrainian'),
-            'coachNameEn'   => \yii::t('app', 'Coach name in english'),
-            'tasksTries'    => \yii::t('app', 'Array of tasks => tries made'),
-            'tasksTime'     => \yii::t('app', 'Array of tasks => time spent'),
-            'total'         => \yii::t('app', 'Total points'),
-            'penalty'       => \yii::t('app', 'Penalty points'),
-        ));
+        return $this
+            ->hasMany(Result\Task::class, ['resultId' => 'id'])
+            ->orderBy('letter')
+        ;
     }
 
     /**
-     * Define attribute rules
-     *
-     * @return array
+     * Returns the object of the team
+     * @return \yii\db\ActiveQuery
      */
-    public function rules()
+    public function getTeam()
     {
-        return array_merge(parent::rules(), array(
-            array('year, phase, geo, place, teamName, tasksTries, tasksTime', 'required'),
-            array('place', 'numerical', 'min' => 1),
-            array('prizePlace', 'numerical', 'min' => static::PRIZE_PLACE_1, 'max' => static::PRIZE_PLACE_NO),
-        ));
-    }
-
-    /**
-     * This returns the name of the collection for this class
-     *
-     * @return string
-     */
-    public function getCollectionName()
-    {
-        return 'results';
-    }
-
-    /**
-     * List of collection indexes
-     *
-     * @return array
-     */
-    public function indexes()
-    {
-        return array_merge(parent::indexes(), array(
-            'year_phase_teamName' => array(
-                'key' => array(
-                    'year'     => \EMongoCriteria::SORT_ASC,
-                    'phase'    => \EMongoCriteria::SORT_ASC,
-                    'teamName' => \EMongoCriteria::SORT_ASC,
-                ),
-                'unique' => true,
-            ),
-            'coachId' => array(
-                'key' => array(
-                    'coachId' => \EMongoCriteria::SORT_ASC,
-                )
-            ),
-            'schoolId' => array(
-                'key' => array(
-                    'schoolId' => \EMongoCriteria::SORT_ASC,
-                )
-            ),
-            'teamId' => array(
-                'key' => array(
-                    'teamId' => \EMongoCriteria::SORT_ASC,
-                )
-            ),
-        ));
-    }
-
-    /**
-     * Before validate action
-     *
-     * @return bool
-     */
-    protected function beforeValidate()
-    {
-        if (!parent::beforeValidate()) {
-            return false;
-        }
-
-        // Set year
-        if (empty($this->year)) {
-            $this->year = (int)date('Y');
-        }
-
-        // Convert to string
-        $this->teamId = (isset($this->teamId)) ? (string)$this->teamId : null;
-
-        // Save school and coach info if team exists
-        if (isset($this->teamId)) {
-            $this->setAttributes(array(
-                'schoolId'      => (string)$this->team->school->_id,
-                'schoolNameUk'  => $this->team->school->fullNameUk,
-                'schoolNameEn'  => $this->team->school->fullNameEn,
-                'schoolType'    => $this->team->school->type,
-                'coachId'       => (string)$this->team->coach->_id,
-                'coachNameUk'   => \web\widgets\user\Name::create(array('user' => $this->team->coach, 'lang' => 'uk'), true),
-                'coachNameEn'   => \web\widgets\user\Name::create(array('user' => $this->team->coach, 'lang' => 'en'), true),
-            ), false);
-        }
-
-        // Convert to integer
-        $this->setAttributes(array(
-            'year'          => (int)$this->year,
-            'place'         => (int)$this->place,
-            'prizePlace'    => (int)$this->prizePlace,
-            'phase'         => (int)$this->phase,
-            'total'         => (int)$this->total,
-            'penalty'       => (int)$this->penalty,
-        ), false);
-
-        return true;
+        return $this->hasOne(Team::class, ['id' => 'teamId']);
     }
 
 }

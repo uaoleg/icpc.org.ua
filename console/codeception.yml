@@ -1,0 +1,21 @@
+namespace: console\tests
+actor: Tester
+paths:
+    tests: tests
+    log: tests/_output
+    data: tests/_data
+    helpers: tests/_support
+settings:
+    bootstrap: _bootstrap.php
+modules:
+    config:
+        Db:
+            dsn: 'mysql:host=localhost;dbname=tourcrm_tests'
+            user: 'codeception'
+            password: 'fortesting'
+            dump: 'tests/_data/dump.sql'
+            populate: true
+            cleanup: false
+            reconnect: false
+        Yii2:
+            configFile: 'config/test.php'

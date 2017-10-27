@@ -1,30 +1,35 @@
 <?php
-
-// Set deafault time zone
-date_default_timezone_set('UTC');
-
-return array(
-
-    'basePath'  => __DIR__ . DIRECTORY_SEPARATOR . '..',
-
-    'behaviors'=>array(
-        'templater' => '\console\ext\ConsoleTemplater',
-    ),
-
-    'components' => array(
-
-        'urlManager' => array(
-            'baseUrl' => '',
-        ),
-
-        'widgetFactory' => array(
-            'class' => '\web\ext\WidgetFactory',
-        ),
-
-    ),
-
-    // Application-level parameters that can be accessed
-    // using Yii::app()->params['paramName']
-    'params' => require(dirname(__FILE__).'/params.php'),
-
+$params = array_merge(
+    require(__DIR__ . '/../../common/config/params.php'),
+    require(__DIR__ . '/../../common/config/params-local.php'),
+    require(__DIR__ . '/params.php'),
+    require(__DIR__ . '/params-local.php')
 );
+
+return [
+    'id' => 'app-console',
+    'basePath' => dirname(__DIR__),
+    'bootstrap' => ['log'],
+    'controllerNamespace' => 'console\controllers',
+    'components' => [
+        'log' => [
+            'targets' => [
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['error', 'warning'],
+                ],
+            ],
+        ],
+        'mongodb' => [
+            'class' => \yii\mongodb\Connection::class,
+            'dsn' => 'mongodb://oleg:K3XgLjeJHaeShfx9@195.24.153.136:27017/icpc',
+        ],
+        'urlManager' => [
+            'baseUrl'   => '/',
+            'scriptUrl' => '/',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+        ],
+    ],
+    'params' => $params,
+];

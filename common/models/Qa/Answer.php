@@ -2,85 +2,46 @@
 
 namespace common\models\Qa;
 
+use \common\models\BaseActiveRecord;
 use \common\models\User;
 
 /**
  * Answer
  *
+ * @property int    $userId
+ * @property int    $questionId
+ * @property string $content
+ * @property int    $timeCreated
+ * @property int    $timeUpdated
+ *
  * @property-read User      $user
  * @property-read Question  $question
  */
-class Answer extends \common\ext\MongoDb\Document
+class Answer extends BaseActiveRecord
 {
 
     /**
-     * User ID
-     * @var string
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public $userId;
-
-    /**
-     * Question ID
-     * @var string
-     */
-    public $questionId;
-
-    /**
-     * Content
-     * @var string
-     */
-    public $content;
-
-    /**
-     * Date created
-     * @var int
-     */
-    public $dateCreated;
-
-    /**
-     * Answer author
-     * @var User
-     */
-    protected $_user;
-
-    /**
-     * Related question
-     * @var Question
-     */
-    protected $_question;
-
-    /**
-     * Returns answer author
-     *
-     * @return Question
-     */
-    public function getUser()
+    public static function tableName()
     {
-        if ($this->_user === null) {
-            $this->_user = User::model()->findByPk(new \MongoId($this->userId));
-        }
-        return $this->_user;
+        return '{{%qa_answer}}';
     }
 
     /**
-     * Returns related question
-     *
-     * @return Question
+     * Returns a list of behaviors that this component should behave as
+     * @return array
      */
-    public function getQuestion()
+    public function behaviors()
     {
-        if ($this->_question === null) {
-            $this->_question = Question::model()->findByPk(new \MongoId($this->questionId));
-        }
-        return $this->_question;
+        return [
+            $this->behaviorTimestamp(),
+        ];
     }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
@@ -89,8 +50,26 @@ class Answer extends \common\ext\MongoDb\Document
             'userId'        => \yii::t('app', 'User ID'),
             'questionId'    => \yii::t('app', 'Question ID'),
             'content'       => \yii::t('app', 'Content'),
-            'dateCreated'   => \yii::t('app', 'Registration date'),
+            'timeCreated'   => \yii::t('app', 'Registration date'),
         ));
+    }
+
+    /**
+     * Returns answer author
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'userId']);
+    }
+
+    /**
+     * Returns related question
+     * @return \yii\db\ActiveQuery
+     */
+    public function getQuestion()
+    {
+        return $this->hasOne(Question::class, ['id' => 'questionId']);
     }
 
     /**
@@ -100,89 +79,26 @@ class Answer extends \common\ext\MongoDb\Document
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('userId, questionId, content, dateCreated', 'required'),
-            array('content', 'length', 'max' => 5000),
-        ));
-    }
-
-	/**
-	 * This returns the name of the collection for this class
-     *
-     * @return string
-	 */
-	public function getCollectionName()
-	{
-		return 'qa.answer';
-	}
-
-    /**
-     * List of collection indexes
-     *
-     * @return array
-     */
-    public function indexes()
-    {
-        return array_merge(parent::indexes(), array(
-            'userId_dateCreated' => array(
-                'key' => array(
-                    'userId'        => \EMongoCriteria::SORT_ASC,
-                    'dateCreated'   => \EMongoCriteria::SORT_DESC,
-                ),
-            ),
-            'questionId_dateCreated' => array(
-                'key' => array(
-                    'questionId'    => \EMongoCriteria::SORT_ASC,
-                    'dateCreated'   => \EMongoCriteria::SORT_DESC,
-                ),
-            ),
-        ));
-    }
-
-    /**
-     * Before validate action
-     *
-     * @return bool
-     */
-    protected function beforeValidate()
-    {
-        if (!parent::beforeValidate()) {
-            return false;
-        }
-
-        // Convert to string
-        $this->userId = (string)$this->userId;
-        $this->questionId = (string)$this->questionId;
-
-        // Set created date
-        if ($this->dateCreated == null) {
-            $this->dateCreated = time();
-        }
-
-        return true;
+        return array_merge(parent::rules(), [
+            [['userId', 'questionId', 'content'], 'required'],
+            ['content', 'string', 'max' => 5000],
+        ]);
     }
 
     /**
      * After save action
+     * @param bool $insert
+     * @param array $changedAttributes
      */
-    protected function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
-        if ($this->_isFirstTimeSaved) {
+        if ($insert) {
 
             // Send an email notification about new answer
-            \yii::app()->cli->runCommand('email', 'newAnswerNotify', array(
-                'answerId' => (string)$this->_id,
-            ), array(), true);
-
-            // Recount answers for the related question
-            $this->question->answerCount = $this->countByAttributes(array(
-                'questionId' => $this->questionId,
-            ));
-            $this->question->save();
-            
+            \yii::$app->cli->runCommand('email', 'newAnswerNotify', ['answerId' => $this->id], [], true);
         }
 
-        parent::afterSave();
+        parent::afterSave($insert, $changedAttributes);
     }
 
 }

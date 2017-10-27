@@ -5,13 +5,23 @@ namespace common\models;
 /**
  * School (university, academy, institute)
  *
+ * @property string $fullNameUk
+ * @property string $fullNameEn
+ * @property string $shortNameUk
+ * @property string $shortNameEn
+ * @property string $region
+ * @property string $state
+ * @property string $type
+ * @property int    $timeCreated
+ * @property int    $timeUpdated
+ *
  * @property-read string $country
  * @property-read string $countryLabel
  * @property-read string $regionLabel
  * @property-read string $stateLabel
- * @property-read string $schoolName
+ * @property-read string $fullName
  */
-class School extends \common\ext\MongoDb\Document
+class School extends BaseActiveRecord
 {
 
     // Scenarios
@@ -30,62 +40,96 @@ class School extends \common\ext\MongoDb\Document
     const TYPE_COMPANY          = 'company';
 
     /**
-     * Full university name in ukranian
-     * @var string
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public $fullNameUk;
+    public static function tableName()
+    {
+        return '{{%school}}';
+    }
 
     /**
-     * Full university name in english
-     * @var string
+     * Returns a list of behaviors that this component should behave as
+     * @return array
      */
-    public $fullNameEn;
+    public function behaviors()
+    {
+        return [
+            $this->behaviorTimestamp(),
+        ];
+    }
 
     /**
-     * Short university name in ukrainian
-     * @var string
+     * Returns the attribute labels.
+     * @return array attribute labels (name => label)
      */
-    public $shortNameUk;
+    public function attributeLabels()
+    {
+        return array_merge(parent::attributeLabels(), array(
+            'fullNameUk'    => \yii::t('app', 'Full university name in ukrainian'),
+            'fullNameEn'    => \yii::t('app', 'Full university name in english'),
+            'shortNameUk'   => \yii::t('app', 'Short university name in ukrainian'),
+            'shortNameEn'   => \yii::t('app', 'Short university name in english'),
+            'region'        => \yii::t('app', 'Region'),
+            'state'         => \yii::t('app', 'State'),
+            'type'          => \yii::t('app', 'Type'),
+        ));
+    }
 
     /**
-     * Short university name in english
-     * @var string
+     * Returns the constant labels
+     * @return string[]
      */
-    public $shortNameEn;
+    public static function constantLabels()
+    {
+        return [
+            static::TYPE_COMPANY            => \yii::t('app', 'Company'),
+            static::TYPE_HIGH               => \yii::t('app', 'High'),
+            static::TYPE_HIGH_CLASSIC       => \yii::t('app', 'High classic'),
+            static::TYPE_HIGH_ECONOMIC      => \yii::t('app', 'High economic'),
+            static::TYPE_HIGH_NATURAL       => \yii::t('app', 'High natural'),
+            static::TYPE_HIGH_PEDAGOGICAL   => \yii::t('app', 'High pedagogical'),
+            static::TYPE_HIGH_TECHNICAL     => \yii::t('app', 'High technical'),
+            static::TYPE_HIGH_LEVEL1        => \yii::t('app', 'High level 1 accreditation'),
+            static::TYPE_HIGH_LEVEL2        => \yii::t('app', 'High level 2 accreditation'),
+            static::TYPE_MIDDLE             => \yii::t('app', 'Middle school'),
+        ];
+    }
 
     /**
-     * Organization type
-     * @var string
+     * Define attribute rules
+     * @return array
      */
-    public $type;
+    public function rules()
+    {
+        return array_merge(parent::rules(), [
 
-    /**
-     * State
-     * @var string
-     */
-    public $state;
+            [['fullNameUk', 'state', 'region'], 'required'],
+            [['fullNameUk', 'fullNameEn', 'shortNameUk', 'shortNameEn'], 'unique'],
+            [['shortNameUk', 'fullNameEn', 'shortNameEn'], 'required', 'on' => static::SC_ASSIGN_TO_TEAM],
 
-    /**
-     * Region
-     * @var string
-     */
-    public $region;
+            ['type', 'in', 'range' => $this->getConstants('TYPE_')],
+
+            ['region', 'in', 'range' => Geo\Region::getConstants('NAME_')],
+
+            ['state', 'in', 'range' => Geo\State::getConstants('NAME_')],
+
+        ]);
+    }
 
     /**
      * Returns school name in appropriate language
      *
      * @return string
      */
-    public function getSchoolName()
+    public function getFullName()
     {
-        switch ($this->useLanguage) {
+        switch (static::$useLanguage) {
             default:
             case 'uk':
                 return $this->fullNameUk;
-                break;
             case 'en':
                 return (!empty($this->fullNameEn)) ? $this->fullNameEn : $this->fullNameUk;
-                break;
         }
     }
 
@@ -116,7 +160,7 @@ class School extends \common\ext\MongoDb\Document
      */
     public function getRegionLabel()
     {
-        return Geo\Region::model()->getAttributeLabel($this->region, 'name');
+        return Geo\Region::getConstantLabel($this->region);
     }
 
     /**
@@ -126,131 +170,7 @@ class School extends \common\ext\MongoDb\Document
      */
     public function getStateLabel()
     {
-        return Geo\State::model()->getAttributeLabel($this->state, 'name');
+        return Geo\State::getConstantLabel($this->state);
     }
-
-    /**
-     * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
-     * @return array attribute labels (name => label)
-     */
-    public function attributeLabels()
-    {
-        return array_merge(parent::attributeLabels(), array(
-            'fullNameUk'    => \yii::t('app', 'Full university name in ukrainian'),
-            'fullNameEn'    => \yii::t('app', 'Full university name in english'),
-            'shortNameUk'   => \yii::t('app', 'Short university name in ukrainian'),
-            'shortNameEn'   => \yii::t('app', 'Short university name in english'),
-            'type'          => \yii::t('app', 'Type'),
-            'state'         => \yii::t('app', 'State'),
-            'region'        => \yii::t('app', 'Region'),
-            'const.type' => array(
-                static::TYPE_COMPANY            => \yii::t('app', 'Company'),
-                static::TYPE_HIGH               => \yii::t('app', 'High'),
-                static::TYPE_HIGH_CLASSIC       => \yii::t('app', 'High classic'),
-                static::TYPE_HIGH_ECONOMIC      => \yii::t('app', 'High economic'),
-                static::TYPE_HIGH_NATURAL       => \yii::t('app', 'High natural'),
-                static::TYPE_HIGH_PEDAGOGICAL   => \yii::t('app', 'High pedagogical'),
-                static::TYPE_HIGH_TECHNICAL     => \yii::t('app', 'High technical'),
-                static::TYPE_HIGH_LEVEL1        => \yii::t('app', 'High level 1 accreditation'),
-                static::TYPE_HIGH_LEVEL2        => \yii::t('app', 'High level 2 accreditation'),
-                static::TYPE_MIDDLE             => \yii::t('app', 'Middle school'),
-            ),
-        ));
-    }
-
-    /**
-     * Define attribute rules
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return array_merge(parent::rules(), array(
-            array('fullNameUk, state, region', 'required'),
-            array('fullNameUk, fullNameEn, shortNameUk, shortNameEn', 'unique'),
-            array('shortNameUk, fullNameEn, shortNameEn', 'required', 'on' => static::SC_ASSIGN_TO_TEAM),
-            array('type', School\Validator\Type::className()),
-            array('state', School\Validator\State::className()),
-            array('region', School\Validator\Region::className()),
-        ));
-    }
-
-    /**
-     * This returns the name of the collection for this class
-     *
-     * @return string
-     */
-    public function getCollectionName()
-    {
-        return 'school';
-    }
-
-    /**
-     * List of collection indexes
-     *
-     * @return array
-     */
-    public function indexes()
-    {
-        return array_merge(parent::indexes(), array(
-            'fullNameUk' => array(
-                'key' => array(
-                    'fullNameUk' => \EMongoCriteria::SORT_ASC,
-                ),
-                'unique' => true,
-            ),
-            'fullNameEn' => array(
-                'key' => array(
-                    'fullNameEn' => \EMongoCriteria::SORT_ASC,
-                ),
-            ),
-            'shortNameUk' => array(
-                'key' => array(
-                    'shortNameUk' => \EMongoCriteria::SORT_ASC,
-                ),
-            ),
-            'shortNameEn' => array(
-                'key' => array(
-                    'shortNameEn' => \EMongoCriteria::SORT_ASC,
-                ),
-            ),
-        ));
-    }
-
-    /**
-     * After save action
-     */
-    protected function afterSave()
-    {
-        // If any name is changed than update Result and Team
-        foreach (array('fullNameUk', 'fullNameEn') as $attr) {
-            if ($this->attributeHasChanged($attr)) {
-                $lang = substr($attr, -2);
-                $modifier = new \EMongoModifier();
-                $modifier->addModifier("schoolName{$lang}", 'set', $this->$attr);
-                $criteria = new \EMongoCriteria();
-                $criteria->addCond('schoolId', '==', (string)$this->_id);
-                Result::model()->updateAll($modifier, $criteria);
-                Team::model()->updateAll($modifier, $criteria);
-            }
-        }
-
-        // If type changed
-        if ($this->attributeHasChanged('type')) {
-            $modifier = new \EMongoModifier();
-            $modifier->addModifier('schoolType', 'set', $this->type);
-            $criteria = new \EMongoCriteria();
-            $criteria->addCond('schoolId', '==', (string)$this->_id);
-            Result::model()->updateAll($modifier, $criteria);
-            Team::model()->updateAll($modifier, $criteria);
-        }
-
-        parent::afterSave();
-    }
-
 
 }

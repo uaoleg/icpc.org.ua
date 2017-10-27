@@ -2,42 +2,30 @@
 
 namespace common\models\User;
 
+/**
+ * Coach info
+ *
+ * @property string $position
+ * @property string $officeAddress
+ * @property string $phoneWork
+ * @property string $fax
+ */
 class InfoCoach extends Info
 {
 
     /**
-     * Position
-     * @var string
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public $position;
-
-    /**
-     * Office address
-     * @var string
-     */
-    public $officeAddress;
-
-    /**
-     * Work phone number
-     * @var string
-     */
-    public $phoneWork;
-
-    /**
-     * Fax number
-     * @var string
-     */
-    public $fax;
+    public static function tableName()
+    {
+        return '{{%user_info_coach}}';
+    }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
-
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
@@ -55,10 +43,10 @@ class InfoCoach extends Info
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('phoneWork', 'safe'),
-            array('position, officeAddress', 'required', 'except' => static::SC_ALLOW_EMPTY),
-        ));
+        return array_merge(parent::rules(), [
+            ['phoneWork', 'safe'],
+            [['position', 'officeAddress'], 'required', 'except' => static::SC_ALLOW_EMPTY],
+        ]);
     }
 
 }

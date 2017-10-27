@@ -1,77 +1,47 @@
 <?php
+
 namespace common\models\News;
 
-use \common\models\UploadedFile;
+use \common\models\BaseActiveRecord;
 
 /**
  * Image
  *
- * @property-read UploadedFile $file
+ * @property int    $newsId
+ * @property int    $userId
+ * @property string $content
  */
-class Image extends \common\ext\MongoDb\Document
+class Image extends BaseActiveRecord
 {
 
     /**
-     * ID of a news
-     * @var string
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public $newsId;
-
-    /**
-     * Image title
-     * @var string
-     */
-    public $fileName;
-
-    /**
-     * ID of a user who downloads the image
-     * @var string
-     */
-    public $userId;
-
-    /**
-     * Related file
-     * @var UploadedFile
-     */
-    protected $_file;
-
-    /**
-     * Returns related file
-     * @return UploadedFile
-     */
-    public function getFile()
+    public static function tableName()
     {
-        if ($this->_file === null) {
-            $this->_file = UploadedFile::model()->findByAttributes(array(
-                'uniqueId' => $this->getUniqueId(),
-            ));
-        }
-        return $this->_file;
+        return '{{%news_image}}';
     }
 
     /**
-     * This returns the name of the collection for this class
-     * @return string
+     * Returns a list of behaviors that this component should behave as
+     * @return array
      */
-    public function getCollectionName()
+    public function behaviors()
     {
-        return 'news.images';
+        return [
+            $this->behaviorTimestamp(),
+        ];
     }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
             'newsId'    => \yii::t('app', 'ID of the news'),
-            'title'     => \yii::t('app', 'Image title'),
-            'extension' => \yii::t('app', 'Image extension'),
         ));
     }
 
@@ -81,43 +51,9 @@ class Image extends \common\ext\MongoDb\Document
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('userId, fileName', 'required')
-        ));
+        return array_merge(parent::rules(), [
+            [['newsId', 'userId', 'content'], 'required'],
+        ]);
     }
-
-    /**
-     * Before validate action
-     *
-     * @return bool
-     */
-    protected function beforeValidate()
-    {
-        if (!parent::beforeValidate()) {
-            return false;
-        }
-
-        // Set newsId to null if it is empty
-        if (empty($this->newsId)) {
-            $this->newsId = null;
-        }
-
-        return true;
-    }
-
-
-    /**
-     * After delete action
-     */
-    protected function afterDelete()
-    {
-        /**
-         * Delete uploaded file of this image
-         */
-        $this->file->delete();
-
-        parent::afterDelete();
-    }
-
 
 }

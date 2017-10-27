@@ -2,59 +2,33 @@
 
 namespace common\models\User;
 
+/**
+ * Student info
+ *
+ * @property string $studyField
+ * @property string $speciality
+ * @property string $faculty
+ * @property string $group
+ * @property int    $course
+ * @property int    $schoolAdmissionYear
+ * @property string $document
+ */
 class InfoStudent extends Info
 {
 
     /**
-     * Field of study
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public $studyField;
-
-    /**
-     * Speciality of study
-     * @var string
-     */
-    public $speciality;
-
-    /**
-     * Faculty of study
-     * @var string
-     */
-    public $faculty;
-
-    /**
-     * Group
-     * @var string
-     */
-    public $group;
-
-    /**
-     * University course
-     * @var int
-     */
-    public $course;
-
-    /**
-     * Year of admission to University
-     * @var int
-     */
-    public $schoolAdmissionYear;
-
-    /**
-     * Student document serial number
-     * @var string
-     */
-    public $document;
+    public static function tableName()
+    {
+        return '{{%user_info_student}}';
+    }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
-
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
@@ -75,21 +49,10 @@ class InfoStudent extends Info
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('studyField, speciality, faculty, group, schoolAdmissionYear, document, course', 'required', 'except' => static::SC_ALLOW_EMPTY),
-            array('course', 'numerical', 'min' => 1, 'max' => 5)
-        ));
-    }
-
-    /**
-     * After save action
-     */
-    protected function afterSave()
-    {
-        // Invalidate cache of students view table
-        \common\models\ViewTable\Student::model()->cache->delete('collectionIsUpToDate');
-
-        parent::afterSave();
+        return array_merge(parent::rules(), [
+            [['studyField', 'speciality', 'faculty', 'group', 'schoolAdmissionYear', 'document', 'course'], 'required', 'except' => static::SC_ALLOW_EMPTY],
+            ['course', 'number', 'min' => 1, 'max' => 5],
+        ]);
     }
 
 }

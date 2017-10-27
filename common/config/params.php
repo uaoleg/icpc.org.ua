@@ -1,7 +1,6 @@
 <?php
 
-$params = array(
-
+return [
     'emails' => array(
         'info'      => array('address' => 'info@icpc.org.ua', 'name' => 'icpc.org.ua Team'),
         'noreply'   => array('address' => 'info@icpc.org.ua', 'name' => 'icpc.org.ua Team'),
@@ -22,19 +21,4 @@ $params = array(
     'yearFirst' => 2013, // News, Results, etc.
 
     'version' => 'phase_16.1.3',
-
-);
-
-// Environment configuration
-$file = __DIR__ . '/env/' . APP_ENV . '/params.php';
-if (is_file($file)) {
-    $params = \CMap::mergeArray($params, require($file));
-}
-
-// Local configuration
-$file = __DIR__ . '/local/params.php';
-if (is_file($file)) {
-    $params = \CMap::mergeArray($params, require($file));
-}
-
-return $params;
+];

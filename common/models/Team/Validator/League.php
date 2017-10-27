@@ -5,22 +5,21 @@ namespace common\models\Team\Validator;
 use \common\models\Result;
 use \common\models\Team;
 
-class League extends \common\ext\MongoDb\Validator\AbstractValidator
+class League extends \yii\validators\Validator
 {
     /**
-     * Validate league
-     *
+     * Validate team league
      * @param Team   $team
      * @param string $attribute
      */
     public function validateAttribute($team, $attribute)
     {
-        if (!$team->attributeHasChanged($attribute)) {
+        if (!$team->isAttributeChanged($attribute)) {
             return;
         }
 
         // Check league to be valid
-        if (!in_array($team->$attribute, Team::model()->getConstantList('LEAGUE_'))) {
+        if (!in_array($team->$attribute, Team::getConstants('LEAGUE_'))) {
             $this->addError($team, $attribute, \yii::t('app', 'Invalid value for {attribute}'));
         };
 

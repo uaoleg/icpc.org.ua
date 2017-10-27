@@ -2,7 +2,7 @@
 
 namespace common\models;
 
-class UploadedFile extends \common\ext\MongoDb\GridFS
+class UploadedFile extends BaseActiveRecord
 {
 
     /**
@@ -18,11 +18,16 @@ class UploadedFile extends \common\ext\MongoDb\GridFS
     public $uploadCompleted = false;
 
     /**
+     * Declares the name of the database table associated with this AR class
+     * @return string
+     */
+    public static function tableName()
+    {
+        return '{{%uploaded_file}}';
+    }
+
+    /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
@@ -30,32 +35,6 @@ class UploadedFile extends \common\ext\MongoDb\GridFS
         return array_merge(parent::attributeLabels(), array(
             'uniqueId'          => \yii::t('app', 'File unique ID'),
             'uploadCompleted'   => \yii::t('app', 'Upload is completed'),
-        ));
-    }
-
-	/**
-	 * This returns the name of the collection for this class
-     *
-     * @return string
-	 */
-	public function getCollectionName()
-	{
-		return 'uploadedFile';
-	}
-
-    /**
-     * List of collection indexes
-     *
-     * @return array
-     */
-    public function indexes()
-    {
-        return array_merge(parent::indexes(), array(
-            'uniqueId' => array(
-                'key' => array(
-                    'uniqueId' => \EMongoCriteria::SORT_ASC,
-                )
-            ),
         ));
     }
 

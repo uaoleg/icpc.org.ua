@@ -2,21 +2,19 @@
 
 namespace common\models\Team\Validator;
 
-use \common\ext\MongoDb\Validator\AbstractValidator;
 use \common\models\Team;
 
-class Unique extends AbstractValidator
+class Unique extends \yii\validators\Validator
 {
 
     /**
-     * Validate name
-     *
+     * Validate team to be unique
      * @param Team $team
      * @param string $attribute
      */
-    protected function validateAttribute($team, $attribute)
+    public function validateAttribute($team, $attribute)
     {
-        if (!$team->attributeHasChanged($attribute)) {
+        if (!$team->isAttributeChanged($attribute)) {
             return;
         }
 
@@ -24,13 +22,15 @@ class Unique extends AbstractValidator
         $year = $team->year;
 
         // Find 2nd team with such name
-        $criteria = new \EMongoCriteria();
-        $criteria
-            ->addCond('_id', '!=', $team->_id)
-            ->addCond('name', '==', new \MongoRegex('/^' . preg_quote($name) . '$/i'))
-            ->addCond('year', '==', $year)
-            ->addCond('isDeleted', '==', false);
-        $team2 = Team::model()->find($criteria);
+        $team2 = Team::find()
+            ->andWhere(['!=', 'id', $team->id])
+            ->andWhere(['LIKE', 'name', $name])
+            ->andWhere([
+                'year'      => $year,
+                'isDeleted' => false,
+            ])
+            ->one()
+        ;
 
         // If 2nd team exists then add error
         if ($team2 !== null) {

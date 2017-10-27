@@ -2,7 +2,9 @@
 
 namespace common\components;
 
-class Archive extends \CApplicationComponent
+use \yii\helpers\FileHelper;
+
+class Archive extends \yii\base\Component
 {
 
     /**
@@ -16,7 +18,7 @@ class Archive extends \CApplicationComponent
     {
         // Get list of files
         if (is_dir($in)) {
-            $fileList = \CFileHelper::findFiles($in);
+            $fileList = FileHelper::findFiles($in);
         } elseif (is_file($in)) {
             $fileList = array($in);
         } else {

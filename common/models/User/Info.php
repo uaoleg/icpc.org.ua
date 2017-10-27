@@ -2,7 +2,21 @@
 
 namespace common\models\User;
 
-class Info extends \common\ext\MongoDb\Document
+use \common\models\BaseActiveRecord;
+
+/**
+ * User info
+ *
+ * @property int    $userId
+ * @property string $lang
+ * @property string $dateOfBirth
+ * @property string $phoneHome
+ * @property string $phoneMobile
+ * @property string $skype
+ * @property string $tShirtSize
+ * @property string $acmNumber
+ */
+abstract class Info extends BaseActiveRecord
 {
 
     /**
@@ -11,59 +25,7 @@ class Info extends \common\ext\MongoDb\Document
     const SC_ALLOW_EMPTY = 'allowEmpty';
 
     /**
-     * ID of the related user
-     * @var string
-     */
-    public $userId;
-
-    /**
-     * Lang of the information (e.g. "en", "uk")
-     * @var string
-     */
-    public $lang;
-
-    /**
-     * Date of birth
-     * @var string
-     */
-    public $dateOfBirth;
-
-    /**
-     * Home phone number
-     * @var string
-     */
-    public $phoneHome;
-
-    /**
-     * Mobile phone number
-     * @var string
-     */
-    public $phoneMobile;
-
-    /**
-     * Skype
-     * @var string
-     */
-    public $skype;
-
-    /**
-     * T-shirt size
-     * @var string
-     */
-    public $tShirtSize;
-
-    /**
-     * ACM Number
-     * @var string
-     */
-    public $acmNumber;
-
-    /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
@@ -81,94 +43,74 @@ class Info extends \common\ext\MongoDb\Document
     }
 
     /**
+     * Returns a list of behaviors that this component should behave as
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            $this->behaviorDateFormat(['dateOfBirth']),
+        ];
+    }
+
+    /**
      * Define attribute rules
      *
      * @return array
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('lang, dateOfBirth, userId, tShirtSize', 'required', 'except' => static::SC_ALLOW_EMPTY),
-            array('tShirtSize', 'in', 'range' => array('XS', 'S', 'M', 'L', 'XL', 'XXL')),
-            array('phone', Info\Validator\Phone::className(), 'except' => static::SC_ALLOW_EMPTY)
-        ));
+        return array_merge(parent::rules(), [
+            [['lang', 'dateOfBirth', 'userId', 'tShirtSize'], 'required', 'except' => static::SC_ALLOW_EMPTY],
+            ['tShirtSize', 'in', 'range' => array('XS', 'S', 'M', 'L', 'XL', 'XXL')],
+            [['phoneHome', 'phoneMobile'], Info\Validator\Phone::class, 'except' => static::SC_ALLOW_EMPTY],
+        ]);
     }
 
     /**
-     * This returns the name of the collection for this class
-     *
-     * @return string
-     */
-    public function getCollectionName()
-    {
-        return 'user.info';
-    }
-
-    /**
-     * List of collection indexes
-     *
-     * @return array
-     */
-    public function indexes()
-    {
-        return array_merge(parent::indexes(), array(
-            'userId_lang' => array(
-                'key' => array(
-                    'userId'    => \EMongoCriteria::SORT_ASC,
-                    'lang'      => \EMongoCriteria::SORT_ASC,
-                ),
-                'unique' => true,
-            ),
-        ));
-    }
-
-    /**
-     * Before validate action
-     *
+     * Before save action
+     * @param bool $insert
      * @return bool
      */
-    protected function beforeValidate()
+    public function beforeSave($insert)
     {
-        // Convert MongoId to string
-        $this->userId = (string)$this->userId;
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
 
-        // Convert string date to unix timestamp
-        if (is_string($this->dateOfBirth)) {
-            $this->dateOfBirth = strtotime($this->dateOfBirth);
-            if ($this->dateOfBirth === false) {
-                $this->dateOfBirth = null;
+        // Convert empty attributes to NULL
+        foreach ($this->attributes as $name => $value) {
+            if (empty($this->$name)) {
+                $this->$name = null;
             }
         }
 
-        return parent::beforeValidate();
+        return true;
     }
 
     /**
      * After save action
+     * @param bool $insert
+     * @param array $changedAttributes
      */
-    protected function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
         // Copy new contacts to the other languages
-        if ($this->attributeHasChanged('skype') || $this->attributeHasChanged('phoneHome') ||
-            $this->attributeHasChanged('phoneMobile') || $this->attributeHasChanged('acmNumber') ||
-            $this->attributeHasChanged('tShirtSize') || $this->attributeHasChanged('dateOfBirth')
+        if ($this->isAttributeChanged('skype') || $this->isAttributeChanged('phoneHome') ||
+            $this->isAttributeChanged('phoneMobile') || $this->isAttributeChanged('acmNumber') ||
+            $this->isAttributeChanged('tShirtSize') || $this->isAttributeChanged('dateOfBirth')
         ) {
-            $modifier = new \EMongoModifier();
-            $modifier
-                ->addModifier('skype', 'set', $this->skype)
-                ->addModifier('phoneHome', 'set', $this->phoneHome)
-                ->addModifier('phoneMobile', 'set', $this->phoneMobile)
-                ->addModifier('tShirtSize', 'set', $this->tShirtSize)
-                ->addModifier('acmNumber', 'set', $this->acmNumber)
-                ->addModifier('dateOfBirth', 'set', $this->dateOfBirth);
-            $criteria = new \EMongoCriteria();
-            $criteria
-                ->addCond('userId', '==', (string)$this->userId)
-                ->addCond('lang', '!=', $this->lang);
-            static::model()->updateAll($modifier, $criteria);
+            static::updateAll([
+                'skype'         => $this->skype,
+                'phoneHome'     => $this->phoneHome,
+                'phoneMobile'   => $this->phoneMobile,
+                'tShirtSize'    => $this->tShirtSize,
+                'acmNumber'     => $this->acmNumber,
+                'dateOfBirth'   => $this->dateOfBirth,
+            ], ['lang != :lang'], [':lang' => $this->lang]);
         }
 
-        parent::afterSave();
+        parent::afterSave($insert, $changedAttributes);
     }
 
 

@@ -2,38 +2,45 @@
 
 namespace common\models\User;
 
+use \common\models\BaseActiveRecord;
 use \common\models\User;
 
-class ApprovalRequest extends \common\ext\MongoDb\Document
+/**
+ * User approval request
+ *
+ * @property int    $userId
+ * @property string $role
+ * @property int    $timeCreated
+ * @property int    $timeUpdated
+ */
+class ApprovalRequest extends BaseActiveRecord
 {
 
     const ROLE_COACH        = 'coach';
     const ROLE_COORDINATOR  = 'coordinator';
 
     /**
-     * User ID
-     * @var string
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public $userId;
+    public static function tableName()
+    {
+        return '{{%user_approval_request}}';
+    }
 
     /**
-     * User role to be approved
-     * @var string
+     * Returns a list of behaviors that this component should behave as
+     * @return array
      */
-    public $role;
-
-    /**
-     * Date created
-     * @var \MongoDate
-     */
-    public $dateCreated;
+    public function behaviors()
+    {
+        return [
+            $this->behaviorTimestamp(),
+        ];
+    }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
@@ -41,7 +48,7 @@ class ApprovalRequest extends \common\ext\MongoDb\Document
         return array_merge(parent::attributeLabels(), array(
             'userId'        => \yii::t('app', 'User ID'),
             'role'          => \yii::t('app', 'User role'),
-            'dateCreated'   => \yii::t('app', 'Date created'),
+            'timeCreated'   => \yii::t('app', 'Date created'),
         ));
     }
 
@@ -52,56 +59,31 @@ class ApprovalRequest extends \common\ext\MongoDb\Document
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('userId, role, dateCreated', 'required'),
-        ));
-    }
-
-    /**
-     * This returns the name of the collection for this class
-     *
-     * @return string
-     */
-    public function getCollectionName()
-    {
-        return 'user.approvalRequest';
-    }
-
-    /**
-     * Before validate action
-     *
-     * @return boolean
-     */
-    protected function beforeValidate()
-    {
-        // MongoId to string
-        $this->userId = (string)$this->userId;
-
-        // Set created date
-        if (empty($this->dateCreated)) {
-            $this->dateCreated = new \MongoDate();
-        }
-
-        return parent::beforeValidate();
+        return array_merge(parent::rules(), [
+            ['userId', 'required'],
+            ['role', 'required'],
+        ]);
     }
 
     /**
      * After save action
+     * @param bool $insert
+     * @param array $changedAttributes
      */
-    protected function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
         // Send an email notification about new approve required
-        if ($this->_isFirstTimeSaved) {
-            $user = User::model()->findByPk(new \MongoId($this->userId));
+        if ($insert) {
+            $user = User::findOne($this->userId);
             if ($user && $user->getApprover()) {
-                \yii::app()->cli->runCommand('email', 'coachOrCoordinatorNotify', array(
-                    'emailTo'   => (string)$user->getApprover()->email,
-                    'userId'    => (string)$user->_id,
+                \yii::$app->cli->runCommand('email', 'coachOrCoordinatorNotify', array(
+                    'emailTo'   => $user->getApprover()->email,
+                    'userId'    => $user->id,
                 ), array(), true);
             }
         }
 
-        parent::afterSave();
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -112,11 +94,14 @@ class ApprovalRequest extends \common\ext\MongoDb\Document
      */
     public static function isSentRecently($userId, $role)
     {
-        $count = (int)User\ApprovalRequest::model()->countByAttributes(array(
-            'userId'        => $userId,
-            'role'          => $role,
-            'dateCreated'   => array('$gte' => new \MongoDate(strtotime('-1 day')))
-        ));
+        $count = (int)User\ApprovalRequest::find()
+            ->andWhere([
+                'userId'    => $userId,
+                'role'      => $role,
+            ])
+            ->andWhere(['>=', 'timeCreated', strtotime('-1 day')])
+            ->count()
+        ;
         return $count > 0;
     }
 

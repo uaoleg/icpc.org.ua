@@ -2,12 +2,14 @@
 
 namespace common\models\User;
 
+use \common\models\BaseActiveRecord;
+
 /**
  * Password reset token
  *
  * @property-read bool $isValid
  */
-class PasswordReset extends \common\ext\MongoDb\Document
+class PasswordReset extends BaseActiveRecord
 {
 
     /**
@@ -25,7 +27,39 @@ class PasswordReset extends \common\ext\MongoDb\Document
      * Date created
      * @var int
      */
-    public $dateCreated;
+    public $timeCreated;
+
+    /**
+     * Declares the name of the database table associated with this AR class
+     * @return string
+     */
+    public static function tableName()
+    {
+        return '{{%user_password_reset}}';
+    }
+
+    /**
+     * Returns a list of behaviors that this component should behave as
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            $this->behaviorTimestamp(),
+        ];
+    }
+
+    /**
+     * Returns the attribute labels.
+     * @return array attribute labels (name => label)
+     */
+    public function attributeLabels()
+    {
+        return array_merge(parent::attributeLabels(), array(
+            'email'         => \yii::t('app', 'Email'),
+            'timeCreated'   => \yii::t('app', 'Date'),
+        ));
+    }
 
     /**
      * Returns whether reset token is valid
@@ -34,23 +68,7 @@ class PasswordReset extends \common\ext\MongoDb\Document
      */
     public function getIsValid()
     {
-        return (time() - static::VALID_PERIOD <= $this->dateCreated);
-    }
-
-    /**
-     * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
-     * @return array attribute labels (name => label)
-     */
-    public function attributeLabels()
-    {
-        return array_merge(parent::attributeLabels(), array(
-            'email'         => \yii::t('app', 'Email'),
-            'dateCreated'   => \yii::t('app', 'Date'),
-        ));
+        return (time() - static::VALID_PERIOD <= $this->timeCreated);
     }
 
     /**
@@ -60,56 +78,26 @@ class PasswordReset extends \common\ext\MongoDb\Document
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('email, dateCreated', 'required'),
-            array('email', 'email'),
-            array('email', 'unique'),
-        ));
+        return array_merge(parent::rules(), [
+            ['email', 'required'],
+            ['email', 'email'],
+            ['email', 'unique'],
+        ]);
     }
 
     /**
-     * This returns the name of the collection for this class
-     *
-     * @return string
-	 */
-	public function getCollectionName()
-	{
-		return 'user.passwordReset';
-	}
-
-    /**
-     * List of collection indexes
-     *
-     * @return array
-     */
-    public function indexes()
-    {
-        return array_merge(parent::indexes(), array(
-            'email' => array(
-                'key' => array(
-                    'email' => \EMongoCriteria::SORT_ASC,
-                ),
-                'unique' => true,
-            ),
-        ));
-    }
-
-    /**
-     * Before validate action
-     *
+     * Before save action
+     * @param bool $insert
      * @return bool
      */
-    protected function beforeValidate()
+    public function beforeSave($insert)
     {
-        if (!parent::beforeValidate()) return false;
-
-        // Email
-        $this->email = mb_strtolower($this->email);
-
-        // Set created date
-        if ($this->dateCreated == null) {
-            $this->dateCreated = time();
+        if (!parent::beforeSave($insert)) {
+            return false;
         }
+
+        // Email to lower case
+        $this->email = mb_strtolower($this->email);
 
         return true;
     }

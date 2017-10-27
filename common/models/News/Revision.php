@@ -2,39 +2,43 @@
 
 namespace common\models\News;
 
-class Revision extends \common\ext\MongoDb\Document
+use \common\models\BaseActiveRecord;
+
+/**
+ * New revision
+ *
+ * @property int    $newsId
+ * @property int    $userId
+ * @property string $newsAttributes
+ * @property int    $timeCreated
+ * @property int    $timeUpdated
+ */
+class Revision extends BaseActiveRecord
 {
 
     /**
-     * ID of the news
-     * @var string
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public $newsId;
+    public static function tableName()
+    {
+        return '{{%news_revision}}';
+    }
 
     /**
-     * ID of the user
-     * @var string
+     * Returns a list of behaviors that this component should behave as
+     * @return array
      */
-    public $userId;
-
-    /**
-     * Attributes of the news
-     * @var array
-     */
-    public $newsAttributes;
-
-    /**
-     * Timestamp of the revision creation
-     * @var int
-     */
-    public $timestamp;
+    public function behaviors()
+    {
+        return [
+            $this->behaviorJson(['newsAttributes']),
+            $this->behaviorTimestamp(),
+        ];
+    }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
@@ -49,70 +53,13 @@ class Revision extends \common\ext\MongoDb\Document
 
     /**
      * Define attribute rules
-     *
      * @return array
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('newsId, userId, newsAttributes, timestamp', 'required')
-        ));
+        return array_merge(parent::rules(), [
+            [['newsId', 'userId', 'newsAttributes'], 'required']
+        ]);
     }
 
-    /**
-     * This returns the name of the collection for this class
-     *
-     * @return string
-     */
-    public function getCollectionName()
-    {
-        return 'news.revision';
-    }
-
-    /**
-     * List of collection indexes
-     *
-     * @return array
-     */
-    public function indexes()
-    {
-        return array_merge(parent::indexes(), array(
-            'newsId_timestamp' => array(
-                'key' => array(
-                    'newsId'    => \EMongoCriteria::SORT_ASC,
-                    'timestamp' => \EMongoCriteria::SORT_DESC,
-                ),
-            ),
-        ));
-    }
-
-    /**
-     * Before validate action
-     *
-     * @return bool
-     */
-    protected function beforeValidate()
-    {
-        if (!parent::beforeValidate()) {
-            return false;
-        }
-
-        // Set timestamp
-        if (empty($this->timestamp)) {
-            $this->timestamp = time();
-        }
-
-        // Set user ID
-        if ((empty($this->userId)) && (\yii::app()->hasComponent('user'))) {
-           $this->userId = \yii::app()->user->id;
-        }
-
-        // Type casting
-        $this->setAttributes(array(
-            'newsId'        => (string)$this->newsId,
-            'userId'        => (string)$this->userId,
-        ), false);
-
-        return true;
-    }
 }

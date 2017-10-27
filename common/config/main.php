@@ -10,158 +10,106 @@ defined('SECONDS_IN_DAY') or define('SECONDS_IN_DAY', 86400);
 defined('SECONDS_IN_WEEK') or define('SECONDS_IN_WEEK', 604800); // 7 days
 defined('SECONDS_IN_MONTH') or define('SECONDS_IN_MONTH', 2678400); // 31 day
 defined('SECONDS_IN_YEAR') or define('SECONDS_IN_YEAR', 31449600); // 364 days
+defined('SESSION_TIME') or define('SESSION_TIME', SECONDS_IN_WEEK);
+defined('DATE_FORMAT_DB') or define('DATE_FORMAT_DB', 'yyyy-MM-dd');
+defined('DATE_TIME_FORMAT_DB') or define('DATE_TIME_FORMAT_DB', 'yyyy-MM-dd HH:mm:ss');
+defined('DATE_FORMAT_MYSQL_QUERY') or define('DATE_FORMAT_MYSQL_QUERY', '%d.%m.%Y');
+defined('DATE_FORMAT_JS') or define('DATE_FORMAT_JS', 'DD.MM.YYYY');
+defined('DATE_TIME_FORMAT_JS') or define('DATE_TIME_FORMAT_JS', 'DD.MM.YYYY HH:mm:ss');
+defined('APP_FRONTEND') or define('APP_FRONTEND', 'app-frontend');
 
-// PHP settings
-date_default_timezone_set('Europe/Kiev');
-ini_set('display_errors', YII_DEBUG);
-ini_set('display_startup_errors', YII_DEBUG);
-ini_set('session.gc_maxlifetime', SECONDS_IN_WEEK);
-
-// Set internal encoding to UTF-8
-mb_internal_encoding('UTF-8');
-
-// Path alias
-\yii::setPathOfAlias('root', realpath(__DIR__ . '/../..'));
-\yii::setPathOfAlias('common', \yii::getPathOfAlias('root.common'));
-\yii::setPathOfAlias('console', \yii::getPathOfAlias('root.console'));
-\yii::setPathOfAlias('web', \yii::getPathOfAlias('root.web'));
-
-$main = array(
-
-    'charset'   => 'UTF-8',
-    'id'        => 'icpcapp',
-    'name'      => 'ICPC',
-
-    'components' => array(
-
-        'archive' => array(
-            'class' => '\common\components\Archive',
-        ),
-
-        'array' => array(
-            'class' => '\common\components\ArrayHelper',
-        ),
-
-        'authManager' => array(
-            'class'         => '\common\ext\MongoDb\Auth\Manager',
-            'defaultRoles'  => array('guest'),
-            'showErrors'    => YII_DEBUG,
-        ),
-
-        'baylor' => array(
-            'class' => '\common\components\Baylor'
-        ),
-
-        'cache' => array(
-            'class'         => 'common.lib.yii.caching.CMemCache',
-            'useMemcached'  => false,
-        ),
-
-        'cli' => array(
-            'class' => '\common\components\Cli',
-        ),
-
-        'errorHandler' => array(
-            'class'         => '\common\components\ErrorHandler',
-            'errorAction'   => 'index/error',
-        ),
-
-        'image' => array(
-            'class' => '\common\components\Image'
-        ),
-
-        'log' => array(
-            'class' => 'CLogRouter',
-            'routes' => array(
-            ),
-        ),
-
-        'mail' => array(
-            'class'            => '\common\ext\Mail\Mail',
-            'transportType'    => 'smtp',
-            'layoutPath'       => \yii::getPathOfAlias('web.views.layouts'),
-            'viewPath'         => 'web.views.mail',
-            'dryRun'           => false,
-            'transportOptions' => array(
-                'host'     => 'smtp.mailgun.org',
-                'port'     => 587,
-                'username' => '',
-                'password' => '',
-            ),
-        ),
-
-        'messages' => array(
-            'class'             => '\common\ext\Message\Source',
-            'forceTranslation'  => true,
-        ),
-
-        'mongodb' => array(
-            'class'             => '\common\ext\MongoDb\DB',
-            'connectionString'  => 'mongodb://localhost/icpc',
-            'dbName'            => 'icpc',
-            'fsyncFlag'         => false,
-            'safeFlag'          => false,
-            'useCursor'         => true,
-        ),
-
-        'rbac' => array(
-            'class' => '\common\components\Rbac',
-        ),
-
-        'request' => array(
-            'class'     => '\web\ext\HttpRequest',
-            'hostInfo'  => 'http://icpc.org.ua',
-        ),
-
-        'session' => array(
-            'class'     => 'CHttpSession',
-            'savePath'  => \yii::getPathOfAlias('common.runtime.session'),
-        ),
-
-        'sprite' => array(
-            'class'             => 'common.lib.YiiBootstrapCssSprite',
-            'imgSourcePath'     => \yii::getPathOfAlias('web.www.themes.default.images'),
-            'imgSourceExt'      => 'jpg,jpeg,gif,png',
-            'imgSourceSkipSize' => 64,
-            'imgDestPath'       => \yii::getPathOfAlias('web.www.themes.default.images') . '/sprite.png',
-            'cssPath'           => \yii::getPathOfAlias('web.www.themes.default.css') . '/sprite.css',
-            'cssImgUrl'         => '/themes/default/images/sprite.png',
-        ),
-
-        'themeManager' => array(
-            'class'     => 'CThemeManager',
-            'baseUrl'   => '/themes',
-        ),
-
-        'urlManager' => array(
-            'caseSensitive'     => false,
+return [
+    'id' => 'icpcapp',
+    'name' => 'ICPC',
+    'bootstrap' => ['log'],
+    'language'          => 'ru-RU',
+    'sourceLanguage'    => 'ru-RU',
+    'sourceLanguage'    => 'uk_RU', /* Fix @url https://github.com/yiisoft/yii2/issues/7430 */
+    'timezone'          => 'Europe/Kiev',
+    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'components' => [
+        'archive' => [
+            'class' => \common\components\Archive::class,
+        ],
+        'array' => [
+            'class' => \common\components\ArrayHelper::class,
+        ],
+        'authManager' => [
+            'class' => \yii\rbac\DbManager::class,
+        ],
+        'baylor' => [
+            'class' => \common\components\Baylor::class,
+        ],
+        'cache' => [
+            'class' => \yii\caching\MemCache::class,
+        ],
+        'cli' => [
+            'class' => \common\components\CliComponent::class,
+        ],
+        'db' => [
+            'class'     => \yii\db\Connection::class,
+            'dsn'       => 'mysql:host=localhost;dbname=icpc',
+            'charset'   => 'utf8',
+        ],
+        'email' => [
+            'class'     => \common\components\Mailgun\Mailer::class,
+            'domain'    => 'icpc.org.ua',
+            'username'  => 'postmaster@icpc.org.ua',
+            'password'  => '6806dec621801ef6d20c23af87d255ce',
+            'viewPath'  => '@common/emails',
+        ],
+        'formatter' => [
+            'class'             => \common\components\Formatter::class,
+            'dateFormat'        => 'dd.MM.yyyy',
+            'datetimeFormat'    => 'dd.MM.yyyy HH:mm',
+            'decimalSeparator'  => '.',
+            'nullDisplay'       => '<span class="not-set">' . \yii::t('app', '(нет данных)') . '</span>',
+        ],
+        'i18n' => [
+            'translations' => [
+                'app' => [
+                    'class' => \common\components\Message\Source::class,
+                    'forceTranslation'  => true,
+                ],
+            ],
+        ],
+        'log' => [
+            'traceLevel' => YII_DEBUG ? 3 : 0,
+            'targets' => [
+                [
+                    'class'     => \common\components\LogSentryTarget::class,
+                    'dsn'       => 'https://a1c6fda54bbf4a9e867fe632e239c85a:31480f6161b947d6a4c3cc5013def978@sentry.io/231872',
+                    'levels'    => ['error', 'warning'],
+                    'except'    => [
+                        \yii\web\ForbiddenHttpException::class,
+                        \yii\web\HttpException::class . ':404',
+                    ],
+                    'context'   => true,
+                    'enabled'   => YII_ENV_PROD,
+                    'dailyLimit'=> 300,
+                ],
+                [
+                    'class'     => \yii\log\FileTarget::class,
+                    'logFile'   => '@runtime/logs/app.log',
+                ],
+            ],
+        ],
+        'rbac' => [
+            'class' => \common\components\Rbac::class,
+        ],
+        'sprite' => [
+            'class'             => \common\components\YiiBootstrapCssSprite::class,
+//            'imgSourcePath'     => \yii::getAlias('@web/images'),
+//            'imgSourceExt'      => 'jpg,jpeg,gif,png',
+//            'imgSourceSkipSize' => 64,
+//            'imgDestPath'       => \yii::getAlias('@web/images/sprite.png'),
+//            'cssPath'           => \yii::getAlias('@web/css/sprite.css'),
+//            'cssImgUrl'         => Url::to('/images/sprite.png'),
+        ],
+        'urlManager' => [
+            'class'             => \yii\web\UrlManager::class,
+            'enablePrettyUrl'   => true,
             'showScriptName'    => false,
-            'urlFormat'         => 'path',
-            'rules'             => require(__DIR__ . '/urlManagerRules.php'),
-        ),
-
-    ),
-
-    'import' => array(
-        'common.lib.YiiMongoDbSuite.*',
-    ),
-
-    // Application-level parameters that can be accessed
-    // using Yii::app()->params['paramName']
-    'params' => require(__DIR__ . '/params.php'),
-
-);
-
-// Environment configuration
-$file = __DIR__ . '/env/' . APP_ENV . '/main.php';
-if (is_file($file)) {
-    $main = \CMap::mergeArray($main, require($file));
-}
-
-// Local configuration
-$file = dirname(__FILE__).'/local/main.php';
-if (is_file($file)) {
-    $main = \CMap::mergeArray($main, require($file));
-}
-
-return $main;
+        ],
+    ],
+];

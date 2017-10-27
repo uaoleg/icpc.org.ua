@@ -2,7 +2,7 @@
 
 namespace common\components;
 
-class ArrayHelper extends \CApplicationComponent
+class ArrayHelper extends \yii\base\Component
 {
 
     /**

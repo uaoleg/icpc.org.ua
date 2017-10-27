@@ -3,7 +3,7 @@
 namespace common\models;
 
 /**
- * Wrapper for \yii::app()->cache
+ * Wrapper for \yii::$app->cache
  */
 class Cache
 {
@@ -12,7 +12,7 @@ class Cache
      * Cache owner
      * @var object
      */
-    protected $_owner;
+    protected $owner;
 
     /**
      * Constructor
@@ -22,9 +22,9 @@ class Cache
     public function __construct($owner)
     {
         if (!is_object($owner)) {
-            throw new \CException(\yii::t('app', 'Given cache owner is not an object.'));
+            throw new \yii\base\Exception(\yii::t('app', 'Given cache owner is not an object.'));
         }
-        $this->_owner = $owner;
+        $this->owner = $owner;
     }
 
     /**
@@ -35,9 +35,9 @@ class Cache
      */
     public function generateUniqueKey($key)
     {
-        $uniqueKey = \yii::app()->getId() . get_class($this->_owner);
-        if (property_exists($this->_owner, '_id')) {
-            $uniqueKey .= $this->_owner->_id;
+        $uniqueKey = \yii::$app->id . get_class($this->owner);
+        if (property_exists($this->owner, 'id')) {
+            $uniqueKey .= $this->owner->id;
         }
         $uniqueKey .= $key;
         return $uniqueKey;
@@ -53,7 +53,7 @@ class Cache
      */
     public function set($key, $value, $expire = 0, \ICacheDependency $dependency = null)
     {
-        \yii::app()->cache->set($this->generateUniqueKey($key), $value, $expire, $dependency);
+        \yii::$app->cache->set($this->generateUniqueKey($key), $value, $expire, $dependency);
     }
 
     /**
@@ -64,7 +64,7 @@ class Cache
      */
     public function get($key)
     {
-        return \yii::app()->cache->get($this->generateUniqueKey($key));
+        return \yii::$app->cache->get($this->generateUniqueKey($key));
     }
 
     /**
@@ -74,7 +74,7 @@ class Cache
      */
     public function delete($key)
     {
-        \yii::app()->cache->delete($this->generateUniqueKey($key));
+        \yii::$app->cache->delete($this->generateUniqueKey($key));
     }
 
 }

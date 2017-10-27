@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"icpc.translation"},{"v":1,"unique":true,"key":{"category":1,"language":1,"message":1},"name":"category_1_language_1_message_1","ns":"icpc.translation"}]}

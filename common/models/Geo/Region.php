@@ -2,10 +2,14 @@
 
 namespace common\models\Geo;
 
+use \common\models\BaseActiveRecord;
+
 /**
  * Region
+ *
+ * @property string $name
  */
-class Region extends \common\ext\MongoDb\Document
+class Region extends BaseActiveRecord
 {
 
     /**
@@ -19,45 +23,16 @@ class Region extends \common\ext\MongoDb\Document
     const NAME_SOUTH_WEST   = 'south_west';
 
     /**
-     * Region name
-     * @var string
-     */
-    public $name;
-
-    /**
-     * Returns an instance of region
-     *
-     * @param string $name
-     * @return Region
-     * @throws \CException
-     */
-    public static function get($name)
-    {
-        if (in_array($name, static::model()->getConstantList('NAME_'))) {
-            $region = new static();
-            $region->name = $name;
-            return $region;
-        } else {
-            throw new \CException(\yii::t('app', 'Unknown region name.'));
-        }
-    }
-
-    /**
-     * Returns region name
-     *
+     * Declares the name of the database table associated with this AR class
      * @return string
      */
-    public function __toString()
+    public static function tableName()
     {
-        return $this->name;
+        return '{{%geo_region}}';
     }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
@@ -75,14 +50,48 @@ class Region extends \common\ext\MongoDb\Document
         ));
     }
 
-	/**
-	 * This returns the name of the collection for this class
+    /**
+     * Returns the constant labels
+     * @return string[]
+     */
+    public static function constantLabels()
+    {
+        return [
+            static::NAME_CENTER     => \yii::t('app', 'Center'),
+            static::NAME_NORTH      => \yii::t('app', 'North'),
+            static::NAME_EAST       => \yii::t('app', 'East'),
+            static::NAME_SOUTH      => \yii::t('app', 'South'),
+            static::NAME_WEST       => \yii::t('app', 'West'),
+            static::NAME_SOUTH_WEST => \yii::t('app', 'Southwestern'),
+        ];
+    }
+
+    /**
+     * Returns an instance of region
+     *
+     * @param string $name
+     * @return Region
+     * @throws \yii\base\Exception
+     */
+    public static function get($name)
+    {
+        if (in_array($name, static::getConstants('NAME_'))) {
+            $region = new static();
+            $region->name = $name;
+            return $region;
+        } else {
+            throw new \yii\base\Exception(\yii::t('app', 'Unknown region name.'));
+        }
+    }
+
+    /**
+     * Returns region name
      *
      * @return string
-	 */
-	public function getCollectionName()
-	{
-		return 'geo.region';
-	}
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 
 }

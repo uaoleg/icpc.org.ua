@@ -5,6 +5,14 @@ namespace common\models;
 /**
  * User
  *
+ * @property string $type
+ * @property string $coordinator
+ * @property int    $schoolId
+ * @property bool   $isEmailConfirmed
+ * @property bool   $isApprovedStudent
+ * @property bool   $isApprovedCoach
+ * @property bool   $isApprovedCoordinator
+ *
  * @property-read string        $firstName
  * @property-read string        $middleName
  * @property-read string        $lastName
@@ -14,7 +22,7 @@ namespace common\models;
  * @property-read User          $approver
  * @property-read User\Photo    $photo
  */
-class User extends Person
+class User extends Person implements \yii\web\IdentityInterface
 {
 
     /**
@@ -30,272 +38,22 @@ class User extends Person
     const ROLE_ADMIN                = 'admin';
 
     /**
-     * Hash of the password.
-     * Don't set it directly!!!
-     * @see setPassword()
-     * @var string
-     */
-    public $hash;
-
-    /**
-     * User type (static::ROLE_STUDENT or static::ROLE_COACH only)
-     * @var string
-     */
-    public $type;
-
-    /**
-     * Coordination type (static::ROLE_COORDINATOR_)
-     * @var string
-     */
-    public $coordinator;
-
-    /**
-     * School ID
-     */
-    public $schoolId;
-
-    /**
-     * Is email confirmed
-     * @var boolean
-     */
-    public $isEmailConfirmed = false;
-
-    /**
-     * Is approved student
-     * @var boolean
-     */
-    public $isApprovedStudent = false;
-
-    /**
-     * Is approved coach
-     * @var boolean
-     */
-    public $isApprovedCoach = false;
-
-    /**
-     * Is approved coordinator
-     * @var boolean
-     */
-    public $isApprovedCoordinator = false;
-
-    /**
-     * User's school
-     * @var School
-     */
-    protected $_school;
-
-    /**
-     * User's settings
-     * @var User\Settings
-     */
-    protected $_settings;
-
-    /**
      * User's additional info
      * @var User\Info
      */
     protected $_info;
 
     /**
-     * User's profile photo
-     * @var User\Photo
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    protected $_photo;
-
-    /**
-     * Returns user's school
-     *
-     * @return School
-     */
-    public function getSchool()
+    public static function tableName()
     {
-        if ($this->_school === null) {
-            $this->_school = School::model()->findByPk(new \MongoId($this->schoolId));
-            if ($this->_school === null) {
-                return new School();
-            }
-        }
-        return $this->_school;
-    }
-
-    /**
-     * Returns user's settings
-     *
-     * @return User\Settings
-     */
-    public function getSettings()
-    {
-        if ($this->_settings === null) {
-            $this->_settings = User\Settings::model()->findByAttributes(array(
-                'userId' => (string)$this->_id,
-            ));
-            if ($this->_settings === null) {
-                $this->_settings = new User\Settings();
-                $this->_settings->userId = (string)$this->_id;
-            }
-        }
-        return $this->_settings;
-    }
-
-    /**
-     * Returns user's additional info
-     *
-     * @return User\Info
-     */
-    public function getInfo()
-    {
-        if ($this->_info === null) {
-            switch ($this->useLanguage) {
-                case 'en':
-                case 'uk':
-                    $lang = $this->useLanguage;
-                    break;
-                default:
-                    $lang = 'uk';
-                    break;
-            }
-            if ($this->type === static::ROLE_STUDENT) {
-                $this->_info = User\InfoStudent::model()->findByAttributes(array(
-                    'userId' => (string)$this->_id,
-                    'lang'   => $lang,
-                ));
-                if ($this->_info === null) {
-                    $this->_info = new User\InfoStudent();
-                    $this->_info->setAttributes(array(
-                        'userId'    => (string)$this->_id,
-                        'lang'      => $lang,
-                    ), false);
-                }
-            } elseif ($this->type === static::ROLE_COACH) {
-                $this->_info = User\InfoCoach::model()->findByAttributes(array(
-                    'userId' => (string)$this->_id,
-                    'lang'   => $lang,
-                ));
-                if ($this->_info === null) {
-                    $this->_info = new User\InfoCoach();
-                    $this->_info->setAttributes(array(
-                        'userId'    => (string)$this->_id,
-                        'lang'      => $lang,
-                    ), false);
-                }
-            } else {
-                $this->_info = User\Info::model()->findByAttributes(array(
-                    'userId' => (string)$this->_id,
-                    'lang'   => $lang,
-                ));
-                if ($this->_info === null) {
-                    $this->_info = new User\Info();
-                    $this->_info->setAttributes(array(
-                        'userId'    => (string)$this->_id,
-                        'lang'      => $lang,
-                    ), false);
-                }
-            }
-        }
-        return $this->_info;
-    }
-
-    /**
-     * Returns user who can approve this user's coach/coordinator status
-     *
-     * @return User
-     */
-    public function getApprover()
-    {
-        $key = 'approver';
-        if (!$this->cache->get($key)) {
-            $criteria = new \EMongoCriteria();
-
-            // Get approver for coordinator
-            if (!empty($this->coordinator) && !$this->isApprovedCoordinator) {
-
-                switch ($this->coordinator) {
-                    case static::ROLE_COORDINATOR_REGION:
-                    case static::ROLE_COORDINATOR_UKRAINE:
-                        $criteria
-                            ->addCond('isApprovedCoordinator', '==', true)
-                            ->addCond('coordinator', '==', static::ROLE_COORDINATOR_UKRAINE);
-                        break;
-                    case static::ROLE_COORDINATOR_STATE:
-                        $schoolIds = School::model()->getCollection()->distinct('_id', array(
-                            'region' => $this->school->region,
-                        ));
-                        $ids = array();
-                        foreach ($schoolIds as $schoolId) {
-                            $ids[] = (string)$schoolId;
-                        }
-                        $criteria
-                            ->addCond('isApprovedCoordinator', '==', true)
-                            ->addCond('coordinator', '==', static::ROLE_COORDINATOR_REGION)
-                            ->addCond('schoolId', 'in', $ids);
-                        break;
-                }
-                $approver = User::model()->find($criteria);
-            }
-
-            // Get approver for coach
-            elseif (($this->type === static::ROLE_COACH) && (!$this->isApprovedCoach)) {
-                $schoolIds = School::model()->getCollection()->distinct('_id', array(
-                    'state' => $this->school->state,
-                ));
-                $ids = array();
-                foreach ($schoolIds as $schoolId) {
-                    $ids[] = (string)$schoolId;
-                }
-                $criteria
-                    ->addCond('isApprovedCoordinator', '==', true)
-                    ->addCond('coordinator', '==', static::ROLE_COORDINATOR_STATE)
-                    ->addCond('schoolId', 'in', $ids);
-                $approver = User::model()->find($criteria);
-
-                // If there is no state coordinator than try regional one
-                if ($approver === null) {
-                    $schoolIds = School::model()->getCollection()->distinct('_id', array(
-                        'region' => $this->school->region,
-                    ));
-                    $ids = array();
-                    foreach ($schoolIds as $schoolId) {
-                        $ids[] = (string)$schoolId;
-                    }
-                    $criteria
-                        ->addCond('isApprovedCoordinator', '==', true)
-                        ->addCond('coordinator', '==', static::ROLE_COORDINATOR_REGION)
-                        ->addCond('schoolId', 'in', $ids);
-                    $approver = User::model()->find($criteria);
-                }
-            }
-
-            // Otherwise there is no approver
-            else {
-                $approver = null;
-            }
-
-            $this->cache->set($key, $approver, SECONDS_IN_HOUR);
-        }
-        return $this->cache->get($key);
-    }
-
-    /**
-     * Returns user's photo
-     *
-     * @return User\Photo
-     */
-    public function getPhoto()
-    {
-        if ($this->_photo === null) {
-            $this->_photo = User\Photo::model()->findByAttributes(array(
-                'userId' => (string)$this->_id,
-            ));
-        }
-        return $this->_photo;
+        return '{{%user}}';
     }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
@@ -311,11 +69,11 @@ class User extends Person
             'middleNameEn'      => \yii::t('app', 'Middle name in English'),
             'lastNameEn'        => \yii::t('app', 'Last name in English'),
             'email'             => \yii::t('app', 'Email'),
-            'hash'              => \yii::t('app', 'Password hash'),
+            'passwordHash'      => \yii::t('app', 'Password hash'),
             'type'              => \yii::t('app', 'Type'),
             'coordinator'       => \yii::t('app', 'Coordination type'),
             'schoolId'          => \yii::t('app', 'School'),
-            'dateCreated'       => \yii::t('app', 'Registration date'),
+            'timeCreated'       => \yii::t('app', 'Registration date'),
             'isEmailConfirmed'  => \yii::t('app', 'Is email confirmed'),
         ));
     }
@@ -327,164 +85,430 @@ class User extends Person
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('firstNameUk, middleNameUk, lastNameUk, email, schoolId, dateCreated', 'required'),
-            array('email', 'email'),
-            array('email', 'unique'),
-            array('firstNameUk, middleName, lastNameUk', 'length', 'max' => 100),
-            array('coordinator', User\Validator\Coordinator::className()),
-            array('role', User\Validator\Role::className()),
-        ));
-    }
+        return array_merge(parent::rules(), [
 
-    /**
-     * This returns the name of the collection for this class
-     *
-     * @return string
-	 */
-	public function getCollectionName()
-	{
-		return 'user';
-	}
+            [['firstNameUk', 'middleNameUk', 'lastNameUk', 'email', 'schoolId'], 'required'],
+            ['email', 'email'],
+            ['email', 'unique'],
+            [['firstNameUk', 'middleName', 'lastNameUk'], 'string', 'max' => 100],
 
-    /**
-     * List of collection indexes
-     *
-     * @return array
-     */
-    public function indexes()
-    {
-        return array_merge(parent::indexes(), array(
-            'email' => array(
-                'key' => array(
-                    'email' => \EMongoCriteria::SORT_ASC,
-                ),
-                'unique' => true,
-            ),
-        ));
+            ['coordinator', 'in', 'range' => $this->getConstants('ROLE_COORDINATOR_')],
+
+            [['isEmailConfirmed', 'isApprovedStudent', 'isApprovedCoach', 'isApprovedCoordinator'], 'boolean'],
+            [['isEmailConfirmed', 'isApprovedStudent', 'isApprovedCoach', 'isApprovedCoordinator'], 'default', 'value' => false],
+
+        ]);
     }
 
     /**
      * Before validate action
-     *
      * @return bool
      */
-    protected function beforeValidate()
+    public function beforeValidate()
     {
-        if (!parent::beforeValidate()) return false;
-
-        // Email
-        $this->email = mb_strtolower($this->email);
-        $this->isEmailConfirmed = (bool)$this->isEmailConfirmed;
-
-        // Type
-        if (!in_array($this->type, array(static::ROLE_STUDENT, static::ROLE_COACH))) {
-            $this->type = null;
+        if (!parent::beforeValidate()) {
+            return false;
         }
 
-        // Set created date
-        if ($this->dateCreated == null) {
-            $this->dateCreated = time();
+        if (($this->type === static::ROLE_STUDENT) && (!empty($this->coordinator))) {
+            $this->addError('type', \yii::t('app', 'Student cannot be coordinator.'));
         }
 
-        return true;
+        if ((empty($this->type)) && (empty($this->coordinator))) {
+            $this->addError('type', \yii::t('app', 'User should have some role.'));
+        }
+
+        return !$this->hasErrors();
     }
 
     /**
      * Before save action
-     *
+     * @param bool $insert
      * @return bool
      */
-    protected function beforeSave()
+    public function beforeSave($insert)
     {
+        // Email to lower case
+        $this->email = mb_strtolower($this->email);
+
         // Revoke coordination roles if it was changed
-        if ((!$this->getIsNewRecord()) && ($this->attributeHasChanged('coordinator'))) {
+        if ((!$this->getIsNewRecord()) && ($this->isAttributeChanged('coordinator'))) {
             $this->isApprovedCoordinator = false;
         }
 
         // Revoke coach roles if it was changed
-        if ((!$this->getIsNewRecord()) && ($this->attributeHasChanged('type'))) {
+        if ((!$this->getIsNewRecord()) && ($this->isAttributeChanged('type'))) {
             $this->isApprovedCoach = false;
         }
 
-        return parent::beforeSave();
+        // Populate name tags
+        $this->populateNameTags();
+
+        return parent::beforeSave($insert);
     }
 
 
     /**
      * After save action
+     * @param bool $insert
+     * @param array $changedAttributes
      */
-    protected function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
-        // Invalidate cache of students view table
-        if ($this->type === static::ROLE_STUDENT) {
-            ViewTable\Student::model()->cache->delete('collectionIsUpToDate');
-        }
-
-        // If user changed any name, info in results and teams models should be updated
-        $initialUser = new static();
-        $initialUser->setAttributes($this->_initialAttributes, false);
-        foreach (array('uk', 'en') as $lang) {
-
-            // Check if name changed
-            $initialName = \web\widgets\user\Name::create(array(
-                'user' => $initialUser,
-                'lang' => $lang,
-            ), true);
-            $currentName = \web\widgets\user\Name::create(array(
-                'user' => $this,
-                'lang' => $lang,
-            ), true);
-            if ($initialName === $currentName) {
-                continue;
-            }
-
-            // Update results and teams
-            $modifier = new \EMongoModifier();
-            $modifier->addModifier('coachName' . ucfirst($lang), 'set', $currentName);
-            $criteria = new \EMongoCriteria();
-            $criteria->addCond('coachId', '==', (string)$this->_id);
-            Result::model()->updateAll($modifier, $criteria);
-            Team::model()->updateAll($modifier, $criteria);
-        }
-
         // If any of isApproved properties is changed need to assign or revoke role
-        if ($this->attributeHasChanged('isApprovedStudent')) {
+        if ($this->isAttributeChanged('isApprovedStudent')) {
             if ($this->isApprovedStudent) {
-                if (!\yii::app()->authManager->checkAccess(User::ROLE_STUDENT, (string)$this->_id)) {
-                    \yii::app()->authManager->assign(User::ROLE_STUDENT, (string)$this->_id);
+                if (!\yii::$app->authManager->checkAccess($this->id, User::ROLE_STUDENT)) {
+                    \yii::$app->authManager->assign(User::ROLE_STUDENT, $this->id);
                 }
             } else {
-                \yii::app()->authManager->revoke(User::ROLE_STUDENT, (string)$this->_id);
+                \yii::$app->authManager->revoke(User::ROLE_STUDENT, $this->id);
             }
         }
-        if ($this->attributeHasChanged('isApprovedCoach')) {
+        if ($this->isAttributeChanged('isApprovedCoach')) {
             if ($this->isApprovedCoach) {
-                if (!\yii::app()->authManager->checkAccess(User::ROLE_COACH, (string)$this->_id)) {
-                    \yii::app()->authManager->assign(User::ROLE_COACH, (string)$this->_id);
+                if (!\yii::$app->authManager->checkAccess($this->id, User::ROLE_COACH)) {
+                    \yii::$app->authManager->assign(User::ROLE_COACH, $this->id);
                 }
             } else {
-                \yii::app()->authManager->revoke(User::ROLE_COACH, (string)$this->_id);
+                \yii::$app->authManager->revoke(User::ROLE_COACH, $this->id);
             }
         }
-        if ($this->attributeHasChanged('isApprovedCoordinator')) {
+        if ($this->isAttributeChanged('isApprovedCoordinator')) {
             if ($this->isApprovedCoordinator) {
-                if (!\yii::app()->authManager->checkAccess($this->coordinator, (string)$this->_id)) {
-                    \yii::app()->authManager->assign($this->coordinator, (string)$this->_id);
+                if (!\yii::$app->authManager->checkAccess($this->id, $this->coordinator)) {
+                    \yii::$app->authManager->assign($this->coordinator, $this->id);
                 }
             } else {
-                \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_STATE, (string)$this->_id);
-                \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_REGION, (string)$this->_id);
-                \yii::app()->authManager->revoke(User::ROLE_COORDINATOR_UKRAINE, (string)$this->_id);
+                \yii::$app->authManager->revoke(User::ROLE_COORDINATOR_STATE, $this->id);
+                \yii::$app->authManager->revoke(User::ROLE_COORDINATOR_REGION, $this->id);
+                \yii::$app->authManager->revoke(User::ROLE_COORDINATOR_UKRAINE, $this->id);
             }
         }
 
-        parent::afterSave();
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * Returns user's school
+     * @return School
+     */
+    public function getSchool()
+    {
+        $school = $this->hasOne(School::class, ['id' => 'schoolId'])->one();
+        if ($school === null) {
+            $school = new School();
+        }
+        return $school;
+    }
+
+    /**
+     * Returns user's settings
+     *
+     * @return User\Settings
+     */
+    public function getSettings()
+    {
+        $settings = $this->hasOne(User\Settings::class, ['userId' => 'id'])->one();
+        if ($settings === null) {
+            $settings = new User\Settings;
+        }
+        return $settings;
+    }
+
+    /**
+     * Returns user's additional info
+     *
+     * @return User\Info
+     */
+    public function getInfo()
+    {
+        if ($this->_info === null) {
+            switch (static::$useLanguage) {
+                case 'en':
+                case 'uk':
+                    $lang = static::$useLanguage;
+                    break;
+                default:
+                    $lang = 'uk';
+                    break;
+            }
+            if ($this->type === static::ROLE_STUDENT) {
+                $this->_info = User\InfoStudent::findOne([
+                    'userId' => $this->id,
+                    'lang'   => $lang,
+                ]);
+                if ($this->_info === null) {
+                    $this->_info = new User\InfoStudent();
+                    $this->_info->setAttributes(array(
+                        'userId'    => $this->id,
+                        'lang'      => $lang,
+                    ), false);
+                }
+            } elseif ($this->type === static::ROLE_COACH) {
+                $this->_info = User\InfoCoach::findOne([
+                    'userId' => $this->id,
+                    'lang'   => $lang,
+                ]);
+                if ($this->_info === null) {
+                    $this->_info = new User\InfoCoach();
+                    $this->_info->setAttributes(array(
+                        'userId'    => $this->id,
+                        'lang'      => $lang,
+                    ), false);
+                }
+            } else {
+                $this->_info = null;
+            }
+        }
+        return $this->_info;
+    }
+
+    /**
+     * Returns user who can approve this user's coach/coordinator status
+     *
+     * @return User
+     */
+    public function getApprover()
+    {
+        $key = 'approver';
+        if (!$this->cache->get($key)) {
+
+            // Get approver for coordinator
+            if (!empty($this->coordinator) && !$this->isApprovedCoordinator) {
+
+                switch ($this->coordinator) {
+                    case static::ROLE_COORDINATOR_REGION:
+                    case static::ROLE_COORDINATOR_UKRAINE:
+                        $approver = User::findOne([
+                            'isApprovedCoordinator' => true,
+                            'coordinator'           => static::ROLE_COORDINATOR_UKRAINE,
+                        ]);
+                        break;
+                    case static::ROLE_COORDINATOR_STATE:
+                        $approver = User::find()
+                            ->alias('user')
+                            ->innerJoin(
+                                ['school' => School::tableName()],
+                                'school.id = user.schoolId AND school.region = :region',
+                                [':region' => $this->school->region]
+                            )
+                            ->andWhere([
+                                'isApprovedCoordinator' => true,
+                                'coordinator'           => static::ROLE_COORDINATOR_REGION,
+                            ])
+                            ->one()
+                        ;
+                        break;
+                }
+            }
+
+            // Get approver for coach
+            elseif (($this->type === static::ROLE_COACH) && (!$this->isApprovedCoach)) {
+                $approver = User::find()
+                    ->alias('user')
+                    ->innerJoin(
+                        ['school' => School::tableName()],
+                        'school.id = user.schoolId AND school.state = :state',
+                        [':state' => $this->school->state]
+                    )
+                    ->andWhere([
+                        'isApprovedCoordinator' => true,
+                        'coordinator'           => static::ROLE_COORDINATOR_STATE,
+                    ])
+                    ->one()
+                ;
+
+                // If there is no state coordinator than try regional one
+                if ($approver === null) {
+                    $approver = User::find()
+                        ->alias('user')
+                        ->innerJoin(
+                            ['school' => School::tableName()],
+                            'school.id = user.schoolId AND school.region = :region',
+                            [':region' => $this->school->region]
+                        )
+                        ->andWhere([
+                            'isApprovedCoordinator' => true,
+                            'coordinator'           => static::ROLE_COORDINATOR_REGION,
+                        ])
+                        ->one()
+                    ;
+                }
+            }
+
+            // Otherwise there is no approver
+            else {
+                $approver = null;
+            }
+
+            $this->cache->set($key, $approver, SECONDS_IN_HOUR);
+        }
+        return $this->cache->get($key);
+    }
+
+    /**
+     * Returns user's photo
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPhoto()
+    {
+        return $this->hasOne(User\Photo::class, ['userId' => 'id']);
+    }
+
+    /**
+     * Implode all name fields into one field
+     */
+    public function populateNameTags()
+    {
+        $parts = array_filter([
+            $this->firstNameUk,
+            $this->middleNameUk,
+            $this->lastNameUk,
+            $this->firstNameEn,
+            $this->middleNameEn,
+            $this->lastNameEn,
+        ]);
+        sort($parts);
+        $this->nameTags = mb_strtolower(implode(' ', $parts));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['id' => $id]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        // Get access token
+        $parsed = User\AccessToken\RestApi::parse($token);
+        $accessToken = User\AccessToken\RestApi::findOne([
+            'firmHash'  => $parsed->firmHash,
+            'token'     => $parsed->token,
+        ]);
+
+        // Get user
+        if ($accessToken) {
+            $user = static::findOne($accessToken->userId);
+        } else {
+            $user = null;
+        }
+        return $user;
+    }
+
+    /**
+     * Finds user by password reset token
+     *
+     * @param string $token password reset token
+     * @return static|null
+     */
+    public static function findByPasswordResetToken($token)
+    {
+        if (!static::isPasswordResetTokenValid($token)) {
+            return null;
+        }
+
+        return static::findOne([
+            'passwordResetToken' => $token,
+        ]);
+    }
+
+    /**
+     * Finds out if password reset token is valid
+     *
+     * @param string $token password reset token
+     * @return boolean
+     */
+    public static function isPasswordResetTokenValid($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $expire = \yii::$app->params['user.passwordResetTokenExpire'];
+        return $timestamp + $expire >= time();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey()
+    {
+        return $this->authKey;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    /**
+     * Validates password
+     * @param string $password password to validate
+     * @return boolean if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        $isValid = \yii::$app->security->validatePassword($password, $this->passwordHash);
+        if (!$isValid) {
+            $this->addError('password', \yii::t('app', 'Неверный пароль.'));
+        }
+        return $isValid;
+    }
+
+    /**
+     * Generates "remember me" authentication key
+     */
+    public function generateAuthKey()
+    {
+        $this->authKey = \yii::$app->security->generateRandomString();
+    }
+
+    /**
+     * Generates new password reset token
+     */
+    public function generatePasswordResetToken()
+    {
+        $this->passwordResetToken = \yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    /**
+     * Removes password reset token
+     */
+    public function removePasswordResetToken()
+    {
+        $this->passwordResetToken = null;
+    }
+
+    /**
+     * Returns email token (is used for validation)
+     * @return string
+     */
+    public function getEmailToken()
+    {
+        return md5($this->id . '3vbtQXcDQeMJAVhXypk5q9AV9EsN' . $this->email . $this->timeCreated);
     }
 
     /**
      * Set user's password
-     *
      * @param string $password
      * @param string $passwordRepeat
      */
@@ -520,63 +544,18 @@ class User extends Person
 
         // Set password hash if password is valid
         if (!$this->hasErrors('password')) {
-            $this->hash = crypt($password, '$6$rounds=5000$jIJM938Jwlfk)394kKkfweofk$');
+            $this->passwordHash = crypt($password, '$6$rounds=5000$jIJM938Jwlfk)394kKkfweofk$');
         }
     }
 
     /**
      * Check inputed password
-     *
      * @param string $password
      * @return bool
      */
     public function checkPassword($password)
     {
-        return (crypt($password, $this->hash) === $this->hash);
-    }
-
-    /**
-     * After delete action
-     */
-    protected function afterDelete()
-    {
-        $userId = (string)$this->_id;
-        $criteria = new \EMongoCriteria();
-        $criteria->addCond('userId', '==', $userId);
-
-        // Delete settings
-        if (!$this->settings->isNewRecord) {
-            $this->settings->delete();
-        }
-
-        // Delete additional info
-        if (!$this->info->isNewRecord) {
-            $this->info->delete();
-        }
-
-        // Delete teams where this user is coach
-        $teamsToDelete = Team::model()->findAllByAttributes(array(
-            'coachId' => $userId,
-        ));
-        foreach ($teamsToDelete as $team) {
-            $team->delete();
-        }
-
-        // Remove user's ID from memberIds of teams user is in
-        $teams = Team::model()->findAllByAttributes(array(
-            'memberIds' => $userId,
-        ));
-        foreach ($teams as $team) {
-            $team->scenario = Team::SC_USER_DELETING;
-            $team->memberIds = array_diff($team->memberIds, (array)$userId);
-            $team->save();
-        }
-
-        // Delete all question and answers related to this user
-        Qa\Question::model()->deleteAll($criteria);
-        Qa\Answer::model()->deleteAll($criteria);
-
-        parent::afterDelete();
+        return (crypt($password, $this->passwordHash) === $this->passwordHash);
     }
 
 }

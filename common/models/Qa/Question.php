@@ -2,79 +2,49 @@
 
 namespace common\models\Qa;
 
+use \common\models\BaseActiveRecord;
 use \common\models\User;
+use \yii\helpers\ArrayHelper;
 
 /**
  * Question
  *
- * @property-read User $user
+ * @property int    $userId
+ * @property string $title
+ * @property string $content
+ * @property int    $timeCreated
+ * @property int    $timeUpdated
+ *
+ * @property-read Answer[]  $answers
+ * @property-read int       $answersCount
+ * @property-read string[]  $tags
+ * @property-read User      $user
  */
-class Question extends \common\ext\MongoDb\Document
+class Question extends BaseActiveRecord
 {
-    const SC_AFTER_DELETE_TAG = 'afterDeleteTag';
 
     /**
-     * User ID
-     * @var string
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public $userId;
-
-    /**
-     * Title
-     * @var string
-     */
-    public $title;
-
-    /**
-     * Content
-     * @var string
-     */
-    public $content;
-
-    /**
-     * List of assigned tags
-     * @var array
-     */
-    public $tagList = array();
-
-    /**
-     * Count of given answers
-     * @var int
-     * @see Answer::afterSave()
-     */
-    public $answerCount = 0;
-
-    /**
-     * Date created
-     * @var int
-     */
-    public $dateCreated;
-
-    /**
-     * Answer author
-     * @var User
-     */
-    protected $_user;
-
-    /**
-     * Returns answer author
-     *
-     * @return Question
-     */
-    public function getUser()
+    public static function tableName()
     {
-        if ($this->_user === null) {
-            $this->_user = User::model()->findByPk(new \MongoId($this->userId));
-        }
-        return $this->_user;
+        return '{{%qa_question}}';
+    }
+
+    /**
+     * Returns a list of behaviors that this component should behave as
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            $this->behaviorTimestamp(),
+        ];
     }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
@@ -83,10 +53,18 @@ class Question extends \common\ext\MongoDb\Document
             'userId'        => \yii::t('app', 'User ID'),
             'title'         => \yii::t('app', 'Title'),
             'content'       => \yii::t('app', 'Content'),
-            'tagList'       => \yii::t('app', 'Assigned tags'),
             'answerCount'   => \yii::t('app', 'Answer count'),
-            'dateCreated'   => \yii::t('app', 'Registration date'),
+            'timeCreated'   => \yii::t('app', 'Registration date'),
         ));
+    }
+
+    /**
+     * Returns answer author
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'userId']);
     }
 
     /**
@@ -96,89 +74,62 @@ class Question extends \common\ext\MongoDb\Document
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('userId, title, content, dateCreated', 'required'),
-            array('tagList', 'required', 'except' => static::SC_AFTER_DELETE_TAG),
-            array('title', 'length', 'max' => 300),
-            array('content', 'length', 'max' => 5000),
-        ));
-    }
-
-	/**
-	 * This returns the name of the collection for this class
-     *
-     * @return string
-	 */
-	public function getCollectionName()
-	{
-		return 'qa.question';
-	}
-
-    /**
-     * List of collection indexes
-     *
-     * @return array
-     */
-    public function indexes()
-    {
-        return array_merge(parent::indexes(), array(
-            'dateCreated_tagList' => array(
-                'key' => array(
-                    'dateCreated'   => \EMongoCriteria::SORT_DESC,
-                    'tagList'       => \EMongoCriteria::SORT_ASC,
-                ),
-            ),
-            'userId_dateCreated' => array(
-                'key' => array(
-                    'userId'        => \EMongoCriteria::SORT_ASC,
-                    'dateCreated'   => \EMongoCriteria::SORT_DESC,
-                ),
-            ),
-        ));
-    }
-
-    /**
-     * Before validate action
-     *
-     * @return bool
-     */
-    protected function beforeValidate()
-    {
-        if (!parent::beforeValidate()) return false;
-
-        // Convert to string
-        $this->userId = (string)$this->userId;
-
-        // Filter tags
-        if (!is_array($this->tagList)) {
-            $this->tagList = array();
-        }
-        $this->tagList = array_filter(array_unique($this->tagList));
-
-        // Set created date
-        if ($this->dateCreated == null) {
-            $this->dateCreated = time();
-        }
-
-        return true;
+        return array_merge(parent::rules(), [
+            [['userId', 'title', 'content'], 'required'],
+            ['title', 'string', 'max' => 300],
+            ['content', 'string', 'max' => 5000],
+        ]);
     }
 
     /**
      * After save action
+     * @param bool $insert
+     * @param array $changedAttributes
      */
-    protected function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
-        if ($this->_isFirstTimeSaved) {
+        if ($insert) {
 
             // Send an email notification about new question
-            \yii::app()->cli->runCommand('email', 'newQuestionNotify', array(
-                'questionId' => (string)$this->_id,
-            ), array(), true);
-            
+            \yii::$app->cli->runCommand('email', 'newQuestionNotify', ['questionId' => $this->id], [], true);
         }
 
-        parent::afterSave();
+        parent::afterSave($insert, $changedAttributes);
     }
 
+    /**
+     * Returns related answers
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnswers()
+    {
+        return $this->hasMany(Answer::class, ['questionId' => 'id']);
+    }
+
+    /**
+     * Returns number of related answers
+     * @return int
+     */
+    public function getAnswersCount()
+    {
+        return (int)$this->getAnswers()->count();
+    }
+
+    /**
+     * Returns list of related tags
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTags()
+    {
+        $tags = Tag::find()
+            ->alias('tag')
+            ->select('tag.name')
+            ->innerJoin(['rel' => QuestionTagRel::tableName()], 'rel.tagId = tag.id')
+            ->andWhere(['rel.questionId' => $this->id])
+            ->asArray()
+            ->all()
+        ;
+        return ArrayHelper::getColumn($tags, 'name');
+    }
 
 }

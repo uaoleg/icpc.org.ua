@@ -2,56 +2,32 @@
 
 namespace common\models;
 
-abstract class Person extends \common\ext\MongoDb\Document
+/**
+ * Person (student or coach)
+ *
+ * @property string $firstNameUk
+ * @property string $middleNameUk
+ * @property string $lastNameUk
+ * @property string $firstNameEn
+ * @property string $middleNameEn
+ * @property string $lastNameEn
+ * @property string $email
+ * @property int    $timeCreated
+ * @property int    $timeUpdated
+ */
+abstract class Person extends BaseActiveRecord
 {
 
     /**
-     * First name in Ukrainian
-     * @var string
+     * Returns a list of behaviors that this component should behave as
+     * @return array
      */
-    public $firstNameUk;
-
-    /**
-     * Middle name in Ukrainian
-     * @var string
-     */
-    public $middleNameUk;
-
-    /**
-     * Last name in Ukrainian
-     * @var string
-     */
-    public $lastNameUk;
-
-    /**
-     * First name in English
-     * @var string
-     */
-    public $firstNameEn;
-
-    /**
-     * Middle name in English
-     * @var string
-     */
-    public $middleNameEn;
-
-    /**
-     * Last name in English
-     * @var string
-     */
-    public $lastNameEn;
-
-    /**
-     * Contact email
-     * @var string
-     */
-    public $email;
-
-    /**
-     * Date created
-     * @var int
-     */
-    public $dateCreated;
+    public function behaviors()
+    {
+        return [
+            $this->behaviorTimestamp(),
+        ];
+    }
 
     /**
      * Returns first name in appropriate language
@@ -60,7 +36,7 @@ abstract class Person extends \common\ext\MongoDb\Document
      */
     public function getFirstName()
     {
-        switch ($this->useLanguage) {
+        switch (static::$useLanguage) {
             default:
             case 'uk':
                 return $this->firstNameUk;
@@ -76,7 +52,7 @@ abstract class Person extends \common\ext\MongoDb\Document
      */
     public function getMiddleName()
     {
-        switch ($this->useLanguage) {
+        switch (static::$useLanguage) {
             default:
             case 'uk':
                 return $this->middleNameUk;
@@ -92,7 +68,7 @@ abstract class Person extends \common\ext\MongoDb\Document
      */
     public function getLastName()
     {
-        switch ($this->useLanguage) {
+        switch (static::$useLanguage) {
             default:
             case 'uk':
                 return $this->lastNameUk;

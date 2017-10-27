@@ -1,0 +1,8 @@
+# global codeception file to run tests from all apps
+include:
+    - console
+paths:
+    log: console/runtime/logs
+settings:
+    colors: true
+    memory_limit: 10M

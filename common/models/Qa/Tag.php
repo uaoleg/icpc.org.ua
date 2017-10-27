@@ -2,50 +2,43 @@
 
 namespace common\models\Qa;
 
+use \common\models\BaseActiveRecord;
+
 /**
  * Question tag
  *
+ * @property string $name
+ * @property string $desc
+ * @property int    $timeCreated
+ * @property int    $timeUpdated
+ *
  * @property-read int $questionCount
  */
-class Tag extends \common\ext\MongoDb\Document
+class Tag extends BaseActiveRecord
 {
 
     /**
-     * Tag name
-     * @var string
+     * Declares the name of the database table associated with this AR class
+     * @return string
      */
-    public $name;
-
-    /**
-     * Tag description
-     * @var string
-     */
-    public $desc;
-
-    /**
-     * Date created
-     * @var int
-     */
-    public $dateCreated;
-
-    /**
-     * Returns the number of questions with this tag
-     *
-     * @return int
-     */
-    public function getQuestionCount()
+    public static function tableName()
     {
-        return Question::model()->countByAttributes(array(
-            'tagList' => $this->name
-        ));
+        return '{{%qa_tag}}';
+    }
+
+    /**
+     * Returns a list of behaviors that this component should behave as
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            $this->behaviorTimestamp(),
+        ];
     }
 
     /**
      * Returns the attribute labels.
-     *
-     * Note, in order to inherit labels defined in the parent class, a child class needs to
-     * merge the parent labels with child labels using functions like array_merge().
-     *
      * @return array attribute labels (name => label)
      */
     public function attributeLabels()
@@ -53,8 +46,20 @@ class Tag extends \common\ext\MongoDb\Document
         return array_merge(parent::attributeLabels(), array(
             'name'          => \yii::t('app', 'Name'),
             'desc'          => \yii::t('app', 'Desc'),
-            'dateCreated'   => \yii::t('app', 'Registration date'),
+            'timeCreated'   => \yii::t('app', 'Registration date'),
         ));
+    }
+
+    /**
+     * Returns the number of questions with this tag
+     * @return int
+     */
+    public function getQuestionCount()
+    {
+        return (int)Question::find()
+            ->andWhere(['tagList' => $this->name])
+            ->count()
+        ;
     }
 
     /**
@@ -64,80 +69,30 @@ class Tag extends \common\ext\MongoDb\Document
      */
     public function rules()
     {
-        return array_merge(parent::rules(), array(
-            array('name, dateCreated', 'required'),
-            array('name', 'unique'),
-            array('name', 'length', 'max' => 100),
-            array('desc', 'length', 'max' => 5000),
-        ));
-    }
+        return array_merge(parent::rules(), [
+            ['name', 'required'],
+            ['name', 'unique'],
+            ['name', 'string', 'max' => 100],
 
-	/**
-	 * This returns the name of the collection for this class
-     *
-     * @return string
-	 */
-	public function getCollectionName()
-	{
-		return 'qa.tag';
-	}
-
-    /**
-     * List of collection indexes
-     *
-     * @return array
-     */
-    public function indexes()
-    {
-        return array_merge(parent::indexes(), array(
-            'name' => array(
-                'key' => array(
-                    'name' => \EMongoCriteria::SORT_ASC,
-                ),
-                'unique' => true,
-            ),
-        ));
+            ['desc', 'string', 'max' => 5000],
+        ]);
     }
 
     /**
-     * Before validate action
-     *
+     * Before save action
+     * @param bool $insert
      * @return bool
      */
-    protected function beforeValidate()
+    public function beforeSave($insert)
     {
-        if (!parent::beforeValidate()) {
+        if (!parent::beforeSave($insert)) {
             return false;
         }
 
-        // Convert to string
+        // Tag name to lower case
         $this->name = mb_strtolower($this->name);
-
-        // Set created date
-        if ($this->dateCreated == null) {
-            $this->dateCreated = time();
-        }
 
         return true;
     }
-
-    /**
-     * After delete action
-     */
-    protected function afterDelete()
-    {
-        // After tag is deleted we need to delete it from tagLists of questions
-        $questions = Question::model()->findAllByAttributes(array(
-            'tagList' => $this->name,
-        ));
-        foreach ($questions as $question) {
-            $question->scenario = Question::SC_AFTER_DELETE_TAG;
-            $question->tagList = array_diff($question->tagList, (array)$this->name);
-            $question->save();
-        }
-
-        parent::afterDelete();
-    }
-
 
 }

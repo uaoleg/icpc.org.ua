@@ -2,7 +2,6 @@
 
 namespace common\components;
 
-use \common\models\Geo;
 use \common\models\User;
 
 /**
@@ -10,7 +9,7 @@ use \common\models\User;
  *
  * @property User $user
  */
-class Rbac extends \CApplicationComponent
+class Rbac extends \yii\base\Component
 {
 
     /**
@@ -81,8 +80,8 @@ class Rbac extends \CApplicationComponent
     public function getUser()
     {
         if ($this->_user === null) {
-            if (\yii::app()->getComponent('user') !== null) {
-                $this->setUser(\yii::app()->user->getInstance());
+            if (\yii::$app->user && \yii::$app->user->identity) {
+                $this->setUser(\yii::$app->user->identity);
             } else {
                 $this->setUser(new User());
             }
@@ -99,224 +98,8 @@ class Rbac extends \CApplicationComponent
      */
     public function checkAccess($operation, array $params = array())
     {
-        return \yii::app()->authManager->checkAccess($operation, (string)$this->user->_id, $params);
-    }
-
-    /**
-     * Biz rule to suspend/activate students
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleStudentSetStatus(array $params)
-    {
-        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
-    }
-
-    /**
-     * Biz rule to view student's full profile
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleStudentViewFull(array $params)
-    {
-        $user = $params['user'];
-        if ($user->type !== User::ROLE_STUDENT) {
-            return false;
-        } elseif ($this->checkAccess(User::ROLE_COORDINATOR_STATE)) {
-            return true;
-        } else {
-            return ($this->user->schoolId === $user->schoolId);
-        }
-    }
-
-    /**
-     * Biz rule for activating/suspending of coach
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleCoachSetStatus(array $params)
-    {
-        $user = $params['user'];
-        if ($this->checkAccess(User::ROLE_COORDINATOR_UKRAINE)) {
-            return true;
-        } elseif ($this->checkAccess(User::ROLE_COORDINATOR_REGION)) {
-            return $this->_user->school->region === $user->school->region;
-        } elseif ($this->checkAccess(User::ROLE_COORDINATOR_STATE)) {
-            return $this->_user->school->state === $user->school->state;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Biz rule for activating/suspending of coordinators
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleCoordinatorSetStatus(array $params)
-    {
-        $user = $params['user'];
-        if ((string)$this->user->_id === (string)$user->_id) {
-            return false;
-        } elseif ($user->coordinator === User::ROLE_COORDINATOR_UKRAINE) {
-            return $this->checkAccess(User::ROLE_COORDINATOR_UKRAINE);
-        } elseif ($user->coordinator === User::ROLE_COORDINATOR_REGION) {
-            return $this->checkAccess(User::ROLE_COORDINATOR_UKRAINE);
-        } elseif ($user->coordinator === User::ROLE_COORDINATOR_STATE) {
-            return $this->checkAccess(User::ROLE_COORDINATOR_REGION);
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Biz rule for reading news
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleNewsRead(array $params)
-    {
-        $news = $params['news'];
-        if ($news->isPublished) {
-            return true;
-        } else {
-            return $this->bizRuleNewsUpdate($params);
-        }
-    }
-
-    /**
-     * Biz rule for edit news
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleNewsUpdate(array $params)
-    {
-        $geo = $params['news']->geo;
-
-        // Any news
-        if ($this->checkAccess(User::ROLE_COORDINATOR_UKRAINE)) {
-            return true;
-        }
-
-        // Region news
-        elseif (in_array($geo, Geo\Region::model()->getConstantList('NAME_'))) {
-            return (($geo === $this->user->school->region) && ($this->checkAccess(User::ROLE_COORDINATOR_REGION)));
-        }
-
-        // State news
-        elseif (in_array($geo, Geo\State::model()->getConstantList('NAME_'))) {
-            $region = Geo\State::get($geo)->region->name;
-            $stateMatch = (($geo === $this->user->school->state) && ($this->checkAccess(User::ROLE_COORDINATOR_STATE)));
-            $regionMatch = (($region === $this->user->school->region) && ($this->checkAccess(User::ROLE_COORDINATOR_REGION)));
-            return (($stateMatch) || ($regionMatch));
-        }
-
-        // Failed
-        else {
-            return false;
-        }
-    }
-
-    /**
-     * Biz rule for edit team
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleTeamUpdate(array $params)
-    {
-        $team = $params['team'];
-
-        return ((string)$this->user->_id === $team->coachId) && ($team->isOutOfCompetition);
-    }
-
-    /**
-     * Biz rule for syncing team from baylor
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleTeamSync(array $params)
-    {
-        $team = $params['team'];
-
-        return ((string)$this->user->_id === $team->coachId) && (!$team->isOutOfCompetition);
-    }
-
-    /**
-     * Biz rule for deleting team
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleTeamDelete(array $params)
-    {
-        return ((string)$this->user->_id === $params['team']->coachId);
-    }
-
-    /**
-     * Biz rule for set team phase
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleTeamUpdatePhase(array $params)
-    {
-        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
-    }
-
-    /**
-     * Export all teams (csv)
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleTeamExportAll(array $params)
-    {
-        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
-    }
-
-    /**
-     * Export team's form (html)
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleTeamExportOne(array $params)
-    {
-        if ((string)$this->user->_id === $params['team']->coachId) {
-            return true;
-        } else {
-            return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
-        }
-    }
-
-    /**
-     * Export users (csv)
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleUserExport(array $params)
-    {
-        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
-    }
-
-    /**
-     * Biz rule to update team's league
-     *
-     * @param array $params
-     * @return bool
-     */
-    public function bizRuleTeamLeagueUpdate(array $params)
-    {
-        return $this->checkAccess(User::ROLE_COORDINATOR_STATE);
+throw new \Exception;
+        return \yii::$app->authManager->checkAccess($this->user->id, $operation, $params);
     }
 
 }
