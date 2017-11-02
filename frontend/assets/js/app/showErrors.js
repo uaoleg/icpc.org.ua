@@ -6,11 +6,11 @@ function appShowErrors(errors, $context) {
     $('.form-group .help-block', $context).remove();
     if (errors) {
         $.each(errors, function(key, value) {
-            var $input,
-                $group,
-                $help = $('<div>').addClass('help-block').html(value);
+            var $input;
+            var $group;
+            var $help = $('<div>').addClass('help-block').html(value);
             if (key === 'recaptcha') {
-                Recaptcha.reload();
+                grecaptcha.reset();
                 $input = $('#recaptcha_widget_div');
             } else {
                 $input = $('[name=' + key + ']', $context);

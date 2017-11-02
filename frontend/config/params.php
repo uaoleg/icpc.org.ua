@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'recaptcha.publicKey' => '6LflltkSAAAAAJWYOWCtYz0LxP11tEubd0sI6WZB',
+    'recaptcha.publicKey' => '6LdB1ecSAAAAAH8JXgEzHGAw9UilNsNZLH9qikFJ',
     'recaptcha.language'  => 'en',
     'recaptcha.theme'     => 'white',
 ];

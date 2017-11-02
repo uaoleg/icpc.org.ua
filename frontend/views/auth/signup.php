@@ -6,6 +6,8 @@ use \common\models\User;
 use \yii\helpers\Html;
 use \yii\helpers\Url;
 
+$this->registerJsFile('//www.google.com/recaptcha/api.js?hl=' . \yii::$app->language, ['position' => \yii\web\View::POS_HEAD]);
+
 ?>
 
 <script type="text/javascript">
