@@ -39,10 +39,10 @@ class SystemController extends BaseController
     public function actionChmod()
     {
         echo "Changing files mode...\n";
-        chmod(\yii::getPathOfAlias('common.runtime'), 0777);
-        chmod(\yii::getPathOfAlias('common.runtime.session'), 0777);
-        chmod(\yii::getPathOfAlias('console.runtime'), 0777);
-        chmod(\yii::getPathOfAlias('web.runtime'), 0777);
+        chmod(\yii::getAlias('@common/runtime'), 0777);
+        chmod(\yii::getAlias('@common/runtime/session'), 0777);
+        chmod(\yii::getAlias('@console/runtime'), 0777);
+        chmod(\yii::getAlias('@frontend/runtime'), 0777);
         echo "Done\n";
     }
 
@@ -68,7 +68,7 @@ class SystemController extends BaseController
         $envError = false;
 
         // Dirs
-        $dir = \yii::getPathOfAlias('web.runtime');
+        $dir = \yii::getAlias('@frontend/runtime');
         if (!is_writable($dir)) {
             $envError = true;
             echo "Error: $dir is not writable.";

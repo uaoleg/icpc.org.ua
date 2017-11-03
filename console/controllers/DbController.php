@@ -23,7 +23,7 @@ class DbController extends BaseController
         // Create backup
         echo "Dumping DB...\n";
         $dumpFolder = uniqid('mongodump-' . $name);
-        $dumpPath = \yii::getPathOfAlias('console.runtime') . DIRECTORY_SEPARATOR . $dumpFolder;
+        $dumpPath = \yii::getAlias('@console/runtime') . DIRECTORY_SEPARATOR . $dumpFolder;
         if (!is_dir($dumpPath)) {
             mkdir($dumpPath);
         }
@@ -34,7 +34,7 @@ class DbController extends BaseController
 
         // Archive
         echo "Archiving...\n";
-        $zipPath = \yii::getPathOfAlias('root.dumps') . DIRECTORY_SEPARATOR . "{$name}.zip";
+        $zipPath = \yii::getAlias('@common/runtime') . DIRECTORY_SEPARATOR . "{$name}.zip";
         \yii::$app->archive->compress($dumpPath, $zipPath);
 
         // Delete the dump

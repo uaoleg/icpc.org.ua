@@ -23,6 +23,7 @@
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-jui": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "*",
+        "anlutro/curl": "*",
         "baibaratsky/yii2-rollbar": "1.5.*",
         "google/recaptcha": "~1.1",
         "guzzlehttp/guzzle": "~6.0",

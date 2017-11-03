@@ -2,9 +2,9 @@
 
 namespace common\components;
 
-use \Sunra\PhpSimple\HtmlDomParser;
 use \anlutro\cURL\cURL as Curl;
 use \anlutro\cURL\Request as CurlRequest;
+use \PHPHtmlParser\Dom;
 
 class Baylor extends \yii\base\Component
 {
@@ -31,7 +31,7 @@ class Baylor extends \yii\base\Component
      */
     public function import($email, $password)
     {
-        $this->cookiesFile = \yii::getPathOfAlias('common.runtime') . '/' . uniqid('', true);
+        $this->cookiesFile = \yii::getAlias('@common/runtime') . '/' . uniqid('', true);
         $this->curl = new Curl;
 
         $this->_login($email, $password);
@@ -59,7 +59,7 @@ class Baylor extends \yii\base\Component
      */
     public function importTeam($email, $password, $team_id)
     {
-        $this->cookiesFile = \yii::getPathOfAlias('common.runtime') . '/' . uniqid('', true);
+        $this->cookiesFile = \yii::getAlias('@common/runtime') . '/' . uniqid('', true);
         $this->curl = new Curl;
 
         $this->_login($email, $password);
@@ -80,7 +80,7 @@ class Baylor extends \yii\base\Component
 
     public function getTeamList($email, $password)
     {
-        $this->cookiesFile = \yii::getPathOfAlias('common.runtime') . '/' . uniqid('', true);
+        $this->cookiesFile = \yii::getAlias('@common/runtime') . '/' . uniqid('', true);
         $this->curl = new Curl;
 
         $this->_login($email, $password);
@@ -101,12 +101,10 @@ class Baylor extends \yii\base\Component
 
     public function _parseTeamList()
     {
-        $result = array();
+        $result = [];
 
         // Import HTML DOM Parser
-        \yii::import('common.lib.HtmlDomParser.*');
-        require_once('HtmlDomParser.php');
-        $parser = new HtmlDomParser();
+        $parser = new Dom;
 
         //Get Teams list
         $getCurl = $this->curl->newRequest('POST', $this->url . '/private/team/yourTeamList.icpc', array(
@@ -138,7 +136,10 @@ class Baylor extends \yii\base\Component
         $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
         $xml = simplexml_load_string($response->body, 'SimpleXMLElement', LIBXML_NOCDATA);
         $elements = (array)$xml->changes->update;
-        $html = $parser->str_get_html($elements[1]);
+        if (!isset($elements[1])) {
+            return $result;
+        }
+        $html = $parser->load($elements[1]);
         $rows = $html->find('a.team');
         foreach ($rows as $item) {
             $id = substr($item->href, strlen('/private/team/'));
@@ -163,9 +164,7 @@ class Baylor extends \yii\base\Component
         $result = array();
 
         // Import HTML DOM Parser
-        \yii::import('common.lib.HtmlDomParser.*');
-        require_once('HtmlDomParser.php');
-        $parser = new HtmlDomParser();
+        $parser = new Dom;
 
         $teams = $this->_parseTeamList();
         $result['teams'] = $teams;
@@ -178,7 +177,7 @@ class Baylor extends \yii\base\Component
 
             $getCurl = $this->curl->newRequest('get', $this->url . $url);
             $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
-            $html = $parser->str_get_html($response->body);
+            $html = $parser->load($response->body);
             $header = $html->find('#header', 0);
 
             if ($header !== null) {
@@ -261,10 +260,8 @@ class Baylor extends \yii\base\Component
         $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
 
         // Import HTML DOM Parser
-        \yii::import('common.lib.HtmlDomParser.*');
-        require_once('HtmlDomParser.php');
-        $parser = new HtmlDomParser();
-        $html = $parser->str_get_html($response->body);
+        $parser = new Dom;
+        $html = $parser->load($response->body);
 
         $header = $html->find('#header', 0);
         if ($header !== null) {

@@ -113,7 +113,7 @@ EOD;
         } else {
             $translationsJson = 'translations = {}';
         }
-        file_put_contents(\yii::getPathOfAlias('web.www.js') . "/translations.js", $translationsJson);
+        file_put_contents(\yii::getAlias('@frontend/web/js') . "/translations.js", $translationsJson);
     }
 
     /**

@@ -25,7 +25,7 @@ class Cli extends \yii\base\Component
         }
 
         // Create command
-        $path = \yii::getPathOfAlias('console') . DIRECTORY_SEPARATOR . 'yiic.php';
+        $path = \yii::getAlias('@console') . DIRECTORY_SEPARATOR . 'yiic.php';
         $cmd .= 'php ' . $path . ' ' . $command;
 
         // Add action
@@ -57,7 +57,7 @@ class Cli extends \yii\base\Component
 
         // If need to run in background
         if ($runInBackground) {
-//            $cmd .= ' >> ' . \yii::getPathOfAlias('common.runtime.cli') . '/output.log 2>&1 & echo $!';
+//            $cmd .= ' >> ' . \yii::getAlias('@common/runtime/cli') . '/output.log 2>&1 & echo $!';
             if ($this->isWindows()) {
                 $cmd .= ' > NUL';
             }

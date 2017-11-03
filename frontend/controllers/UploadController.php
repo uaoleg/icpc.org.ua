@@ -238,7 +238,7 @@ class UploadController extends BaseController
                 return;
             }
 
-            $filePath = \yii::getPathOfAlias('common.runtime');
+            $filePath = \yii::getAlias('@common/runtime');
             $fileName = array_pop(explode('/', $uploadedFile->filename));
             $file = fopen($filePath . '/' . $fileName, 'w');
             fwrite($file, $uploadedFile->getBytes());
@@ -305,7 +305,7 @@ class UploadController extends BaseController
             return;
         }
 
-        $filePath = \yii::getPathOfAlias('common.runtime');
+        $filePath = \yii::getAlias('@common/runtime');
         $fileName = array_pop(explode('/', $uploadedFile->filename));
         $file = fopen($filePath . '/' . $fileName, 'w');
         fwrite($file, $uploadedFile->getBytes());
