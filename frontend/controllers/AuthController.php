@@ -435,7 +435,7 @@ class AuthController extends BaseController
     /**
      * After signup page
      */
-    public function actionSignedUp()
+    public function actionSignedup()
     {
         // Get params
         $confirmationId = \yii::$app->request->get('id');
