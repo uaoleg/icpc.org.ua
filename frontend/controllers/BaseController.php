@@ -41,7 +41,7 @@ class BaseController extends \common\controllers\BaseController
                     'value' => $settings->lang,
                 ]));
             } else {
-                $settings->lang = \yii::$app->request->getValue('language');
+                $settings->lang = \yii::$app->request->get('language');
                 $settings->save();
             }
 
