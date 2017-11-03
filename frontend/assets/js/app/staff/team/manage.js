@@ -28,7 +28,7 @@ function appStaffTeamManage(options)
                     $this.prop('disabled', false);
                 } else {
                     if (options.teamId !== '') {
-                        location.href = app.baseUrl + '/team/view/id/' + options.teamId;
+                        location.href = app.baseUrl + '/team/view?id=' + options.teamId;
                     } else {
                         location.href = app.baseUrl + '/team/list';
                     }

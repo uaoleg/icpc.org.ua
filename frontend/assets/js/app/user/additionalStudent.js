@@ -36,7 +36,7 @@ function appUserAdditionalStudent(options) {
                 if (response.errors) {
                     $this.prop('disabled', false);
                 } else {
-                    location.href = app.baseUrl + '/user/additional/lang/' + options.lang;
+                    location.href = app.baseUrl + '/user/additional?lang=' + options.lang;
                 }
             }
         });

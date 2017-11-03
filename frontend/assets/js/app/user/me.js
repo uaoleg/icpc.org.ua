@@ -111,7 +111,7 @@ function appUserMe() {
             $form = $this.closest('.form-horizontal');
         $this.prop('disabled', true);
         $.ajax({
-            url: app.baseUrl + '/user/passwordChange',
+            url: app.baseUrl + '/user/password-change',
             data: {
                 currentPassword: $('[name=currentPassword]').val(),
                 password:        $('[name=password]').val(),
@@ -192,7 +192,7 @@ appUserMe.prototype.initUploader = function () {
         } else {
             $('#uploadPickfiles').prop('disabled', false);
 
-            $('.js-user-photo').prop('src', app.baseUrl + '/user/photo/id/' + response.photoId + '.jpg');
+            $('.js-user-photo').prop('src', app.baseUrl + '/user/photo?id=' + response.photoId + '.jpg');
         }
 
     });

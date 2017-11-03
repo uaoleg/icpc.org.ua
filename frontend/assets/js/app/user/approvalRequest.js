@@ -9,7 +9,7 @@ function appUserApprovalRequest()
             $label = $button.next('.js-user-approval-request-label');
         $button.prop('disabled', true);
         $.ajax({
-            url: app.baseUrl + '/user/approvalRequest',
+            url: app.baseUrl + '/user/approval-request',
             data: {
                 role: $button.data('role')
             },

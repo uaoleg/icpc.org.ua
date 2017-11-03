@@ -10,7 +10,7 @@ function appStaffTeamImport(options)
       $this.prop('disabled', true);
 
       $.ajax({
-         url: app.baseUrl + '/staff/team/postTeams',
+         url: app.baseUrl + '/staff/team/post-teams',
          data: {
             email: $('[name=email]').val(),
             password: $('[name=password]').val()
@@ -51,7 +51,7 @@ function appStaffTeamImport(options)
       $this.prop('disabled', true);
 
       $.ajax({
-         url: app.baseUrl + '/staff/team/postImport',
+         url: app.baseUrl + '/staff/team/post-import',
          data: {
             team:             $('[name=team]').val(),
             email:            $('[name=email]').val(),
@@ -68,7 +68,7 @@ function appStaffTeamImport(options)
 
             } else {
                if (response.teamId !== '' && response.teamId !== undefined) {
-                  location.href = app.baseUrl + '/team/view/id/' + response.teamId;
+                  location.href = app.baseUrl + '/team/view?id=' + response.teamId;
                }
             }
             $this.prop('disabled', false);

@@ -266,7 +266,7 @@ class UserController extends BaseController
         $info->save();
         \yii::$app->user->setState(WebUser::SESSION_INFO_NOT_FULL, $info->hasErrors());
 
-        $info->scenario = '';
+        $info->scenario = User\InfoCoach::SCENARIO_DEFAULT;
         $info->validate();
 
         // Render json
@@ -327,7 +327,7 @@ class UserController extends BaseController
         $info->save();
         \yii::$app->user->setState(WebUser::SESSION_INFO_NOT_FULL, $info->hasErrors());
 
-        $info->scenario = '';
+        $info->scenario = User\InfoStudent::SCENARIO_DEFAULT;
         $info->validate();
 
         // Render json

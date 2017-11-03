@@ -9,7 +9,7 @@ function appStaffTeamSchoolComplete() {
         $this.prop('disabled', true);
 
         $.ajax({
-            url: app.baseUrl + '/staff/team/schoolComplete',
+            url: app.baseUrl + '/staff/team/school-complete',
             data: {
                 shortNameUk:    $('[name=shortNameUk]').val(),
                 fullNameEn:     $('[name=fullNameEn]').val(),

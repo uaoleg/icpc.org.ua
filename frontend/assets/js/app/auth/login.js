@@ -7,7 +7,7 @@ function appAuthLogin() {
         var $thisElement = $(this);
         $thisElement.prop('disabled', true);
         $.ajax({
-            url: app.baseUrl + '/auth/resendEmailConfirmation',
+            url: app.baseUrl + '/auth/resend-email-confirmation',
             data: {
                 confirmationId: $thisElement.data('id')
             },

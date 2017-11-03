@@ -63,7 +63,7 @@ function appStaffNewsEdit() {
         event.preventDefault();
         var imageId = $(this).closest('div').data('image-id');
         $.ajax({
-            url: app.baseUrl + '/staff/news/deleteImage',
+            url: app.baseUrl + '/staff/news/delete-image',
             data: {
                 imageId: imageId
             },
