@@ -2,7 +2,6 @@
 
 namespace console\controllers;
 
-use \common\ext\Mail\MailMessage;
 use \common\models\Qa;
 use \common\models\User;
 use \yii\helpers\Url;
@@ -23,15 +22,16 @@ class EmailController extends BaseController
     public function actionNewQuestionNotify($questionId)
     {
         // Send email
-        $message = new MailMessage();
-        $message
-            ->addTo(\yii::$app->params['emails']['info']['address'])
-            ->setFrom(\yii::$app->params['emails']['noreply']['address'], \yyii::$app>params['emails']['noreply']['name'])
+        \yii::$app->email
+            ->compose()
+            ->setFrom([\yii::$app->params['emails']['noreply']['address'] => \yii::$app->params['emails']['noreply']['name']])
+            ->setTo(\yii::$app->params['emails']['info']['address'])
             ->setSubject(\yii::t('app', 'A new question was created!'))
-            ->setView('new-question-created', array(
+            ->setViewBody('new-question-created', [
                 'link' =>Url::toRoute(['/qa/view', 'id' => $questionId], true),
-            ));
-        \yii::$app->mail->send($message);
+            ])
+            ->send()
+        ;
     }
 
     /**
@@ -47,16 +47,16 @@ class EmailController extends BaseController
         $user = $question->user;
 
         // Send email
-        $message = new MailMessage();
-        $message
-            ->addTo($user->email)
-            ->setFrom(\yii::$app->params['emails']['noreply']['address'], \yii::$app->params['emails']['noreply']['name'])
+        \yii::$app->email
+            ->compose()
+            ->setFrom([\yii::$app->params['emails']['noreply']['address'] => \yii::$app->params['emails']['noreply']['name']])
+            ->setTo($user->email)
             ->setSubject(\yii::t('app', 'A new answer to your question was posted!'))
-            ->setView('new-answer-posted', array(
+            ->setViewBody('new-answer-posted', [
                 'link' => Url::toRoute(['/qa/view', 'id' => $question->id], true),
-            ));
-        \yii::$app->mail->send($message);
-
+            ])
+            ->send()
+        ;
     }
 
     /**
@@ -83,15 +83,16 @@ class EmailController extends BaseController
         }
 
         // Send email
-        $message = new MailMessage();
-        $message
-            ->addTo($emailTo)
-            ->setFrom(\yii::$app->params['emails']['noreply']['address'], \yii::$app->params['emails']['noreply']['name'])
+        \yii::$app->email
+            ->compose()
+            ->setFrom([\yii::$app->params['emails']['noreply']['address'] => \yii::$app->params['emails']['noreply']['name']])
+            ->setTo($emailTo)
             ->setSubject($subject)
-            ->setView('new-coach-or-coordinator-registered', array(
+            ->setViewBody('new-coach-or-coordinator-registered', [
                 'user' => $user,
-            ));
-        \yii::$app->mail->send($message);
+            ])
+            ->send()
+        ;
     }
 
 }

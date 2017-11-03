@@ -377,15 +377,16 @@ class AuthController extends BaseController
                 $emailConfirmation->save();
 
                 // Send email
-                $message = new \common\ext\Mail\MailMessage();
-                $message
-                    ->addTo($user->email)
-                    ->setFrom(\yii::$app->params['emails']['noreply']['address'], \yii::$app->params['emails']['noreply']['name'])
-                    ->setSubject(\yii::t('app', '{app} Email confirmation', array('app' => \yii::$app->name)))
-                    ->setView('email-confirmation', array(
+                \yii::$app->email
+                    ->compose()
+                    ->setFrom([\yii::$app->params['emails']['noreply']['address'] => \yii::$app->params['emails']['noreply']['name']])
+                    ->setTo($user->email)
+                    ->setSubject(\yii::t('app', '{app} Email confirmation', ['app' => \yii::$app->name]))
+                    ->setViewBody('email-confirmation', [
                         'link' => Url::toRoute(['/auth/email-confirm', 'token' => $emailConfirmation->id], true),
-                    ));
-                \yii::$app->mail->send($message);
+                    ])
+                    ->send()
+                ;
 
                 // Save user settings
                 $settings = $user->settings;
@@ -479,15 +480,16 @@ class AuthController extends BaseController
         }
 
         // Send email
-        $message = new \common\ext\Mail\MailMessage();
-        $message
-            ->addTo($user->email)
-            ->setFrom(\yii::$app->params['emails']['noreply']['address'], \yii::$app->params['emails']['noreply']['name'])
-            ->setSubject(\yii::t('app', '{app} Email confirmation', array('app' => \yii::$app->name)))
-            ->setView('email-confirmation', array(
+        \yii::$app->email
+            ->compose()
+            ->setFrom([\yii::$app->params['emails']['noreply']['address'] => \yii::$app->params['emails']['noreply']['name']])
+            ->setTo($user->email)
+            ->setSubject(\yii::t('app', '{app} Email confirmation', ['app' => \yii::$app->name]))
+            ->setViewBody('email-confirmation', [
                 'link' => Url::toRoute(['/auth/email-confirm', 'token' => $confirmation->id], true),
-            ));
-        \yii::$app->mail->send($message);
+            ])
+            ->send()
+        ;
 
         //update request date
         $confirmation->dateConfirmed = false;
