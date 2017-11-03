@@ -14,8 +14,8 @@ defined('SESSION_TIME') or define('SESSION_TIME', SECONDS_IN_WEEK);
 defined('DATE_FORMAT_DB') or define('DATE_FORMAT_DB', 'yyyy-MM-dd');
 defined('DATE_TIME_FORMAT_DB') or define('DATE_TIME_FORMAT_DB', 'yyyy-MM-dd HH:mm:ss');
 defined('DATE_FORMAT_MYSQL_QUERY') or define('DATE_FORMAT_MYSQL_QUERY', '%d.%m.%Y');
-defined('DATE_FORMAT_JS') or define('DATE_FORMAT_JS', 'DD.MM.YYYY');
-defined('DATE_TIME_FORMAT_JS') or define('DATE_TIME_FORMAT_JS', 'DD.MM.YYYY HH:mm:ss');
+defined('DATE_FORMAT_JS') or define('DATE_FORMAT_JS', 'yyyy-MM-dd');
+defined('DATE_TIME_FORMAT_JS') or define('DATE_TIME_FORMAT_JS', 'yyyy-MM-dd HH:mm:ss');
 defined('APP_FRONTEND') or define('APP_FRONTEND', 'app-frontend');
 
 return [
@@ -58,8 +58,8 @@ return [
         ],
         'formatter' => [
             'class'             => \common\components\Formatter::class,
-            'dateFormat'        => 'dd.MM.yyyy',
-            'datetimeFormat'    => 'dd.MM.yyyy HH:mm',
+            'dateFormat'        => 'yyyy-MM-dd',
+            'datetimeFormat'    => 'yyyy-MM-dd HH:mm',
             'decimalSeparator'  => '.',
             'nullDisplay'       => '<span class="not-set">' . \yii::t('app', '(нет данных)') . '</span>',
         ],

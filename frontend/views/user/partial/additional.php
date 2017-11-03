@@ -38,7 +38,7 @@ $this->registerJsFile('@web/lib/bootstrap.datepicker/js/bootstrap-datepicker.js'
     <label class="col-lg-3 control-label" for="dateOfBirth"><?=\yii::t('app', 'Date of birth', null, null, $lang)?></label>
     <div class="col-lg-9">
         <input class="form-control" id="dateOfBirth" name="dateOfBirth" type="text"
-               value="<?=(is_int($info->dateOfBirth)) ? date('Y-m-d', $info->dateOfBirth) : ''?>"
+               value="<?=$info->dateOfBirth?>"
                placeholder="<?=\yii::t('app', 'Date of birth', null, null, $lang)?>"
                data-baylor-birthday="" />
     </div>

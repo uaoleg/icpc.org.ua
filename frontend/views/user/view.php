@@ -34,7 +34,7 @@ $this->title = \frontend\widgets\user\Name::widget(array('user' => $user));
             <div class="row">
                 <div class="col-lg-12">
                     <?php foreach ($fullViewAttrs as $attrName => $attrValue): ?>
-                        <b><?=$user->info->getAttributeLabel($attrName)?></b>:&nbsp;<?=($attrName!=='dateOfBirth') ? $attrValue : (is_int($attrValue) ? date('Y-m-d', $attrValue) : '')?>
+                        <b><?=$user->info->getAttributeLabel($attrName)?></b>:&nbsp;<?=$attrValue?>
                         <br /><br />
                     <?php endforeach; ?>
                 </div>

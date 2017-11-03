@@ -15,6 +15,6 @@
     <?php endif; ?>
 </td>
 <td><?=$member->info->tShirtSize?></td>
-<td><?=(is_int($member->info->dateOfBirth)) ? date('d.m.Y', $member->info->dateOfBirth) : ''?></td>
+<td><?=$member->info->dateOfBirth?></td>
 <td><?=(isset($member->info->schoolAdmissionYear)) ? $member->info->schoolAdmissionYear : ''?></td>
 <td><?=(isset($member->info->course)) ? $member->info->course : ''?></td>
