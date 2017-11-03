@@ -194,6 +194,24 @@ class Message extends BaseMessage
     }
 
     /**
+     * Set mail view (body)
+     * @param string $view
+     * @param array  $params
+     * @param string $layout
+     * @return Message
+     */
+    public function setViewBody($view, array $params = [], $layout = 'mail')
+    {
+        $email = \yii::$app->email;
+        $params['email'] = $this;
+        $content = $email->view->render($view, $params, $email);
+        $this->getMessageBuilder()->setHtmlBody(
+            $email->view->render($email->htmlLayout, ['content' => $content, 'email' => $this], $email)
+        );
+        return $this;
+    }
+
+    /**
      * @inheritdoc
      */
     public function attach($fileName, array $options = [])

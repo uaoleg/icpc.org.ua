@@ -18,6 +18,8 @@ return [
         'notAlphanumericStrong'     => "\!@#$%^&+*=\[\]{}\"\\\\\/|<>\?,~" . "()\-\._'", // Alphanumeric only
     ),
 
+    'user.passwordResetTokenExpire' => SECONDS_IN_WEEK,
+
     'yearFirst' => 2013, // News, Results, etc.
 
     'version' => 'phase_16.1.3',

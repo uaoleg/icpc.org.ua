@@ -54,8 +54,6 @@ return [
         'email' => [
             'class'     => \common\components\Mailgun\Mailer::class,
             'domain'    => 'icpc.org.ua',
-            'username'  => 'postmaster@icpc.org.ua',
-            'password'  => '6806dec621801ef6d20c23af87d255ce',
             'viewPath'  => '@common/emails',
         ],
         'formatter' => [

@@ -9,8 +9,7 @@ function appAuthPasswordReset() {
             url: app.baseUrl + '/auth/password-reset-send-email',
             data: {
                 email: $('.form-group .form-control[name=email]').val(),
-                recaptcha_challenge_field: $('#recaptcha_challenge_field').val(),
-                recaptcha_response_field:  $('#recaptcha_response_field').val(),
+                recaptcha_response_field:  $('#g-recaptcha-response').val(),
                 recaptchaIgnore:           $('.form-group [name=recaptchaIgnore]').is(':checked') ? 1 : 0
             },
             success: function(resposne) {

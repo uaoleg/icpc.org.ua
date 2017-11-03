@@ -166,17 +166,17 @@ class AuthController extends BaseController
     public function actionPasswordResetSendEmail()
     {
         // Get params
-        $email = \yii::$app->request->get('email');
+        $email = mb_strtolower(\yii::$app->request->post('email'));
 
         // Get user by email
-        $userExists = (User::findOne(['email' => mb_strtolower($email)]) !== null);
+        $user = User::findOne(['email' => $email]);
 
         // Check recaptcha
         $recaptchaStatus = $this->_checkRecaptcha();
 
         // Form errors
         $errors = array();
-        if (!$userExists) {
+        if ($user === null) {
             $errors['email'] = \yii::t('app', 'We do not know such a email.');
         }
         if ($recaptchaStatus !== true) {
@@ -186,22 +186,21 @@ class AuthController extends BaseController
         // Send password reset email
         if (count($errors) === 0) {
 
-            // Get reset token
-            User\PasswordReset::deleteAll(['email' => $email]);
-            $resetToken = new User\PasswordReset();
-            $resetToken->email = $email;
-            $resetToken->save();
+            // Generate reset token
+            $user->generatePasswordResetToken();
+            $user->save(false);
 
             // Send email
-            $message = new \common\ext\Mail\MailMessage();
-            $message
-                ->addTo($email)
-                ->setFrom(\yii::$app->params['emails']['noreply']['address'], \yii::$app->params['emails']['noreply']['name'])
+            \yii::$app->email
+                ->compose()
+                ->setFrom([\yii::$app->params['emails']['noreply']['address'] => \yii::$app->params['emails']['noreply']['name']])
+                ->setTo($email)
                 ->setSubject(\yii::t('app', 'Password reset'))
-                ->setView('password-reset', array(
-                    'link' => Url::toRoute(['/auth/password-reset-enter-new',  'token' => $resetToken->id], true),
-                ));
-            \yii::$app->mail->send($message);
+                ->setViewBody('password-reset', [
+                    'link' => Url::toRoute(['/auth/password-reset-enter-new',  'token' => $user->passwordResetToken], true),
+                ])
+                ->send()
+            ;
         }
 
         // Render json
@@ -213,20 +212,17 @@ class AuthController extends BaseController
     /**
      * Enter new password page
      */
-    public function actionPasswordResetEnterNew()
+    public function actionPasswordResetEnterNew($token)
     {
-        // Get params
-        $tokenId = \yii::$app->request->get('token');
-
-        // Get token record
-        $token = User\PasswordReset::findOne($tokenId);
+        // Get user by token
+        $user = User::findByPasswordResetToken($token);
 
         // Render view
-        if (($token === null) || (!$token->isValid)) {
+        if (!$user) {
             return $this->render('password-reset-token-error');
         } else {
             return $this->render('password-reset-enter-new', array(
-                'token' => $token,
+                'user' => $user,
             ));
         }
     }
@@ -237,18 +233,17 @@ class AuthController extends BaseController
     public function actionPasswordResetSetNew()
     {
         // Get params
-        $tokenId        = \yii::$app->request->get('token');
-        $password       = \yii::$app->request->get('password');
-        $passwordRepeat = \yii::$app->request->get('passwordRepeat');
+        $token          = \yii::$app->request->post('token');
+        $password       = \yii::$app->request->post('password');
+        $passwordRepeat = \yii::$app->request->post('passwordRepeat');
 
-        // Get and check token
-        $token = User\PasswordReset::findOne($tokenId);
-        if (($token === null) || (!$token->isValid)) {
-            return;
+        // Get user by token
+        $user = User::findByPasswordResetToken($token);
+        if (!$user) {
+            return $this->renderJson(array(
+                'errors' => true,
+            ));
         }
-
-        // Get user
-        $user = User::findOne(['email' => $token->email]);
 
         // Set new password and login user
         $user->setPassword($password, $passwordRepeat);
@@ -256,16 +251,12 @@ class AuthController extends BaseController
         // Save to DB
         if (!$user->hasErrors()) {
 
-            // Save new password, no validation
+            // Save new password and remove token
+            $user->removePasswordResetToken();
             $user->save(false);
 
             // Authenticate user
-            $identity = new \web\ext\UserIdentity($token->email, $password);
-            $identity->authenticate();
-            \yii::$app->user->login($identity);
-
-            // Delete token
-            $token->delete();
+            \yii::$app->user->login($user);
         }
 
         // Render json
@@ -417,9 +408,7 @@ class AuthController extends BaseController
 
 
                 // Authenticate user
-                $identity = new \web\ext\UserIdentity($email, $password);
-                $identity->authenticate();
-                \yii::$app->user->login($identity);
+                \yii::$app->user->login($user);
             }
 
             // Render json

@@ -9,12 +9,6 @@ $this->registerJsFile('//www.google.com/recaptcha/api.js?hl=' . \yii::$app->lang
 
 ?>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        new appAuthPasswordReset();
-    });
-</script>
-
 <div class="col-lg-offset-3 col-lg-6">
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -45,3 +39,9 @@ $this->registerJsFile('//www.google.com/recaptcha/api.js?hl=' . \yii::$app->lang
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        new appAuthPasswordReset();
+    });
+</script>
