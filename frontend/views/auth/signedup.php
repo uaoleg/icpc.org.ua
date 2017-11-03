@@ -7,12 +7,6 @@ use \yii\helpers\Url;
 
 ?>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        new appAuthSignedup();
-    });
-</script>
-
 <div class="row">
     <div class="col-lg-4 col-lg-offset-4">
         <div class="panel panel-info">
@@ -22,7 +16,7 @@ use \yii\helpers\Url;
             <div class="panel-body">
                 <p><?=\yii::t('app', 'You have signed up successfully. We have sent an email confirmation link to your email.')?></p>
                 <p>
-                    <button class="btn btn-primary btn-resend-email" data-id="<?=$this->request->get('id')?>">
+                    <button class="btn btn-primary btn-resend-email" data-id="<?=\yii::$app->request->get('id')?>">
                         <?=\yii::t('app', 'Resend email')?>
                     </button>
                 </p>
@@ -36,3 +30,9 @@ use \yii\helpers\Url;
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        new appAuthSignedup();
+    });
+</script>
