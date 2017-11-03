@@ -26,6 +26,7 @@ return yii\helpers\ArrayHelper::merge([
             'class'             => \frontend\models\WebUser::class,
             'identityClass'     => \common\models\User::class,
             'enableAutoLogin'   => true,
+            'loginUrl'          => ['/auth/login'],
             'identityCookie'    => [
                 'name'      => 'icpc-web-identity',
                 'httpOnly'  => true,
