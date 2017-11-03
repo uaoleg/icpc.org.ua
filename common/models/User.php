@@ -156,7 +156,7 @@ class User extends Person implements \yii\web\IdentityInterface
     public function afterSave($insert, $changedAttributes)
     {
         // If any of isApproved properties is changed need to assign or revoke role
-        if ($this->isAttributeChanged('isApprovedStudent')) {
+        if ($this->isAttributeChangedAfterSave('isApprovedStudent', $changedAttributes)) {
             if ($this->isApprovedStudent) {
                 if (!\yii::$app->authManager->checkAccess($this->id, User::ROLE_STUDENT)) {
                     \yii::$app->authManager->assign(User::ROLE_STUDENT, $this->id);
@@ -165,7 +165,7 @@ class User extends Person implements \yii\web\IdentityInterface
                 \yii::$app->authManager->revoke(User::ROLE_STUDENT, $this->id);
             }
         }
-        if ($this->isAttributeChanged('isApprovedCoach')) {
+        if ($this->isAttributeChangedAfterSave('isApprovedCoach', $changedAttributes)) {
             if ($this->isApprovedCoach) {
                 if (!\yii::$app->authManager->checkAccess($this->id, User::ROLE_COACH)) {
                     \yii::$app->authManager->assign(User::ROLE_COACH, $this->id);
@@ -174,7 +174,7 @@ class User extends Person implements \yii\web\IdentityInterface
                 \yii::$app->authManager->revoke(User::ROLE_COACH, $this->id);
             }
         }
-        if ($this->isAttributeChanged('isApprovedCoordinator')) {
+        if ($this->isAttributeChangedAfterSave('isApprovedCoordinator', $changedAttributes)) {
             if ($this->isApprovedCoordinator) {
                 if (!\yii::$app->authManager->checkAccess($this->id, $this->coordinator)) {
                     \yii::$app->authManager->assign($this->coordinator, $this->id);

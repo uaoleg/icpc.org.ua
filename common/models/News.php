@@ -134,7 +134,7 @@ class News extends BaseActiveRecord
         }
 
         // If title or content are changed need to add entry to news revisions
-        if ($this->isAttributeChanged('title') || $this->isAttributeChanged('content')) {
+        if ($this->isAttributeChangedAfterSave('title', $changedAttributes) || $this->isAttributeChangedAfterSave('content', $changedAttributes)) {
             $revision = new News\Revision();
             $revision->setAttributes(array(
                 'newsId'         => $this->id,
@@ -144,7 +144,7 @@ class News extends BaseActiveRecord
         }
 
         // Add entry to news publish log
-        if ($this->isAttributeChanged('isPublished')) {
+        if ($this->isAttributeChangedAfterSave('isPublished', $changedAttributes)) {
             $revision = News\Revision::find()
                 ->orderBy('timestamp DESC')
                 ->one()

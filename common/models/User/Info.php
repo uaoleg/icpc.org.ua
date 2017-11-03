@@ -96,9 +96,13 @@ abstract class Info extends BaseActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         // Copy new contacts to the other languages
-        if ($this->isAttributeChanged('skype') || $this->isAttributeChanged('phoneHome') ||
-            $this->isAttributeChanged('phoneMobile') || $this->isAttributeChanged('acmNumber') ||
-            $this->isAttributeChanged('tShirtSize') || $this->isAttributeChanged('dateOfBirth')
+        if (false
+            || $this->isAttributeChangedAfterSave('skype', $changedAttributes)
+            || $this->isAttributeChangedAfterSave('phoneHome', $changedAttributes)
+            || $this->isAttributeChangedAfterSave('phoneMobile', $changedAttributes)
+            || $this->isAttributeChangedAfterSave('acmNumber', $changedAttributes)
+            || $this->isAttributeChangedAfterSave('tShirtSize', $changedAttributes)
+            || $this->isAttributeChangedAfterSave('dateOfBirth', $changedAttributes)
         ) {
             static::updateAll([
                 'skype'         => $this->skype,
@@ -107,7 +111,7 @@ abstract class Info extends BaseActiveRecord
                 'tShirtSize'    => $this->tShirtSize,
                 'acmNumber'     => $this->acmNumber,
                 'dateOfBirth'   => $this->dateOfBirth,
-            ], ['lang != :lang'], [':lang' => $this->lang]);
+            ], 'lang != :lang', [':lang' => $this->lang]);
         }
 
         parent::afterSave($insert, $changedAttributes);
