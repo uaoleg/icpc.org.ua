@@ -58,11 +58,11 @@ $user = \yii::$app->user->identity;
                         <div class="alert alert-danger text-center">
                             <?=\yii::t('app', '<b>Warning!</b> Your coordinator status is not approved yet!')?><br/>
                             <?php if ($user->approver): ?>
-                                <?=\yii::t('app', '{a}{person}{/a} can approve your status.', array(
-                                    'a'       => '<a href="' . Url::toRoute(['/user/view', 'id' => $user->approver->id]) . '">',
-                                    'person'  => \frontend\widgets\user\Name::widget(array('user' => $user->approver)),
-                                    '/a'      => '</a>'
-                                ))?>
+                                <?=\yii::t('app', '{a_}{person}{_a} can approve your status.', [
+                                    'a_'      => '<a href="' . Url::toRoute(['/user/view', 'id' => $user->approver->id]) . '">',
+                                    'person'  => \frontend\widgets\user\Name::widget(['user' => $user->approver]),
+                                    '_a'      => '</a>'
+                                ])?>
                             <?php endif; ?>
                             <br><br>
                             <button type="button" class="btn btn-default js-user-approval-request-button <?= User\ApprovalRequest::isSentRecently(\yii::$app->user->id, User\ApprovalRequest::ROLE_COORDINATOR) ? 'hide' : '' ?>"

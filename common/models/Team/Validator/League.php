@@ -26,7 +26,7 @@ class League extends \yii\validators\Validator
         // Team should be at least on 3rd phase (or complete it)
         if (($team->phase < Result::PHASE_3) && ($team->$attribute !== Team::LEAGUE_NULL)) {
             $this->addError($team, $attribute,
-                \yii::t('app', 'Cannot set {attribute} unless phase is {phase}', array('{phase}' => Result::PHASE_3))
+                \yii::t('app', 'Cannot set {attribute} unless phase is {phase}', ['phase' => Result::PHASE_3])
             );
         }
     }

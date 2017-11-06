@@ -156,8 +156,8 @@ class TeamController extends \frontend\modules\staff\ext\Controller
                             $memberIds[] = $user->id;
                         } else {
                             $errors[] = \yii::t('app', 'User {name} with email {email} was not found.', [
-                                '{email}'   => $member['email'],
-                                '{name}'    => $member['name'],
+                                'email' => $member['email'],
+                                'name'  => $member['name'],
                             ]);
                         }
                     }
@@ -373,8 +373,8 @@ class TeamController extends \frontend\modules\staff\ext\Controller
                         $memberIds[] = (string)$user->id;
                     } else {
                         $errors[] = \yii::t('app', 'User {name} with email {email} was not found.', [
-                            '{email}'   => $member['email'],
-                            '{name}'    => $member['name'],
+                            'email' => $member['email'],
+                            'name'  => $member['name'],
                         ]);
                     }
                 }
@@ -452,10 +452,10 @@ class TeamController extends \frontend\modules\staff\ext\Controller
         else {
             if ($school === null) {
                 return $this->render('manageError', array(
-                    'error' => \yii::t('app', 'To manage teams, you must specify your school on the {a}profile page{/a}.', array(
-                            '{a}'  => '<a href="' . Url::toRoute(['/user/me']) . '">',
-                            '{/a}' => '</a>',
-                        )),
+                    'error' => \yii::t('app', 'To manage teams, you must specify your school on the {a_}profile page{_a}.', [
+                            'a_' => '<a href="' . Url::toRoute(['/user/me']) . '">',
+                            '_a' => '</a>',
+                        ]),
                 ));
             } else {
                 return $this->render('schoolComplete', array(

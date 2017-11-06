@@ -113,6 +113,8 @@ class DbController extends BaseController
         echo "Translations...\n";
         $rows = \yii::$app->mongodb->getCollection('translation')->find();
         foreach ($rows as $row) {
+            $row['message'] = str_replace('{a}', '{a_}', $row['message']);
+            $row['message'] = str_replace('{/a}', '{_a}', $row['message']);
             \yii::$app->db->createCommand()->insert('translation', [
                 'language'      => $row['language'],
                 'category'      => $row['category'],

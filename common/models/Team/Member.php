@@ -74,9 +74,9 @@ class Member extends BaseActiveRecord
                 ->all()
             ;
             foreach ($otherTeamsMembers as $member) {
-                $team->addError('members', \yii::t('app', '{name} is already in another team.', array(
-                    '{name}' => \frontend\widgets\user\Name::widget(array('user' => $member->user))
-                )));
+                $team->addError('members', \yii::t('app', '{name} is already in another team.', [
+                    'name' => \frontend\widgets\user\Name::widget(['user' => $member->user])
+                ]));
             }
         }
         if ($team->hasErrors('members')) {

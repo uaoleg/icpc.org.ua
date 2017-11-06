@@ -520,26 +520,26 @@ class User extends Person implements \yii\web\IdentityInterface
         // Validate max length
         $maxLength = 255;
         if (strlen($password) > $maxLength) {
-            $this->addError('password', \yii::t('app', '{attr} length should be less or equal than {val}.', array(
-                '{attr}' => $this->getAttributeLabel('password'),
-                '{val}'  => $maxLength,
-            )));
+            $this->addError('password', \yii::t('app', '{attr} length should be less or equal than {val}.', [
+                'attr' => $this->getAttributeLabel('password'),
+                'val'  => $maxLength,
+            ]));
         }
 
         // Check passwords to be equal
         if ($password != $passwordRepeat) {
-            $this->addError('passwordRepeat', \yii::t('app', '{attr} is not confirmed.', array(
-                '{attr}' => $this->getAttributeLabel('password'),
-            )));
+            $this->addError('passwordRepeat', \yii::t('app', '{attr} is not confirmed.', [
+                'attr' => $this->getAttributeLabel('password'),
+            ]));
         }
 
         // Validate length
         $minLength = 6;
         if (strlen($password) < $minLength) {
-            $this->addError('password', \yii::t('app', '{attr} length should be greater or equal than {val}.', array(
-                '{attr}' => $this->getAttributeLabel('password'),
-                '{val}'  => $minLength,
-            )));
+            $this->addError('password', \yii::t('app', '{attr} length should be greater or equal than {val}.', [
+                'attr' => $this->getAttributeLabel('password'),
+                'val'  => $minLength,
+            ]));
         }
 
         // Set password hash if password is valid

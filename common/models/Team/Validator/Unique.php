@@ -34,10 +34,10 @@ class Unique extends \yii\validators\Validator
 
         // If 2nd team exists then add error
         if ($team2 !== null) {
-            $this->addError($team, $attribute, \yii::t('app', 'Team "{name}" already exists for year {year}', array(
-                '{name}' => $name,
-                '{year}' => $year,
-            )));
+            $this->addError($team, $attribute, \yii::t('app', 'Team "{name}" already exists for year {year}', [
+                'name' => $name,
+                'year' => $year,
+            ]));
         }
 
     }

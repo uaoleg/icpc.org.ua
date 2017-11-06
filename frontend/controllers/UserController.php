@@ -203,9 +203,9 @@ class UserController extends BaseController
             if ($user->checkPassword($currentPassword)) {
                 $user->setPassword($password, $passwordRepeat);
             } else {
-                $user->addError('currentPassword', \yii::t('app', '{attr} is incorrect', array(
+                $user->addError('currentPassword', \yii::t('app', '{attr} is incorrect', [
                     'attr' => $user->getAttributeLabel('password'),
-                )));
+                ]));
             }
             if (!$user->hasErrors()) {
                 $user->save(false);
