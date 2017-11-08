@@ -25,7 +25,7 @@ use \yii\helpers\Url;
                         <p><?=$error?></p>
                         <?php if ($confirmation !== null): ?>
                             <br>
-                            <button type="button" class="btn btn-default btn-block js-auth-login-resend-confirmation-email" data-id="<?= $confirmation->id ?>">
+                            <button type="button" class="btn btn-default btn-block js-auth-login-resend-confirmation-email" data-id="<?= $confirmation->hash ?>">
                                 <?=\yii::t('app', 'Resend confirmation email')?>
                             </button>
                         <?php endif; ?>

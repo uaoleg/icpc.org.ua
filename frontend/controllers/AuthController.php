@@ -284,7 +284,7 @@ class AuthController extends BaseController
 
         // Confirm email
         try {
-            $emailConfirmation = User\EmailConfirmation::findOne($token);
+            $emailConfirmation = User\EmailConfirmation::findOne(['hash' => $token]);
         } catch (\Exception $e) {
             $success = false;
         }
@@ -383,7 +383,7 @@ class AuthController extends BaseController
                     ->setTo($user->email)
                     ->setSubject(\yii::t('app', '{app} Email confirmation', ['app' => \yii::$app->name]))
                     ->setViewBody('email-confirmation', [
-                        'link' => Url::toRoute(['/auth/email-confirm', 'token' => $emailConfirmation->id], true),
+                        'link' => Url::toRoute(['/auth/email-confirm', 'token' => $emailConfirmation->hash], true),
                     ])
                     ->send()
                 ;
@@ -408,16 +408,12 @@ class AuthController extends BaseController
                     ), false);
                     $info->save();
                 }
-
-
-                // Authenticate user
-                \yii::$app->user->login($user);
             }
 
             // Render json
             return $this->renderJson(array(
                 'errors'    => $user->hasErrors() ? $user->getErrors() : false,
-                'url'       => $user->hasErrors() ? '' : Url::toRoute(['signedup', 'id' => $emailConfirmation->id]),
+                'url'       => $user->hasErrors() ? '' : Url::toRoute(['signedup', 'id' => $emailConfirmation->hash]),
             ));
         }
 
@@ -435,7 +431,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * After signup page
+     * After sign up page
      */
     public function actionSignedup()
     {
@@ -443,11 +439,11 @@ class AuthController extends BaseController
         $confirmationId = \yii::$app->request->get('id');
 
         if ($confirmationId !== null) {
-            $confirmation = User\EmailConfirmation::findOne($confirmationId);
+            $confirmation = User\EmailConfirmation::findOne(['hash' => $confirmationId]);
             if ($confirmation !== null) {
-                return $this->render('signedup', array(
+                return $this->render('signedup', [
                     'confirmation' => $confirmation,
-                ));
+                ]);
             } else {
                 $this->httpException(404);
             }
@@ -459,19 +455,16 @@ class AuthController extends BaseController
     /**
      * Resend email confirmation action
      */
-    public function actionResendEmailConfirmation()
+    public function actionResendEmailConfirmation($hash)
     {
-        // Get params
-        $confirmationId = \yii::$app->request->get('confirmationId');
-
         // Get confirmation
-        $confirmation = User\EmailConfirmation::findOne($confirmationId);
+        $confirmation = User\EmailConfirmation::findOne(['hash' => $hash]);
         if ($confirmation === null) {
             $this->httpException(404);
         }
 
         // Check confirmation sent time
-        if ($confirmation->dateConfirmed->sec > strtotime("-1 day")) {
+        if ($confirmation->timeConfirmed > strtotime("-1 day")) {
             $this->httpException(403, \yii::t('app', 'E-mail confirmation request can be sent no more than 1 time per day.'));
         }
 
@@ -493,8 +486,8 @@ class AuthController extends BaseController
             ->send()
         ;
 
-        //update request date
-        $confirmation->dateConfirmed = false;
+        // Update request date
+        $confirmation->timeConfirmed = time();
         $confirmation->save();
     }
 

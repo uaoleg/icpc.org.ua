@@ -8,10 +8,13 @@ use \common\models\BaseActiveRecord;
  * Email confirmation
  *
  * @property int    $userId
+ * @property string $hash
  * @property int    $timeConfirmed
  */
 class EmailConfirmation extends BaseActiveRecord
 {
+
+    const HASH_LENGTH = 50;
 
     /**
      * Declares the name of the database table associated with this AR class
@@ -46,6 +49,26 @@ class EmailConfirmation extends BaseActiveRecord
 
             ['timeConfirmed', 'default', 'value' => time()],
         ]);
+    }
+
+    /**
+     * Before save action
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        // Generate hash
+        if (empty($this->hash)) {
+            $this->hash = time();
+            $this->hash .= \yii::$app->security->generateRandomString(static::HASH_LENGTH - mb_strlen($this->hash));
+        }
+
+        return true;
     }
 
 }

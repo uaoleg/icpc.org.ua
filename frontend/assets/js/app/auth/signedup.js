@@ -7,10 +7,7 @@ function appAuthSignedup() {
         var $thisElement = $(this);
         $thisElement.prop('disabled', true);
         $.ajax({
-            url: app.baseUrl + '/auth/resend-email-confirmation',
-            data: {
-                confirmationId: $thisElement.data('id')
-            },
+            url: app.baseUrl + '/auth/resend-email-confirmation?hash=' + $thisElement.data('id'),
             success: function() {
                 $('.alert.alert-success').removeClass('hide');
                 $thisElement.prop('disabled', false);
