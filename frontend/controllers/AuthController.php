@@ -399,13 +399,15 @@ class AuthController extends BaseController
 
                 // Save user additional info
                 $info = $user->info;
-                $info->setAttributes(array(
-                    'acmNumber'   => $acmId,
-                    'phoneHome'   => $phoneHome,
-                    'phoneMobile' => $phoneMobile,
-                    'tShirtSize'  => $tshirtSize,
-                ), false);
-                $info->save();
+                if ($info !== null) {
+                    $info->setAttributes(array(
+                        'acmNumber'   => $acmId,
+                        'phoneHome'   => $phoneHome,
+                        'phoneMobile' => $phoneMobile,
+                        'tShirtSize'  => $tshirtSize,
+                    ), false);
+                    $info->save();
+                }
 
 
                 // Authenticate user

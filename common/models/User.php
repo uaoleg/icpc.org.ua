@@ -204,7 +204,6 @@ class User extends Person implements \yii\web\IdentityInterface
 
     /**
      * Returns user's settings
-     *
      * @return User\Settings
      */
     public function getSettings()
@@ -218,7 +217,6 @@ class User extends Person implements \yii\web\IdentityInterface
 
     /**
      * Returns user's additional info
-     *
      * @return User\Info
      */
     public function getInfo()
