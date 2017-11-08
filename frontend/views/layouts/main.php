@@ -41,7 +41,7 @@ $user = \yii::$app->user->identity;
                             <img src="<?=Url::to('@web/images/layout/icpc.png')?>" style="width: 98px;" />
                         </td>
                         <td>
-                            <?=\yii::t('app', 'Ukranian Collegiate Programming Contest')?>
+                            <?=\yii::t('app', 'Ukrainian Collegiate Programming Contest')?>
                         </td>
                         <td>
                             <img src="<?=Url::to('@web/images/layout/acm-icpc.gif')?>" style="width: 95px;" />
