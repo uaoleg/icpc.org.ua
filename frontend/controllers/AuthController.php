@@ -115,7 +115,7 @@ class AuthController extends BaseController
                 $userUk = User::findOne(\yii::$app->user->id);
                 $userUk::$useLanguage = 'uk';
                 $infoUk = $userUk->info;
-                if (!$infoUk->validate()) {
+                if ($infoUk && !$infoUk->validate()) {
                     \yii::$app->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
                     return $this->redirect(Url::toRoute(['/user/additional', 'lang' => 'uk']));
                 }
@@ -123,11 +123,10 @@ class AuthController extends BaseController
                 $userEn = User::findOne(\yii::$app->user->id);
                 $userEn::$useLanguage = 'en';
                 $infoEn = $userEn->info;
-                if (!$infoEn->validate()) {
+                if ($infoEn && !$infoEn->validate()) {
                     \yii::$app->user->setState(WebUser::SESSION_INFO_NOT_FULL, true);
                     return $this->redirect(Url::toRoute(['user/additional', 'lang' => 'en']));
                 }
-
 
                 \yii::$app->user->setState(WebUser::SESSION_INFO_NOT_FULL, false);
                 return $this->redirect('/');
