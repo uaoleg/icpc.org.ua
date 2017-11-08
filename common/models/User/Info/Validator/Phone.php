@@ -4,8 +4,19 @@ namespace common\models\User\Info\Validator;
 
 use \common\models\User\Info;
 
-class Phone extends \yii\validators\UniqueValidator
+class Phone extends \yii\validators\Validator
 {
+
+    /**
+     * Init
+     */
+    public function init()
+    {
+        parent::init();
+
+        // Do not skip empty
+        $this->skipOnEmpty = false;
+    }
 
     /**
      * Validate phone numbers

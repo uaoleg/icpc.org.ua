@@ -245,7 +245,7 @@ class UserController extends BaseController
 
         // Save additional info
         $info = \yii::$app->user->identity->info;
-        $info->setAttributes(array(
+        $info->setAttributes([
             'lang'                     => $lang,
             'phoneHome'                => $phoneHome,
             'phoneMobile'              => $phoneMobile,
@@ -261,7 +261,7 @@ class UserController extends BaseController
             'officeAddress' => $officeAddress,
             'phoneWork'     => $phoneWork,
             'fax'           => $fax
-        ), false);
+        ], false);
         $info->scenario = User\InfoCoach::SC_ALLOW_EMPTY;
         $info->save();
         \yii::$app->user->setState(WebUser::SESSION_INFO_NOT_FULL, $info->hasErrors());
