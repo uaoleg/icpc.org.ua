@@ -69,14 +69,19 @@ class News extends BaseActiveRecord
     public function rules()
     {
         return array_merge(parent::rules(), [
-            [['lang', 'title', 'content', 'geo', 'yearCreated'], 'required'],
+            [['lang', 'geo'], 'required'],
 
+            ['title', 'required'],
             ['title', 'string', 'max' => 300],
 
+            ['content', 'required'],
             ['content', 'string', 'max' => 5000],
 
             ['isPublished', 'boolean'],
             ['isPublished', 'default', 'value' => false],
+
+            ['yearCreated', 'default', 'value' => (int)date('Y', $this->timeCreated)],
+            ['yearCreated', 'required'],
         ]);
     }
 
@@ -101,23 +106,6 @@ class News extends BaseActiveRecord
         }
 
         return $imagesIds;
-    }
-
-    /**
-     * Before save action
-     * @param bool $insert
-     * @return bool
-     */
-    public function beforeSave($insert)
-    {
-        if (!parent::beforeSave($insert)) {
-            return false;
-        }
-
-        // Update year
-        $this->yearCreated = (int)date('Y', $this->timeCreated);
-
-        return true;
     }
 
     /**
