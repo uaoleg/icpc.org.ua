@@ -30,7 +30,7 @@ use \yii\helpers\Url;
                 'document' => $document,
             ))): ?>
                 <button type="button" class="btn btn-danger btn-xs document-delete"
-                        data-confirm="<?=\yii::t('app', 'Delete {file} ?', array(
+                        data-bootbox-confirm="<?=\yii::t('app', 'Delete {file} ?', array(
                             'file' => '<i>' . Html::encode($document->title) . '</i>',
                         ))?>">
                     <?=\yii::t('app', 'Delete')?>

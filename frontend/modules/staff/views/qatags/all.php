@@ -52,7 +52,7 @@ use \yii\helpers\Url;
         <td>
             <a href="<?=Url::toRoute(['manage', 'id' => $tag->id])?>" class="btn btn-primary"><?=\yii::t('app', 'Edit')?></a>
             <button data-id="<?=$tag->id?>"
-                    data-confirm="<?=\yii::t('app', 'There is {n} question with this tag. Are you sure?|There are {n} questions with this tag. Are you sure?', $tag->questionCount)?>"
+                    data-bootbox-confirm="<?=\yii::t('app', 'There is {n} question with this tag. Are you sure?|There are {n} questions with this tag. Are you sure?', $tag->questionCount)?>"
                     class="btn btn-danger btn-delete-tag">
                 <?=\yii::t('app', 'Delete')?>
             </button>

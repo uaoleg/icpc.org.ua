@@ -43,7 +43,7 @@ $this->registerJsFile('@web/lib/plupload-834/js/jquery.plupload.queue/jquery.plu
         <div class="col-md-12">
             <div class="form-group" id="uploadImagesContainer"
                  data-images-limit="<?=\common\models\News::MAX_IMAGES_COUNT?>"
-                 data-confirm-text="<?=\yii::t('app', 'Are you sure you want to delete this image?')?>">
+                 data-bootbox-confirm="<?=\yii::t('app', 'Are you sure you want to delete this image?')?>">
                 <div style="position: relative">
                     <button class="btn btn-primary btn-upload <?= (count($newsImages) >= \common\models\News::MAX_IMAGES_COUNT) ? 'hide' : ''?>" id="uploadNewsImages">
                         <b><?=\yii::t('app', 'Upload images')?></b>
@@ -53,13 +53,13 @@ $this->registerJsFile('@web/lib/plupload-834/js/jquery.plupload.queue/jquery.plu
                 <div class="images-block" style="display: inline-block">
                     <div class="news-edit__image-item hide">
                         <img alt="" width="75" height="auto"><br/>
-                        <button class="btn btn-link" data-confirm="<?=\yii::t('app', 'Are you sure you want to delete this image?')?>">delete</button>
+                        <button class="btn btn-link" data-bootbox-confirm="<?=\yii::t('app', 'Are you sure you want to delete this image?')?>">delete</button>
                     </div>
                     <?php foreach($newsImages as $imageId): ?>
                         <div class="news-edit__image-item" data-image-id="<?=$imageId?>">
                             <img src="<?=Url::toRoute(['/news/image', 'id' => $imageId])?>" alt="" />
                             <br />
-                            <button class="btn btn-link" data-confirm="<?=\yii::t('app', 'Are you sure you want to delete this image?')?>">
+                            <button class="btn btn-link" data-bootbox-confirm="<?=\yii::t('app', 'Are you sure you want to delete this image?')?>">
                                 <?=\yii::t('app', 'delete')?>
                             </button>
                         </div>

@@ -57,9 +57,9 @@ use \yii\helpers\Url;
             animate: false
         });
         $(document).on('bootboxconfirm', function() {
-            $('.btn[data-confirm], a[data-confirm]').on('click', function() {
+            $('.btn[data-bootbox-confirm], a[data-bootbox-confirm]').on('click', function() {
                 var $this = $(this);
-                bootbox.confirm($this.data('confirm'), function(confirmed) {
+                bootbox.confirm($this.data('bootbox-confirm'), function(confirmed) {
                     if (confirmed) {
                         $this.trigger('confirmed');
                     }

@@ -38,7 +38,7 @@ $this->title = $team->name;
                     <span class="glyphicon glyphicon-refresh"></span> <?=\yii::t('app', 'Sync with Baylor')?></button>
             <?php endif; ?>
             <?php if (\yii::$app->user->can(\common\components\Rbac::OP_TEAM_DELETE, array('team' => $team))): ?>
-                <button class="btn btn-danger btn-delete-team" data-team-id="<?=$team->id?>" data-confirm="<?=\yii::t('app', 'Are you sure you want to delete the team?')?>"><?=\yii::t('app', 'Delete')?></button>
+                <button class="btn btn-danger btn-delete-team" data-team-id="<?=$team->id?>" data-bootbox-confirm="<?=\yii::t('app', 'Are you sure you want to delete the team?')?>"><?=\yii::t('app', 'Delete')?></button>
             <?php endif; ?>
         </h1>
         <h3><?=$team->year?></h3>
