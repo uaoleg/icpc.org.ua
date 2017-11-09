@@ -8,6 +8,7 @@ use \common\models\Team;
 use \common\models\Result;
 use \common\models\UploadedFile;
 use \common\models\User;
+use \yii\helpers\FileHelper;
 use \yii\helpers\Url;
 use \Sunra\PhpSimple\HtmlDomParser;
 
@@ -44,7 +45,7 @@ class UploadController extends BaseController
     public function actionDocument()
     {
         // Process file
-        $uploadedFile = $this->_processFile(true);
+        $uploadedFile = $this->processFile(true);
         if (!$uploadedFile) {
             return;
         }
@@ -87,7 +88,7 @@ class UploadController extends BaseController
     public function actionResults()
     {
         // Process file
-        $uploadedFile = $this->_processFile(true);
+        $uploadedFile = $this->processFile(true);
         if (!$uploadedFile) {
             return;
         }
@@ -233,7 +234,7 @@ class UploadController extends BaseController
         if ($imagesCount < News::MAX_IMAGES_COUNT) {
 
             // Process file
-            $uploadedFile = $this->_processFile();
+            $uploadedFile = $this->processFile();
             if (!$uploadedFile) {
                 return;
             }
@@ -300,21 +301,15 @@ class UploadController extends BaseController
         $user = \yii::$app->user->identity;
 
         // Process file
-        $uploadedFile = $this->_processFile();
-        if (!$uploadedFile) {
+        $filePath = $this->processFile();
+        if (!$filePath) {
             return;
         }
 
-        $filePath = \yii::getAlias('@common/runtime');
-        $fileName = array_pop(explode('/', $uploadedFile->filename));
-        $file = fopen($filePath . '/' . $fileName, 'w');
-        fwrite($file, $uploadedFile->getBytes());
-        fclose($file);
-
-        $newFileName = array_shift(explode('.', $fileName)) . '.jpg';
+        // Scale photo
         \yii::$app->image->scale(
-            $filePath . '/' . $fileName,
-            $filePath . '/' . $newFileName,
+            $filePath,
+            $filePath,
             array(
                 'max_width' => 2000,
                 'max_height' => 2000,
@@ -323,35 +318,22 @@ class UploadController extends BaseController
             )
         );
 
-        // Delete previous file
-        $uploadedFile->delete();
-
-        // Create a new scaled and converted file
-        $newUploadedFile = new UploadedFile();
-        $newUploadedFile->setAttributes(array(
-            'filename' => $filePath . '/' . $fileName,
-        ), false);
-        $newUploadedFile->save();
-
         // Delete old photo if it exists
         if ($user->photo !== null) {
             $user->photo->delete();
         }
 
-        // Create document
+        // Create a new photo
         $photo = new User\Photo();
         $photo->setAttributes(array(
             'fileName' => mb_strtolower(\yii::$app->request->get('uniqueName')),
-            'userId'   => $userId,
-            'content'   => $newUploadedFile->getContent(),
+            'userId'   => \yii::$app->user->id,
+            'content'  => file_get_contents($filePath),
         ), false);
         $photo->save();
 
-        // Delete temporary files
-        unlink($filePath . '/' . $fileName);
-        if (file_exists($filePath . '/' . $newFileName)) {
-            unlink($filePath . '/' . $newFileName);
-        }
+        // Delete temporary file
+        unlink($filePath);
 
         // Render json
         return $this->renderJson(array(
@@ -365,147 +347,50 @@ class UploadController extends BaseController
      *
      * @return string
      */
-    protected function _getUploadDir()
+    protected function getUploadDir()
     {
-        $dir = ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir();
-        $dir .= '/icpc/';
-        return $dir;
+        return \yii::getAlias('@runtime/uploads/' . \yii::$app->user->id);
     }
 
     /**
      * Process file upload
-     *
-     * @return UploadedFile
+     * @link http://www.plupload.com/docs/Chunking
+     * @return string path to the uploaded file
      */
-    protected function _processFile()
+    protected function processFile()
     {
-        // Set headers
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-        header("Cache-Control: no-store, no-cache, must-revalidate");
-        header("Cache-Control: post-check=0, pre-check=0", false);
-        header("Pragma: no-cache");
+        $chunk  = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
+        $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
 
-        // Settings
-        $targetDir = $this->_getUploadDir();
+        $fileName = isset($_REQUEST["name"]) ? $_REQUEST["name"] : $_FILES["file"]["name"];
+        $filePath = "{$this->getUploadDir()}/{$fileName}";
+        FileHelper::createDirectory($this->getUploadDir());
 
-        // Get parameters
-        $chunkNumber = (int)\yii::$app->request->get('chunk');
-        $chunkCount  = (int)\yii::$app->request->get('chunks');
-        $fileName    = \yii::$app->request->get('uniqueName', '');
+        // Open temp file
+        $out = @fopen("{$filePath}.part", $chunk == 0 ? "wb" : "ab");
+        if ($out) {
+            // Read binary input stream and append it to temp file
+            $in = @fopen($_FILES['file']['tmp_name'], "rb");
 
-        // Clean the fileName for security reasons
-        $fileName = preg_replace('/[^\w\._]+/', '_', $fileName);
+            if ($in) {
+                while ($buff = fread($in, 4096))
+                    fwrite($out, $buff);
+            } else
+                die('{"OK": 0, "info": "Failed to open input stream."}');
 
-        // Make sure the fileName is unique but only if chunking is disabled
-        if (($chunkCount < 2) && (file_exists($targetDir . $fileName))) {
-            $ext = strrpos($fileName, '.');
-            $fileName_a = mb_substr($fileName, 0, $ext);
-            $fileName_b = mb_substr($fileName, $ext);
+            @fclose($in);
+            @fclose($out);
 
-            $count = 1;
-            while (file_exists($targetDir . $fileName_a . '_' . $count . $fileName_b)) {
-                $count++;
-            }
-
-            $fileName = $fileName_a . '_' . $count . $fileName_b;
-        }
-
-        $filePath = $targetDir . $fileName;
-
-        // Create target dir
-        if (!file_exists($targetDir)) {
-            mkdir($targetDir);
-        }
-
-        // Look for the content type header
-        if (isset($_SERVER["HTTP_CONTENT_TYPE"])) {
-            $contentType = $_SERVER["HTTP_CONTENT_TYPE"];
-        }
-
-        if (isset($_SERVER["CONTENT_TYPE"])) {
-            $contentType = $_SERVER["CONTENT_TYPE"];
-        }
-
-        // Handle non multipart uploads older WebKit versions didn't support multipart in HTML5
-        if (strpos($contentType, "multipart") !== false) {
-            if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
-                rename($_FILES['file']['tmp_name'], $filePath);
-            } else {
-                return $this->renderJson(array(
-                    'error' => array(
-                        'code'      => 103,
-                        'message'   => \yii::t('app', 'Failed to move uploaded file.'),
-                    ),
-                ));
-                \yii::$app->end();
-            }
+            @unlink($_FILES['file']['tmp_name']);
         } else {
-
-            // Write uploaded chunks to the system
-            if ($chunkNumber > 0) {
-                $uploadedFile = UploadedFile::model()->findByAttributes(array(
-                    'filename' => $filePath,
-                ));
-                if ($uploadedFile !== null) {
-                    $uploadedFile->write();
-                }
-            }
-
-            // Open temp file
-            $out = fopen($filePath, $chunkNumber == 0 ? "wb" : "ab");
-            if ($out) {
-                // Read binary input stream and append it to temp file
-                $in = fopen("php://input", "rb");
-                if ($in) {
-                    while ($buff = fread($in, 4096)) {
-                        fwrite($out, $buff);
-                    }
-                } else {
-                    return $this->renderJson(array(
-                        'error' => array(
-                            'code'      => 101,
-                            'message'   => \yii::t('app', 'Failed to open input stream.'),
-                        ),
-                    ));
-                    \yii::$app->end();
-                }
-                fclose($in);
-                fclose($out);
-            } else {
-                return $this->renderJson(array(
-                    'error' => array(
-                        'code'      => 102,
-                        'message'   => \yii::t('app', 'Failed to open output stream.'),
-                    ),
-                ));
-                \yii::$app->end();
-            }
+            die('{"OK": 0, "info": "Failed to open output stream."}');
         }
-
-        // Save chunks to DB
-        $uploadedFile = new UploadedFile();
-        $uploadedFile->setAttributes(array(
-            'filename' => $filePath,
-        ), false);
-        $uploadedFile->save();
-
-        // Delete temp file
-        unlink($filePath);
 
         // Check if file has been uploaded
-        if ((!$chunkCount) || ($chunkNumber == $chunkCount - 1)) {
-
-            // Mark file as uploaded
-            $modifier = new \EMongoModifier();
-            $modifier->addModifier('uploadCompleted', 'set', true);
-            $criteria = new \EMongoCriteria();
-            $criteria->addCond('filename', '==', $filePath);
-            UploadedFile::model()->updateAll($modifier, $criteria);
-
-            // Return uploaded file
-            return $uploadedFile;
-
+        if (!$chunks || $chunk == $chunks - 1) {
+            // Strip the temp .part suffix off
+            rename("{$filePath}.part", $filePath);
+            return $filePath;
         } else {
             return null;
         }

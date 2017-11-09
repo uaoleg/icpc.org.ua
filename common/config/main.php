@@ -71,6 +71,9 @@ return [
                 ],
             ],
         ],
+        'image' => array(
+            'class' => \common\components\Image::class,
+        ),
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

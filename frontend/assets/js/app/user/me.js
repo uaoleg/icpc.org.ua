@@ -140,6 +140,9 @@ appUserMe.prototype.initUploader = function () {
         browse_button:    'uploadPickfiles',
         container:        'uploadContainer',
         url:              app.baseUrl + '/upload/photo',
+        multipart_params : {
+            '_csrf': app.csrfToken
+        },
         filters: {
             mime_types: [
                 { title : "Image files", extensions : "jpg,jpeg,png" }
