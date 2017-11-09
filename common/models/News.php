@@ -146,7 +146,7 @@ class News extends BaseActiveRecord
         // Add entry to news publish log
         if ($this->isAttributeChangedAfterSave('isPublished', $changedAttributes)) {
             $revision = News\Revision::find()
-                ->orderBy('timestamp DESC')
+                ->orderBy('id DESC')
                 ->one()
             ;
             $publishLogEntry = new News\PublishLog([
