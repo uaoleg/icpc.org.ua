@@ -90,11 +90,7 @@ class DocsController extends BaseController
         }
 
         // Download file
-        return \yii::$app->response->sendContentAsFile(base64_encode($document->content), $filename);
-        header('Content-type: application/' . $document->fileExt);
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
-
-        echo $document->file->getBytes();
+        return \yii::$app->response->sendContentAsFile($document->content, $filename);
     }
 
     /**
