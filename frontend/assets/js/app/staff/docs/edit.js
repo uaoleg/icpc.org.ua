@@ -61,7 +61,10 @@ appStaffDocsEdit.prototype.initUploader = function () {
     self.uploader = new plupload.Uploader(pluploadHelpersSettings({
         browse_button:    'pickfiles',
         container:        'container',
-        url:              app.baseUrl + '/upload/document'
+        url:              app.baseUrl + '/upload/document',
+        multipart_params : {
+            '_csrf': app.csrfToken
+        }
     }));
 
     self.uploader.init();

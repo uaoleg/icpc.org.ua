@@ -45,31 +45,30 @@ class UploadController extends BaseController
     public function actionDocument()
     {
         // Process file
-        $uploadedFile = $this->processFile(true);
-        if (!$uploadedFile) {
+        $filePath = $this->processFile();
+        if (!$filePath) {
             return;
         }
 
         // Get params
-        $title = \yii::$app->request->get('title');
-        $desc  = \yii::$app->request->get('desc');
-        $type  = \yii::$app->request->get('type');
+        $title = \yii::$app->request->post('title');
+        $desc  = \yii::$app->request->post('desc');
+        $type  = \yii::$app->request->post('type');
         if (empty($title)) {
-            $title = \yii::$app->request->get('name');
+            $title = \yii::$app->request->post('name');
         }
 
         // Define file type
-        $fileExt = mb_strtolower(mb_substr($uploadedFile->filename, strrpos($uploadedFile->filename, '.') + 1));
+        $fileExt = mb_strtolower(mb_substr($filePath, strrpos($filePath, '.') + 1));
 
         // Create document
-        $document = new Document();
-        $document->setAttributes(array(
+        $document = new Document([
             'title'     => $title,
             'desc'      => $desc,
             'type'      => $type,
             'fileExt'   => $fileExt,
-            'content'   => $uploadedFile->getContent(),
-        ), false);
+            'content'   => file_get_contents($filePath),
+        ]);
         $document->save();
 
         // Render item HTML
