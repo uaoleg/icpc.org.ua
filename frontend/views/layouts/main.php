@@ -4,6 +4,7 @@
 
 use \common\models\User;
 use \yii\helpers\Html;
+use \yii\helpers\Json;
 use \yii\helpers\Url;
 
 $user = \yii::$app->user->identity;
@@ -30,6 +31,22 @@ $user = \yii::$app->user->identity;
     <?php $this->beginBody() ?>
 
     <?=\frontend\widgets\AppEnv::widget()?>
+
+    <script>
+        new appBootstrap(<?= Json::encode([
+            'baseUrl'   => '',
+            'homeUrl'   => \yii::$app->homeUrl,
+            'language'  => \yii::$app->language,
+            'csrfToken' => \yii::$app->request->csrfToken,
+            'formatter' => [
+                'dateFormat'        => \DATE_FORMAT_JS,
+                'datetimeFormat'    => \DATE_TIME_FORMAT_JS,
+            ],
+            'user' => [
+                'isGuest' => \yii::$app->user->isGuest,
+            ],
+        ]) ?>);
+    </script>
 
     <div id="main">
 

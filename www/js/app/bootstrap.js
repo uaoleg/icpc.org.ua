@@ -1,10 +1,10 @@
 function appBootstrap(appConf) {
 
     // Constants
-    DATE_FORMAT_DATEPICKER = 'dd.mm.yy';
+    DATE_FORMAT_DATEPICKER = 'yyyy-mm-dd';
     DATE_FORMAT_INPUT_MASK = {
-        alias: 'dd.mm.yyyy',
-        placeholder: 'дд.мм.гггг'
+        alias: 'yyyy-mm-dd',
+        placeholder: 'гггг-мм-дд'
     };
     DATE_FORMAT_DATETIMEPICKER = 'yy-mm-dd';
     DATETIME_FORMAT_MOMENT = 'YYYY-MM-DD HH:mm:ss';
@@ -185,19 +185,11 @@ function appBootstrap(appConf) {
             });
         }
 
-        // Bootstrap tooltip
-        $(this).initBootstrapTooltip();
-
-        // Bootstrap popover
-        $(this).initBootstrapPopover();
-
         // Form submit animation
         $('form[data-submit-animation]').on('submit', function() {
             $(document).trigger('ajax-load');
         });
 
-        // Textarea auth height
-        $('textarea').textareaAutoHeight();
     });
     $(function () {
 

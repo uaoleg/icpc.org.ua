@@ -13,6 +13,9 @@ module.exports = function (grunt) {
     concat: {
         frontend: {
             src: [
+                'www/lib/inputmask/dist/min/inputmask/inputmask.min.js',
+                'www/lib/inputmask/dist/min/inputmask/inputmask.date.extensions.min.js',
+                'www/lib/inputmask/dist/min/inputmask/jquery.inputmask.min.js',
                 'www/js/app/*.js',
                 'www/js/app/**.js',
                 'www/js/widgets/*.js',
