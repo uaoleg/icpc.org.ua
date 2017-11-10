@@ -1,19 +1,19 @@
 <?php
 
 /* @var $this   \yii\web\View */
-/* @var $team   \common\models\Team */
+/* @var $result \common\models\Result */
 
 use \yii\helpers\Html;
 use \yii\helpers\Url;
 
 ?>
 
-<?php if ($team && !$team->isDeleted): ?>
-    <a href="<?=Url::toRoute(['/team/view', 'id' => $team->id])?>" target="_blank">
-        <?=Html::encode($team->name)?>
+<?php if ($result->team && !$result->team->isDeleted): ?>
+    <a href="<?=Url::toRoute(['/team/view', 'id' => $result->team->id])?>" target="_blank">
+        <?=Html::encode($result->team->name)?>
     </a>
 <?php else: ?>
-    <?=Html::encode($team->name)?>
+    <?=Html::encode($result->teamName)?>
     <?php if (\yii::$app->user->can(\common\components\Rbac::OP_RESULT_TEAM_DELETE)): ?>
         <br />
         <a href="#"

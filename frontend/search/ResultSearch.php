@@ -57,7 +57,7 @@ class ResultSearch extends BaseSearch
         // Create base query
         $query = Result::find()
             ->alias('result')
-            ->innerJoin(['team' => Team::tableName()], 'team.id = result.teamId')
+            ->leftJoin(['team' => Team::tableName()], 'team.id = result.teamId')
             ->andWhere([
                 'result.year'    => $this->year,
                 'result.phase'  => $this->phase,

@@ -10,7 +10,7 @@ use \common\models\UploadedFile;
 use \common\models\User;
 use \yii\helpers\FileHelper;
 use \yii\helpers\Url;
-use \Sunra\PhpSimple\HtmlDomParser;
+use \PHPHtmlParser\Dom;
 
 class UploadController extends BaseController
 {
@@ -87,22 +87,19 @@ class UploadController extends BaseController
     public function actionResults()
     {
         // Process file
-        $uploadedFile = $this->processFile(true);
-        if (!$uploadedFile) {
+        $filePath = $this->processFile(true);
+        if (!$filePath) {
             return;
         }
 
         // Get params
-        $geo    = \yii::$app->request->get('geo');
+        $geo    = \yii::$app->request->post('geo');
         $year   = (int)date('Y');
         $resultsViewParams = array('year' => $year);
 
         // Create parser object
-        \yii::import('common.lib.HtmlDomParser.*');
-        require_once('HtmlDomParser.php');
-        $parser = new HtmlDomParser();
-        $html = $parser->str_get_html($uploadedFile->getBytes());
-        $uploadedFile->delete();
+        $parser = new Dom;
+        $html = $parser->load(file_get_contents($filePath));
 
         // Define phase and check access
         $school = \yii::$app->user->identity->school;
@@ -150,7 +147,7 @@ class UploadController extends BaseController
             }
 
             // Get team
-            $teamName = $tr->find('.st_team', 0)->plaintext;
+            $teamName = $tr->find('.st_team', 0)->text();
             $team = Team::find()
                 ->andWhere(['LIKE', 'name', $teamName])
                 ->andWhere(['year' => $year])
@@ -169,14 +166,13 @@ class UploadController extends BaseController
             // Parse tasks tries and time
             $tasksTries = $tasksTime = array();
             foreach ($tr->find('.st_prob') as $i => $prob) {
-                $tmp = $output = preg_replace('!\s+!', ' ', trim($prob->plaintext));
+                $tmp = $output = preg_replace('!\s+!', ' ', trim($prob->text()));
                 if ($tmp[0] === '-') {
                     $tasksTries[$letters[$i]] = (int)$tmp; // '-1' => -1, '-2' => -2, ...
                     $tasksTime[$letters[$i]]  = null;
                 } elseif ($tmp[0] === '+') {
-                    $res = explode(' ', $tmp);
-                    $tasksTries[$letters[$i]] = $res[0] + 1; // '+' => 1, '+1' => 2, ...
-                    $time = preg_replace('/[()]/', '', $res[1]);
+                    $tasksTries[$letters[$i]] = (int)$tmp + 1; // '+' => 1, '+1' => 2, ...
+                    $time = preg_replace('/[()]/', '', $prob->find('.st_time', 0)->text());
                     list($timeHours, $timeMins) = explode(':', $time);
                     $tasksTime[$letters[$i]]  = $timeHours * SECONDS_IN_HOUR + $timeMins * SECONDS_IN_MINUTE;
                 } else {
@@ -185,29 +181,37 @@ class UploadController extends BaseController
                 }
             }
 
-            $place = $tr->find('.st_place', 0)->plaintext;
+            $place = $tr->find('.st_place', 0)->text();
             if ($place != '&nbsp;') {
-                // Create result
-                $result = new Result();
-                $result->setAttributes(array(
-                    'teamId'    => (isset($team)) ? $team->id : null,
-                    'year'      => $year,
-                    'phase'     => $phase,
-                    'geo'       => $geo,
-                    'place'     => $place,
-                    'placeText' => $place,
-                    'tasksTries'=> $tasksTries,
-                    'tasksTime' => $tasksTime,
-                    'total'     => $tr->find('.st_total', 0)->plaintext,
-                    'penalty'   => $tr->find('.st_pen', 0)->plaintext,
-                ), false);
 
+                // Create result
+                $result = new Result([
+                    'teamId'    => (isset($team)) ? $team->id : null,
+                    'teamName'  => (isset($team)) ? null : $teamName,
+                    'year'      => (int)$year,
+                    'phase'     => (int)$phase,
+                    'geo'       => $geo,
+                    'place'     => (int)$place,
+                    'placeText' => $place,
+                    'total'     => (int)$tr->find('.st_total', 0)->text(),
+                    'penalty'   => (int)$tr->find('.st_pen', 0)->text(),
+                ]);
                 if (!$result->save()) {
                     return $this->renderJson(array(
                         'errors' => true,
                         'message' => \yii::t('app', 'Not all results were saved!')
                     ));
                     \yii::$app->end();
+                } else {
+                    foreach ($tasksTries as $letter => $tasksTry) {
+                        $task = new Result\Task([
+                            'resultId'      => $result->id,
+                            'letter'        => $letter,
+                            'triesCount'    => $tasksTry,
+                            'secondsSpent'  => $tasksTime[$letter],
+                        ]);
+                        $task->save();
+                    }
                 }
             }
         }

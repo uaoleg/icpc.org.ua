@@ -89,6 +89,9 @@ appStaffNewsEdit.prototype.initUploader = function () {
         browse_button:    'uploadNewsImages',
         container:        'uploadImagesContainer',
         url:              app.baseUrl + '/upload/images',
+        multipart_params : {
+            '_csrf': app.csrfToken
+        },
         filters: {
             mime_types: [
                 { title : "Image files", extensions : "jpg,jpeg,png" }

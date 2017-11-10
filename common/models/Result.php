@@ -8,6 +8,7 @@ use \common\models\Team;
  * Team Result
  *
  * @property int    $teamId
+ * @property string $teamName // Name of team that is not registered
  * @property int    $year
  * @property int    $phase
  * @property string $geo
@@ -103,7 +104,7 @@ class Result extends BaseActiveRecord
             ['prizePlace', 'number', 'min' => static::PRIZE_PLACE_1, 'max' => static::PRIZE_PLACE_NO],
             ['prizePlace', 'default', 'value' => static::PRIZE_PLACE_NO],
 
-            ['phase, geo', 'required'],
+            [['phase', 'geo'], 'required'],
 
         ]);
     }

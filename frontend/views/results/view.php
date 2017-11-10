@@ -70,7 +70,7 @@ $this->registerJsFile('@web/lib/jquery/jquery.jqGrid-4.5.2/js/i18n/grid.locale-e
             'label' => \yii::t('app', 'Team name'),
             'content' => function (Result $result, $key, $index, $column) {
                 return $this->render('view/cell-team-name', [
-                    'team' => $result->team,
+                    'result' => $result,
                 ]);
             },
             'contentOptions' => ['class' => 'col-xs-4'],
@@ -79,11 +79,15 @@ $this->registerJsFile('@web/lib/jquery/jquery.jqGrid-4.5.2/js/i18n/grid.locale-e
             'attribute' => 'coachName',
             'label' => \yii::t('app', 'Coach name'),
             'content' => function (Result $result, $key, $index, $column) {
-                return Html::a(
-                    \frontend\widgets\user\Name::widget(['user' => $result->team->coach]),
-                    Url::toRoute(['/user/view', 'id' => $result->team->coachId]),
-                    ['target' => '_blank']
-                );
+                if ($result->team) {
+                    return Html::a(
+                        \frontend\widgets\user\Name::widget(['user' => $result->team->coach]),
+                        Url::toRoute(['/user/view', 'id' => $result->team->coachId]),
+                        ['target' => '_blank']
+                    );
+                } else {
+                    return null;
+                }
             },
             'contentOptions' => ['class' => 'col-xs-4'],
         ],
@@ -91,8 +95,12 @@ $this->registerJsFile('@web/lib/jquery/jquery.jqGrid-4.5.2/js/i18n/grid.locale-e
             'attribute' => 'schoolName',
             'label' => \yii::t('app', 'School name'),
             'content' => function (Result $result, $key, $index, $column) {
-                School::$useLanguage = \yii::$app->user->languageCore;
-                return Html::encode($result->team->school->fullName);
+                if ($result->team) {
+                    School::$useLanguage = \yii::$app->user->languageCore;
+                    return Html::encode($result->team->school->fullName);
+                } else {
+                    return null;
+                }
             },
             'contentOptions' => ['class' => 'col-xs-4'],
         ],
