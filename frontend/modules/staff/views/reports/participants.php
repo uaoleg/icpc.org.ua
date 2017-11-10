@@ -1,3 +1,13 @@
+<?php
+
+/* @var $this   \yii\web\View */
+/* @var $teams  \common\models\Team[] */
+
+use \yii\helpers\Html;
+use \yii\helpers\Url;
+
+?>
+
 <table width="100%" border="1">
     <thead>
         <tr>
@@ -18,26 +28,26 @@
     </thead>
     <tbody>
         <?php $i = 1; ?>
-        <?php foreach($participants as $participant): ?>
+        <?php foreach ($teams as $team): ?>
             <tr>
                 <td rowspan="4"><?=$i++?></td>
                 <td rowspan="4">
                     <p>
-                        <?=$participant['schoolNameUk']?><br/><br/>
-                        <?=$participant['schoolNameEn']?><br/><br/>
-                        <strong><?=$participant['teamName']?></strong>
+                        <?=Html::encode($team->school->fullNameUk)?><br/><br/>
+                        <?=Html::encode($team->school->fullNameEn)?><br/><br/>
+                        <strong><?=Html::encode($team->name)?></strong>
                     </p>
                 </td>
-                <?php $this->render('partial/participants/person', array('member'=> $participant['members'][0])); ?>
+                <?= $this->render('partial/participants/person', array('user'=> $team->members[0]->user)); ?>
             </tr>
             <tr>
-                <?php $this->render('partial/participants/person', array('member'=> $participant['members'][1])); ?>
+                <?= $this->render('partial/participants/person', array('user'=> $team->members[1]->user)); ?>
             </tr>
             <tr>
-                <?php $this->render('partial/participants/person', array('member'=> $participant['members'][2])); ?>
+                <?= $this->render('partial/participants/person', array('user'=> $team->members[2]->user)); ?>
             </tr>
             <tr>
-                <?php $this->render('partial/participants/person', array('member'=> $participant['coach'])); ?>
+                <?= $this->render('partial/participants/person', array('user'=> $team->coach)); ?>
             </tr>
         <?php endforeach; ?>
     </tbody>

@@ -21,7 +21,7 @@
                 <td rowspan="<?=count($winner['members']) + 1?>" class="text-center"><?=$winner['schoolName']?></td>
                 <?php if (count($winner['members'])):?>
                     <?php for ($i = 0; $i < count($winner['members']); $i++): ?>
-                        <?php $this->render('partial/winners/person', array('member'=> $winner['members'][$i], 'i' => $i)); ?>
+                        <?= $this->render('partial/winners/person', array('member'=> $winner['members'][$i]->user, 'i' => $i)); ?>
 
                         <?php if ($i === 0): ?>
                             <td rowspan="<?=count($winner['members']) + 1?>" class="text-center"><?=$winner['tasks']?></td>
@@ -36,7 +36,7 @@
                 <?php endif; ?>
 
                 <?php if(isset($winner['coach'])): ?>
-                    <?php $this->render('partial/winners/person', array('member'=> $winner['coach'], 'i' => true)); ?>
+                    <?= $this->render('partial/winners/person', array('member'=> $winner['coach'], 'i' => true)); ?>
                 <?php endif; ?>
             </tr>
         <?php endforeach; ?>

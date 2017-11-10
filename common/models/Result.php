@@ -77,12 +77,7 @@ class Result extends BaseActiveRecord
             'placeText'     => \yii::t('app', 'Absolute Place'),
             'prizePlace'    => \yii::t('app', 'Prize Place'),
             'teamId'        => \yii::t('app', 'ID of the team'),
-            'schoolNameUk'  => \yii::t('app', 'School name in ukrainian'),
-            'schoolNameEn'  => \yii::t('app', 'School name in english'),
-            'schoolType'    => \yii::t('app', 'School type'),
             'coachId'       => \yii::t('app', 'Coach ID'),
-            'coachNameUk'   => \yii::t('app', 'Coach name in ukrainian'),
-            'coachNameEn'   => \yii::t('app', 'Coach name in english'),
             'total'         => \yii::t('app', 'Total points'),
             'penalty'       => \yii::t('app', 'Penalty points'),
         ));

@@ -1,20 +1,30 @@
+<?php
+
+/* @var $this   \yii\web\View */
+/* @var $user   \common\models\User */
+
+use \yii\helpers\Html;
+use \yii\helpers\Url;
+
+?>
+
 <td>
-    <?= \frontend\widgets\user\Name::widget(['user' => $member, 'lang' => 'uk']) ?>
+    <?= \frontend\widgets\user\Name::widget(['user' => $user, 'lang' => 'uk']) ?>
 </td>
 <td>
-    <?= \frontend\widgets\user\Name::widget(['user' => $member, 'lang' => 'en']) ?>
+    <?= \frontend\widgets\user\Name::widget(['user' => $user, 'lang' => 'en']) ?>
 </td>
-<td><?=$member->email?></td>
+<td><?=$user->email?></td>
 <td>
-    <?php if (!empty($member->info->phoneMobile)): ?>
-        <?=\yii::t('app', 'Mobile phone')?>:<?=$member->info->phoneMobile?>
+    <?php if (!empty($user->info->phoneMobile)): ?>
+        <?=\yii::t('app', 'Mobile phone')?>:<?=$user->info->phoneMobile?>
         <br />
     <?php endif; ?>
-    <?php if (!empty($member->info->phoneMobile)): ?>
-        <?=\yii::t('app', 'Home phone')?>:<?=$member->info->phoneHome?>
+    <?php if (!empty($user->info->phoneMobile)): ?>
+        <?=\yii::t('app', 'Home phone')?>:<?=$user->info->phoneHome?>
     <?php endif; ?>
 </td>
-<td><?=$member->info->tShirtSize?></td>
-<td><?=$member->info->dateOfBirth?></td>
-<td><?=(isset($member->info->schoolAdmissionYear)) ? $member->info->schoolAdmissionYear : ''?></td>
-<td><?=(isset($member->info->course)) ? $member->info->course : ''?></td>
+<td><?=$user->info->tShirtSize?></td>
+<td><?=$user->info->dateOfBirth?></td>
+<td><?=(isset($user->info->schoolAdmissionYear)) ? $user->info->schoolAdmissionYear : ''?></td>
+<td><?=(isset($user->info->course)) ? $user->info->course : ''?></td>
