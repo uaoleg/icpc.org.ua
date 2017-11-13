@@ -109,7 +109,7 @@ use \yii\helpers\Url;
             'content' => function (User $student, $key, $index, $column) {
                 return \yii::$app->formatter->asDate($student->timeCreated);
             },
-            'contentOptions' => ['class' => 'col-xs-1'],
+            'contentOptions' => ['class' => 'col-xs-1', 'style' => 'min-width: 120px;'],
         ],
         [
             'attribute' => 'status',
