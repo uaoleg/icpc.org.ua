@@ -128,15 +128,6 @@ $this->registerJsFile('@web/lib/jquery/jquery.jqGrid-4.5.2/js/i18n/grid.locale-e
 
 <script>
 $(function () {
-    $('.js-result').each(function() {
-        var $result = $(this);
-        $('[data-toggle="popover"]', $result).each(function() {
-            var $popover = $(this);
-            $popover.popover({
-                content: $('.js-content', $popover).html(),
-                html: true
-            });
-        });
-    });
+    appResultsView();
 })
 </script>

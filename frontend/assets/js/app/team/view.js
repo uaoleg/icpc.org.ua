@@ -8,11 +8,8 @@ function appTeamView() {
      */
     $('.btn-delete-team').on('confirmed', function(){
         $.ajax({
-            url: app.baseUrl + '/staff/team/delete',
-            data: {
-                teamId: $(this).data('team-id')
-            },
-            success: function(response) {
+            url: app.baseUrl + '/staff/team/delete?id=' + $(this).data('team-id'),
+            success: function() {
                 location.href = '/team/list';
             }
         });

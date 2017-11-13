@@ -1,20 +1,28 @@
 function appResultsView() {
 
+    // Popover with tasks
+    $('.js-result').each(function() {
+        var $result = $(this);
+        $('[data-toggle="popover"]', $result).each(function() {
+            var $popover = $(this);
+            $popover.popover({
+                content: $('.js-content', $popover).html(),
+                html: true
+            });
+        });
+    });
+
     /**
      * Remove team
      */
-    $(document).on('click', '.js-remove-team', function() {
-        return false;
-    }).on('confirmed', '.js-remove-team', function() {
-        var $row = $(this).closest('.jqgrow');
-        $('td', $row).css('opacity', OPACITY_DISABLED);
+    $(document).on('confirmed', '.js-remove-team', function() {
+        var $btn = $(this);
+        var $row = $btn.closest('.js-result');
+        $row.css('opacity', OPACITY_DISABLED);
         $.ajax({
-            url: app.baseUrl + '/staff/results/teamDelete',
-            data: {
-                id: $row.prop('id')
-            },
+            url: app.baseUrl + '/staff/results/team-delete?id=' + $row.data('key'),
             success: function() {
-                $('#results').jqGrid('delRowData', $row.prop('id'));
+                $row.fadeOut();
             }
         });
         return false;

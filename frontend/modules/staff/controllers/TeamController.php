@@ -522,13 +522,10 @@ class TeamController extends \frontend\modules\staff\ext\Controller
     /**
      * Delete team action
      */
-    public function actionDelete()
+    public function actionDelete($id)
     {
-        // Get params
-        $teamId = \yii::$app->request->get('teamId');
-
         // Get team
-        $team = Team::findOne($teamId);
+        $team = Team::findOne($id);
 
         // Mark as deleted
         if (!isset($team)) {

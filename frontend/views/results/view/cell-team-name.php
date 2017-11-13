@@ -16,7 +16,7 @@ use \yii\helpers\Url;
     <?=Html::encode($result->teamName)?>
     <?php if (\yii::$app->user->can(\common\components\Rbac::OP_RESULT_TEAM_DELETE)): ?>
         <br />
-        <a href="#"
+        <a href="javascript:;"
            class="js-remove-team"
            style="color: red; font-style: italic;"
            rel="tooltip"

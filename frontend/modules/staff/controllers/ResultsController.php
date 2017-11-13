@@ -34,11 +34,8 @@ class ResultsController extends \frontend\modules\staff\ext\Controller
     /**
      * Remove team from results
      */
-    public function actionTeamDelete()
+    public function actionTeamDelete($id)
     {
-        // Get param
-        $id = \yii::$app->request->get('id');
-
         // Get result of the team
         $result = Result::findOne($id);
 
