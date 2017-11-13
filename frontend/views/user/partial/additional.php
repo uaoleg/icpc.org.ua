@@ -10,12 +10,6 @@ $this->registerJsFile('@web/lib/bootstrap.datepicker/js/bootstrap-datepicker.js'
 
 ?>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        new appUserAdditionalGeneral();
-    });
-</script>
-
 <div class="form-group">
     <label class="col-lg-3 control-label" for="phoneHome"><?=\yii::t('app', 'Home phone', null, null, $lang)?></label>
     <div class="col-lg-9">
@@ -37,10 +31,14 @@ $this->registerJsFile('@web/lib/bootstrap.datepicker/js/bootstrap-datepicker.js'
 <div class="form-group">
     <label class="col-lg-3 control-label" for="dateOfBirth"><?=\yii::t('app', 'Date of birth', null, null, $lang)?></label>
     <div class="col-lg-9">
-        <input class="form-control" id="dateOfBirth" name="dateOfBirth" type="text"
-               value="<?=$info->dateOfBirth?>"
-               placeholder="<?=\yii::t('app', 'Date of birth', null, null, $lang)?>"
-               data-baylor-birthday="" />
+        <input
+            type="text"
+            name="dateOfBirth"
+            class="form-control" id="dateOfBirth"
+            value="<?=$info->dateOfBirth?>"
+            placeholder="<?=\yii::t('app', 'Date of birth', null, null, $lang)?>"
+            data-baylor-birthday=""
+        />
     </div>
 </div>
 
@@ -77,3 +75,9 @@ $this->registerJsFile('@web/lib/bootstrap.datepicker/js/bootstrap-datepicker.js'
                data-baylor-acmId="" />
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        new appUserAdditionalGeneral();
+    });
+</script>
