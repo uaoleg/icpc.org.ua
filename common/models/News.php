@@ -80,13 +80,13 @@ class News extends BaseActiveRecord
             ['isPublished', 'boolean'],
             ['isPublished', 'default', 'value' => false],
 
-            ['yearCreated', 'default', 'value' => (int)date('Y', $this->timeCreated)],
+            ['yearCreated', 'default', 'value' => (int)date('Y')],
             ['yearCreated', 'required'],
         ]);
     }
 
     /**
-     * Get images ids of the news
+     * Get images IDs of the news
      * @return array
      */
     public function getImagesIds()
