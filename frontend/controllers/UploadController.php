@@ -237,61 +237,41 @@ class UploadController extends BaseController
         if ($imagesCount < News::MAX_IMAGES_COUNT) {
 
             // Process file
-            $uploadedFile = $this->processFile();
-            if (!$uploadedFile) {
+            $filePath = $this->processFile();
+            if (!$filePath) {
                 return;
             }
 
-            $filePath = \yii::getAlias('@common/runtime');
-            $fileName = array_pop(explode('/', $uploadedFile->filename));
-            $file = fopen($filePath . '/' . $fileName, 'w');
-            fwrite($file, $uploadedFile->getBytes());
-            fclose($file);
-
-            $newFileName = array_shift(explode('.', $fileName)) . '.jpg';
+            // Scale image
             \yii::$app->image->scale(
-                $filePath . '/' . $fileName,
-                $filePath . '/' . $newFileName,
-                array(
+                $filePath,
+                $filePath,
+                [
                     'max_width' => 2000,
                     'max_height' => 2000,
                     'min_width' => 100,
                     'min_height' => 100,
-                )
+                ]
             );
 
-            // Delete previous file
-            $uploadedFile->delete();
-
             // Create a new scaled and converted file
-            $newUploadedFile = new UploadedFile();
-            $newUploadedFile->setAttributes(array(
-                'filename' => $filePath . '/' . $fileName,
-            ), false);
-            $newUploadedFile->save();
-
-            $image = new News\Image();
-            $image->fileName = mb_strtolower(\yii::$app->request->get('uniqueName'));
-            $image->newsId = (!empty($newsId)) ? $newsId : null;
-            $image->userId = \yii::$app->user->id;
-            $image->content = $uploadedFile->getContent();
+            $image = new News\Image([
+                'newsId'    => (!empty($newsId)) ? $newsId : null,
+                'userId'    => \yii::$app->user->id,
+                'content'   => file_get_contents($filePath),
+            ]);
             $image->save();
 
-            // Delete temporary files
-            unlink($filePath . '/' . $fileName);
-            if (file_exists($filePath . '/' . $newFileName)) {
-                unlink($filePath . '/' . $newFileName);
-            }
-
-            return $this->renderJson(array(
+            // Return response
+            return $this->renderJson([
                 'errors' => false,
-                'id' => $image->id
-            ));
+                'id' => $image->id,
+            ]);
         } else {
-            return $this->renderJson(array(
+            return $this->renderJson([
                 'errors' => true,
                 'message' => \yii::t('app', 'There are more than {0} images for this news. You cannot add any more.', News::MAX_IMAGES_COUNT),
-            ));
+            ]);
         }
     }
 
@@ -327,12 +307,10 @@ class UploadController extends BaseController
         }
 
         // Create a new photo
-        $photo = new User\Photo();
-        $photo->setAttributes(array(
-            'fileName' => mb_strtolower(\yii::$app->request->get('uniqueName')),
+        $photo = new User\Photo([
             'userId'   => \yii::$app->user->id,
             'content'  => file_get_contents($filePath),
-        ), false);
+        ]);
         $photo->save();
 
         // Delete temporary file

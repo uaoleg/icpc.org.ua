@@ -118,13 +118,10 @@ class NewsController extends BaseController
     /**
      * Render image
      */
-    public function actionImage()
+    public function actionImage($id)
     {
-        // Get params
-        $imageId = mb_substr(\yii::$app->request->get('id'), 0, 24);
-
         // Get document
-        $image = News\Image::findOne($imageId);
+        $image = News\Image::findOne($id);
         if ($image === null) {
             $this->httpException(404);
         }
@@ -140,7 +137,7 @@ class NewsController extends BaseController
         }
 
         // Send content
-        echo $image->file->getBytes();
+        echo $image->content;
     }
 
 }

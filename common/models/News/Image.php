@@ -41,7 +41,7 @@ class Image extends BaseActiveRecord
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), array(
-            'newsId'    => \yii::t('app', 'ID of the news'),
+            'newsId' => \yii::t('app', 'ID of the news'),
         ));
     }
 
@@ -52,7 +52,8 @@ class Image extends BaseActiveRecord
     public function rules()
     {
         return array_merge(parent::rules(), [
-            [['newsId', 'userId', 'content'], 'required'],
+            ['newsId', 'safe'],
+            [['userId', 'content'], 'required'],
         ]);
     }
 
