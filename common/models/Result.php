@@ -64,6 +64,17 @@ class Result extends BaseActiveRecord
     }
 
     /**
+     * Returns a list of behaviors that this component should behave as
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            $this->behaviorTimestamp(),
+        ];
+    }
+
+    /**
      * Returns the attribute labels.
      * @return array attribute labels (name => label)
      */
