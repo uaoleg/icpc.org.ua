@@ -39,14 +39,6 @@ class Region extends BaseActiveRecord
     {
         return array_merge(parent::attributeLabels(), array(
             'name' => \yii::t('app', 'Region name'),
-            'const.name' => array(
-                static::NAME_CENTER     => \yii::t('app', 'Center'),
-                static::NAME_NORTH      => \yii::t('app', 'North'),
-                static::NAME_EAST       => \yii::t('app', 'East'),
-                static::NAME_SOUTH      => \yii::t('app', 'South'),
-                static::NAME_WEST       => \yii::t('app', 'West'),
-                static::NAME_SOUTH_WEST => \yii::t('app', 'Southwestern'),
-            ),
         ));
     }
 

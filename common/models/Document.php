@@ -56,11 +56,19 @@ class Document extends BaseActiveRecord
             'fileExt'       => \yii::t('app', 'File extension'),
             'isPublished'   => \yii::t('app', 'Is published'),
             'timeCreated'   => \yii::t('app', 'Registration date'),
-            'const.type' => array(
-                static::TYPE_GUIDANCE           => \yii::t('app', 'Guidance'),
-                static::TYPE_REGULATIONS        => \yii::t('app', 'Regulations'),
-            ),
         ));
+    }
+
+    /**
+     * Returns the constant labels
+     * @return string[]
+     */
+    public static function constantLabels()
+    {
+        return [
+            static::TYPE_GUIDANCE       => \yii::t('app', 'Guidance'),
+            static::TYPE_REGULATIONS    => \yii::t('app', 'Regulations'),
+        ];
     }
 
     /**
