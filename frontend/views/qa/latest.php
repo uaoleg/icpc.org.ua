@@ -15,7 +15,7 @@ use \yii\helpers\Url;
        class="btn btn-success btn-lg pull-right"
        style="margin: 10px 0 0;"><?=\yii::t('app', 'Ask Question')?></a>
     <?php if (\yii::$app->user->can(\common\components\Rbac::OP_QA_TAG_CREATE)): ?>
-    <a href="<?=Url::toRoute(['/staff/qaTags'])?>"
+    <a href="<?=Url::toRoute(['/staff/qatags'])?>"
        class="btn btn-default btn-lg pull-right"
        style="margin: 10px 20px 0 0;"><?=\yii::t('app', 'Manage Tags')?></a>
     <?php endif; ?>

@@ -1,14 +1,11 @@
 <?php
 
+/* @var $this \yii\web\View */
+
 use \yii\helpers\Html;
+use \yii\helpers\Url;
 
 ?>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        new appStaffQatagsManage();
-    });
-</script>
 
 <h2><?=\yii::t('app', 'Tag Manage')?></h2>
 
@@ -35,3 +32,9 @@ use \yii\helpers\Html;
         </button>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        new appStaffQatagsManage();
+    });
+</script>

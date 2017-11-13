@@ -56,8 +56,10 @@ class Tag extends BaseActiveRecord
      */
     public function getQuestionCount()
     {
-        return (int)Question::find()
-            ->andWhere(['tagList' => $this->name])
+        return (int)QuestionTagRel::find()
+            ->alias('rel')
+            ->innerJoin(['tag' => static::tableName()], 'tag.id = rel.tagId')
+            ->andWhere(['tag.name' => $this->name])
             ->count()
         ;
     }

@@ -41,11 +41,8 @@ class QatagsController extends \frontend\modules\staff\ext\Controller
     /**
      * Manage tag
      */
-    public function actionManage()
+    public function actionManage($id = null)
     {
-        // Get params
-        $id = \yii::$app->request->get('id');
-
         // Get tag
         if (empty($id)) {
             $tag = new Qa\Tag();

@@ -24,7 +24,7 @@ class Controller extends \frontend\controllers\BaseController
                     'staff/students',
                     'staff/students/export',
                     'staff/reports',
-                    'staff/qaTags',
+                    'staff/qatags',
                 ),
                 'roles' => array(User::ROLE_COORDINATOR_STATE),
             ),

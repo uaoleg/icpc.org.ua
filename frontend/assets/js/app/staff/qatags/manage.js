@@ -5,9 +5,8 @@ function appStaffQatagsManage() {
      */
     $('.save-tag').on('click', function(){
         $.ajax({
-            url: app.baseUrl + '/staff/qatags/manage',
+            url: app.baseUrl + '/staff/qatags/manage?id=' + $('input[name=id]').val(),
             data: {
-                id:   $('input[name=id]').val(),
                 name: $('input[name=name]').val(),
                 desc: $('textarea[name=desc]').val()
             },
