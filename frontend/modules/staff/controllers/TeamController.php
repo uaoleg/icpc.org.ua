@@ -83,7 +83,7 @@ class TeamController extends \frontend\modules\staff\ext\Controller
     }
 
     /**
-     * Get teams from baylor
+     * Get teams from Baylor
      */
     public function actionPostTeams()
     {
@@ -484,21 +484,18 @@ class TeamController extends \frontend\modules\staff\ext\Controller
     /**
      * Update team phase
      */
-    public function actionPhaseUpdate()
+    public function actionPhaseUpdate($id)
     {
         // Get params
-        $id     = \yii::$app->request->get('id');
-        $phase  = \yii::$app->request->get('phase');
+        $phase = (int)\yii::$app->request->post('phase');
 
         // Get team
         $team = Team::findOne($id);
 
         // Update phase
         $team->scenario = Team::SC_PHASE_UPDATE;
-        $team->phase = (int)$phase;
-        if ($team->validate(array('phase'))) {
-            $team->save(false);
-        }
+        $team->phase = $phase;
+        $team->save(true, ['phase', 'timeUpdated']);
     }
 
     /**

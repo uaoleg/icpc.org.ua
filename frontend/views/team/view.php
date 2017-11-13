@@ -63,14 +63,14 @@ $this->title = $team->name;
                 <strong><?=\yii::t('app', 'League')?></strong>:
                 <div class="btn-group">
                     <a href="<?=Url::toRoute([
-                        '/staff/team/leagueUpdate',
+                        '/staff/team/league-update',
                         'team'      => $team->id,
                         'league'    => \common\models\Team::LEAGUE_I,
                     ])?>" class="btn btn-default <?=($team->league === \common\models\Team::LEAGUE_I) ? 'active' : ''?>">
                         <?=\common\models\Team::LEAGUE_I?>
                     </a>
                     <a href="<?=Url::toRoute([
-                        '/staff/team/leagueUpdate',
+                        '/staff/team/league-update',
                         'team'      => $team->id,
                         'league'    => \common\models\Team::LEAGUE_II,
                     ])?>" class="btn btn-default <?= ($team->league === \common\models\Team::LEAGUE_II) ? 'active' : ''?>">

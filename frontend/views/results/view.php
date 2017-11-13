@@ -127,7 +127,5 @@ $this->registerJsFile('@web/lib/jquery/jquery.jqGrid-4.5.2/js/i18n/grid.locale-e
 ]) ?>
 
 <script>
-$(function () {
     appResultsView();
-})
 </script>

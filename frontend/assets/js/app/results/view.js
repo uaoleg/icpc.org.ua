@@ -32,26 +32,24 @@ function appResultsView() {
      * Mark team as completed phase
      */
     $(document).on('change', '.results-phase-completed', function() {
-        var $this = $(this)
-            $row = $this.closest('.jqgrow'),
-            phase = parseInt($('input[name=results-phase]').val());
+        var $this = $(this);
+        var phase = parseInt($('input[name=results-phase]').val());
 
         $this.prop('disabled', true).tooltip('hide').trigger('changed');
 
         // Send request
         $.ajax({
-            url: app.baseUrl + '/staff/team/phaseUpdate',
+            url: app.baseUrl + '/staff/team/phase-update?id=' + $this.data('team-id'),
             data: {
-                id:     $this.data('team-id'),
-                phase:  $this.is(':checked') ? phase + 1 : phase
+                phase: $this.is(':checked') ? phase + 1 : phase
             },
             success: function() {
                 $this.prop('disabled', false);
             }
         });
     }).on('changed', '.results-phase-completed', function() {
-        var $this = $(this)
-            $row = $this.closest('.jqgrow');
+        var $this = $(this);
+        var $row = $this.closest('.js-result');
         $('.results-prize-place', $row).prop('disabled', !$this.is(':checked'));
     });
 
