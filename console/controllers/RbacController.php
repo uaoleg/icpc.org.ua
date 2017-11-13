@@ -319,7 +319,7 @@ class RbacController extends BaseController
         $admin->save();
 
         // Assign admin role
-        $this->auth->assign(User::ROLE_ADMIN, $admin->id);
+        $this->auth->assign($this->auth->getRole(User::ROLE_ADMIN), $admin->id);
 
         // Display admin params
         if ($admin->hasErrors()) {

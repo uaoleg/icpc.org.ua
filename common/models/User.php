@@ -155,34 +155,36 @@ class User extends Person implements \yii\web\IdentityInterface
      */
     public function afterSave($insert, $changedAttributes)
     {
+        $auth = \yii::$app->authManager;
+
         // If any of isApproved properties is changed need to assign or revoke role
         if ($this->isAttributeChangedAfterSave('isApprovedStudent', $changedAttributes)) {
             if ($this->isApprovedStudent) {
-                if (!\yii::$app->authManager->checkAccess($this->id, User::ROLE_STUDENT)) {
-                    \yii::$app->authManager->assign(User::ROLE_STUDENT, $this->id);
+                if (!$auth->checkAccess($this->id, User::ROLE_STUDENT)) {
+                    $auth->assign($auth->getRole(User::ROLE_STUDENT), $this->id);
                 }
             } else {
-                \yii::$app->authManager->revoke(User::ROLE_STUDENT, $this->id);
+                $auth->revoke($auth->getRole(User::ROLE_STUDENT), $this->id);
             }
         }
         if ($this->isAttributeChangedAfterSave('isApprovedCoach', $changedAttributes)) {
             if ($this->isApprovedCoach) {
-                if (!\yii::$app->authManager->checkAccess($this->id, User::ROLE_COACH)) {
-                    \yii::$app->authManager->assign(User::ROLE_COACH, $this->id);
+                if (!$auth->checkAccess($this->id, User::ROLE_COACH)) {
+                    $auth->assign($auth->getRole(User::ROLE_COACH), $this->id);
                 }
             } else {
-                \yii::$app->authManager->revoke(User::ROLE_COACH, $this->id);
+                $auth->revoke($auth->getRole(User::ROLE_COACH), $this->id);
             }
         }
         if ($this->isAttributeChangedAfterSave('isApprovedCoordinator', $changedAttributes)) {
             if ($this->isApprovedCoordinator) {
-                if (!\yii::$app->authManager->checkAccess($this->id, $this->coordinator)) {
-                    \yii::$app->authManager->assign($this->coordinator, $this->id);
+                if (!$auth->checkAccess($this->id, $this->coordinator)) {
+                    $auth->assign($auth->getRole($this->coordinator), $this->id);
                 }
             } else {
-                \yii::$app->authManager->revoke(User::ROLE_COORDINATOR_STATE, $this->id);
-                \yii::$app->authManager->revoke(User::ROLE_COORDINATOR_REGION, $this->id);
-                \yii::$app->authManager->revoke(User::ROLE_COORDINATOR_UKRAINE, $this->id);
+                $auth->revoke($auth->getRole(User::ROLE_COORDINATOR_STATE), $this->id);
+                $auth->revoke($auth->getRole(User::ROLE_COORDINATOR_REGION), $this->id);
+                $auth->revoke($auth->getRole(User::ROLE_COORDINATOR_UKRAINE), $this->id);
             }
         }
 

@@ -606,7 +606,7 @@ class DbController extends BaseController
             }
             \yii::$app->db->createCommand()->insert('auth_item', [
                 'name'          => $row['name'],
-                'type'          => $row['type'],
+                'type'          => in_array($row['name'], User::getConstants('ROLE_')) ? \yii\rbac\Item::TYPE_ROLE : \yii\rbac\Item::TYPE_PERMISSION,
                 'description'   => $row['description'],
                 'rule_name'     => $bizRule,
                 'data'          => null,
