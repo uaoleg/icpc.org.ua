@@ -11,19 +11,13 @@ $this->registerJsFile('@web/lib/ckeditor-4.2/ckeditor.js', ['position' => \yii\w
 
 ?>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        new appQaView();
-    });
-</script>
-
 <h2>
     <div class="break-word">
         <?= Html::encode($question->title) ?>
     </div>
-    <?php if (\yii::$app->user->can(\common\components\Rbac::OP_QA_QUESTION_UPDATE, array(
+    <?php if (\yii::$app->user->can(\common\components\Rbac::OP_QA_QUESTION_UPDATE, [
         'question' => $question,
-    ))): ?>
+    ])): ?>
         <small><a href="<?=Url::toRoute(['ask', 'id' => $question->id])?>"><?=\yii::t('app', 'Edit')?></a></small>
     <?php endif; ?>
 </h2>
@@ -79,3 +73,9 @@ $this->registerJsFile('@web/lib/ckeditor-4.2/ckeditor.js', ['position' => \yii\w
         <?=\yii::t('app', 'Login')?>
     </a>
 <?php endif; ?>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        appQaView();
+    });
+</script>

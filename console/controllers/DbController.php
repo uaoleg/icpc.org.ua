@@ -623,6 +623,19 @@ class DbController extends BaseController
                 ])->execute();
             }
         }
+
+        // Manual rules
+        \yii::$app->db->createCommand()->insert('auth_rule', [
+            'name'          => 'QaQuestionUpdateRule',
+            'data'          => serialize(new \common\rbac\QaQuestionUpdateRule),
+            'created_at'    => time(),
+            'updated_at'    => null,
+        ])->execute();
+        \yii::$app->db->createCommand()->update('auth_item', [
+            'rule_name' => 'QaQuestionUpdateRule'
+        ], [
+            'name' => 'qaQuestionUpdate',
+        ])->execute();
         echo "\n\n";
 
         // Auth assignment

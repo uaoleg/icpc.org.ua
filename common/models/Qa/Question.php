@@ -132,4 +132,20 @@ class Question extends BaseActiveRecord
         return ArrayHelper::getColumn($tags, 'name');
     }
 
+    /**
+     * Returns if the question has specific tag
+     * @param int $tagId
+     * @return bool
+     */
+    public function hasTag($tagId)
+    {
+        return (int)QuestionTagRel::find()
+            ->andWhere([
+                'questionId'    => $this->id,
+                'tagId'         => $tagId,
+            ])
+            ->count() > 0
+        ;
+    }
+
 }

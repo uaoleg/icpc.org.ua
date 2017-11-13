@@ -35,7 +35,7 @@ $this->registerJsFile('@web/lib/select2/select2.js', ['position' => \yii\web\Vie
     <div class="form-group">
         <select name="tagList" multiple>
             <?php foreach($tags as $tag): ?>
-                <option value="<?=$tag->id?>"><?=$tag->name?></option>
+                <option value="<?=$tag->id?>" <?= $question->hasTag($tag->id) ? 'selected' : '' ?>><?=$tag->name?></option>
             <?php endforeach; ?>
         </select>
     </div>
