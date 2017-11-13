@@ -18,7 +18,7 @@ class UserController extends \frontend\modules\test\ext\Controller
 
         // Check length
         if (mb_strlen($email) < $minLength) {
-            echo \yii::t('app', 'Email length should be {n} symbols or more.', $minLength);
+            echo \yii::t('app', 'Email length should be {0} symbols or more.', $minLength);
             return;
         }
 
