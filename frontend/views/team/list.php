@@ -133,7 +133,10 @@ use \yii\helpers\Url;
             ],
             [
                 'attribute' => 'state',
-                'label' => \yii::t('app', 'Subregion'),
+                'label' => \yii::t('app', 'State'),
+                'filter' => Html::activeDropDownList($teamsSearch, 'state', $teamsSearch->filterStateOptions(), [
+                    'class' => 'form-control',
+                ]),
                 'content' => function (Team $team, $key, $index, $column) {
                     return $team->school->getStateLabel();
                 },
@@ -142,6 +145,9 @@ use \yii\helpers\Url;
             [
                 'attribute' => 'region',
                 'label' => \yii::t('app', 'Region'),
+                'filter' => Html::activeDropDownList($teamsSearch, 'region', $teamsSearch->filterRegionOptions(), [
+                    'class' => 'form-control',
+                ]),
                 'content' => function (Team $team, $key, $index, $column) {
                     return $team->school->getRegionLabel();
                 },

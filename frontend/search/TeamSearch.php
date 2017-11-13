@@ -2,6 +2,8 @@
 
 namespace frontend\search;
 
+use \common\models\Geo\Region;
+use \common\models\Geo\State;
 use \common\models\School;
 use \common\models\Team;
 use \common\models\User;
@@ -22,6 +24,8 @@ class TeamSearch extends BaseSearch
     public $schoolName;
     public $schoolType;
     public $coachName;
+    public $region;
+    public $state;
     public $isOutOfCompetition;
     public $phase = 1;
 
@@ -34,7 +38,7 @@ class TeamSearch extends BaseSearch
         return [
             ['year', 'required'],
             [['teamName', 'schoolName', 'schoolType', 'coachName'], 'trim'],
-            [['isOutOfCompetition', 'phase'], 'safe'],
+            [['region', 'state', 'isOutOfCompetition', 'phase'], 'safe'],
         ];
     }
 
@@ -108,6 +112,8 @@ class TeamSearch extends BaseSearch
         $query
             ->andFilterWhere(['LIKE', 'team.name', $this->teamName])
             ->andFilterWhere(['school.type' => $this->schoolType])
+            ->andFilterWhere(['school.region' => $this->region])
+            ->andFilterWhere(['school.state' => $this->state])
         ;
 
         return $dataProvider;
@@ -124,6 +130,36 @@ class TeamSearch extends BaseSearch
             $list[$type] = School::getConstantLabel($type);
         }
         return $list;
+    }
+
+    /**
+     * Returns list of available regions
+     * @return array
+     */
+    public function filterRegionOptions()
+    {
+        $list = [];
+        foreach (Region::getConstants('NAME_') as $region) {
+            $list[$region] = Region::getConstantLabel($region);
+        }
+        $collator = new \Collator(\yii::$app->language);
+        $collator->asort($list);
+        return ['' => \yii::t('app', 'All')] + $list;
+    }
+
+    /**
+     * Returns list of available states
+     * @return array
+     */
+    public function filterStateOptions()
+    {
+        $list = [];
+        foreach (State::getConstants('NAME_') as $state) {
+            $list[$state] = State::getConstantLabel($state);
+        }
+        $collator = new \Collator(\yii::$app->language);
+        $collator->asort($list);
+        return ['' => \yii::t('app', 'All')] + $list;
     }
 
 }
