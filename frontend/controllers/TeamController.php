@@ -145,12 +145,12 @@ class TeamController extends BaseController
                 $team->name, $team->school->fullNameUk, $team->school->shortNameUk,
                 \frontend\widgets\user\Name::widget(['user' => $team->coach, 'lang' => 'uk']),
                 \frontend\widgets\user\Name::widget(['user' => $team->coach, 'lang' => 'en']),
-				$team->coach->email,
+                $team->coach->email,
             );
             foreach ($team->members as $member) {
                 $arrayToPut[] = \frontend\widgets\user\Name::widget(array('user' => $member->user, 'lang' => 'uk'));
-				$arrayToPut[] = \frontend\widgets\user\Name::widget(array('user' => $member->user, 'lang' => 'en'));
-				$arrayToPut[] = $member->email;
+                $arrayToPut[] = \frontend\widgets\user\Name::widget(array('user' => $member->user, 'lang' => 'en'));
+                $arrayToPut[] = $member->user->email;
             }
             return $arrayToPut;
         });
