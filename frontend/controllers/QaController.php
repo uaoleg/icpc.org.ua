@@ -183,13 +183,20 @@ class QaController extends BaseController
         }
 
         // Save question
-        $question->setAttributes(array(
+        $question->setAttributes([
             'userId'    => \yii::$app->user->id,
             'title'     => $title,
             'content'   => $content,
-            'tagList'   => $tagList,
-        ), false);
-        $question->save();
+        ]);
+        if ($question->save()) {
+            foreach ($tagList as $tagId) {
+                $tagRel = new Qa\QuestionTagRel([
+                    'questionId'    => $question->id,
+                    'tagId'         => $tagId,
+                ]);
+                $tagRel->save();
+            }
+        }
 
         // Render json
         return $this->renderJson(array(

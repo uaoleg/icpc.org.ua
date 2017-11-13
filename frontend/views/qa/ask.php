@@ -13,12 +13,6 @@ $this->registerJsFile('@web/lib/select2/select2.js', ['position' => \yii\web\Vie
 
 ?>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        new appQaManage();
-    });
-</script>
-
 <?php if ($question->isNewRecord): ?>
     <h2><?=\yii::t('app', 'Create a new Question')?></h2>
 <?php else: ?>
@@ -41,7 +35,7 @@ $this->registerJsFile('@web/lib/select2/select2.js', ['position' => \yii\web\Vie
     <div class="form-group">
         <select name="tagList" multiple>
             <?php foreach($tags as $tag): ?>
-                <option value="<?=$tag->name?>"><?=$tag->name?></option>
+                <option value="<?=$tag->id?>"><?=$tag->name?></option>
             <?php endforeach; ?>
         </select>
     </div>
@@ -51,3 +45,9 @@ $this->registerJsFile('@web/lib/select2/select2.js', ['position' => \yii\web\Vie
         </button>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        new appQaManage();
+    });
+</script>
