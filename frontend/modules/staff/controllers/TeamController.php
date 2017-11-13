@@ -250,21 +250,29 @@ class TeamController extends \frontend\modules\staff\ext\Controller
                 $this->httpException(404);
             }
 
-            //You can't manage team that ws imported from bailor
+            //You can't manage team that was imported from Bailor
             if (!empty($team->baylorId)) {
-                $this->httpException(404);
+                $this->httpException(403);
             }
 
-            // Update team
-            $team->setAttributes(array(
+            // Update team and list of members
+            $team->setAttributes([
                 'name'               => $teamName,
                 'coachId'            => \yii::$app->user->id,
                 'schoolId'           => $school->id,
                 'memberIds'          => $memberIds,
                 'isOutOfCompetition' => $isOutOfCompetition
-            ), false);
-
-            $team->save();
+            ]);
+            if ($team->save()) {
+                Team\Member::deleteAll(['teamId' => $team->id]);
+                foreach ($memberIds as $memberId) {
+                    $member = new Team\Member([
+                        'teamId' => $team->id,
+                        'userId' => $memberId,
+                    ]);
+                    $member->save();
+                }
+            }
 
             // Render json
             return $this->renderJson(array(
@@ -315,21 +323,27 @@ class TeamController extends \frontend\modules\staff\ext\Controller
                 ->alias('user')
                 ->leftJoin(
                     ['member' => Team\Member::tableName()],
-                    ['AND', 'member.userId = user.id', ['IN', 'member.firmId', $teamsIds]]
+                    [
+                        'AND',
+                        'member.userId = user.id',
+                        ['IN', 'member.teamId', $teamsIds],
+                    ]
                 )
                 ->andWhere([
                     'user.schoolId' => $school->id,
                     'user.type'     => User::ROLE_STUDENT,
                 ])
-                ->andHaving('member.firmId IS NULL')
+                ->andWhere('member.teamId IS NULL OR member.teamId = :teamId', [
+                    ':teamId' => $team->id,
+                ])
                 ->all()
             ;
 
             // Render view
             return $this->render('manage', array(
-                'school'    => $school,
-                'users'     => $users,
                 'team'      => $team,
+                'users'     => $users,
+                'school'    => $school,
             ));
 
         }

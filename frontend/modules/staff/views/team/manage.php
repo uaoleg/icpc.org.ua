@@ -1,4 +1,9 @@
-<?php //
+<?php
+
+/* @var $this   \yii\web\View */
+/* @var $team   \common\models\Team */
+/* @var $users  \common\models\User[] */
+/* @var $school \common\models\School */
 
 use \common\models\Result;
 use \common\models\User;
@@ -63,7 +68,7 @@ use \yii\helpers\Html;
                 <div class="form-group">
                     <label for="memberIds"><?=\yii::t('app', 'Members')?></label>
                     <select name="memberIds" id="memberIds" class="form-control" multiple>
-                        <?php foreach($users as $user): ?>
+                        <?php foreach ($users as $user): ?>
                             <option value="<?=$user->id?>" <?=$team->hasMember($user->id) ? 'selected' : ''?>>
                                 <?= \frontend\widgets\user\Name::widget(['user' => $user]) ?>
                                 <?= Html::encode($user->email)?>
