@@ -15,6 +15,17 @@ class StudentSearch extends UserSearch
     {
         $query = parent::baseQuery();
         $query->andWhere(['user.type' => User::ROLE_STUDENT]);
+
+        // Filter by status
+        switch ($this->status) {
+            case static::STATUS_ACTIVE:
+                $query->andFilterWhere(['user.isApprovedStudent' => true]);
+                break;
+            case static::STATUS_SUSPENDED:
+                $query->andFilterWhere(['user.isApprovedStudent' => false]);
+                break;
+        }
+
         return $query;
     }
 

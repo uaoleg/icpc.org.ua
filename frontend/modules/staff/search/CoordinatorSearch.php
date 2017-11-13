@@ -21,6 +21,17 @@ class CoordinatorSearch extends UserSearch
                 User::ROLE_COORDINATOR_UKRAINE,
             ]
         ]);
+
+        // Filter by status
+        switch ($this->status) {
+            case static::STATUS_ACTIVE:
+                $query->andFilterWhere(['user.isApprovedCoordinator' => true]);
+                break;
+            case static::STATUS_SUSPENDED:
+                $query->andFilterWhere(['user.isApprovedCoordinator' => false]);
+                break;
+        }
+
         return $query;
     }
 

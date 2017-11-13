@@ -16,6 +16,11 @@ class UserSearch extends BaseSearch
     public $name;
     public $email;
     public $state;
+    public $status;
+
+    const STATUS_ALL        = '';
+    const STATUS_ACTIVE     = 'active';
+    const STATUS_SUSPENDED  = 'suspended';
 
     /**
      * Returns the validation rules for attributes
@@ -26,6 +31,7 @@ class UserSearch extends BaseSearch
         return [
             [['name', 'email'], 'trim'],
             ['state', 'in', 'range' => State::getConstants('NAME_')],
+            ['status', 'safe'],
         ];
     }
 
@@ -106,6 +112,19 @@ class UserSearch extends BaseSearch
     public function filterStateOptions()
     {
         return ['' => \yii::t('app', 'All states')] + State::constantLabels();
+    }
+
+    /**
+     * Returns list of available states
+     * @return array
+     */
+    public function filterStatusOptions()
+    {
+        return [
+            static::STATUS_ALL          => \yii::t('app', 'All'),
+            static::STATUS_SUSPENDED    => \yii::t('app', 'Suspended'),
+            static::STATUS_ACTIVE       => \yii::t('app', 'Active'),
+        ];
     }
 
 }

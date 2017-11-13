@@ -15,6 +15,17 @@ class CoachSearch extends UserSearch
     {
         $query = parent::baseQuery();
         $query->andWhere(['user.type' => User::ROLE_COACH]);
+
+        // Filter by status
+        switch ($this->status) {
+            case static::STATUS_ACTIVE:
+                $query->andFilterWhere(['user.isApprovedCoach' => true]);
+                break;
+            case static::STATUS_SUSPENDED:
+                $query->andFilterWhere(['user.isApprovedCoach' => false]);
+                break;
+        }
+
         return $query;
     }
 

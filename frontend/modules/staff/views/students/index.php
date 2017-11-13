@@ -114,6 +114,9 @@ use \yii\helpers\Url;
         [
             'attribute' => 'status',
             'label' => \yii::t('app', 'Status'),
+            'filter' => Html::activeDropDownList($search, 'status', $search->filterStatusOptions(), [
+                'class' => 'form-control',
+            ]),
             'content' => function (User $student, $key, $index, $column) {
                 return $this->render('index/action', [
                     'student' => $student,
