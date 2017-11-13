@@ -59,16 +59,15 @@ function appResultsView() {
      * Set prize place
      */
     $(document).on('change', '.results-prize-place', function() {
-        var $this = $(this)
-            $row = $this.closest('.jqgrow');
+        var $this = $(this);
+        var $row = $this.closest('.js-result');
 
         $this.prop('disabled', true).tooltip('hide');
 
         // Send request
         $.ajax({
-            url: app.baseUrl + '/staff/results/prizePlaceUpdate',
+            url: app.baseUrl + '/staff/results/prize-place-update?id=' + $row.data('key'),
             data: {
-                id:         $row.prop('id'),
                 prizePlace: $this.val()
             },
             success: function() {

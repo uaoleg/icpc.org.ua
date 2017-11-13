@@ -17,6 +17,8 @@ use \common\models\Team;
  * @property int    $prizePlace
  * @property int    $total
  * @property int    $penalty
+ * @property int    $timeCreated
+ * @property int    $timeUpdated
  *
  * @property-read string        $schoolName
  * @property-read string        $coachName

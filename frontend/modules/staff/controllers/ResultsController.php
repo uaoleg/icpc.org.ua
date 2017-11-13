@@ -48,11 +48,10 @@ class ResultsController extends \frontend\modules\staff\ext\Controller
     /**
      * Update prize place
      */
-    public function actionPrizePlaceUpdate()
+    public function actionPrizePlaceUpdate($id)
     {
         // Get params
-        $id         = \yii::$app->request->get('id');
-        $prizePlace = \yii::$app->request->get('prizePlace');
+        $prizePlace = (int)\yii::$app->request->post('prizePlace');
 
         // Get result
         $result = Result::findOne($id);
@@ -61,10 +60,8 @@ class ResultsController extends \frontend\modules\staff\ext\Controller
         }
 
         // Update phase
-        $result->prizePlace = (int)$prizePlace;
-        if ($result->validate(array('prizePlace'))) {
-            $result->save(false);
-        }
+        $result->prizePlace = $prizePlace;
+        $result->save(true, ['prizePlace', 'timeUpdated']);
     }
 
 }
