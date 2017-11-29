@@ -290,7 +290,7 @@ class TeamController extends \frontend\modules\staff\ext\Controller
             // If school is not complete
             if (empty($school->shortNameUk) || empty($school->fullNameEn) || empty($school->shortNameEn)) {
                 \yii::$app->user->setState('teamManageId', $teamId);
-                $this->redirect(['schoolComplete']);
+                $this->redirect(['school-complete']);
             }
 
             // Get team
