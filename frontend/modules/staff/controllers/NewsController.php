@@ -119,7 +119,7 @@ class NewsController extends \frontend\modules\staff\ext\Controller
      */
     public function actionDeleteImage()
     {
-        $imageId = \yii::$app->request->get('imageId');
+        $imageId = \yii::$app->request->post('imageId');
         $image = News\Image::findOne($imageId);
         $image->delete();
     }
