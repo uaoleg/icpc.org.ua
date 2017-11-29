@@ -77,7 +77,14 @@ class DateTimeFormatBehavior extends AttributeBehavior
         $f->timeZone = 'UTC';
 
         // Format
-        $model->$attr = $f->asDate($model->$attr, $format);
+        try {
+            $model->$attr = $f->asDate($model->$attr, $format);
+        }
+
+        // If invalid date than add error
+        catch (\yii\base\InvalidParamException $ex) {
+            $model->addError($attr, \yii::t('app', $ex->getMessage()));
+        }
 
         // Restore time zone
         $f->timeZone = $timeZone;
