@@ -242,15 +242,14 @@ class TeamController extends \frontend\modules\staff\ext\Controller
             // Get team
             if (!empty($teamId)) {
                 $team = Team::findOne($teamId);
+                if ($team === null) {
+                    $this->httpException(404);
+                }
             } else {
                 $team = new Team();
             }
 
-            if ($team === null) {
-                $this->httpException(404);
-            }
-
-            //You can't manage team that was imported from Bailor
+            // You can't manage team that was imported from Bailor
             if (!empty($team->baylorId)) {
                 $this->httpException(403);
             }
@@ -260,10 +259,9 @@ class TeamController extends \frontend\modules\staff\ext\Controller
                 'name'               => $teamName,
                 'coachId'            => \yii::$app->user->id,
                 'schoolId'           => $school->id,
-                'memberIds'          => $memberIds,
                 'isOutOfCompetition' => $isOutOfCompetition
             ]);
-            if ($team->save()) {
+            if ($team->save() && is_array($memberIds)) {
                 Team\Member::deleteAll(['teamId' => $team->id]);
                 foreach ($memberIds as $memberId) {
                     $member = new Team\Member([
