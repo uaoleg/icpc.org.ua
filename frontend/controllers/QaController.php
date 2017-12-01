@@ -188,7 +188,7 @@ class QaController extends BaseController
             'title'     => $title,
             'content'   => $content,
         ]);
-        if ($question->save()) {
+        if ($question->save() && is_array($tagList)) {
             foreach ($tagList as $tagId) {
                 $tagRel = new Qa\QuestionTagRel([
                     'questionId'    => $question->id,
