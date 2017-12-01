@@ -88,7 +88,6 @@ use \yii\helpers\Url;
                 'attribute' => 'schoolName',
                 'label' => \yii::t('app', 'School name'),
                 'content' => function (Team $team, $key, $index, $column) {
-                    School::$useLanguage = \yii::$app->user->languageCore;
                     return Html::encode($team->school->fullName);
                 },
                 'contentOptions' => ['class' => 'col-xs-2'],

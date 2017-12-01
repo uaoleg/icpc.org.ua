@@ -36,25 +36,19 @@ class Name extends BaseWidget
      * @var string
      */
     public $lang;
-
-    /**
-     * Init
-     */
-    public function init()
-    {
-        parent::init();
-
-        // Set language
-        if ($this->lang) {
-            $this->user::$useLanguage = $this->lang;
-        }
-    }
+    protected $langOld;
 
     /**
      * Run widget
      */
     public function run()
     {
+        // Set language
+        $this->langOld = $this->user::$useLanguage;
+        if ($this->lang) {
+            $this->user::$useLanguage = $this->lang;
+        }
+
         // Prepare name parts
         $first  = Html::encode($this->user->firstName);
         $middle = Html::encode($this->user->middleName);
@@ -80,7 +74,10 @@ class Name extends BaseWidget
             $name = $this->user->email;
         }
 
-        echo $name;
+        // Revert language
+        $this->user::$useLanguage = $this->langOld;
+
+        return $name;
     }
 
 }

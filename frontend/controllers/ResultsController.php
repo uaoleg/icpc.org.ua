@@ -169,7 +169,6 @@ class ResultsController extends BaseController
         $jqgrid = $this->_getJqgridParams(Result::class, $query);
 
         // Fill rows
-        $result->school::$useLanguage = $lang;
         $rows = array();
         foreach ($jqgrid['itemList'] as $result) {
             $arrayToAdd = array(

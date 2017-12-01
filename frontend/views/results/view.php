@@ -96,7 +96,6 @@ $this->registerJsFile('@web/lib/jquery/jquery.jqGrid-4.5.2/js/i18n/grid.locale-e
             'label' => \yii::t('app', 'School name'),
             'content' => function (Result $result, $key, $index, $column) {
                 if ($result->team) {
-                    School::$useLanguage = \yii::$app->user->languageCore;
                     return Html::encode($result->team->school->fullName);
                 } else {
                     return null;

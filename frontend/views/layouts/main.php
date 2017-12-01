@@ -100,11 +100,11 @@ $user = \yii::$app->user->identity;
                         <div class="alert alert-danger text-center">
                             <?=\yii::t('app', '<b>Warning!</b> Your coach status is not approved yet!')?><br/>
                             <?php if ($user->approver): ?>
-                                <?=\yii::t('app', '{a}{person}{/a} can approve your status.', array(
+                                <?=\yii::t('app', '{a}{person}{/a} can approve your status.', [
                                     'a'       => '<a href="' . Url::toRoute(['/user/view', 'id' => $user->approver->id]) . '">',
-                                    'person'  => \frontend\widgets\user\Name::widget(array('user' => $user->approver)),
+                                    'person'  => \frontend\widgets\user\Name::widget(['user' => $user->approver]),
                                     '/a'      => '</a>'
-                                ))?>
+                                ])?>
                             <?php endif; ?>
                             <br><br>
                             <button type="button" class="btn btn-default js-user-approval-request-button <?= User\ApprovalRequest::isSentRecently(\yii::$app->user->id, User\ApprovalRequest::ROLE_COACH) ? 'hide' : '' ?>"
@@ -215,10 +215,11 @@ $user = \yii::$app->user->identity;
                                 <li>
                                     <p class="navbar-text">
                                         <?=\yii::t('app', 'Hello')?>,
-                                        <a href="<?=Url::toRoute(['/user/me'])?>"><?=\frontend\widgets\user\Name::widget(array(
+                                        <a href="<?=Url::toRoute(['/user/me'])?>"><?=\frontend\widgets\user\Name::widget([
                                             'user'  => $user,
                                             'view'  => \frontend\widgets\user\Name::VIEW_FIRST,
-                                        ))?></a>
+                                            'lang'  => 'uk',
+                                        ])?></a>
                                     </p>
                                 </li>
                                 <li><a href="<?=Url::toRoute(['/auth/logout'])?>"><?=\yii::t('app', 'Logout')?></a></li>

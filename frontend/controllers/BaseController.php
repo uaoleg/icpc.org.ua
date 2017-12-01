@@ -69,6 +69,7 @@ class BaseController extends \common\controllers\BaseController
                 \yii::$app->user->languageCore = 'uk';
                 break;
         }
+        User::$useLanguage = \yii::$app->user->languageCore;
 
         //  Include language file for Select2
         switch (\yii::$app->language) {
