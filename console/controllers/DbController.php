@@ -305,7 +305,7 @@ class DbController extends BaseController
                     var_dump($photo->errors);
                 }
             } catch (\Exception $ex) {
-                var_dump($ex->getMessage());
+                var_dump("Can't save user photo #{$photo->userId}");
             }
         }
         echo "\n\n";
