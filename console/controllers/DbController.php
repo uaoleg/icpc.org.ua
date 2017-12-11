@@ -528,13 +528,17 @@ class DbController extends BaseController
                 ->andWhere(['uniqueId' => "common\\models\\News\\Image\\{$row['_id']}"])
                 ->one()
             ;
-            $image = new News\Image([
-                'newsId'    => $newsIds[(string)$row['newsId']] ?? null,
-                'userId'    => $usersIds[(string)$row['userId']] ?? null,
-                'content'   => $document['file']->toString(),
-            ]);
-            if (!$image->save(false)) {
-                var_dump($image->errors);
+            try {
+                $image = new News\Image([
+                    'newsId'    => $newsIds[(string)$row['newsId']] ?? null,
+                    'userId'    => $usersIds[(string)$row['userId']] ?? null,
+                    'content'   => $document['file']->toString(),
+                ]);
+                if (!$image->save(false)) {
+                    var_dump($image->errors);
+                }
+            } catch (\Exception $ex) {
+                var_dump("Can't save news photo #{$newsIds[(string)$row['newsId']]}");
             }
         }
         echo "\n\n";
@@ -617,22 +621,26 @@ class DbController extends BaseController
                 ->andWhere(['uniqueId' => "common\\models\\Document\\{$row['_id']}"])
                 ->one()
             ;
-            $document = new Document([
-                'title'         => $row['title'],
-                'desc'          => $row['desc'],
-                'type'          => $row['type'],
-                'fileExt'       => $row['fileExt'],
-                'isPublished'   => $row['isPublished'],
-                'content'       => $file['file']->toString(),
-            ]);
-            if ($document->save(false)) {
-                Document::updateAll([
-                    'timeCreated' => $row['dateCreated'],
-                ], [
-                    'id' => $document->id,
+            try {
+                $document = new Document([
+                    'title'         => $row['title'],
+                    'desc'          => $row['desc'],
+                    'type'          => $row['type'],
+                    'fileExt'       => $row['fileExt'],
+                    'isPublished'   => $row['isPublished'],
+                    'content'       => $file['file']->toString(),
                 ]);
-            } else {
-                var_dump($document->errors);
+                if ($document->save(false)) {
+                    Document::updateAll([
+                        'timeCreated' => $row['dateCreated'],
+                    ], [
+                        'id' => $document->id,
+                    ]);
+                } else {
+                    var_dump($document->errors);
+                }
+            } catch (\Exception $ex) {
+                var_dump("Can't save document #{$row['_id']}");
             }
         }
         echo "\n\n";
