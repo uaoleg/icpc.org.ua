@@ -12,8 +12,6 @@ use \yii\helpers\Url;
 class TeamController extends \frontend\modules\staff\ext\Controller
 {
 
-    const BAYLOR_STATUS_ACCEPTED = '(accepted)';
-
     /**
      * Init
      */
@@ -111,7 +109,10 @@ class TeamController extends \frontend\modules\staff\ext\Controller
             }
         }
 
-        if (empty($teams)) {
+        // Display error
+        if (!\yii::$app->baylor->loginSuccess) {
+            $errors[] = \yii::t('app', 'Wrong username or password.');
+        } elseif (empty($teams)) {
             $errors[] = \yii::t('app', 'You have no teams to import.');
         }
 
@@ -143,7 +144,10 @@ class TeamController extends \frontend\modules\staff\ext\Controller
             if (!empty($response) && empty($response['error']) && !empty($response['data']['team'])) {
                 $team = new Team();
 
-                if (empty($response['data']['team']['status']) || strtolower($response['data']['team']['status']) != self::BAYLOR_STATUS_ACCEPTED) {
+                if (false
+                        || empty($response['data']['team']['status'])
+                        || strtolower($response['data']['team']['status']) != \common\components\Baylor::STATUS_ACCEPTED
+                    ) {
 /** @todo Enable this check */
 //                    $errors[] = \yii::t('app', 'Team should be accepted.');
                 }

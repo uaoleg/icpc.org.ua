@@ -6,8 +6,14 @@ use \anlutro\cURL\cURL as Curl;
 use \anlutro\cURL\Request as CurlRequest;
 use \PHPHtmlParser\Dom;
 
+/**
+ * @property-read bool $loginSuccess
+ */
 class Baylor extends \yii\base\Component
 {
+
+    const STATUS_ACCEPTED = '(accepted)';
+
     /**
      * @var Curl
      */
@@ -24,6 +30,11 @@ class Baylor extends \yii\base\Component
     protected $cookiesFile;
 
     /**
+     * @var bool
+     */
+    protected $loginSuccess;
+
+    /**
      * Method that handles the whole import
      * @param string $email
      * @param string $password
@@ -34,18 +45,21 @@ class Baylor extends \yii\base\Component
         $this->cookiesFile = \yii::getAlias('@common/runtime') . '/' . uniqid('', true);
         $this->curl = new Curl;
 
-        $this->_login($email, $password);
+        if ($this->_login($email, $password)) {
+            $response = $this->_parse();
+        } else {
+            $response = false;
+        }
 
-        $response = $this->_parse();
-
+        // Return response
         if ($response) {
-            return array(
+            return [
                 'errors' => false,
                 'data' => $response
-            );
+            ];
         } else {
             return array(
-                'errors' => true
+                'errors' => true,
             );
         }
     }
@@ -144,7 +158,7 @@ class Baylor extends \yii\base\Component
         foreach ($rows as $item) {
             $id = substr($item->href, strlen('/private/team/'));
             $result[$id] = array(
-                'title' => $item->plaintext,
+                'title' => $item->text(),
                 'id'    => $id,
                 'url'   => $item->href,
             );
@@ -171,7 +185,7 @@ class Baylor extends \yii\base\Component
 
         if (!empty($teams[$team_id])) {
 
-            //Get information about team
+            // Get information about team
             $team = $teams[$team_id];
             $url = $team['url'];
 
@@ -183,23 +197,21 @@ class Baylor extends \yii\base\Component
             if ($header !== null) {
 
                 $status = $html->find('[id="teamTabs:teamForm:statusRO"] div.statusModification span.statusACCEPTED', 0);
-                $team['status'] = !empty($status) ? \web\modules\staff\controllers\TeamController::BAYLOR_STATUS_ACCEPTED : false;
+                $team['status'] = !empty($status) ? static::STATUS_ACCEPTED : false;
 
                 $rows = $html->find('[id="teamMembersTabs:teamMembersForm:teamMembersTable_data"] tr');
                 if (!empty($rows)) {
-
-                    foreach ($rows as $row)
-                    {
+                    foreach ($rows as $row) {
                         $tds = $row->find('td');
                         $isRegistrationComplete = trim($tds[3]->find('input',0)->checked, chr(0xC2).chr(0xA0));
-                        $team['members'][] = array(
-                            'name' => trim($tds[0]->plaintext, " ".chr(0xC2).chr(0xA0)),
-                            'email' => $this->clear($tds[1]->plaintext),
-                            'role' => trim($tds[2]->plaintext, " ".chr(0xC2).chr(0xA0)),
+                        $memberNameLink = $tds[0]->find('a', 1);
+                        $team['members'][] = [
+                            'name' => trim($memberNameLink ? $memberNameLink->text() : $tds[0]->text(), " ".chr(0xC2).chr(0xA0)),
+                            'email' => $this->clear($tds[1]->find('a', 0)->text()),
+                            'role' => trim($tds[2]->text(), " ".chr(0xC2).chr(0xA0)),
                             'isRegistrationComplete' => !empty($isRegistrationComplete),
-                        );
+                        ];
                     }
-
                 }
 
                 $result['team'] = $team;
@@ -230,6 +242,7 @@ class Baylor extends \yii\base\Component
      * Method that handles login request
      * @param string $email
      * @param string $password
+     * @return bool
      */
     protected function _login($email, $password)
     {
@@ -245,7 +258,24 @@ class Baylor extends \yii\base\Component
 
         $postCurl = $this->curl->newRequest('post', $this->url . '/login', $data);
 
-        $postQuery = $this->_setBaylorHeadersAndOptions($postCurl, $this->cookiesFile)->send();
+        $response = $this->_setBaylorHeadersAndOptions($postCurl, $this->cookiesFile)->send();
+
+        // Check if login was success
+        if (mb_strpos($response->body, 'Wrong username or password') !== false) {
+            $this->loginSuccess = false;
+        } else {
+            $this->loginSuccess = true;
+        }
+        return $this->loginSuccess;
+    }
+
+    /**
+     * Returns whether login was successful
+     * @return bool
+     */
+    public function getLoginSuccess()
+    {
+        return $this->loginSuccess;
     }
 
     /**
@@ -280,9 +310,9 @@ class Baylor extends \yii\base\Component
             foreach ($info as $key => $value) {
                 $datum = $html->find($value, 0);
                 if ($datum !== null) {
-                    $result = trim($datum->plaintext);
+                    $result = trim($datum->text());
                     if ($key === 'birthday') {
-                        $unixBirthday = strtotime(trim($datum->plaintext));
+                        $unixBirthday = strtotime(trim($datum->text()));
                         $result = date('Y-m-d', $unixBirthday);
                     }
 
