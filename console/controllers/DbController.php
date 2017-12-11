@@ -235,14 +235,21 @@ class DbController extends BaseController
             }
             $user = User::findOne($usersIds[(string)$row['userId']]);
             if ($user->type === User::ROLE_STUDENT) {
+                $schoolAdmissionYear = isset($row['schoolAdmissionYear'])
+                    ? (int)$row['schoolAdmissionYear']
+                    : null
+                ;
+                if ($schoolAdmissionYear > date('Y')) {
+                    $schoolAdmissionYear = null;
+                }
                 $info = new User\InfoStudent([
                     'scenario'      => User\Info::SC_ALLOW_EMPTY,
                     'userId'        => $usersIds[(string)$row['userId']],
                     'lang'          => $row['lang'],
                     'dateOfBirth'   => $row['dateOfBirth'] ?? null,
-                    'phoneHome'     => $row['phoneHome'] ? mb_substr($row['phoneHome'], 0, 30) : null,
-                    'phoneMobile'   => $row['phoneMobile'] ? mb_substr($row['phoneMobile'], 0, 30) : null,
-                    'skype'         => $row['skype'] ? mb_substr($row['skype'], 0, 100) : null,
+                    'phoneHome'     => isset($row['phoneHome']) ? mb_substr($row['phoneHome'], 0, 30) : null,
+                    'phoneMobile'   => isset($row['phoneMobile']) ? mb_substr($row['phoneMobile'], 0, 30) : null,
+                    'skype'         => isset($row['skype']) ? mb_substr($row['skype'], 0, 100) : null,
                     'tShirtSize'    => $row['tShirtSize'] ?? null,
                     'acmNumber'     => $row['acmNumber'] ?? null,
                     'studyField'    => $row['studyField'] ?? null,
@@ -251,7 +258,7 @@ class DbController extends BaseController
                     'group'         => $row['group'] ?? null,
                     'course'        => $row['course'] ?? null,
                     'document'      => $row['document'] ?? null,
-                    'schoolAdmissionYear' => $row['schoolAdmissionYear'] ?? null,
+                    'schoolAdmissionYear' => $schoolAdmissionYear,
                 ]);
             } elseif ($user->type === User::ROLE_COACH) {
                 $info = new User\InfoCoach([
