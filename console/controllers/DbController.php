@@ -81,7 +81,7 @@ class DbController extends BaseController
     public function actionMigrate()
     {
         \yii::$app->db->createCommand('SET FOREIGN_KEY_CHECKS = 0;')->execute();
-        \yii::$app->db->createCommand()->truncateTable('translation')->execute();
+//        \yii::$app->db->createCommand()->truncateTable('translation')->execute();
         \yii::$app->db->createCommand()->truncateTable(School::tableName())->execute();
         \yii::$app->db->createCommand()->truncateTable(User::tableName())->execute();
         \yii::$app->db->createCommand()->truncateTable(User\ApprovalRequest::tableName())->execute();
@@ -109,20 +109,20 @@ class DbController extends BaseController
         \yii::$app->db->createCommand()->truncateTable('auth_rule')->execute();
         \yii::$app->db->createCommand('SET FOREIGN_KEY_CHECKS = 1;')->execute();
 
-        // Translations
-        echo "Translations...\n";
-        $rows = \yii::$app->mongodb->getCollection('translation')->find();
-        foreach ($rows as $row) {
-            $row['message'] = str_replace('{a}', '{a_}', $row['message']);
-            $row['message'] = str_replace('{/a}', '{_a}', $row['message']);
-            \yii::$app->db->createCommand()->insert('translation', [
-                'language'      => $row['language'],
-                'category'      => $row['category'],
-                'message'       => $row['message'],
-                'translation'   => $row['translation'],
-            ])->execute();
-        }
-        echo "\n\n";
+//        // Translations
+//        echo "Translations...\n";
+//        $rows = \yii::$app->mongodb->getCollection('translation')->find();
+//        foreach ($rows as $row) {
+//            $row['message'] = str_replace('{a}', '{a_}', $row['message']);
+//            $row['message'] = str_replace('{/a}', '{_a}', $row['message']);
+//            \yii::$app->db->createCommand()->insert('translation', [
+//                'language'      => $row['language'],
+//                'category'      => $row['category'],
+//                'message'       => $row['message'],
+//                'translation'   => $row['translation'],
+//            ])->execute();
+//        }
+//        echo "\n\n";
 
         // Schools
         echo "Schools...\n";
@@ -155,26 +155,30 @@ class DbController extends BaseController
             $user = new User([
                 'email' => $row['email'],
                 'type'  => $row['type'],
-                'coordinator'   => $row['coordinator'],
-                'firstNameUk'   => $row['firstNameUk'],
-                'middleNameUk'  => $row['middleNameUk'],
-                'lastNameUk'    => $row['lastNameUk'],
-                'firstNameEn'   => $row['firstNameEn'],
-                'middleNameEn'  => $row['middleNameEn'],
-                'lastNameEn'    => $row['lastNameEn'],
-                'schoolId'      => $schoolsIds[(string)$row['schoolId']],
+                'coordinator'       => $row['coordinator'],
+                'firstNameUk'       => $row['firstNameUk'],
+                'middleNameUk'      => $row['middleNameUk'],
+                'lastNameUk'        => $row['lastNameUk'],
+                'firstNameEn'       => $row['firstNameEn'],
+                'middleNameEn'      => $row['middleNameEn'],
+                'lastNameEn'        => $row['lastNameEn'],
+                'schoolId'          => $schoolsIds[(string)$row['schoolId']],
                 'isEmailConfirmed'  => $row['isEmailConfirmed'],
-                'isApprovedStudent' => $row['isApprovedStudent'],
-                'isApprovedCoach'   => $row['isApprovedCoach'],
-                'isApprovedCoordinator' => $row['isApprovedCoordinator'],
-                'passwordHash'  => $row['hash'],
-                'timeCreated'   => $row['dateCreated'],
+                'passwordHash'      => $row['hash'],
             ]);
-            if (!$user->save(false)) {
+            if ($user->save(false)) {
+                User::updateAll([
+                    'isApprovedStudent'     => $row['isApprovedStudent'],
+                    'isApprovedCoach'       => $row['isApprovedCoach'],
+                    'isApprovedCoordinator' => $row['isApprovedCoordinator'],
+                    'timeCreated'           => $row['dateCreated'],
+                ], [
+                    'id' => $user->id,
+                ]);
+                $usersIds[(string)$row['_id']] = $user->id;
+            } else {
                 var_dump((string)$row['email']);
                 var_dump($user->errors);
-            } else {
-                $usersIds[(string)$row['_id']] = $user->id;
             }
         }
         echo "\n\n";
@@ -188,11 +192,16 @@ class DbController extends BaseController
                 continue;
             }
             $approval = new User\ApprovalRequest([
-                'userId'        => $usersIds[(string)$row['userId']],
-                'role'          => $row['role'],
-                'timeCreated'   => $row['dateCreated'],
+                'userId'    => $usersIds[(string)$row['userId']],
+                'role'      => $row['role'],
             ]);
-            if (!$approval->save()) {
+            if ($approval->save()) {
+                User\ApprovalRequest::updateAll([
+                    'timeCreated' => $row['dateCreated']->toDateTime()->format('U'),
+                ], [
+                    'id' => $approval->id,
+                ]);
+            } else {
                 var_dump($approval->errors);
             }
         }
@@ -389,11 +398,16 @@ class DbController extends BaseController
         $rows = \yii::$app->mongodb->getCollection('qa.tag')->find();
         foreach ($rows as $row) {
             $tag = new Qa\Tag([
-                'name'          => $row['name'],
-                'desc'          => $row['desc'],
-                'timeCreated'   => $row['dateCreated'] ?? time(),
+                'name'  => $row['name'],
+                'desc'  => $row['desc'],
             ]);
-            if (!$tag->save(false)) {
+            if ($tag->save(false)) {
+                Qa\Tag::updateAll([
+                    'timeCreated' => $row['dateCreated'] ?? time(),
+                ], [
+                    'id' => $tag->id,
+                ]);
+            } else {
                 var_dump($tag->errors);
             }
         }
@@ -412,11 +426,13 @@ class DbController extends BaseController
                 'userId'        => $usersIds[(string)$row['userId']],
                 'title'         => $row['title'],
                 'content'       => $row['content'],
-                'timeCreated'   => $row['dateCreated'] ?? time(),
             ]);
-            if (!$question->save(false)) {
-                var_dump($question->errors);
-            } else {
+            if ($question->save(false)) {
+                Qa\Question::updateAll([
+                    'timeCreated' => $row['dateCreated'] ?? time(),
+                ], [
+                    'id' => $question->id,
+                ]);
                 $questionsIds[(string)$row['_id']] = $question->id;
                 foreach ($row['tagList'] as $tagName) {
                     $tag = Qa\Tag::findOne(['name' => $tagName]);
@@ -426,6 +442,8 @@ class DbController extends BaseController
                     ]);
                     $tagRel->save();
                 }
+            } else {
+                var_dump($question->errors);
             }
         }
         echo "\n\n";
@@ -442,9 +460,14 @@ class DbController extends BaseController
                 'userId'        => $usersIds[(string)$row['userId']],
                 'questionId'    => $questionsIds[(string)$row['questionId']],
                 'content'       => $row['content'],
-                'timeCreated'   => $row['dateCreated'] ?? time(),
             ]);
-            if (!$answer->save(false)) {
+            if ($answer->save(false)) {
+                Qa\Answer::updateAll([
+                    'timeCreated' => $row['dateCreated'] ?? time(),
+                ], [
+                    'id' => $answer->id,
+                ]);
+            } else {
                 var_dump($question->errors);
             }
         }
@@ -460,15 +483,19 @@ class DbController extends BaseController
                 'lang'          => $row['lang'],
                 'title'         => $row['title'],
                 'content'       => $row['content'],
-                'isPublished'   => $row['isPublished'],
                 'geo'           => $row['geo'],
                 'yearCreated'   => $row['yearCreated'],
-                'timeCreated'   => $row['dateCreated'] ?? time(),
             ]);
-            if (!$news->save(false)) {
-                var_dump($news->errors);
-            } else {
+            if ($news->save(false)) {
+                News::updateAll([
+                    'isPublished' => $row['isPublished'],
+                    'timeCreated' => $row['dateCreated'] ?? time(),
+                ], [
+                    'id' => $news->id,
+                ]);
                 $newsIds[(string)$row['_id']] = $news->id;
+            } else {
+                var_dump($news->errors);
             }
         }
         echo "\n\n";
@@ -518,16 +545,20 @@ class DbController extends BaseController
                 'newsId'            => $newsIds[(string)$row['newsId']] ?? null,
                 'userId'            => $usersIds[(string)$row['userId']] ?? null,
                 'newsAttributes'    => $row['newsAttributes'],
-                'timeCreated'       => $row['timestamp'],
             ]);
-            if (!$revision->save(false)) {
-                var_dump($revision->errors);
-            } else {
+            if ($revision->save(false)) {
+                News\Revision::updateAll([
+                    'timeCreated' => $row['timestamp'],
+                ], [
+                    'id' => $revision->id,
+                ]);
                 $newsAttributes = $revision->newsAttributes;
                 $newsAttributes['commonId'] = $newsIds[$revision->newsAttributes['commonId']];
                 $revision->newsAttributes = $newsAttributes;
                 $revision->save();
                 $newsRevisionsIds[(string)$row['_id']] = $revision->id;
+            } else {
+                var_dump($revision->errors);
             }
         }
         echo "\n\n";
@@ -548,15 +579,20 @@ class DbController extends BaseController
                 echo "Empty user ID: {$row['userId']}\n";
                 continue;
             }
-            $image = new News\PublishLog([
+            $log = new News\PublishLog([
                 'newsId'        => $newsIds[(string)$row['newsId']] ?? null,
                 'revisionId'    => $newsRevisionsIds[(string)$row['revisionId']] ?? null,
                 'userId'        => $usersIds[(string)$row['userId']] ?? null,
                 'isPublished'   => $row['isPublished'],
-                'timeCreated'   => $row['timestamp'] ?? time(),
             ]);
-            if (!$image->save(false)) {
-                var_dump($image->errors);
+            if ($log->save(false)) {
+                News\PublishLog::updateAll([
+                    'timeCreated' => $row['timestamp'] ?? time(),
+                ], [
+                    'id' => $log->id,
+                ]);
+            } else {
+                var_dump($log->errors);
             }
         }
         echo "\n\n";
@@ -577,9 +613,14 @@ class DbController extends BaseController
                 'fileExt'       => $row['fileExt'],
                 'isPublished'   => $row['isPublished'],
                 'content'       => $file['file']->toString(),
-                'timeCreated'   => $row['dateCreated'],
             ]);
-            if (!$document->save(false)) {
+            if ($document->save(false)) {
+                Document::updateAll([
+                    'timeCreated' => $row['dateCreated'],
+                ], [
+                    'id' => $document->id,
+                ]);
+            } else {
                 var_dump($document->errors);
             }
         }
@@ -592,6 +633,7 @@ class DbController extends BaseController
             if ($row['bizRule']) {
                 $bizRule = str_replace([
                     'return \\yii::$app->rbac->bizRule',
+                    'return \\yii::app()->rbac->bizRule',
                     '($params);',
                 ], '', $row['bizRule']) . 'Rule';
                 $bizRuleClass = "\\common\\rbac\\{$bizRule}";

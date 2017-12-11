@@ -22,6 +22,7 @@
         "yiisoft/yii2": ">=2.0.6",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-jui": "~2.0.0",
+        "yiisoft/yii2-mongodb": "~2.1.0",
         "yiisoft/yii2-swiftmailer": "*",
         "anlutro/curl": "*",
         "baibaratsky/yii2-rollbar": "1.5.*",
