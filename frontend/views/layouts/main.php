@@ -124,8 +124,8 @@ $user = \yii::$app->user->identity;
                     <?php if (\yii::$app->user->getState(\frontend\models\WebUser::SESSION_INFO_NOT_FULL)): ?>
                         <div class="alert alert-danger text-center">
                             <?= \yii::t('app', 'Please fill in your additional info in {uk}ukrainian{/a} and {en}english{/a} languages', array(
-                                'uk' => '<a href="' . Url::toRoute(['user/additional', 'lang' => 'uk']) . '">',
-                                'en' => '<a href="' . Url::toRoute(['user/additional', 'lang' => 'en']) . '">',
+                                'uk' => '<a href="' . Url::toRoute(['/user/additional', 'lang' => 'uk']) . '">',
+                                'en' => '<a href="' . Url::toRoute(['/user/additional', 'lang' => 'en']) . '">',
                                 '/a' => '</a>'
                             )) ?>
                         </div>
