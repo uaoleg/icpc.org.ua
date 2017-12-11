@@ -296,12 +296,16 @@ class DbController extends BaseController
                 ->andWhere(['uniqueId' => "common\\models\\User\\Photo\\{$row['_id']}"])
                 ->one()
             ;
-            $photo = new User\Photo([
-                'userId'    => $usersIds[(string)$row['userId']],
-                'content'   => $document['file']->toString(),
-            ]);
-            if (!$photo->save()) {
-                var_dump($photo->errors);
+            try {
+                $photo = new User\Photo([
+                    'userId'    => $usersIds[(string)$row['userId']],
+                    'content'   => $document['file']->toString(),
+                ]);
+                if (!$photo->save()) {
+                    var_dump($photo->errors);
+                }
+            } catch (\Exception $ex) {
+                var_dump($ex->getMessage());
             }
         }
         echo "\n\n";
