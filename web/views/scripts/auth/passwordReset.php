@@ -1,3 +1,5 @@
+<?php \yii::app()->clientScript->registerCoreScript('recaptcha'); ?>
+
 <script type="text/javascript">
     $(document).ready(function() {
         new appAuthPasswordReset();
@@ -16,10 +18,9 @@
                 </div>
                 <div class="form-group">
                     <div style="margin-left: -3px;">
-                        <?php $this->widget('common.lib.recaptcha.EReCaptcha', array(
-                            'language'  => 'en_EN',
-                            'theme'     => 'white',
-                        )); ?>
+                        <div class="g-recaptcha"
+                             data-sitekey="<?= \yii::$app->params['recaptcha.publicKey'] ?>"
+                             data-callback="appSiteLoginRecaptchaCallback"></div>
                         <?php if (APP_ENV !== APP_ENV_PROD): ?>
                             <label>
                                 <input type="checkbox" name="recaptchaIgnore" />

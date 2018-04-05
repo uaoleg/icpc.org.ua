@@ -93,6 +93,11 @@ $config = array(
                     ),
                     'depends' => array('jquery'),
                 ),
+                'recaptcha' => array(
+                    'js' => array(
+                        '//www.google.com/recaptcha/api.js?hl=' . \yii::app()->languageCore,
+                    ),
+                ),
                 'select2' => array(
                     'js' => array(
                         'lib/select2/select2.js',

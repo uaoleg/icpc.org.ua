@@ -17,32 +17,41 @@ class AuthController extends \web\ext\Controller
     protected function _checkRecaptcha()
     {
         // Get params
-        $challengeField     = $this->request->getParam('recaptcha_challenge_field');
-        $responseField      = $this->request->getParam('recaptcha_response_field');
+        $response           = $this->request->getParam('recaptcha_response_field');
         $errorMessage       = \yii::t('app', 'The recaptcha code is incorrect.');
-        $recaptchaIgnore    = (bool)$this->request->getParam('recaptchaIgnore', false);
+        $recaptchaIgnore    = (bool)$this->request->getParam('recaptchaIgnore', 0);
 
         // Return "true" if not production environment
-        if ((APP_ENV !== APP_ENV_PROD) && ($recaptchaIgnore)) {
+        if ((\YII_ENV !== \YII_ENV_PROD) && ($recaptchaIgnore)) {
             return true;
         }
 
-        // Return error if some params are empty
-        if (($responseField === null) || ($challengeField === null)) {
-            return $errorMessage;
-        }
+        // Check recaptcha
+        try {
 
-        // Check recaptcha answer
-        \yii::import('common.lib.recaptcha.reCAPTCHA.recaptchalib', true);
-        $response = recaptcha_check_answer(
-            \yii::app()->params['recaptcha']['privateKey'],
-            \yii::app()->request->userHostAddress,
-            $challengeField,
-            $responseField
-        );
-        if ($response->is_valid) {
-            return true;
-        } else {
+            $url = 'https://www.google.com/recaptcha/api/siteverify';
+            $data = [
+                'secret'   => \yii::app()->params['recaptcha.privateKey'],
+                'response' => $response,
+                'remoteip' => $_SERVER['REMOTE_ADDR']
+            ];
+
+            $options = [
+                'http' => [
+                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                    'method'  => 'POST',
+                    'content' => http_build_query($data)
+                ]
+            ];
+
+            $context  = stream_context_create($options);
+            $result = file_get_contents($url, false, $context);
+            if (json_decode($result)->success) {
+                return true;
+            } else {
+                return $errorMessage;
+            }
+        } catch (Exception $ex) {
             return $errorMessage;
         }
     }

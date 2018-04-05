@@ -8,9 +8,9 @@ $params = array(
         'key' => 'N4cJT71ikhF/LseSGN+QMmCjrwo1101uv1h6KA==',
     ),
 
-    'recaptcha' => array(
-        'privateKey' => '6LflltkSAAAAAJkBYNtv4T-J_JVbUDhRfT_SrzHp',
-    ),
+    'recaptcha.publicKey' => '6LdB1ecSAAAAAH8JXgEzHGAw9UilNsNZLH9qikFJ',
+    'recaptcha.language'  => 'en',
+    'recaptcha.theme'     => 'white',
 
 );
 
