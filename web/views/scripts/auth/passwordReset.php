@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <div style="margin-left: -3px;">
                         <div class="g-recaptcha"
-                             data-sitekey="<?= \yii::$app->params['recaptcha.publicKey'] ?>"
+                             data-sitekey="<?= \yii::app()->params['recaptcha.publicKey'] ?>"
                              data-callback="appSiteLoginRecaptchaCallback"></div>
                         <?php if (APP_ENV !== APP_ENV_PROD): ?>
                             <label>
