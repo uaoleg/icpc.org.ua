@@ -22,7 +22,7 @@ class AuthController extends \web\ext\Controller
         $recaptchaIgnore    = (bool)$this->request->getParam('recaptchaIgnore', 0);
 
         // Return "true" if not production environment
-        if ((\YII_ENV !== \YII_ENV_PROD) && ($recaptchaIgnore)) {
+        if ((\APP_ENV !== \APP_ENV_PROD) && ($recaptchaIgnore)) {
             return true;
         }
 
