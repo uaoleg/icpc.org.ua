@@ -203,15 +203,33 @@ class Baylor extends \yii\base\Component
                 if (!empty($rows)) {
                     foreach ($rows as $row) {
                         $tds = $row->find('td');
+                        $role = trim($tds[2]->text(), " ".chr(0xC2).chr(0xA0));
                         $isRegistrationComplete = trim($tds[3]->find('input',0)->checked, chr(0xC2).chr(0xA0));
                         $memberNameLink = $tds[0]->find('a', 1);
+
+                        // Filter only students
+                        if (!in_array($role, ['Contestant', 'Reserve'])) {
+                            continue;
+                        }
+
+                        // Push member to the list
                         $team['members'][] = [
                             'name' => trim($memberNameLink ? $memberNameLink->text() : $tds[0]->text(), " ".chr(0xC2).chr(0xA0)),
                             'email' => $this->clear($tds[1]->find('a', 0)->text()),
-                            'role' => trim($tds[2]->text(), " ".chr(0xC2).chr(0xA0)),
+                            'role' => $role,
                             'isRegistrationComplete' => !empty($isRegistrationComplete),
                         ];
                     }
+
+                    // Order members by role ("Contestant" should be first, "Reserve" - at the end)
+                    usort($team['members'], function($a, $b) {
+                        if ($a['role'] === 'Contestant') {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    });
+
                 }
 
                 $result['team'] = $team;

@@ -376,11 +376,6 @@ class TeamController extends \frontend\modules\staff\ext\Controller
                 $memberIds = array();
                 foreach ($teamInfo['members'] as $member) {
 
-                    // Filter only students
-                    if (!in_array($member['role'], ['Contestant', 'Reserve'])) {
-                        continue;
-                    }
-
                     // Get user
                     $user = User::findOne(['email' => mb_strtolower($member['email'])]);
 
