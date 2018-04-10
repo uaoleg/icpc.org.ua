@@ -189,17 +189,33 @@ class Baylor extends \CApplicationComponent
                 $rows = $html->find('[id="teamMembersTabs:teamMembersForm:teamMembersTable_data"] tr');
                 if (!empty($rows)) {
 
-                    foreach ($rows as $row)
-                    {
+                    foreach ($rows as $row) {
                         $tds = $row->find('td');
+                        $role = trim($tds[2]->plaintext, " ".chr(0xC2).chr(0xA0));
                         $isRegistrationComplete = trim($tds[3]->find('input',0)->checked, chr(0xC2).chr(0xA0));
+
+                        // Filter only students
+                        if (!in_array($role, ['Contestant', 'Reserve'])) {
+                            continue;
+                        }
+
+                        // Push member to the list
                         $team['members'][] = array(
                             'name' => trim($tds[0]->plaintext, " ".chr(0xC2).chr(0xA0)),
                             'email' => $this->clear($tds[1]->plaintext),
-                            'role' => trim($tds[2]->plaintext, " ".chr(0xC2).chr(0xA0)),
+                            'role' => $role,
                             'isRegistrationComplete' => !empty($isRegistrationComplete),
                         );
                     }
+
+                    // Order members by role ("Contestant" should be first, "Reserve" - at the end)
+                    usort($team['members'], function($a, $b) {
+                        if ($a['role'] === 'Contestant') {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    });
 
                 }
 
