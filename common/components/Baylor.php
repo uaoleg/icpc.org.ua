@@ -21,6 +21,16 @@ class Baylor extends \CApplicationComponent
     /**
      * @var string
      */
+    protected $accessToken;
+
+    /**
+     * @var string
+     */
+    protected $personId;
+
+    /**
+     * @var string
+     */
     protected $cookiesFile;
 
     /**
@@ -38,6 +48,8 @@ class Baylor extends \CApplicationComponent
 
         $response = $this->_parse();
 
+        unlink($this->cookiesFile);
+
         if ($response) {
             return array(
                 'errors' => false,
@@ -54,17 +66,19 @@ class Baylor extends \CApplicationComponent
      * Method that handles the whole team import
      * @param string $email
      * @param string $password
-     * @param string $team_id
+     * @param string $teamId
      * @return array
      */
-    public function importTeam($email, $password, $team_id)
+    public function importTeam($email, $password, $teamId)
     {
         $this->cookiesFile = \yii::getPathOfAlias('common.runtime') . '/' . uniqid('', true);
         $this->curl = new Curl;
 
         $this->_login($email, $password);
 
-        $response = $this->_parseTeam($team_id);
+        $response = $this->_parseTeam($teamId);
+
+        unlink($this->cookiesFile);
 
         if ($response) {
             return array(
@@ -87,6 +101,8 @@ class Baylor extends \CApplicationComponent
 
         $response = $this->_parseTeamList();
 
+        unlink($this->cookiesFile);
+
         if ($response) {
             return array(
                 'errors' => false,
@@ -101,52 +117,21 @@ class Baylor extends \CApplicationComponent
 
     public function _parseTeamList()
     {
-        $result = array();
-
-        // Import HTML DOM Parser
-        \yii::import('common.lib.HtmlDomParser.*');
-        require_once('HtmlDomParser.php');
-        $parser = new HtmlDomParser();
-
-        //Get Teams list
-        $getCurl = $this->curl->newRequest('POST', $this->url . '/private/team/yourTeamList.icpc', array(
-
-            // Setting number of rows
-            'javax.faces.partial.ajax'      => 'true',
-            'javax.faces.source'            => 'teamMemberForm:teamMembers',
-            'javax.faces.partial.execute'   => 'teamMemberForm:teamMembers',
-            'javax.faces.partial.render'    => 'teamMemberForm:teamMembers',
-            'teamMemberForm:teamMembers'    => 'teamMemberForm:teamMembers',
-            'teamMemberForm:teamMembers_pagination' => 'true',
-            'teamMemberForm:teamMembers_first'      => '0',
-            'teamMemberForm:teamMembers_rows'       => '50',
-            'teamMemberForm:teamMembers_encodeFeature'  => 'true',
-            'teamMemberForm'                            => 'teamMemberForm',
-            'javax.faces.ViewState'                     => '9135935228831978634:-6291211713543351310',
-
-            // Setting year
-            'teamCreateButton:yearSelectorForm'         => 'teamCreateButton:yearSelectorForm',
-            'teamCreateButton:yearSelectorForm:year'    => date('Y') + 1,
-            'javax.faces.ViewState'                     => '9135935228831978634:-6291211713543351310',
-            'javax.faces.source:teamCreateButton'       => 'yearSelectorForm:year',
-            'javax.faces.partial.event'                 => 'change',
-            'javax.faces.partial.execute'               => 'teamCreateButton:yearSelectorForm:year',
-            'javax.faces.partial.render'                => 'teamMemberForm',
-            'javax.faces.behavior.event'                => 'change',
-            'javax.faces.partial.ajax'                  => 'true',
-        ));
+        // Get recent year
+        $getCurl = $this->curl->newRequest('GET', "{$this->url}/cm5-common-rest/rest/common/globals/all");
         $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
-        $xml = simplexml_load_string($response->body, 'SimpleXMLElement', LIBXML_NOCDATA);
-        $elements = (array)$xml->changes->update;
-        $html = $parser->str_get_html($elements[1]);
-        $rows = $html->find('a.team');
-        foreach ($rows as $item) {
-            $id = substr($item->href, strlen('/private/team/'));
-            $result[$id] = array(
-                'title' => $item->plaintext,
-                'id'    => $id,
-                'url'   => $item->href,
-            );
+        $globals = json_decode($response->body, true);
+
+        // Get teams list
+        $getCurl = $this->curl->newRequest('GET', "{$this->url}/cm5-team/rest/team/table/search/my/{$globals['worldFinalsYear']}?q=proj:name,site,contest,status,role%3B&page=1&size=100");
+        $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
+        $teams = json_decode($response->body, true);
+
+        // Populate result
+        $result = [];
+        foreach ($teams as $team) {
+            $this->populateLegaceTeamFields($team);
+            $result[$team['teamId']] = $team;
         }
 
         return $result;
@@ -154,78 +139,62 @@ class Baylor extends \CApplicationComponent
 
     /**
      * Method that handles get request and parses data for team import
-     * @param string $team_id
+     * @param string $teamId
      * @return array|bool
      * @throws \CException
      */
-    protected function _parseTeam($team_id)
+    protected function _parseTeam($teamId)
     {
-        $result = array();
+        // Pull team info
+        $getCurl = $this->curl->newRequest('GET', "{$this->url}/cm5-team/rest/team/teams/{$teamId}");
+        $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
+        $team = json_decode($response->body, true);
+        $this->populateLegaceTeamFields($team);
 
-        // Import HTML DOM Parser
-        \yii::import('common.lib.HtmlDomParser.*');
-        require_once('HtmlDomParser.php');
-        $parser = new HtmlDomParser();
+        // Pull team members
+        $getCurl = $this->curl->newRequest('GET', "{$this->url}/cm5-team/rest/team/members/team/{$teamId}");
+        $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
+        $members = json_decode($response->body, true);
+        $team['members'] = [];
+        foreach ($members as $member) {
 
-        $teams = $this->_parseTeamList();
-        $result['teams'] = $teams;
-
-        if (!empty($teams[$team_id])) {
-
-            //Get information about team
-            $team = $teams[$team_id];
-            $url = $team['url'];
-
-            $getCurl = $this->curl->newRequest('get', $this->url . $url);
-            $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
-            $html = $parser->str_get_html($response->body);
-            $header = $html->find('#header', 0);
-
-            if (!is_null($header)) {
-
-                $status = $html->find('[id="teamTabs:teamForm:statusRO"] div.statusModification span.statusACCEPTED', 0);
-                $team['status'] = !empty($status) ? \web\modules\staff\controllers\TeamController::BAYLOR_STATUS_ACCEPTED : false;
-
-                $rows = $html->find('[id="teamMembersTabs:teamMembersForm:teamMembersTable_data"] tr');
-                if (!empty($rows)) {
-
-                    foreach ($rows as $row) {
-                        $tds = $row->find('td');
-                        $role = trim($tds[2]->plaintext, " ".chr(0xC2).chr(0xA0));
-                        $isRegistrationComplete = trim($tds[3]->find('input',0)->checked, chr(0xC2).chr(0xA0));
-
-                        // Filter only students
-                        if (!in_array($role, ['Contestant', 'Reserve'])) {
-                            continue;
-                        }
-
-                        // Push member to the list
-                        $team['members'][] = array(
-                            'name' => trim($tds[0]->plaintext, " ".chr(0xC2).chr(0xA0)),
-                            'email' => $this->clear($tds[1]->plaintext),
-                            'role' => $role,
-                            'isRegistrationComplete' => !empty($isRegistrationComplete),
-                        );
-                    }
-
-                    // Order members by role ("Contestant" should be first, "Reserve" - at the end)
-                    usort($team['members'], function($a, $b) {
-                        if ($a['role'] === 'Contestant') {
-                            return -1;
-                        } else {
-                            return 1;
-                        }
-                    });
-
-                }
-
-                $result['team'] = $team;
+            // Skip NOT contestants or reserve
+            if (!in_array($member['role'], ['CONTESTANT', 'RESERVE'])) {
+                continue;
             }
 
-            //-----//
+            // Push member
+            $team['members'][] = [
+                'name'  => $member['name'],
+                'email' => $member['email'],
+                'role'  => $member['role'],
+                'isRegistrationComplete' => $member['registrationComplete'],
+            ];
         }
 
-        return $result;
+        // Order members by role ("CONTESTANT" should be first, "RESERVE" - at the end)
+        usort($team['members'], function($a, $b) {
+            if ($a['role'] === 'CONTESTANT') {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
+
+        return [
+            'team' => $team,
+        ];
+    }
+
+    /**
+     * Populate legacy array fields
+     * @param array $team
+     */
+    protected function populateLegaceTeamFields(array &$team)
+    {
+        $team['title']  = $team['name'];
+        $team['id']     = isset($team['id']) ? $team['id'] : $team['teamId'];
+        $team['url']    = "{$this->url}/cm5-team/rest/team/members/team/{$team['id']}";
     }
 
     /**
@@ -250,19 +219,43 @@ class Baylor extends \CApplicationComponent
      */
     protected function _login($email, $password)
     {
-        $data = array(
-            'login' => 'login',
-            'login:registerScreenSize' => '',
-            'login:loginButtons' => 'Log in',
-            'login:loginButtonsScreenSize' => '1863',
-            'javax.faces.ViewState' => '-7305149916852225329:-5521534327342265186',
-            'login:username' => $email,
-            'login:password' => $password
-        );
+        // Skip if already loggedin
+        if (!empty($this->accessToken)) {
+            return;
+        }
 
-        $postCurl = $this->curl->newRequest('post', $this->url . '/login', $data);
+        // Pull login page
+        $curl = $this->curl->newRequest('GET', $this->url . '/auth/realms/cm5/protocol/openid-connect/auth?client_id=cm5-frontend&redirect_uri=https%3A%2F%2Ficpc.baylor.edu%2Fprivate&state=16541073-4e33-4f65-8b11-08b65cd3b621&response_mode=fragment&response_type=code&scope=openid&nonce=fdb2a01d-3764-43aa-931f-668aaffa5ecb');
+        $response = $this->_setBaylorHeadersAndOptions($curl, $this->cookiesFile)->send();
 
-        $postQuery = $this->_setBaylorHeadersAndOptions($postCurl, $this->cookiesFile)->send();
+        // Parse login form action manually due to HTML errors
+        preg_match('/kc-form-login.*action="(.*)" /', $response->body, $matches);
+        $loginUrl = html_entity_decode($matches[1]);
+
+        // Login
+        $curl = $this->curl->newRequest('POST', $loginUrl, [
+            'username' => $email,
+            'password' => $password,
+        ]);
+        $response = $this->_setBaylorHeadersAndOptions($curl, $this->cookiesFile)->send();
+        $redirectUrl = parse_url($response->headers['Location']);
+        parse_str($redirectUrl['fragment'], $redirectParams);
+
+        // Get token
+        $curl = $this->curl->newRequest('POST', $this->url . '/auth/realms/cm5/protocol/openid-connect/token', [
+            'code'          => $redirectParams['code'],
+            'grant_type'    => 'authorization_code',
+            'client_id'     => 'cm5-frontend',
+            'redirect_uri'  => $this->url . '/private',
+        ]);
+        $response = $this->_setBaylorHeadersAndOptions($curl, $this->cookiesFile)->send();
+        $json = json_decode($response->body);
+        $this->accessToken = $json->access_token;
+
+        // Get profile ID
+        $cookies = file_get_contents($this->cookiesFile);
+        preg_match('/KEYCLOAK_SESSION	cm5\/f:.*:(.*)\//', $cookies, $matches);
+        $this->personId = $matches[1];
     }
 
     /**
@@ -272,57 +265,32 @@ class Baylor extends \CApplicationComponent
      */
     protected function _parse()
     {
-        $getCurl = $this->curl->newRequest('get', $this->url . '/private/profile');
-
+        $getCurl = $this->curl->newRequest('GET', "{$this->url}/cm5-person/rest/person/person/name/{$this->personId}");
         $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
+        $account = json_decode($response->body, true);
+        $getCurl = $this->curl->newRequest('GET', "{$this->url}/cm5-person/rest/person/person/{$this->personId}");
+        $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
+        $person = json_decode($response->body, true);
+        $getCurl = $this->curl->newRequest('GET', "{$this->url}/cm5-person/rest/person/contactinfo/person/{$this->personId}");
+        $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
+        $contacts = json_decode($response->body, true);
+        $getCurl = $this->curl->newRequest('GET', "{$this->url}/cm5-person/rest/person/degree/person/{$this->personId}");
+        $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
+        $degree = json_decode($response->body, true);
+        $info = [
+            'baylor_id'     => $person['id'],
+            'firstName'     => $person['personInfo']['firstName'],
+            'lastName'      => $person['personInfo']['lastName'],
+            'shirtSize'     => $person['personInfo']['shirtSize'],
+            'birthday'      => $person['personInfo']['dateOfBirth'],
+            'phoneMobile'   => $contacts['voice'],
+            'officeAddress' => $contacts['shippingAddress']['addressLine1'],
+            'email'         => $account['username'],
+            'speciality'    => $degree['degreePursued'],
+            'acmId'         => '',
+        ];
 
-        // Import HTML DOM Parser
-        \yii::import('common.lib.HtmlDomParser.*');
-        require_once('HtmlDomParser.php');
-        $parser = new HtmlDomParser();
-        $html = $parser->str_get_html($response->body);
-
-        $header = $html->find('#header', 0);
-        if (!is_null($header)) {
-            $baylorInfo = array();
-            $info = array(
-                'firstName' => '[id="tabs:piForm:ropifirstName"]',
-                'lastName' => '[id="tabs:piForm:ropilastName"]',
-                'shirtSize' => '[id="tabs:piForm:pishirtSizeView"]',
-                'phoneMobile' => '[id="tabs:contactForm:roextendedvoice"]',
-                'officeAddress' => '[id="tabs:contactForm:roaddressaddressLine1"]',
-                'email' => '[id="tabs:piForm:piusernameView"]',
-                'acmId' => '[id="tabs:piForm:ropiacmId"]',
-                'speciality' => '[id="tabs:piForm:rodegreeareaOfStudy"]',
-                'birthday' => '[id="tabs:piForm:degreedateOfBirthView"]',
-            );
-            foreach ($info as $key => $value) {
-                $datum = $html->find($value, 0);
-                if (!is_null($datum)) {
-                    $result = trim($datum->plaintext);
-                    if ($key === 'birthday') {
-                        $unixBirthday = strtotime(trim($datum->plaintext));
-                        $result = date('Y-m-d', $unixBirthday);
-                    }
-
-                    $baylorInfo[$key] = $result;
-                }
-            }
-
-            unlink($this->cookiesFile);
-
-
-            $id = $html->find('[id="logoffMenu:profile"]', 0);
-            if (!empty($id)) {
-                $baylorInfo['baylor_id'] = (int)substr($id->href, 17);
-            } else {
-                $baylorInfo['baylor_id'] = 0;
-            }
-
-            return $baylorInfo;
-        } else {
-            return false;
-        }
+        return $info;
     }
 
     /**
@@ -334,22 +302,29 @@ class Baylor extends \CApplicationComponent
      */
     protected function _setBaylorHeadersAndOptions(CurlRequest $curl, $cookies)
     {
-        return $curl
-            ->setHeader('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36')
-            ->setHeader('Accept', 'ext/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8')
-            ->setHeader('Accept-Language', 'en-US,en;q=0.8,ru;q=0.6,uk;q=0.4')
-            ->setHeader('Cache-Control', 'max-age=0')
-            ->setHeader('Connection', 'keep-alive')
-            ->setHeader('Content-Type', 'application/x-www-form-urlencoded')
-            ->setHeader('Host', 'icpc.baylor.edu')
-            ->setHeader('Origin', 'https://icpc.baylor.edu')
-            ->setHeader('Referer', 'https://icpc.baylor.edu/login')
-            ->setOptions(array(
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_COOKIEFILE => $cookies,
-                CURLOPT_COOKIEJAR => $cookies
-            ));
+        if (!empty($this->accessToken)) {
+            $curl->setHeader('Authorization', "Bearer {$this->accessToken}");
+        } else {
+            $curl
+                ->setHeader('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36')
+                ->setHeader('Accept', 'ext/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8')
+                ->setHeader('Accept-Language', 'en-US,en;q=0.8,ru;q=0.6,uk;q=0.4')
+                ->setHeader('Cache-Control', 'max-age=0')
+                ->setHeader('Connection', 'keep-alive')
+                ->setHeader('Content-Type', 'application/x-www-form-urlencoded')
+                ->setHeader('Host', 'icpc.baylor.edu')
+                ->setHeader('Origin', $this->url)
+                ->setHeader('Referer', $this->url)
+                ->setOptions(array(
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_COOKIEFILE => $cookies,
+                    CURLOPT_COOKIEJAR => $cookies
+                ))
+            ;
+        }
+
+        return $curl;
     }
 
 }
