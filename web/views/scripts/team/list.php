@@ -68,15 +68,15 @@
 <table class="page-top-controls"><tr>
 
     <?php if (\yii::app()->user->checkAccess(\common\components\Rbac::OP_TEAM_CREATE)): ?>
-    <td>
-        <a class="btn btn-success btn-lg"
-           href="<?=$this->createUrl('/staff/team/manage')?>"
-           title="<?=\yii::t('app', 'Create a new team out of competition')?>"
-           rel="tooltip">
-            <span class="glyphicon glyphicon-plus"></span>
-            <?=\yii::t('app', 'New team')?>
-        </a>
-    </td>
+<!--    <td>-->
+<!--        <a class="btn btn-success btn-lg"-->
+<!--           href="--><?//=$this->createUrl('/staff/team/manage')?><!--"-->
+<!--           title="--><?//=\yii::t('app', 'Create a new team out of competition')?><!--"-->
+<!--           rel="tooltip">-->
+<!--            <span class="glyphicon glyphicon-plus"></span>-->
+<!--            --><?//=\yii::t('app', 'New team')?>
+<!--        </a>-->
+<!--    </td>-->
     <td>
         <a class="btn btn-success btn-lg"
            href="<?=$this->createUrl('/staff/team/import')?>"
