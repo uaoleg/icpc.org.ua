@@ -123,7 +123,9 @@ class Baylor extends \CApplicationComponent
         $globals = json_decode($response->body, true);
 
         // Get teams list
-        $getCurl = $this->curl->newRequest('GET', "{$this->url}/cm5-team/rest/team/table/search/my/{$globals['worldFinalsYear']}?q=proj:name,site,contest,status,role%3B&page=1&size=100");
+//        $year = $globals['worldFinalsYear'];
+        $year = $globals['regionalsYear'];
+        $getCurl = $this->curl->newRequest('GET', "{$this->url}/cm5-team/rest/team/table/search/my/{$year}?q=proj:name,site,contest,status,role%3B&page=1&size=100");
         $response = $this->_setBaylorHeadersAndOptions($getCurl, $this->cookiesFile)->send();
         $teams = json_decode($response->body, true);
 
