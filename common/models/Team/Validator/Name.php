@@ -29,10 +29,10 @@ class Name extends \common\ext\MongoDb\Validator\AbstractValidator
         }
 
         // Check school prefix
-        if (strpos($teamName, $team->school->shortNameEn) !== 0) {
-            $this->addError($team, $attribute, \yii::t('app', 'Team name should be prefixed with short school name.'));
-            return;
-        }
+//        if (strpos($teamName, $team->school->shortNameEn) !== 0) {
+//            $this->addError($team, $attribute, \yii::t('app', 'Team name should be prefixed with short school name.'));
+//            return;
+//        }
 
         // Check if name contains only prefix
         $schoolShortNameEn = $team->school->shortNameEn;
