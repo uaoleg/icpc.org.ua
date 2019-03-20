@@ -157,14 +157,24 @@ class TeamController extends \web\modules\staff\ext\Controller
                         $user = User::model()->findByAttributes([
                             'email' => mb_strtolower($member['email']),
                         ]);
-                        if (!empty($user)) {
-                            $memberIds[] = (string)$user->_id;
-                        } else {
-                            $errors[] = \yii::t('app', 'User {name} with email {email} was not found.', [
-                                '{email}'   => $member['email'],
-                                '{name}'    => $member['name'],
-                            ]);
+                        if (empty($user)) {
+                            $user = new User();
+                            $user->setAttributes(array(
+                                'firstNameUk'       => '',
+                                'middleNameUk'      => '',
+                                'lastNameUk'        => '',
+                                'firstNameEn'       => explode(' ', $member['name'])[0],
+                                'lastNameEn'        => explode(' ', $member['name'])[1],
+                                'email'             => $email,
+                                'isEmailConfirmed'  => true,
+                                'type'              => User::ROLE_STUDENT,
+                                'isApprovedStudent' => true,
+                                'schoolId'          => \yii::app()->user->getInstance()->school->_id,
+                                'dateCreated'       => time(),
+                            ), false);
+                            $user->save(false);
                         }
+                        $memberIds[] = (string)$user->_id;
                     }
                 }
 
