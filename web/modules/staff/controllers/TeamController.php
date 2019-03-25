@@ -99,7 +99,10 @@ class TeamController extends \web\modules\staff\ext\Controller
 
         if (!empty($response) && empty($response['error']) && !empty($response['data'])) {
             $criteria = new EMongoCriteria();
-            $criteria->addCond('baylorId', '!=', null);
+            $criteria
+                ->addCond('baylorId', '!=', null)
+                ->addCond('isDeleted', '==', false)
+            ;
             $importedList = Team::model()->findAll($criteria);
             foreach ($importedList as $item) {
                 $imported[] = (string)$item->baylorId;
