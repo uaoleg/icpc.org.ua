@@ -157,8 +157,9 @@ class TeamController extends \web\modules\staff\ext\Controller
                 $memberIds = array();
                 if (empty($errors) && !empty($response['data']['team']['members'])) {
                     foreach ($response['data']['team']['members'] as $member) {
+                        $memberEmail = mb_strtolower($member['email']);
                         $user = User::model()->findByAttributes([
-                            'email' => mb_strtolower($member['email']),
+                            'email' => $memberEmail,
                         ]);
                         if (empty($user)) {
                             $user = new User();
@@ -168,7 +169,7 @@ class TeamController extends \web\modules\staff\ext\Controller
                                 'lastNameUk'        => '',
                                 'firstNameEn'       => explode(' ', $member['name'])[0],
                                 'lastNameEn'        => explode(' ', $member['name'])[1],
-                                'email'             => $email,
+                                'email'             => $memberEmail,
                                 'isEmailConfirmed'  => true,
                                 'type'              => User::ROLE_STUDENT,
                                 'isApprovedStudent' => true,
