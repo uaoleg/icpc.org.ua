@@ -98,6 +98,11 @@ class Baylor extends \CApplicationComponent
         $this->curl = new Curl;
 
         $this->_login($email, $password);
+        if (empty($this->accessToken)) {
+            return [
+                'error' => \yii::t('app', 'Can not login on Baylor.'),
+            ];
+        }
 
         $response = $this->_parseTeamList();
 
@@ -105,12 +110,12 @@ class Baylor extends \CApplicationComponent
 
         if ($response) {
             return array(
-                'errors' => false,
+                'error' => false,
                 'data' => $response
             );
         } else {
             return array(
-                'errors' => true
+                'error' => true
             );
         }
     }
@@ -240,6 +245,9 @@ class Baylor extends \CApplicationComponent
             'password' => $password,
         ]);
         $response = $this->_setBaylorHeadersAndOptions($curl, $this->cookiesFile)->send();
+        if (!isset($response->headers['Location'])) {
+            return;
+        }
         $redirectUrl = parse_url($response->headers['Location']);
         parse_str($redirectUrl['fragment'], $redirectParams);
 

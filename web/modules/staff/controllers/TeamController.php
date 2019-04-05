@@ -94,8 +94,7 @@ class TeamController extends \web\modules\staff\ext\Controller
 
         $imported = array();
         $teams = array();
-
-        $errors = array();
+        $errors = false;
 
         if (!empty($response) && empty($response['error']) && !empty($response['data'])) {
             $criteria = new EMongoCriteria();
@@ -113,15 +112,17 @@ class TeamController extends \web\modules\staff\ext\Controller
                     $teams[] = $team;
                 }
             }
-        }
 
-        if (empty($teams)) {
-            $errors[] = \yii::t('app', 'You have no teams to import.');
+            if (empty($teams)) {
+                $errors = [\yii::t('app', 'You have no teams to import.')];
+            }
+        } elseif (!empty($response['error'])) {
+            $errors = [$response['error']];
         }
 
         // Render json
         $this->renderJson(array(
-            'errors'   => !empty($errors) ? $errors : false,
+            'errors'   => $errors,
             'teams'    => $teams,
         ));
     }
