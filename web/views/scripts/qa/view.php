@@ -33,7 +33,7 @@
 <hr />
 
 <div class="break-word">
-    <?=$question->content?>
+    <?= \CHtml::encode($question->content) ?>
 </div>
 
 <div>
