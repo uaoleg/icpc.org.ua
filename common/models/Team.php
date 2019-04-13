@@ -11,6 +11,7 @@ use \common\models\School;
  * @property-read string        $schoolName
  * @property-read string        $coachName
  * @property-read \EMongoCursor $members
+ * @property-read bool          $isDeleted
  */
 class Team extends \common\ext\MongoDb\Document
 {

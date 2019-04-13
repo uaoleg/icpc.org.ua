@@ -352,6 +352,7 @@ class UserController extends \web\ext\Controller
         // Get teams
         $criteria = new \EMongoCriteria();
         $criteria->addCond('memberIds', 'in', (array)$userId);
+        $criteria->addCond('isDeleted', '==', false);
         $criteria->sort('year', \EMongoCriteria::SORT_DESC);
         $teams = Team::model()->findAll($criteria);
 

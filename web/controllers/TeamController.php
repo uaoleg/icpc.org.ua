@@ -55,7 +55,8 @@ class TeamController extends \web\ext\Controller
 
         // Get list of teams
         $teamsCount = Team::model()->countByAttributes(array(
-            'year' => $year,
+            'year'      => $year,
+            'isDeleted' => false,
         ));
 
         // Get list of available school types
@@ -169,6 +170,7 @@ class TeamController extends \web\ext\Controller
     {
         // Get params
         $criteria = \yii::app()->user->getState('teamCriteriaForExport');
+        $criteria->addCond('isDeleted', '==', false);
         $criteria->setLimit(0);
 
         // Get list of teams
@@ -189,6 +191,7 @@ class TeamController extends \web\ext\Controller
     {
         // Get params
         $criteria = \yii::app()->user->getState('teamCriteriaForExport');
+        $criteria->addCond('isDeleted', '==', false);
         $criteria->setLimit(0);
 
         // Get list of teams

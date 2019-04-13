@@ -140,6 +140,7 @@ class TeamController extends \web\modules\staff\ext\Controller
         // Get team
         $criteria = new EMongoCriteria();
         $criteria->addCond('baylorId', '==', $teamId);
+        $criteria->addCond('isDeleted', '==', false);
         $team = Team::model()->findFirst($criteria);
 
         $errors = false;

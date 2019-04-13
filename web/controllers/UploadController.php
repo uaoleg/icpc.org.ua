@@ -152,8 +152,9 @@ class UploadController extends \web\ext\Controller
             // Get team
             $teamName = $tr->find('.st_team', 0)->plaintext;
             $team = Team::model()->findByAttributes(array(
-                'name' => new \MongoRegex('/^' . preg_quote($teamName) . '$/i'),
-                'year' => $year,
+                'name'      => new \MongoRegex('/^' . preg_quote($teamName) . '$/i'),
+                'year'      => $year,
+                'isDeleted' => false,
             ));
 
             // Check team geo to match
