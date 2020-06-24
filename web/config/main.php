@@ -49,7 +49,8 @@ $config = array(
                 ),
                 'jquery' => array(
                     'js' => array(
-                        'lib/jquery/jquery-1.10.2.min.js',
+//                        'lib/jquery/jquery-1.10.2.min.js',
+                        'lib/jquery/jquery-3.5.1.min.js',
                         'lib/jquery-ui-1.10.3/ui/minified/jquery.ui.widget.min.js',
                     ),
                     'css' => array(
