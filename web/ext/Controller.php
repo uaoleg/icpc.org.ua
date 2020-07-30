@@ -105,13 +105,13 @@ class Controller extends \CController
         // Set headers recommended by DA security review
         header('Access-Control-Allow-Origin: null');
         header('Cache-Control: private, no-cache, no-store, must-revalidate, max-age=0');
-        header('Set-Cookie: __Secure-ID=1; HttpOnly; Secure; SameSite=Lax (Note: if needed third-party contexts setup SameSite=None)');
+        header('Set-Cookie: __Secure-ID=1; HttpOnly; Secure; SameSite=Lax');
         header('X-Content-Type-Options: nosniff');
         header('X-Frame-Options: SAMEORIGIN');
         header('X-XSS-Protection: 1; mode=block');
         header('Strict-Transport-Security: max-age=31536000 ; includeSubDomains');
         header('Referrer-Policy: no-referrer');
-        header('Content-Security-Policy: script-src \'self\', default-src \'self\' (Note: If an application uses external scripts add them to the script-src directive)');
+        header('Content-Security-Policy: script-src \'self\' \'unsafe-inline\' \'unsafe-eval\'');
         header('Expires: 0 (required for HTTP/1.0 )');
     }
 
