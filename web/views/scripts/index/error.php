@@ -4,7 +4,7 @@
             <h3 class="panel-title"><?=$error['code']?></h3>
         </div>
         <div class="panel-body">
-            <strong><?=$error['message']?></strong>
+            <strong><?=\CHtml::encode($error['message'])?></strong>
         </div>
     </div>
 </div>
