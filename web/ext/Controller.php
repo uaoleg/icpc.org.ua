@@ -101,18 +101,6 @@ class Controller extends \CController
                 \yii::app()->clientScript->packages['select2']['js'][] = 'lib/select2/select2_locale_ru.js';
                 break;
         }
-
-        // Set headers recommended by DA security review
-        header('Access-Control-Allow-Origin: null');
-        header('Cache-Control: private, no-cache, no-store, must-revalidate, max-age=0');
-        header('Set-Cookie: __Secure-ID=1; HttpOnly; Secure; SameSite=Lax');
-        header('X-Content-Type-Options: nosniff');
-        header('X-Frame-Options: SAMEORIGIN');
-        header('X-XSS-Protection: 1; mode=block');
-        header('Strict-Transport-Security: max-age=31536000 ; includeSubDomains');
-        header('Referrer-Policy: no-referrer');
-        header('Content-Security-Policy: script-src \'self\' \'unsafe-inline\' \'unsafe-eval\'');
-        header('Expires: 0 (required for HTTP/1.0 )');
     }
 
     /**
